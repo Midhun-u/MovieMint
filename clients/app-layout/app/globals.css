@@ -1,25 +1,57 @@
 @import "tailwindcss";
 
-*{
-  margin: 0px;
-  padding: 0px;
+* {
   font-family: var(--font-space-grotesk);
   box-sizing: border-box;
 }
 
 :root {
-  
+  --background-color: #F4F4F4;
+  --foreground-color: #FFFF;
+  --primary-color: #3CE062;
+  --primary-accent-color: #0a8327;
+  --success-background-color: #8EFFC8;
+  --success-foreground-color: #1B5E20;
+  --warn-background-color: #FEFFBE;
+  --warn-foreground-color: #768600;
+  --error-background-color: #FFDFDF;
+  --error-foreground-color: #FF0000;
+  --disable-color: #7F7F7F;
+  --dark-background-color: #161616;
+  --dark-foreground-color: #000000;
+  --dark-foreground-text-color: #FFFF;
 }
 
-@theme inline {
-  
+body {
+  width: 100vw;
+  height: 100dvh;
+  overflow: auto;
+  margin: 0px;
+  padding: 0px;
+}
+
+body .dark-theme {
+  --background-color: #161616;
+  --foreground-color: #000000;
+  --disable-color: #ABABAB;
+}
+
+@theme {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-background-color: var(--background-color);
+  --color-foreground-color: var(--foreground-color);
+  --color-primary-color: var(--primary-color);
+  --color-primary-accent-color: var(--primary-accent-color);
+  --color-success-background-color: var(--success-background-color);
+  --color-success-foreground-color: var(--success-foreground-color);
+  --color-warn-background-color: var(--warn-background-color);
+  --color-warn-foreground-color: var(--warn-foreground-color);
+  --color-error-background-color: var(--error-background-color);
+  --color-error-foreground-color: var(--error-foreground-color);
+  --color-disable-color: var(--disable-color);
+  --color-dark-background-color: var(--dark-background-color);
+  --color-dark-foreground-color: var(--dark-foreground-color);
+  --color-dark-foreground-color: var(--dark-foreground-color);
+  --color-dark-foreground-text-color: var(--dark-foreground-text-color);
 }

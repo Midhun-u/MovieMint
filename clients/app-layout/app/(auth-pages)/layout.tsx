@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 
 const AuthLayout = ({
     children
@@ -10,7 +10,6 @@ const AuthLayout = ({
 
     <main>
         {children}
-        Layout
     </main>
     
   )
