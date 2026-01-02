@@ -1,12 +1,9 @@
-import React from 'react'
+import {redirect} from 'next/navigation'
 
-const page = () => {
+const RootPage = () => {
 
-  return (
+  redirect("/movies")
 
-    <div>page</div>
-    
-  )
 }
 
-export default page
+export default RootPage
