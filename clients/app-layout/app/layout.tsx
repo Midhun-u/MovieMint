@@ -11,6 +11,9 @@ export const spaceGrotesk = Space_Grotesk({
 export const metadata: Metadata = {
   title: "MovieMint",
   description: "A movie ticket booking platform",
+  icons: {
+    icon: '/assets/logo.svg'
+  }
 };
 
 export default function RootLayout({
