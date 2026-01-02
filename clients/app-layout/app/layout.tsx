@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import Footer from "@/components/layout/Footer";
 
 export const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -11,6 +12,9 @@ export const spaceGrotesk = Space_Grotesk({
 export const metadata: Metadata = {
   title: "MovieMint",
   description: "A movie ticket booking platform",
+  icons: {
+    icon: '/assets/logo.svg'
+  }
 };
 
 export default function RootLayout({
@@ -23,7 +27,10 @@ export default function RootLayout({
       <body
         className={`${spaceGrotesk.variable}`}
       >
-        {children}
+        <main>
+          {children}
+        </main>
+        <Footer />
       </body>
     </html>
   );
