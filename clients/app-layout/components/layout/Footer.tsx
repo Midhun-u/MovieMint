@@ -2,7 +2,6 @@ import { footerNavs, socialMedias } from "@/utils/footer"
 import Link from 'next/link'
 import { Input } from "../ui/input"
 import { Button } from "../ui/button"
-import Image from "next/image"
 
 const Footer = () => {
 
@@ -76,17 +75,17 @@ const Footer = () => {
                 >
                     Connect Us With
                 </h2>
-                <div className="mt-3 flex gap-2">
+                <div className="mt-3 flex gap-2 flex-col text-xs">
                     {
                         socialMedias.map((socialMedia, index) => (
 
-                            <Image
-                                src={socialMedia.icon}
-                                alt={socialMedia.name}
+                            <Link
+                                href={socialMedia.route}
                                 key={index}
-                                width={25}
-                                height={25}
-                            />
+                                className="hover:text-primary-color"
+                            >
+                                {socialMedia.title}
+                            </Link>
 
                         ))
                     }

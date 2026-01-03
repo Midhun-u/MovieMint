@@ -1,7 +1,3 @@
-import { assets } from "@/public/assets/assets"
-import { StaticImageData } from "next/image"
-import { ReactNode } from "react"
-
 type FooterNavs = Array<{
     title: string,
     route: string
@@ -9,8 +5,7 @@ type FooterNavs = Array<{
 
 type SocialMedias = Array<{
     route: string,
-    icon: StaticImageData,
-    name: string
+    title: string
 }>
 
 export const footerNavs: FooterNavs = [
@@ -30,28 +25,23 @@ export const footerNavs: FooterNavs = [
 
 export const socialMedias: SocialMedias = [
     {
-        route: "/",
-        icon: assets.facebookIcon,
-        name: "facebook"
+        title: "Facebook",
+        route: "/"
     },
     {
-        route: "/",
-        icon: assets.xIcon,
-        name: "x"
+        title: "Instagram",
+        route: "/"
     },
     {
-        route: "/",
-        icon: assets.instagramIcon,
-        name: "instagram"
+        title: "X (Former Twitter)",
+        route: "/"
     },
     {
-        route: "/",
-        icon: assets.youtubeIcon,
-        name: "youtube"
+        title: "Youtube",
+        route: "/"
     },
     {
-        route: "/",
-        icon: assets.linkedinIcon,
-        name: "linkedin"
+        title: "LinkedIn",
+        route: "/"
     }
 ]

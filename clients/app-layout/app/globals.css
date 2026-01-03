@@ -9,10 +9,10 @@
 }
 
 :root {
-  --background-color: #F4F4F4;
+  --background-color: #f7f7f7;
   --foreground-color: #FFFF;
   --primary-color: #3CE062;
-  --primary-accent-color: #0cff45;
+  --primary-accent-color: #0c8f2a;
   --success-background-color: #8EFFC8;
   --success-foreground-color: #1B5E20;
   --warn-background-color: #FEFFBE;
@@ -60,7 +60,8 @@
 body {
   width: 100vw;
   height: 100dvh;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   margin: 0px;
   padding: 0px;
 }
