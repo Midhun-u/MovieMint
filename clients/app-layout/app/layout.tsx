@@ -25,7 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${spaceGrotesk.variable}`}
+        className={`${spaceGrotesk.variable} bg-background-color`}
       >
         <main>
           {children}
