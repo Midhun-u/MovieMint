@@ -8,7 +8,7 @@ const SignPage = () => {
 
     <section className='w-full h-svh flex gap-2 justify-center md:p-5'>
       {/* Image section */}
-      <div className='flex justify-center items-center w-[80%] h-full'>
+      <div className='flex justify-center items-center w-full h-full'>
         <Image
           src={assets.signVector}
           alt='sign-vector-image'
@@ -24,7 +24,10 @@ const SignPage = () => {
           <h1 className='font-bold text-lg'>Sign In</h1>
           <p className='text-sm'>Please sign in to securely access your account, manage your data, and continue using the platform.</p>
         </div>
-        <Form />
+        {/* Form */}
+        <Form 
+          formType='SIGN'
+        />
       </div>
     </section>
 
