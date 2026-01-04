@@ -27,7 +27,6 @@ type UserDetails = {
     lastname: string
     email: string
     password: string
-    confirmPassword: string
     role: Role
 }
 
@@ -38,15 +37,16 @@ const Form = ({ formType }: FormProps) => {
     const lastnameId = useId()
     const emailId = useId()
     const passwordId = useId()
+    const confirmPasswordId = useId()
     const [acceptTerms, setAcceptTerms] = useState<boolean>(false)
     const [userDetails, setUserDetails] = useState<UserDetails>({
         firstname: "",
         lastname: "",
         email: "",
         password: "",
-        confirmPassword: "",
         role: currentTabValue
     })
+    const [isConfirmPasswordCorrect, setIsConfirmPasswordCorrect] = useState<boolean>(false)
 
     return (
 
@@ -111,7 +111,7 @@ const Form = ({ formType }: FormProps) => {
                     />
                     <PasswordInput
                         passwordId={passwordId}
-                        placeholder="Create new password"
+                        placeholder="Create new password" 
                         onChange={(event) => setUserDetails({...userDetails, password: event.target.value})}
                     />
                     <PasswordStrengthIndicator
@@ -120,13 +120,15 @@ const Form = ({ formType }: FormProps) => {
                 </div>
                 <div>
                     <Label
-                        labelId={passwordId}
+                        labelId={confirmPasswordId}
                         labelTitle="Confirm New Password"
                     />
                     <PasswordInput
-                        passwordId={passwordId}
+                        passwordId={confirmPasswordId}
                         placeholder="Confirm new password"
-                        onChange={(event) => setUserDetails({...userDetails, confirmPassword: event.target.value})}
+                        onChange={(event) => {
+                            event.target.value === userDetails.password? setIsConfirmPasswordCorrect(true): setIsConfirmPasswordCorrect(false)
+                        }}
                     />
                 </div>
                 {/* Terms and condition section */}
