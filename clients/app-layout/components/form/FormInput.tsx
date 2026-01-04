@@ -3,12 +3,15 @@ import { Input } from "../ui/input"
 import { LucideProps } from "lucide-react"
 
 interface FormInputProps {
-    id?: string,
-    Icon?: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>,
+    id?: string
+    Icon?: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>
     placeholder?: string
+    className?: string
+    type: "text" | "password" | "email"
+    
 }
 
-const FormInput = ({id, Icon, placeholder}: FormInputProps) => {
+const FormInput = ({id, Icon, placeholder, className, type}: FormInputProps) => {
 
     return (
 
@@ -27,7 +30,8 @@ const FormInput = ({id, Icon, placeholder}: FormInputProps) => {
             <Input
                 placeholder={placeholder}
                 id={id}
-                className="border-[1.6px] h-10 border-background-color focus-visible:border-primary-color pl-9 w-full transition-all duration-200 bg-foreground-color"
+                type={type}
+                className={` ${className} border-[1.6px] h-10 border-background-color focus-visible:border-primary-color pl-9 w-full transition-all duration-200 bg-foreground-color`}
             />
         </div>
 

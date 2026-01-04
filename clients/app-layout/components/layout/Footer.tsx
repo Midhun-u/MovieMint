@@ -91,6 +91,15 @@ const Footer = () => {
                     }
                 </div>
             </div>
+            {/* Terms and condition section */}
+            <div className="w-full flex flex-col items-center">
+                <hr className="text-white w-full"/>
+                <p className="text-xs mt-3 flex flex-wrap justify-center">
+                    &copy;2026 MovieMint. All rights reserved. | 
+                    <Link href={"/"} className="text-primary-color cursor-pointer ml-1">Privacy Policy</Link> | 
+                    <Link href={"/"} className="text-primary-color cursor-pointer ml-1">Terms of Service</Link>
+                </p>
+            </div>
         </footer>
 
     )

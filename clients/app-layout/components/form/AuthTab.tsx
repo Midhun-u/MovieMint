@@ -2,7 +2,7 @@ import React from "react"
 import { authTabs } from "@/utils/authTab"
 
 interface AuthTabProps {
-    currentTabValue: "USER" | "ADMIN" | "THEATER_OWNER",
+    currentTabValue: "USER" | "ADMIN" | "THEATER_OWNER"
     setCurrentTabValue: React.Dispatch<React.SetStateAction<"USER" | "ADMIN" | "THEATER_OWNER">>
 }
 

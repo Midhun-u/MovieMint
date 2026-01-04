@@ -22,7 +22,7 @@ const SignPage = () => {
         {/* Heading section */}
         <div className='flex flex-col items-center'>
           <h1 className='font-bold text-lg'>Sign In</h1>
-          <p className='text-sm'>Please sign in to securely access your account, manage your data, and continue using the platform.</p>
+          <p className='text-sm w-[70%] text-center'>Please sign in to securely access your account, manage your data, and continue using the platform.</p>
         </div>
         {/* Form */}
         <Form 

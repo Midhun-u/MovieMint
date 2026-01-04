@@ -1,7 +1,5 @@
-import React from 'react'
-
 interface LabelProps{
-    labelId?: string,
+    labelId?: string
     labelTitle: string
 }
 
