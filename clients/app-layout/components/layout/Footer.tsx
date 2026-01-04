@@ -10,7 +10,7 @@ const Footer = () => {
     return (
 
         <footer
-            className="w-screen mt-3 px-4 sm:px-7 flex md:justify-center flex-wrap gap-10 py-7 pt-9 bg-dark-foreground-color text-dark-foreground-text-color"
+            className="w-screen mt-100 px-4 sm:px-7 flex md:justify-center flex-wrap gap-10 py-7 pt-9 bg-dark-foreground-color text-dark-foreground-text-color"
         >
             {/* About section */}
             <div className="w-100">
@@ -61,7 +61,7 @@ const Footer = () => {
                         placeholder="Enter your email"
                     />
                     <Button
-                        className="md:h-8 h-9 bg-primary-color cursor-pointer text-dark-foreground-color hover:bg-primary-accent-color"
+                        className="md:h-8 h-9 bg-primary-color text-dark-foreground-color hover:bg-primary-accent-color"
                         size={"sm"}
                     >
                         <span>Subscribe</span>

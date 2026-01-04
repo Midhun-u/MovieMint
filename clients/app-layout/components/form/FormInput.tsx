@@ -1,4 +1,4 @@
-import { ForwardRefExoticComponent, RefAttributes } from "react"
+import { ChangeEvent, ForwardRefExoticComponent, RefAttributes } from "react"
 import { Input } from "../ui/input"
 import { LucideProps } from "lucide-react"
 
@@ -8,10 +8,10 @@ interface FormInputProps {
     placeholder?: string
     className?: string
     type: "text" | "password" | "email"
-    
+    onChange: (event: ChangeEvent<HTMLInputElement>) => unknown
 }
 
-const FormInput = ({id, Icon, placeholder, className, type}: FormInputProps) => {
+const FormInput = ({id, Icon, placeholder, className, type, onChange}: FormInputProps) => {
 
     return (
 
@@ -31,7 +31,8 @@ const FormInput = ({id, Icon, placeholder, className, type}: FormInputProps) => 
                 placeholder={placeholder}
                 id={id}
                 type={type}
-                className={` ${className} border-[1.6px] h-10 border-background-color focus-visible:border-primary-color pl-9 w-full transition-all duration-200 bg-foreground-color`}
+                onChange={onChange}
+                className={` ${className} text-sm border-[1.6px] h-10 border-background-color focus-visible:border-primary-color pl-9 w-full transition-all duration-200 bg-foreground-color`}
             />
         </div>
 

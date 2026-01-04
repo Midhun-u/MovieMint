@@ -6,6 +6,11 @@
 * {
   font-family: var(--font-space-grotesk);
   box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar{
+  display: none;
 }
 
 :root {

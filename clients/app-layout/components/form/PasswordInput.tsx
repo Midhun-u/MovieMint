@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { ChangeEvent, useState } from "react"
 import FormInput from "./FormInput"
 import {
     Lock as PasswordIcon,
@@ -9,9 +9,10 @@ import {
 interface PasswordInputProps{
     passwordId?: string
     placeholder?: string
+    onChange: (event: ChangeEvent<HTMLInputElement>) => unknown
 }
 
-const PasswordInput = ({passwordId, placeholder}: PasswordInputProps) => {
+const PasswordInput = ({passwordId, placeholder, onChange}: PasswordInputProps) => {
 
     const [showPassword, setShowPassword] = useState<boolean>(false)
     const iconClassName = "absolute right-4 stroke-primary-accent-color cursor-pointer"
@@ -25,6 +26,7 @@ const PasswordInput = ({passwordId, placeholder}: PasswordInputProps) => {
             Icon={PasswordIcon}
             className="pr-12"
             type={showPassword? "text": "password"}
+            onChange={onChange}
         />
         {
             showPassword
