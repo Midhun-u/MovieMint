@@ -1,0 +1,24 @@
+{
+  "name": "auth-service",
+  "version": "1.0.0",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "watch": "tsc --watch -p tsconfig.json",
+    "dev": "node --watch ./dist/server.js",
+    "production": "tsc -p tsconfig.json && node ./dist/server.js",
+    "build": "tsc -p tsconfig.json",
+    "start": "node ./dist/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@types/node": "^25.0.3",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "fastify": "^5.6.2"
+  }
+}
