@@ -5,10 +5,10 @@
   "type": "module",
   "scripts": {
     "watch": "tsc --watch -p tsconfig.json",
-    "dev": "node --watch ./dist/server.js",
-    "production": "tsc -p tsconfig.json && node ./dist/server.js",
+    "dev": "node --watch ./dist/src/server.js",
+    "production": "tsc -p tsconfig.json && node ./dist/src/server.js",
     "build": "tsc -p tsconfig.json",
-    "start": "node ./dist/server.js"
+    "start": "node ./dist/src/server.js"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +19,9 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "fastify": "^5.6.2"
+    "@fastify/env": "^5.0.3",
+    "@fastify/one-line-logger": "^2.0.2",
+    "fastify": "^5.6.2",
+    "fastify-plugin": "^5.1.0"
   }
 }
