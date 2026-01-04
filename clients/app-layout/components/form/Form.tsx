@@ -16,6 +16,7 @@ import Image from "next/image"
 import { assets } from "@/public/assets/assets"
 import Link from "next/link"
 import { Role } from "@/types/Role"
+import PasswordStrengthIndicator from "./PasswordStrengthIndicator"
 
 interface FormProps {
     formType: "SIGN" | "LOGIN"
@@ -112,6 +113,9 @@ const Form = ({ formType }: FormProps) => {
                         passwordId={passwordId}
                         placeholder="Create new password"
                         onChange={(event) => setUserDetails({...userDetails, password: event.target.value})}
+                    />
+                    <PasswordStrengthIndicator
+                        password={userDetails.password}
                     />
                 </div>
                 <div>
