@@ -8,11 +8,11 @@ const app = Fastify({
     logger: loggerConfig,
 })
 
-// Variables
-const port = 5000
-
 //Initializing all plugins
 app.register(initPlugins)
+
+//Variables
+const port = 5000
 
 // Routes
 app.register(authRoutes, {prefix: "/api/v1/auth"})
