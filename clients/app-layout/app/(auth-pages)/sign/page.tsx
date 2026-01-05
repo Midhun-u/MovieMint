@@ -8,13 +8,12 @@ const SignPage = () => {
 
     <section className='w-full h-svh flex gap-2 justify-center md:p-5'>
       {/* Image section */}
-      <div className='hidden md:flex justify-center items-center w-full h-full'>
+      <div className='hidden md:flex justify-center px-10 items-center w-full h-full'>
         <Image
           src={assets.signVector}
           alt='sign-vector-image'
-          width={350}
-          height={350}
-
+          className='w-auto h-auto aspect-auto'
+          loading='eager'
         />
       </div>
       {/* Form section */}

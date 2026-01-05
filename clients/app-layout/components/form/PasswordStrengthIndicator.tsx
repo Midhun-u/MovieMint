@@ -72,7 +72,7 @@ const PasswordStrengthIndicator = ({ password }: PasswordStrengthIndicatorProps)
                 value={progressDetails?.progress}
             />
             <Activity mode={password.length ? "visible" : "hidden"}>
-                <span className='w-full flex justify-center mt-3 mb-2 text-xs font-medium'>
+                <span className='w-full flex justify-center mt-2 text-xs font-medium'>
                     Password is {progressDetails?.strength}
                 </span>
             </Activity>

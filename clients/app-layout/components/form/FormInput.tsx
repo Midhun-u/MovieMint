@@ -1,19 +1,18 @@
-import React, { ChangeEvent, ForwardRefExoticComponent, InputHTMLAttributes, RefAttributes } from "react"
+import React, { ForwardRefExoticComponent, InputHTMLAttributes, RefAttributes } from "react"
 import { Input } from "../ui/input"
 import { LucideProps } from "lucide-react"
 
 export interface FormInputProps extends InputHTMLAttributes<HTMLInputElement>{
     Icon?: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>
     className?: string
-    type: "text" | "password" | "email"
-    onChange: (event: ChangeEvent<HTMLInputElement>) => unknown
+    type: "text" | "password" | "email" | "number"
 }
 
 
 const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(({
     Icon,  
     className, 
-    type, 
+    type,
     ...props
 }, ref) => {
 

@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react"
+import { forwardRef, InputHTMLAttributes, useState } from "react"
 import FormInput from "./FormInput"
 import {
     Lock as PasswordIcon,
@@ -6,13 +6,14 @@ import {
     EyeClosedIcon as HidePasswordIcon
 } from 'lucide-react'
 
-interface PasswordInputProps{
+interface PasswordInputProps extends InputHTMLAttributes<HTMLInputElement>{
     passwordId?: string
-    placeholder?: string
-    onChange: (event: ChangeEvent<HTMLInputElement>) => unknown
 }
 
-const PasswordInput = ({passwordId, placeholder, onChange}: PasswordInputProps) => {
+const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(({
+    passwordId,
+    ...props
+}, ref) => {
 
     const [showPassword, setShowPassword] = useState<boolean>(false)
     const iconClassName = "absolute right-4 stroke-primary-accent-color cursor-pointer"
@@ -22,11 +23,11 @@ const PasswordInput = ({passwordId, placeholder, onChange}: PasswordInputProps) 
     <div className="w-full relative flex items-center overflow-hidden">
         <FormInput
             id={passwordId}
-            placeholder={placeholder}
             Icon={PasswordIcon}
             className="pr-12"
+            ref={ref}
+            {...props}
             type={showPassword? "text": "password"}
-            onChange={onChange}
         />
         {
             showPassword
@@ -48,6 +49,6 @@ const PasswordInput = ({passwordId, placeholder, onChange}: PasswordInputProps) 
     </div>
 
   )
-}
+})
 
 export default PasswordInput
