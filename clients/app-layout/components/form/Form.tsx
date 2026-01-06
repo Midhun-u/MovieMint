@@ -21,6 +21,7 @@ import PasswordStrengthIndicator from "./PasswordStrengthIndicator"
 import WarningMessage from "./WarningMessage"
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { emailRegex } from "@/utils/emailRegex"
+import { signApi } from "@/api/signApi"
 
 interface FormProps {
     formType: "SIGN" | "LOGIN",
@@ -57,7 +58,8 @@ const Form = ({ formType }: FormProps) => {
     // Function for submitting form
     const submitForm: SubmitHandler<Inputs> = (data) => {
 
-        
+        console.log('data', data)
+        const result = signApi({...data, role: currentTabValue})
 
     }
 

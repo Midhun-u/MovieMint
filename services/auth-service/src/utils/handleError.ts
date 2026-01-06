@@ -11,6 +11,9 @@ export const handleError = (fn: Function, errorMessage: string) => {
             
         } catch (error) {
             console.log(`${errorMessage}: ${error}`)
+
+            reply.status(500)
+            return {success: false, error: "Server error"}
         }
 
     }

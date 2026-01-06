@@ -4,4 +4,5 @@ export type FormInputData = {
     email: string
     password: string
     role: string
+    adminKey: string
 }

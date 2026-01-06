@@ -1,7 +1,7 @@
 // Function for handling error
-export const handleError = (fn: Function) => {
+export const handleError = <Type extends (...args: any[]) => any>(fn: Type) => {
 
-    return async (...arg: any[]) => {
+    return async (...arg: Parameters<Type>) => {
 
         try {
           

@@ -10,19 +10,23 @@ import { emailRegex } from "@/utils/emailRegex";
 export const signApi = handleError(async(formInputData: FormInputData) => {
 
     const formInputDataObject = zod.object({
-        firstname: zod.string().nonempty().min(3).max(50),
-        lastname: zod.string().nonempty().min(1).max(50),
-        email: zod.string().nonempty().regex(emailRegex).max(255),
-        password: zod.string().nonempty().min(6).max(20)
+        firstname: zod.string().nonempty().min(3).max(15),
+        lastname: zod.string().nonempty().min(1).max(10),
+        email: zod.string().nonempty().regex(emailRegex),
+        password: zod.string().nonempty().min(6).max(50),
+        role: zod.string(),
+        adminKey: zod.string().nullable()
     })
 
-    console.log(formInputDataObject.parse(formInputData))
+    const fields = formInputDataObject.parse(formInputData)
 
     const result = (await authInstance.post("/sign", {
-        firstname: formInputData.firstname,
-        lastname: formInputData.lastname,
-        email: formInputData.email,
-        password: formInputData.password
+        firstname: fields.firstname,
+        lastname: fields.lastname,
+        email: fields.email,
+        password: fields.password,
+        role: fields.role,
+        adminKey: fields.adminKey
     })).data
 
     console.log(result)
