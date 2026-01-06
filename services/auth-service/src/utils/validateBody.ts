@@ -1,0 +1,35 @@
+import * as zod from 'zod'
+import { emailRegex } from "./emailRegex.js";
+
+// Function for validating body
+export const validateBody = (type: "SIGN" | "LOGIN", body: object): { success: boolean, errorMessage?: string } => {
+
+    try {
+
+        if (type === "SIGN") {
+
+            const obj = zod.object({
+                firstname: zod.string().min(3).max(15).nonempty(),
+                lastname: zod.string().min(1).max(10).nonempty(),
+                email: zod.string().regex(emailRegex).nonempty(),
+                password: zod.string().min(6).max(50),
+                role: zod.string().nonempty()
+            })
+
+            obj.parse(body)
+
+            return { success: true }
+
+        }
+
+        return { success: false }
+
+    } catch (error: any) {
+
+        const zodError = JSON.parse(error)
+
+        return { success: false, errorMessage: zodError[0].message }
+
+    }
+
+}
