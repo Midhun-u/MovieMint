@@ -57,7 +57,7 @@ const Form = ({ formType }: FormProps) => {
     // Function for submitting form
     const submitForm: SubmitHandler<Inputs> = (data) => {
 
-        console.log(data)
+        
 
     }
 
@@ -145,7 +145,7 @@ const Form = ({ formType }: FormProps) => {
                         {...register("password", {
                             required: "Password is required",
                             minLength: { value: 6, message: "Password should be atleast 6 letters or above" },
-                            maxLength: { value: 20, message: "Password should be less than or equal to 20 letters" }
+                            maxLength: { value: 50, message: "Password should be less than or equal to 20 letters" }
                         })}
                         onChange={(event) => setPasswordDetails({ ...passwordDetails, password: event.target.value })}
                         aria-invalid={formErrors.password ? "true" : "false"}
@@ -200,10 +200,11 @@ const Form = ({ formType }: FormProps) => {
                             Icon={AdminKeyIcon}
                             placeholder="Enter admin key"
                             {...register("adminKey", {
-                                required: "Admin key is required",
+                                required: currentTabValue === "ADMIN"? "Admin key is required": false,
                                 maxLength: {value: 50, message: "Admin key should be less than or equal to 50 letters"},
                                 minLength: {value: 10, message: "Admin key should be alteast 10 letters"}
                             })}
+                            aria-invalid={formErrors.adminKey? "true": "false"}
                         />
                     </div>
                 </Activity>
