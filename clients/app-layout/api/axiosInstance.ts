@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const BASE_URL = process.env.NEXT_PUBLIC_AUTH_URL
+const BASE_URL = process.env.AUTH_URL
 
 // Authentication instance
 export const authInstance = axios.create({

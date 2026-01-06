@@ -1,6 +1,6 @@
 'use client'
 
-import { FormEvent, useEffect, useId, useState } from "react"
+import { useId, useState } from "react"
 import AuthTab from "./AuthTab"
 import { Activity } from "react"
 import {
@@ -19,20 +19,20 @@ import Link from "next/link"
 import { Role } from "@/types/Role"
 import PasswordStrengthIndicator from "./PasswordStrengthIndicator"
 import WarningMessage from "./WarningMessage"
-import { signApi } from "@/api/signApi"
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { emailRegex } from "@/utils/emailRegex"
 
 interface FormProps {
     formType: "SIGN" | "LOGIN",
 }
 
-type FormDetails = {
+type Inputs = {
     firstname: string
     lastname: string
     email: string
     password: string
     confirmPassword: string
     adminKey: string
-    role: Role
 }
 
 const Form = ({ formType }: FormProps) => {
@@ -45,26 +45,19 @@ const Form = ({ formType }: FormProps) => {
     const adminKeyId = useId()
     const [currentTabValue, setCurrentTabValue] = useState<Role>("USER")
     const [acceptTerms, setAcceptTerms] = useState<boolean>(false)
-    const [formDetails, setFormDetails] = useState<FormDetails>({
-        firstname: "",
-        lastname: "",
-        email: "",
+    const [passwordDetails, setPasswordDetails] = useState<{
+        password: string,
+        confirmPassword: string
+    }>({
         password: "",
-        confirmPassword: "",
-        adminKey: "",
-        role: "USER"
+        confirmPassword: ""
     })
-
-    useEffect(() => {
-        setFormDetails({ ...formDetails, role: currentTabValue })
-    }, [currentTabValue])
+    const { register, handleSubmit, formState: { errors: formErrors } } = useForm<Inputs>()
 
     // Function for submitting form
-    const submitForm = async (event: FormEvent) => {
+    const submitForm: SubmitHandler<Inputs> = (data) => {
 
-        event.preventDefault()
-        const result = await signApi(formDetails)
-        console.log(result)
+        console.log(data)
 
     }
 
@@ -72,7 +65,7 @@ const Form = ({ formType }: FormProps) => {
 
         <form
             className="w-full"
-            onSubmit={submitForm}
+            onSubmit={handleSubmit(submitForm)}
         >
             {/* Tab navigation section */}
             <AuthTab
@@ -94,8 +87,12 @@ const Form = ({ formType }: FormProps) => {
                                 placeholder="Enter your firstname"
                                 Icon={UserIcon}
                                 type="text"
-                                name="firstname"
-                                onChange={(event) => setFormDetails({ ...formDetails, firstname: event.target.value })}
+                                {...register("firstname", {
+                                    required: "Firstname is required",
+                                    minLength: { value: 3, message: "Firstname should be alteast 3 letters" },
+                                    maxLength: { value: 15, message: "Firstname should be below 15 letters or 15 letters" }
+                                })}
+                                aria-invalid={formErrors.firstname ? "true" : "false"}
                             />
                         </div>
                         <div className="w-full">
@@ -108,8 +105,12 @@ const Form = ({ formType }: FormProps) => {
                                 placeholder="Enter your lastname"
                                 Icon={UserIcon}
                                 type="text"
-                                name="lastname"
-                                onChange={(event) => setFormDetails({ ...formDetails, lastname: event.target.value })}
+                                {...register("lastname", {
+                                    required: "Lastname is required",
+                                    minLength: { value: 1, message: "Lastname should be alteast 3 letters" },
+                                    maxLength: { value: 10, message: "Lastname should be below 15 letters or 15 letters" }
+                                })}
+                                aria-invalid={formErrors.lastname ? "true" : "false"}
                             />
                         </div>
                     </div>
@@ -125,8 +126,11 @@ const Form = ({ formType }: FormProps) => {
                         id={emailId}
                         Icon={EmailIcon}
                         type="email"
-                        name="email"
-                        onChange={(event) => setFormDetails({ ...formDetails, email: event.target.value })}
+                        {...register("email", {
+                            required: "Email is required",
+                            pattern: emailRegex
+                        })}
+                        aria-invalid={formErrors.email ? "true" : "false"}
                     />
                 </div>
                 {/* Password section */}
@@ -136,13 +140,18 @@ const Form = ({ formType }: FormProps) => {
                         labelTitle="Create New Password"
                     />
                     <PasswordInput
-                        name="password"
                         passwordId={passwordId}
                         placeholder="Create new password"
-                        onChange={(event) => setFormDetails({ ...formDetails, password: event.target.value })}
+                        {...register("password", {
+                            required: "Password is required",
+                            minLength: { value: 6, message: "Password should be atleast 6 letters or above" },
+                            maxLength: { value: 20, message: "Password should be less than or equal to 20 letters" }
+                        })}
+                        onChange={(event) => setPasswordDetails({ ...passwordDetails, password: event.target.value })}
+                        aria-invalid={formErrors.password ? "true" : "false"}
                     />
                     <PasswordStrengthIndicator
-                        password={formDetails.password}
+                        password={passwordDetails.password}
                     />
                 </div>
                 <div>
@@ -153,17 +162,21 @@ const Form = ({ formType }: FormProps) => {
                     <PasswordInput
                         passwordId={confirmPasswordId}
                         placeholder="Confirm new password"
-                        onChange={(event) => {
-                            setFormDetails({ ...formDetails, confirmPassword: event.target.value })
-                        }}
+                        {...register("confirmPassword", {
+                            required: "Password should be confirmed",
+                            minLength: { value: 6, message: "Password should be atleast 6 letters or above" },
+                            maxLength: { value: 20, message: "Password should be less than or equal to 20 letters" }
+                        })}
+                        onChange={(event) => setPasswordDetails({ ...passwordDetails, confirmPassword: event.target.value })}
+                        aria-invalid={formErrors.confirmPassword? "true": 'false'}
                     />
                     <Activity
                         mode={
-                            (formDetails.password === formDetails.confirmPassword)
+                            (passwordDetails.password === passwordDetails.confirmPassword)
                                 ? "hidden"
                                 :
                                 (
-                                    formDetails.password.length
+                                    passwordDetails.password.length
                                         ?
                                         "visible"
                                         :
@@ -184,10 +197,13 @@ const Form = ({ formType }: FormProps) => {
                         />
                         <FormInput
                             type="text"
-                            onChange={(event) => setFormDetails({ ...formDetails, adminKey: event.target.value })}
                             Icon={AdminKeyIcon}
                             placeholder="Enter admin key"
-                            name="adminKey"
+                            {...register("adminKey", {
+                                required: "Admin key is required",
+                                maxLength: {value: 50, message: "Admin key should be less than or equal to 50 letters"},
+                                minLength: {value: 10, message: "Admin key should be alteast 10 letters"}
+                            })}
                         />
                     </div>
                 </Activity>
@@ -214,7 +230,7 @@ const Form = ({ formType }: FormProps) => {
                         <span className="text-dark-foreground-color">Sign In</span>
                     </Button>
                 </div>
-                <Activity mode={currentTabValue !== "ADMIN"? "visible": "hidden"}>
+                <Activity mode={currentTabValue !== "ADMIN" ? "visible" : "hidden"}>
                     <div className="flex gap-2 justify-center w-full items-center">
                         <hr className="w-full border border-disable-color/30" />
                         <span>OR</span>
