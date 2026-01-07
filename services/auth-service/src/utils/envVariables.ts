@@ -8,5 +8,7 @@ export const envVariables = {
     DB_PASSWORD: process.env.DB_PASSWORD,
     DB_HOST: process.env.DB_HOST,
     DB_PORT: process.env.DB_PORT,
-    ADMIN_KEY: process.env.ADMIN_KEY
+    ADMIN_KEY: process.env.ADMIN_KEY,
+    CLIENT_URL: process.env.CLIENT_URL,
+    JWT_SECRET: process.env.JWT_SECRET
 }

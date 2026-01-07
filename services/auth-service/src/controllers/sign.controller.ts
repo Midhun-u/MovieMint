@@ -1,10 +1,11 @@
-import type { FastifyReply, FastifyRequest } from "fastify";
+import {type FastifyReply, type FastifyRequest } from "fastify";
 import { handleError } from "../utils/handleError.js";
 import type { SignBody } from "../types/signBody.js";
 import { validateBody } from "../utils/validateBody.js";
 import { envVariables } from "../utils/envVariables.js";
 import { UserModel } from "../models/user.model.js";
 import { hashPassword } from "../utils/hashPassword.js";
+import { generateToken } from "../utils/generateToken.js";
 
 // Controller for signing
 export const signController = handleError(async (request: FastifyRequest, reply: FastifyReply) => {
@@ -21,6 +22,7 @@ export const signController = handleError(async (request: FastifyRequest, reply:
 
     }
     
+    // Checking if admin registration
     if(role === "ADMIN"){
 
         if(adminKey !== envVariables.ADMIN_KEY){
@@ -53,10 +55,19 @@ export const signController = handleError(async (request: FastifyRequest, reply:
         auth_type: "EMAIL",
         role: role
     })
-    
+
     if(newUser){
+
+        // Generating token 
+        const authToken = await generateToken(reply, {
+            id: newUser.id,
+            name: `${newUser.firstname} ${newUser.lastname}`,
+            email: newUser.email,
+            auth_type: newUser.auth_type
+        })
+
         reply.status(201)
-        return {success: true, message: "Account is created", statusCode: 201, user: newUser}
+        return {success: true, message: "Account is created", statusCode: 201, user: newUser, authToken: authToken}
     }
 
     reply.status(400)
