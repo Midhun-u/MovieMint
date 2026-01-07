@@ -1,14 +1,14 @@
 import { Sequelize } from "sequelize";
-import 'dotenv/config'
+import { envVariables } from "../utils/envVariables.js";
 
 // Sequelize configuration
 export const sequelize = new Sequelize({
     dialect: "postgres",
-    database: process.env.DB_DATABASE as string,
-    username: process.env.DB_USER as string,
-    password: process.env.DB_PASSWORD as string,
-    host: process.env.DB_HOST as string,
-    port: Number(process.env.DB_PORT),
+    database: envVariables.DB_DATABASE_NAME as string,
+    username: envVariables.DB_USERNAME as string,
+    password: envVariables.DB_PASSWORD as string,
+    host: envVariables.DB_HOST as string,
+    port: Number(envVariables.DB_PORT),
     logging: false
 })
 

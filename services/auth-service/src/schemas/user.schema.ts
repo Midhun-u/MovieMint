@@ -21,9 +21,11 @@ export const User = sequelize.define("User", {
     email: {
         type: DataTypes.STRING(),
         unique: true,
+        allowNull: false
     },
     password: {
-        type: DataTypes.STRING(50)
+        type: DataTypes.STRING,
+        defaultValue: ""
     },
     auth_type: {
         type: DataTypes.ENUM("EMAIL", "GOOGLE"),

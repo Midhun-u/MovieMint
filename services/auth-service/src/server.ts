@@ -2,7 +2,7 @@ import Fastify from "fastify"
 import { initPlugins } from "./plugins/index.js"
 import { authRoutes } from "./routes/route.js"
 import { loggerConfig } from "./config/logger.js"
-import 'dotenv/config'
+import { envVariables } from "./utils/envVariables.js"
 
 // App instance
 const app = Fastify({
@@ -13,7 +13,7 @@ const app = Fastify({
 app.register(initPlugins)
 
 //Variables
-const port = Number(process.env.PORT) || 5000
+const port = Number(envVariables.PORT) || 5000
 
 // Routes
 app.register(authRoutes, {prefix: "/api/v1/auth"})
