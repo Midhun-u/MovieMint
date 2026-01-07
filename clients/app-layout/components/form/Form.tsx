@@ -56,10 +56,10 @@ const Form = ({ formType }: FormProps) => {
     const { register, handleSubmit, formState: { errors: formErrors } } = useForm<Inputs>()
 
     // Function for submitting form
-    const submitForm: SubmitHandler<Inputs> = (data) => {
+    const submitForm: SubmitHandler<Inputs> = async (data) => {
 
-        console.log('data', data)
-        const result = signApi({...data, role: currentTabValue})
+        const result = await signApi({...data, role: currentTabValue, adminKey: data.adminKey? data.adminKey: ""})
+        console.log(result)
 
     }
 
@@ -67,6 +67,7 @@ const Form = ({ formType }: FormProps) => {
 
         <form
             className="w-full"
+            method="post"
             onSubmit={handleSubmit(submitForm)}
         >
             {/* Tab navigation section */}
