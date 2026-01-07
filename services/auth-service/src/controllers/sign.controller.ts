@@ -63,7 +63,7 @@ export const signController = handleError(async (request: FastifyRequest, reply:
             id: newUser.id,
             name: `${newUser.firstname} ${newUser.lastname}`,
             email: newUser.email,
-            auth_type: newUser.auth_type
+            role: newUser.role
         })
 
         reply.status(201)

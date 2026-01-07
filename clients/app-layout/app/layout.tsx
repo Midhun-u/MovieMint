@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import Footer from "@/components/layout/Footer";
+import StoreProvider from "@/components/features/StoreProvider";
 
 export const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -27,10 +28,12 @@ export default function RootLayout({
       <body
         className={`${spaceGrotesk.variable} bg-background-color`}
       >
-        <main>
-          {children}
-        </main>
-        <Footer />
+        <StoreProvider>
+          <main>
+            {children}
+          </main>
+          <Footer />
+        </StoreProvider>
       </body>
     </html>
   );
