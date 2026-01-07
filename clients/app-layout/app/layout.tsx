@@ -3,6 +3,7 @@ import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import Footer from "@/components/layout/Footer";
 import StoreProvider from "@/components/features/StoreProvider";
+import ToastMessage from "@/components/context/ToastMessage";
 
 export const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -30,7 +31,9 @@ export default function RootLayout({
       >
         <StoreProvider>
           <main>
-            {children}
+            <ToastMessage>
+              {children}
+            </ToastMessage>
           </main>
           <Footer />
         </StoreProvider>
