@@ -22,6 +22,10 @@ import WarningMessage from "./WarningMessage"
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { emailRegex } from "@/utils/emailRegex"
 import { signApi } from "@/api/signApi"
+import { useAppDispatch, useAppSelector } from "@/store/hooks"
+import { authFailed, authRequest, authSuccess } from "@/store/authSlice"
+import Spinner from "../ui/Spinner"
+import SubmitButton from "./SubmitButton"
 
 interface FormProps {
     formType: "SIGN" | "LOGIN",
@@ -54,12 +58,25 @@ const Form = ({ formType }: FormProps) => {
         confirmPassword: ""
     })
     const { register, handleSubmit, formState: { errors: formErrors } } = useForm<Inputs>()
+    const dispatch = useAppDispatch()
+    const {loading, errorMessage} = useAppSelector(state => state.auth)
 
     // Function for submitting form
     const submitForm: SubmitHandler<Inputs> = async (data) => {
 
-        const result = await signApi({...data, role: currentTabValue, adminKey: data.adminKey? data.adminKey: ""})
-        console.log(result)
+        if(passwordDetails.password !== passwordDetails.confirmPassword){
+            dispatch(authFailed({errorMessage: "Password is not matching"}))
+            return
+        }
+
+        dispatch(authRequest())
+        const result = await signApi({ ...data, role: currentTabValue, adminKey: data.adminKey ? data.adminKey : "" })
+        
+        if(result.success){
+            dispatch(authSuccess({user: result.user}))
+        }else{
+            dispatch(authFailed({errorMessage: result.error}))
+        }
 
     }
 
@@ -96,6 +113,7 @@ const Form = ({ formType }: FormProps) => {
                                     maxLength: { value: 15, message: "Firstname should be below 15 letters or 15 letters" }
                                 })}
                                 aria-invalid={formErrors.firstname ? "true" : "false"}
+                                autoComplete="name"
                             />
                         </div>
                         <div className="w-full">
@@ -114,6 +132,7 @@ const Form = ({ formType }: FormProps) => {
                                     maxLength: { value: 10, message: "Lastname should be below 15 letters or 15 letters" }
                                 })}
                                 aria-invalid={formErrors.lastname ? "true" : "false"}
+                                autoComplete="name"
                             />
                         </div>
                     </div>
@@ -134,6 +153,7 @@ const Form = ({ formType }: FormProps) => {
                             pattern: emailRegex
                         })}
                         aria-invalid={formErrors.email ? "true" : "false"}
+                        autoComplete="email"
                     />
                 </div>
                 {/* Password section */}
@@ -152,6 +172,7 @@ const Form = ({ formType }: FormProps) => {
                         })}
                         onChange={(event) => setPasswordDetails({ ...passwordDetails, password: event.target.value })}
                         aria-invalid={formErrors.password ? "true" : "false"}
+                        autoComplete="new-password"
                     />
                     <PasswordStrengthIndicator
                         password={passwordDetails.password}
@@ -171,7 +192,8 @@ const Form = ({ formType }: FormProps) => {
                             maxLength: { value: 20, message: "Password should be less than or equal to 20 letters" }
                         })}
                         onChange={(event) => setPasswordDetails({ ...passwordDetails, confirmPassword: event.target.value })}
-                        aria-invalid={formErrors.confirmPassword? "true": 'false'}
+                        aria-invalid={formErrors.confirmPassword ? "true" : 'false'}
+                        autoComplete="current-password"
                     />
                     <Activity
                         mode={
@@ -203,11 +225,11 @@ const Form = ({ formType }: FormProps) => {
                             Icon={AdminKeyIcon}
                             placeholder="Enter admin key"
                             {...register("adminKey", {
-                                required: currentTabValue === "ADMIN"? "Admin key is required": false,
-                                maxLength: {value: 50, message: "Admin key should be less than or equal to 50 letters"},
-                                minLength: {value: 10, message: "Admin key should be alteast 10 letters"}
+                                required: currentTabValue === "ADMIN" ? "Admin key is required" : false,
+                                maxLength: { value: 50, message: "Admin key should be less than or equal to 50 letters" },
+                                minLength: { value: 10, message: "Admin key should be alteast 10 letters" }
                             })}
-                            aria-invalid={formErrors.adminKey? "true": "false"}
+                            aria-invalid={formErrors.adminKey ? "true" : "false"}
                         />
                     </div>
                 </Activity>
@@ -226,13 +248,10 @@ const Form = ({ formType }: FormProps) => {
                 </div>
                 {/* Button section */}
                 <div className="flex w-full justify-center items-center">
-                    <Button
-                        type="submit"
-                        className="w-full bg-primary-color active:bg-primary-accent-color hover:bg-primary-color"
-                        disabled={!acceptTerms}
-                    >
-                        <span className="text-dark-foreground-color">Sign In</span>
-                    </Button>
+                    <SubmitButton 
+                        acceptTerms={acceptTerms}
+                        loading={loading}
+                    />
                 </div>
                 <Activity mode={currentTabValue !== "ADMIN" ? "visible" : "hidden"}>
                     <div className="flex gap-2 justify-center w-full items-center">
