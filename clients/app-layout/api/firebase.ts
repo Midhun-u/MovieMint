@@ -1,6 +1,8 @@
+'use server'
+
 import { envVariables } from "@/utils/envVariables"
-import { initializeApp } from "firebase/app"
 import {GoogleAuthProvider, getAuth} from 'firebase/auth'
+import {initializeApp} from 'firebase/app'
 
 const firebaseConfig = {
   apiKey: envVariables.FIREBASE_API_KEY,
@@ -12,6 +14,7 @@ const firebaseConfig = {
 };
 
 // Initializing Firebase
-initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig)
+
 export const googleProvider = new GoogleAuthProvider()
-export const auth = getAuth()
+export const firebaseAuth = getAuth(app)

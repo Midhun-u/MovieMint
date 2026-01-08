@@ -27,6 +27,8 @@ import { authFailed, authRequest, authSuccess } from "@/store/authSlice"
 import SubmitButton from "./SubmitButton"
 import { ToastProvider } from "../context/ToastMessage"
 import {useRouter} from 'next/navigation'
+import {signInWithPopup} from 'firebase/auth'
+import { firebaseAuth, googleProvider } from "@/api/firebase"
 
 interface FormProps {
     formType: "SIGN" | "LOGIN",
@@ -89,6 +91,20 @@ const Form = ({ formType }: FormProps) => {
             dispatch(authFailed({errorMessage: result.error}))
             toastContext?.triggerToastMessage(result.error, "ERROR")
 
+        }
+
+    }
+
+    // Function for google authentication
+    const googleAuth = async () => {
+
+        try {
+            
+            const data = await signInWithPopup(firebaseAuth, googleProvider)
+
+        } catch (error: any) {
+            toastContext?.triggerToastMessage("Something went wrong", "ERROR")
+            console.error(error)
         }
 
     }
@@ -277,6 +293,7 @@ const Form = ({ formType }: FormProps) => {
                             type="button"
                             className="w-full bg-foreground-color border border-disable-color/20"
                             disabled={loading}
+                            onClick={() => googleAuth()}
                         >
                             <Image src={assets.googleIcon} width={18} height={18} alt="google-sign-icon" />
                             <span className="text-dark-foreground-color">Sign With Google</span>
