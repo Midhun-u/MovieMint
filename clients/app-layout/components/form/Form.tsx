@@ -1,6 +1,6 @@
 'use client'
 
-import { useId, useState } from "react"
+import { useContext, useId, useState } from "react"
 import AuthTab from "./AuthTab"
 import { Activity } from "react"
 import {
@@ -24,8 +24,8 @@ import { emailRegex } from "@/utils/emailRegex"
 import { signApi } from "@/api/signApi"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { authFailed, authRequest, authSuccess } from "@/store/authSlice"
-import Spinner from "../ui/Spinner"
 import SubmitButton from "./SubmitButton"
+import { ToastProvider } from "../context/ToastMessage"
 
 interface FormProps {
     formType: "SIGN" | "LOGIN",
@@ -60,6 +60,8 @@ const Form = ({ formType }: FormProps) => {
     const { register, handleSubmit, formState: { errors: formErrors } } = useForm<Inputs>()
     const dispatch = useAppDispatch()
     const {loading, errorMessage} = useAppSelector(state => state.auth)
+    const toastContext = useContext(ToastProvider)
+    
 
     // Function for submitting form
     const submitForm: SubmitHandler<Inputs> = async (data) => {
@@ -73,10 +75,18 @@ const Form = ({ formType }: FormProps) => {
         const result = await signApi({ ...data, role: currentTabValue, adminKey: data.adminKey ? data.adminKey : "" })
         
         if(result.success){
+
             dispatch(authSuccess({user: result.user}))
+            toastContext?.triggerToastMessage(result.message, "SUCCESS")
+
+
         }else{
+
             dispatch(authFailed({errorMessage: result.error}))
+            toastContext?.triggerToastMessage(errorMessage? errorMessage: result.error, "ERROR")
+
         }
+        console.log(result)
 
     }
 
