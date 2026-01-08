@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
 
     loading: false,
-    errorMessage: null,
+    errorMessage: "",
     user: null
 
 }
@@ -16,14 +16,14 @@ const authSlice = createSlice({
         authRequest: (state) => {
             
             state.loading = true
-            state.errorMessage = null
+            state.errorMessage = ""
             state.user = null
 
         },
         authSuccess: (state, action) => {
 
             state.loading = false
-            state.errorMessage = null
+            state.errorMessage = ""
             state.user = action.payload.user
 
         },

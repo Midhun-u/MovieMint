@@ -26,6 +26,7 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { authFailed, authRequest, authSuccess } from "@/store/authSlice"
 import SubmitButton from "./SubmitButton"
 import { ToastProvider } from "../context/ToastMessage"
+import {useRouter} from 'next/navigation'
 
 interface FormProps {
     formType: "SIGN" | "LOGIN",
@@ -61,6 +62,7 @@ const Form = ({ formType }: FormProps) => {
     const dispatch = useAppDispatch()
     const {loading, errorMessage} = useAppSelector(state => state.auth)
     const toastContext = useContext(ToastProvider)
+    const router = useRouter()
     
 
     // Function for submitting form
@@ -68,6 +70,7 @@ const Form = ({ formType }: FormProps) => {
 
         if(passwordDetails.password !== passwordDetails.confirmPassword){
             dispatch(authFailed({errorMessage: "Password is not matching"}))
+            toastContext?.triggerToastMessage(errorMessage, "ERROR")
             return
         }
 
@@ -78,15 +81,15 @@ const Form = ({ formType }: FormProps) => {
 
             dispatch(authSuccess({user: result.user}))
             toastContext?.triggerToastMessage(result.message, "SUCCESS")
+            router.push("/")
 
 
         }else{
 
             dispatch(authFailed({errorMessage: result.error}))
-            toastContext?.triggerToastMessage(errorMessage? errorMessage: result.error, "ERROR")
+            toastContext?.triggerToastMessage(errorMessage, "ERROR")
 
         }
-        console.log(result)
 
     }
 
