@@ -28,7 +28,7 @@ import SubmitButton from "./SubmitButton"
 import { ToastProvider } from "../context/ToastMessage"
 import {useRouter} from 'next/navigation'
 import {signInWithPopup} from 'firebase/auth'
-import { firebaseAuth, googleProvider } from "@/api/firebase"
+import { firebaseAuth, googleProvider } from "@/lib/firebase"
 
 interface FormProps {
     formType: "SIGN" | "LOGIN",
@@ -100,7 +100,8 @@ const Form = ({ formType }: FormProps) => {
 
         try {
             
-            const data = await signInWithPopup(firebaseAuth, googleProvider)
+            const result = await signInWithPopup(firebaseAuth, googleProvider)
+            console.log(result.user)
 
         } catch (error: any) {
             toastContext?.triggerToastMessage("Something went wrong", "ERROR")

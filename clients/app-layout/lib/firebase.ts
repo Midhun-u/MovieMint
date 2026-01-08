@@ -1,5 +1,3 @@
-'use server'
-
 import { envVariables } from "@/utils/envVariables"
 import {GoogleAuthProvider, getAuth} from 'firebase/auth'
 import {initializeApp} from 'firebase/app'
