@@ -60,7 +60,7 @@ const Form = ({ formType }: FormProps) => {
     })
     const { register, handleSubmit, formState: { errors: formErrors } } = useForm<Inputs>()
     const dispatch = useAppDispatch()
-    const {loading, errorMessage} = useAppSelector(state => state.auth)
+    const {loading} = useAppSelector(state => state.auth)
     const toastContext = useContext(ToastProvider)
     const router = useRouter()
     
@@ -69,8 +69,7 @@ const Form = ({ formType }: FormProps) => {
     const submitForm: SubmitHandler<Inputs> = async (data) => {
 
         if(passwordDetails.password !== passwordDetails.confirmPassword){
-            dispatch(authFailed({errorMessage: "Password is not matching"}))
-            toastContext?.triggerToastMessage(errorMessage, "ERROR")
+            toastContext?.triggerToastMessage("Password is not matching", "ERROR")
             return
         }
 
@@ -79,7 +78,8 @@ const Form = ({ formType }: FormProps) => {
         
         if(result.success){
 
-            dispatch(authSuccess({user: result.user}))
+            dispatch(authSuccess({user: result.user, authToken: result.authToken}))
+
             toastContext?.triggerToastMessage(result.message, "SUCCESS")
             router.push("/")
 
@@ -87,7 +87,7 @@ const Form = ({ formType }: FormProps) => {
         }else{
 
             dispatch(authFailed({errorMessage: result.error}))
-            toastContext?.triggerToastMessage(errorMessage, "ERROR")
+            toastContext?.triggerToastMessage(result.error, "ERROR")
 
         }
 
@@ -274,7 +274,9 @@ const Form = ({ formType }: FormProps) => {
                     </div>
                     <div className="w-full flex justify-center items-center">
                         <Button
+                            type="button"
                             className="w-full bg-foreground-color border border-disable-color/20"
+                            disabled={loading}
                         >
                             <Image src={assets.googleIcon} width={18} height={18} alt="google-sign-icon" />
                             <span className="text-dark-foreground-color">Sign With Google</span>

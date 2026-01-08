@@ -1,3 +1,4 @@
+import { addDataToLocalStorage } from "@/utils/localStorage";
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
@@ -21,10 +22,11 @@ const authSlice = createSlice({
 
         },
         authSuccess: (state, action) => {
-
+            
             state.loading = false
             state.errorMessage = ""
             state.user = action.payload.user
+            addDataToLocalStorage("authToken", action.payload.authToken)
 
         },
         authFailed: (state, action) => {

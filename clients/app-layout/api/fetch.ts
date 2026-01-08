@@ -1,4 +1,6 @@
-const AUTH_BASE_URL = process.env.AUTH_URL as string
+import { envVariables } from "@/utils/envVariables"
+
+const AUTH_BASE_URL = envVariables.AUTH_URL
 
 // Function for authentication
 export const auth = async (
