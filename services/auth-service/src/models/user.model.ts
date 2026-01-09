@@ -1,6 +1,7 @@
 import { Op } from "sequelize"
 import { User } from "../schemas/user.schema.js"
 import type { Role } from "../types/role.js"
+import type { FastifyReply } from "fastify"
 
 type UserData = {
     firstname: string,
@@ -42,6 +43,6 @@ export const UserModel = {
         const {password, ...newUserData} = newUser.dataValues
         return newUserData
 
-    }
+    },
 
 }

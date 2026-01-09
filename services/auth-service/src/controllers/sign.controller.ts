@@ -1,6 +1,6 @@
 import {type FastifyReply, type FastifyRequest } from "fastify";
 import { handleError } from "../utils/handleError.js";
-import type { SignBody } from "../types/signBody.js";
+import type { SignBody } from "../types/body.js";
 import { validateBody } from "../utils/validateBody.js";
 import { envVariables } from "../utils/envVariables.js";
 import { UserModel } from "../models/user.model.js";

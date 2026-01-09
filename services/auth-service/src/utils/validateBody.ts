@@ -2,7 +2,7 @@ import * as zod from 'zod'
 import { emailRegex } from "./emailRegex.js";
 
 // Function for validating body
-export const validateBody = (type: "SIGN" | "LOGIN", body: object): { success: boolean, errorMessage?: string } => {
+export const validateBody = (type: "SIGN" | "LOGIN" | "GOOGLE_SIGN", body: object): { success: boolean, errorMessage?: string } => {
 
     try {
 
@@ -13,6 +13,20 @@ export const validateBody = (type: "SIGN" | "LOGIN", body: object): { success: b
                 lastname: zod.string().min(1).max(10).nonempty(),
                 email: zod.string().regex(emailRegex).nonempty(),
                 password: zod.string().min(6).max(50),
+                role: zod.string().nonempty()
+            })
+
+            obj.parse(body)
+
+            return { success: true }
+
+        } else if (type === "GOOGLE_SIGN") {
+
+            const obj = zod.object({
+                firstname: zod.string().min(3).max(15).nonempty(),
+                lastname: zod.string().min(1).max(10).nonempty(),
+                email: zod.string().regex(emailRegex).nonempty(),
+                profilePic: zod.string(),
                 role: zod.string().nonempty()
             })
 

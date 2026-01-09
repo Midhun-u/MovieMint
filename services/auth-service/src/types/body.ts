@@ -9,3 +9,12 @@ export interface SignBody{
     role: Role
     adminKey: string
 }
+
+// Google sign body
+export type GoogleSignBody = {
+    firstname: string
+    lastname: string
+    email: string
+    profilePic: string
+    role: Role
+}
