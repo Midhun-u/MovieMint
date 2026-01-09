@@ -21,7 +21,7 @@ import PasswordStrengthIndicator from "./PasswordStrengthIndicator"
 import WarningMessage from "./WarningMessage"
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { emailRegex } from "@/utils/emailRegex"
-import { signApi } from "@/api/signApi"
+import { googleSignApi, signApi } from "@/api/auth"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { authFailed, authRequest, authSuccess } from "@/store/authSlice"
 import SubmitButton from "./SubmitButton"
@@ -100,12 +100,37 @@ const Form = ({ formType }: FormProps) => {
 
         try {
             
-            const result = await signInWithPopup(firebaseAuth, googleProvider)
-            console.log(result.user)
+            dispatch(authRequest())
+
+            const googleAuthResult = await signInWithPopup(firebaseAuth, googleProvider)
+            
+            if(googleAuthResult.user){
+
+                const [firstname, lastname] = googleAuthResult.user.displayName?.split(" ") as Array<string>
+
+                const result = await googleSignApi({
+                    firstname: firstname,
+                    lastname: lastname,
+                    profilePic: googleAuthResult.user.photoURL as string,
+                    email: googleAuthResult.user.email as string,
+                    role: currentTabValue
+                })
+
+                if(result.success){
+                    
+                    dispatch(authSuccess({user: result.user, authToken: result.authToken}))
+                    toastContext?.triggerToastMessage(result.message, "SUCCESS")
+
+                }else {
+                    dispatch(authFailed({errorMessage: result.error}))
+                    toastContext?.triggerToastMessage(result.error, "ERROR")
+                }
+
+            }
 
         } catch (error: any) {
             toastContext?.triggerToastMessage("Something went wrong", "ERROR")
-            console.error(error)
+            console.log(error.message)
         }
 
     }

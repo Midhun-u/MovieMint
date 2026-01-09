@@ -1,22 +1,19 @@
-import { envVariables } from "@/utils/envVariables"
-
-const AUTH_BASE_URL = envVariables.AUTH_URL
-
-// Function for authentication
-export const auth = async (
-    method: "POST" | "GET"| "PUT" | "DELETE",
+// Fetch instance
+export const fetchInstance = async (
+    baseurl: string,
     path: string,
+    method: "POST" | "GET"| "PUT" | "DELETE",
     body: object = {},
     token?: string
 ) => {
 
-    const response = await fetch(AUTH_BASE_URL + path, {
+    const response = await fetch(baseurl + path, {
         method: method,
         body: JSON.stringify(body),
         headers: {
             "Content-type": "application/json",
-            "Autherization": `Bearer ${token}`
-        }
+            "Authorization": `Bearer ${token}`
+        },
     })
 
     const data = await response.json()
