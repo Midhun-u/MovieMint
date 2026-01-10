@@ -1,7 +1,7 @@
 ARG node_version=node:25-alpine
 
 # Build layer
-FROM ${node_version} AS builder
+FROM ${node_version} as builder
 
 WORKDIR /app
 
@@ -14,7 +14,7 @@ COPY ./ ./
 RUN npm run build
 
 # Final layer
-FROM ${node_version} AS runner
+FROM ${node_version} as runner
 
 WORKDIR /app
 
@@ -26,6 +26,6 @@ COPY --from=builder /app/dist ./
 
 COPY ./.env ./
 
-EXPOSE 5000
+EXPOSE 5050
 
-CMD [ "npm" , "run" ,"container"]
+CMD [ "npm" , "run", "container"]

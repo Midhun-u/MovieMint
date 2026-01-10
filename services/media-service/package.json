@@ -1,0 +1,22 @@
+{
+  "name": "media-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "watch": "tsc --watch -p tsconfig.json",
+    "dev": "node --watch ./dist/src/server.js",
+    "build": "tsc -p tsconfig.json",
+    "start": "node ./dist/src/server.js",
+    "production": "tsc -p tsconfig.json && node ./dist/src/server.js",
+    "container": "node ./src/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "@types/node": "^25.0.5",
+    "typescript": "^5.9.3"
+  }
+}
