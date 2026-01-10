@@ -1,8 +1,8 @@
 import express from 'express'
+import { uploadUserImageController } from '../controllers/uploadUserImage.controller.js'
 
 // User Images router
 export const userImageRouter = express()
 
-userImageRouter.get("/", (request, response) => {
-    response.status(200).json({success: true, message: "Hello world"})
-})
+// Route for uploading user images
+userImageRouter.get("/", uploadUserImageController)

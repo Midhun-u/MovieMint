@@ -7,5 +7,7 @@ export const envVariables = {
     DB_USERNAME: process.env.DB_USERNAME as string,
     DB_HOST: process.env.DB_HOST as string,
     DB_PORT: Number(process.env.DB_PORT),
-    DB_PASSWORD: process.env.DB_PASSWORD as string
+    DB_PASSWORD: process.env.DB_PASSWORD as string,
+    SUPABASE_PROJECT_URL: process.env.SUPABASE_PROJECT_URL as string,
+    SUPABASE_API_KEY: process.env.SUPABASE_API_KEY as string
 }
