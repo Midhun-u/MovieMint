@@ -5,4 +5,4 @@ import { uploadUserImageController } from '../controllers/uploadUserImage.contro
 export const userImageRouter = express()
 
 // Route for uploading user images
-userImageRouter.get("/", uploadUserImageController)
+userImageRouter.post("/upload", uploadUserImageController)
