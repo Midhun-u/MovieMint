@@ -1,7 +1,7 @@
-ARG node_version=node:25-alpine
+ARG node_version=node:20-alpine
 
 # Build layer
-FROM ${node_version} as builder
+FROM ${node_version} AS builder
 
 WORKDIR /app
 
@@ -14,7 +14,7 @@ COPY ./ ./
 RUN npm run build
 
 # Final layer
-FROM ${node_version} as runner
+FROM ${node_version} AS runner
 
 WORKDIR /app
 

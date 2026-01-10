@@ -1,8 +1,8 @@
 import { DataTypes } from "sequelize";
-import { sequelize } from "../config/sequlize.js";
+import { sequelize } from "../config/sequelize.js";
 
 // Schema for image
-export const Image = sequelize.define("Image", {
+export const UserImage = sequelize.define("userImage", {
     id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,

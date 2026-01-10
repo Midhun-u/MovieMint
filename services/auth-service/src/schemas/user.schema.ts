@@ -1,8 +1,8 @@
 import { DataTypes } from "sequelize";
-import { sequelize } from "../config/sequlize.js";
+import { sequelize } from "../config/sequelize.js";
 
 //Schema for user
-export const User = sequelize.define("User", {
+export const User = sequelize.define("user", {
 
     id: {
         type: DataTypes.UUID,
