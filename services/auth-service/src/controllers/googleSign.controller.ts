@@ -4,11 +4,15 @@ import type { GoogleSignBody } from "../types/body.js";
 import { validateBody } from "../utils/validateBody.js";
 import { UserModel } from "../models/user.model.js";
 import { generateToken } from "../utils/generateToken.js";
+import { uploadUserProfile } from "../service/uploadImage.js";
 
 // Controller for google signing
 export const googleSignController = handleError(async (request: FastifyRequest, reply: FastifyReply) => {
 
     const { firstname, lastname, email, profilePic, role } = await request.body as GoogleSignBody
+
+    const data = await uploadUserProfile({imageUrl: profilePic, userId: "1234"})
+    console.log(data)
 
     // Validating body
     const result = validateBody("GOOGLE_SIGN", request.body as GoogleSignBody)
@@ -31,9 +35,9 @@ export const googleSignController = handleError(async (request: FastifyRequest, 
     }
 
     const newUser = await UserModel.addUser({
-        firstname: firstname,
-        lastname: lastname,
-        email: email,
+        firstname: firstname.trim(),
+        lastname: lastname.trim(),
+        email: email.trim(),
         auth_type: "GOOGLE",
         role: role
     })

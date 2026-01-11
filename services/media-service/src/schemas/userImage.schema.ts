@@ -22,10 +22,6 @@ export const UserImage = sequelize.define("userImage", {
         type: DataTypes.TEXT,
         defaultValue: ""
     },
-    image_size: {
-        type: DataTypes.NUMBER,
-        defaultValue: 0
-    },
     image_type: {
         type: DataTypes.STRING,
         defaultValue: ""

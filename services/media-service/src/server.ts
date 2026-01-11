@@ -10,6 +10,8 @@ const app = express()
 const port = envVariables.PORT || 5050
 
 // Middlewares
+app.use(express.json())
+app.use(express.urlencoded({extended: true}))
 app.use(morgan("dev"))
 
 // Routes

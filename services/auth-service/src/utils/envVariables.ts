@@ -17,4 +17,5 @@ export const envVariables = {
     FIREBASE_STORAGE_BUCKET: process.env.FIREBASE_STORAGE_BUCKET as string,
     FIREBASE_MESSAGING_SENDER_ID: process.env.FIREBASE_MESSAGING_SENDER_ID as string,
     FIREBASE_APP_ID: process.env.FIREBASE_APP_ID as string,
+    UPLOAD_IMAGE_BASE_URL: process.env.UPLOAD_IMAGE_BASE_URL as string,
 }

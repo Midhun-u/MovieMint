@@ -48,9 +48,9 @@ export const signController = handleError(async (request: FastifyRequest, reply:
     const hashedPassword = await hashPassword(password)
     
     const newUser = await UserModel.addUser({
-        firstname: firstname,
-        lastname: lastname,
-        email: email,
+        firstname: firstname.trim(),
+        lastname: lastname.trim(),
+        email: email.trim(),
         password: hashedPassword,
         auth_type: "EMAIL",
         role: role
