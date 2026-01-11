@@ -11,9 +11,6 @@ export const googleSignController = handleError(async (request: FastifyRequest, 
 
     const { firstname, lastname, email, profilePic, role } = await request.body as GoogleSignBody
 
-    const data = await uploadUserProfile({imageUrl: profilePic, userId: "1234"})
-    console.log(data)
-
     // Validating body
     const result = validateBody("GOOGLE_SIGN", request.body as GoogleSignBody)
 
@@ -44,16 +41,31 @@ export const googleSignController = handleError(async (request: FastifyRequest, 
 
     if(newUser){
 
-        // Generating token
-        const authToken = await generateToken(reply, {
-            id: newUser.id,
-            name: `${newUser.firstname} ${newUser.lastname}`,
-            email: newUser.email,
-            role: newUser.role
-        })
+        // Uploading user image
+        const data = await uploadUserProfile({ imageUrl: profilePic, userId: newUser.id})
 
-        reply.status(201)
-        return {success: true, message: "Account is created", statusCode: 201, user: newUser, authToken: authToken}
+        if(data.success){
+
+            // Generating token
+            const authToken = await generateToken(reply, {
+                id: newUser.id,
+                name: `${newUser.firstname} ${newUser.lastname}`,
+                email: newUser.email,
+                role: newUser.role
+            })
+    
+            reply.status(201)
+            return {success: true, message: "Account is created", statusCode: 201, user: newUser, authToken: authToken}
+
+        }else{
+
+            // await 
+
+            reply.status(502)
+            return {success: false, statusCode: 502, error: "Something went wrong"}
+
+        }
+
 
     }
 

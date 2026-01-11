@@ -3,13 +3,13 @@ import type { Response } from "express";
 type ResponseData = {
     success: boolean,
     statusCode: number,
-    error?: string,
-    message?: string,
-    data?: object
+    error?: string | null,
+    message?: string | null,
+    data?: object | null
 }
 
 // Function for sending response
-export const sendResponse = (response: Response, success: boolean, statusCode: number, errorMessage?: string, data?: object, message?: string) => {
+export const sendResponse = (response: Response, success: boolean, statusCode: number, errorMessage?: string | null, data?: object | null, message?: string | null) => {
 
     let responseData: ResponseData | null = {
         success: success,

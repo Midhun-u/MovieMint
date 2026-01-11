@@ -45,4 +45,18 @@ export const UserModel = {
 
     },
 
+    deleteUser: async (userId: string) => {
+
+        const data = await User.destroy({
+            where: {
+                id: {
+                    [Op.eq]: userId
+                }
+            }
+        })
+
+        return data
+
+    }
+
 }
