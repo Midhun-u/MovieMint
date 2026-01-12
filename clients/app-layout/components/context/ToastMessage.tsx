@@ -79,7 +79,7 @@ const ToastMessage = ({ children }: { children: ReactNode }) => {
           className='fixed transition-all duration-200 -top-15 w-full h-auto p-2 flex justify-center'
         >
           <div
-            className='px-5 py-3 bg-foreground-color flex gap-2 items-center rounded-lg border border-disable-color/15'
+          className={`px-5 py-3 bg-foreground-color flex gap-2 items-center rounded-lg border ${messageDetails.type === "SUCCESS"? 'border-primary-color/40': 'border-error-foreground-color/40'}`}
           >
             <ToastIcon
               size={22}

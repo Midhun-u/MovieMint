@@ -9,3 +9,11 @@ export const hashPassword = async (password: string): Promise<string> => {
     return hashedPassword
 
 }
+
+// Function for checking if password is correct
+export const checkPassword = async (plainText: string, hashedPassword: string) => {
+
+    const isCorrect = await bcrypt.compare(plainText, hashedPassword)
+    return isCorrect
+
+}

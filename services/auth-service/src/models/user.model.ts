@@ -2,12 +2,13 @@ import { Op } from "sequelize"
 import { User } from "../schemas/user.schema.js"
 import type { Role } from "../types/role.js"
 
+type AuthType = "EMAIL" | "GOOGLE"
 type UserData = {
     firstname: string,
     lastname: string,
     email: string,
     password?: string,
-    auth_type: "EMAIL" | "GOOGLE",
+    auth_type: AuthType,
     role: Role,
 
 }
@@ -24,7 +25,19 @@ export const UserModel = {
             }
         })
 
-        return user
+        return user?.dataValues
+
+    },
+    
+    getUserByEmailWithAuthType: async (email: string, authType: AuthType) => {
+
+        const user = await User.findOne({
+            where: {
+                [Op.and]: [{email: email}, {auth_type: authType}]
+            }
+        })
+
+        return user?.dataValues
 
     },
 
@@ -56,6 +69,6 @@ export const UserModel = {
 
         return data
 
-    }
+    },
 
 }

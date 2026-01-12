@@ -4,7 +4,7 @@ import type { SignBody } from "../types/body.js";
 import { validateBody } from "../utils/validateBody.js";
 import { envVariables } from "../utils/envVariables.js";
 import { UserModel } from "../models/user.model.js";
-import { hashPassword } from "../utils/hashPassword.js";
+import { hashPassword } from "../utils/password.js";
 import { generateToken } from "../utils/generateToken.js";
 
 // Controller for signing

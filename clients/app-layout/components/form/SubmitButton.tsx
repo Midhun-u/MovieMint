@@ -1,19 +1,21 @@
+import { FormType } from '@/types/formType'
 import { Button } from '../ui/button'
 import Spinner from '../ui/Spinner'
 
 interface SubmitButtonProps {
     loading: boolean,
-    acceptTerms: boolean
+    acceptTerms: boolean,
+    formType: FormType
 }
 
-const SubmitButton = ({loading, acceptTerms}: SubmitButtonProps) => {
+const SubmitButton = ({loading, acceptTerms, formType}: SubmitButtonProps) => {
 
     return (
 
         <Button
             type="submit"
             className="w-full bg-primary-color active:bg-primary-accent-color hover:bg-primary-color"
-            disabled={!acceptTerms || loading}
+            disabled={!acceptTerms && formType === "SIGN" || loading}
         >
             {
                 loading
@@ -23,7 +25,15 @@ const SubmitButton = ({loading, acceptTerms}: SubmitButtonProps) => {
                         color="black"
                     />
                     :
-                    <span className="text-dark-foreground-color">Sign In</span>
+                    <span className="text-dark-foreground-color">
+                        {
+                            formType === "LOGIN"
+                            ?
+                            <>Login</>
+                            :
+                            <>Sign In</>
+                        }
+                    </span>
             }
         </Button>
 

@@ -1,7 +1,7 @@
 "use server"
 
 import { handleError } from "@/utils/handleError";
-import { GoogleSignData, SignFormInputData } from "@/types/formInputData";
+import { GoogleSignData, LoginFormInputData, SignFormInputData } from "@/types/formInputData";
 import * as zod from 'zod'
 import { emailRegex } from "@/utils/emailRegex";
 import { fetchInstance } from "./fetch";
@@ -66,5 +66,32 @@ export const googleSignApi = handleError(async (signData: GoogleSignData) => {
     })
 
     return data
+
+})
+
+// Api for login
+export const loginApi = handleError(async (formInputData: LoginFormInputData) => {
+
+    const formInputDataObject = zod.object({
+       email: zod.string().regex(emailRegex).nonempty(),
+       password: zod.string().min(6).max(50).nonempty(),
+       adminKey: zod.string().nullable(),
+       role: zod.string().nonempty()
+    })
+
+    const fields = formInputDataObject.parse(formInputData)
+
+    if(fields){
+
+        const data = await fetchInstance(AUTH_BASE_URL, "/login", "POST", {
+            email: fields.email.trim(),
+            password: fields.password.trim(),
+            adminKey: fields.adminKey?.trim(),
+            role: formInputData.role
+        })
+
+        return data
+
+    }
 
 })

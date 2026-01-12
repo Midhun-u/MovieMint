@@ -16,3 +16,10 @@ export type GoogleSignData = {
     profilePic: string
     role: Role
 }
+
+export type LoginFormInputData = {
+    email: string
+    password: string
+    adminKey: string
+    role: Role
+}

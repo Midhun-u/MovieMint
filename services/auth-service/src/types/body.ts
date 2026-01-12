@@ -18,3 +18,11 @@ export type GoogleSignBody = {
     profilePic: string
     role: Role
 }
+
+// Login body
+export type LoginBody = {
+    email: string,
+    password: string,
+    role: Role,
+    adminKey: string
+}

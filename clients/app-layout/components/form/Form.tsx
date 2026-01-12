@@ -21,17 +21,18 @@ import PasswordStrengthIndicator from "./PasswordStrengthIndicator"
 import WarningMessage from "./WarningMessage"
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { emailRegex } from "@/utils/emailRegex"
-import { googleSignApi, signApi } from "@/api/auth"
+import { googleSignApi, loginApi, signApi } from "@/api/auth"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { authFailed, authRequest, authSuccess } from "@/store/authSlice"
 import SubmitButton from "./SubmitButton"
 import { ToastProvider } from "../context/ToastMessage"
-import {useRouter} from 'next/navigation'
-import {signInWithPopup} from 'firebase/auth'
+import { useRouter } from 'next/navigation'
+import { signInWithPopup } from 'firebase/auth'
 import { firebaseAuth, googleProvider } from "@/lib/firebase"
+import { FormType } from "@/types/formType"
 
 interface FormProps {
-    formType: "SIGN" | "LOGIN",
+    formType: FormType
 }
 
 type Inputs = {
@@ -62,49 +63,73 @@ const Form = ({ formType }: FormProps) => {
     })
     const { register, handleSubmit, formState: { errors: formErrors } } = useForm<Inputs>()
     const dispatch = useAppDispatch()
-    const {loading} = useAppSelector(state => state.auth)
+    const { loading } = useAppSelector(state => state.auth)
     const toastContext = useContext(ToastProvider)
     const router = useRouter()
-    
 
-    // Function for submitting form
-    const submitForm: SubmitHandler<Inputs> = async (data) => {
 
-        if(passwordDetails.password !== passwordDetails.confirmPassword){
+    // Function for submitting sign form
+    const submitSignForm: SubmitHandler<Inputs> = async (data) => {
+
+        if (passwordDetails.password !== passwordDetails.confirmPassword) {
             toastContext?.triggerToastMessage("Password is not matching", "ERROR")
             return
         }
 
         dispatch(authRequest())
         const result = await signApi({ ...data, role: currentTabValue, adminKey: data.adminKey ? data.adminKey : "" })
-        
-        if(result.success){
 
-            dispatch(authSuccess({user: result.user, authToken: result.authToken}))
+        if (result.success) {
+
+            dispatch(authSuccess({ user: result.user, authToken: result.authToken }))
 
             toastContext?.triggerToastMessage(result.message, "SUCCESS")
             router.push("/")
 
 
-        }else{
+        } else {
 
-            dispatch(authFailed({errorMessage: result.error}))
+            dispatch(authFailed({ errorMessage: result.error }))
             toastContext?.triggerToastMessage(result.error, "ERROR")
 
         }
 
     }
 
-    // Function for google authentication
-    const googleAuth = async () => {
+    // Function for submitting login form
+    const submitLoginForm: SubmitHandler<Inputs> = async (data) => {
+
+        dispatch(authRequest())
+
+        const result = await loginApi({
+            email: data.email,
+            password: data.password,
+            role: currentTabValue,
+            adminKey: data.adminKey? data.adminKey: ""
+        })
+
+        if(result.success){
+
+            dispatch(authSuccess({user: result.user, authToken: result.authToken}))
+            toastContext?.triggerToastMessage("Login Success", 'SUCCESS')
+
+        }else{
+            toastContext?.triggerToastMessage(result.error, 'ERROR')
+            dispatch(authFailed({errorMessage: result.error}))
+        }
+
+    }
+
+    // Function for google signing
+    const googleSignAuth = async () => {
 
         try {
-            
+
             dispatch(authRequest())
 
             const googleAuthResult = await signInWithPopup(firebaseAuth, googleProvider)
-            
-            if(googleAuthResult.user){
+
+            if (googleAuthResult.user) {
 
                 const [firstname, lastname] = googleAuthResult.user.displayName?.split(" ") as Array<string>
 
@@ -116,13 +141,14 @@ const Form = ({ formType }: FormProps) => {
                     role: currentTabValue
                 })
 
-                if(result.success){
-                    
-                    dispatch(authSuccess({user: result.user, authToken: result.authToken}))
-                    toastContext?.triggerToastMessage(result.message, "SUCCESS")
+                if (result.success) {
 
-                }else {
-                    dispatch(authFailed({errorMessage: result.error}))
+                    dispatch(authSuccess({ user: result.user, authToken: result.authToken }))
+                    toastContext?.triggerToastMessage(result.message, "SUCCESS")
+                    router.push("/")
+
+                } else {
+                    dispatch(authFailed({ errorMessage: result.error }))
                     toastContext?.triggerToastMessage(result.error, "ERROR")
                 }
 
@@ -135,12 +161,22 @@ const Form = ({ formType }: FormProps) => {
 
     }
 
+    // Function for google login
+    const googleLoginAuth = async () => {
+
+        dispatch(authRequest())
+
+        const googleAuthResult = await signInWithPopup(firebaseAuth, googleProvider)
+        
+
+    }
+
     return (
 
         <form
             className="w-full"
             method="post"
-            onSubmit={handleSubmit(submitForm)}
+            onSubmit={handleSubmit(formType === "SIGN"? submitSignForm: submitLoginForm)}
         >
             {/* Tab navigation section */}
             <AuthTab
@@ -150,48 +186,52 @@ const Form = ({ formType }: FormProps) => {
             {/* Input section */}
             <div className="mt-10 overflow-x-hidden flex flex-col gap-5">
                 {/* Name section */}
-                <Activity mode={formType === "SIGN" ? "visible" : "hidden"}>
-                    <div className="flex flex-col sm:flex-row gap-3 w-full overflow-x-hidden">
-                        <div className="w-full">
-                            <Label
-                                labelId={firstnameId}
-                                labelTitle="Firstname"
-                            />
-                            <FormInput
-                                id={firstnameId}
-                                placeholder="Enter your firstname"
-                                Icon={UserIcon}
-                                type="text"
-                                {...register("firstname", {
-                                    required: "Firstname is required",
-                                    minLength: { value: 3, message: "Firstname should be alteast 3 letters" },
-                                    maxLength: { value: 15, message: "Firstname should be below 15 letters or 15 letters" }
-                                })}
-                                aria-invalid={formErrors.firstname ? "true" : "false"}
-                                autoComplete="name"
-                            />
+                {
+                    formType === "SIGN"
+                        ?
+                        <div className="flex flex-col sm:flex-row gap-3 w-full overflow-x-hidden">
+                            <div className="w-full">
+                                <Label
+                                    labelId={firstnameId}
+                                    labelTitle="Firstname"
+                                />
+                                <FormInput
+                                    id={firstnameId}
+                                    placeholder="Enter your firstname"
+                                    Icon={UserIcon}
+                                    type="text"
+                                    {...register("firstname", {
+                                        required: formType === "SIGN"? "Firstname is required": false,
+                                        minLength: { value: 3, message: "Firstname should be alteast 3 letters" },
+                                        maxLength: { value: 15, message: "Firstname should be below 15 letters or 15 letters" }
+                                    })}
+                                    aria-invalid={formErrors.firstname ? "true" : "false"}
+                                    autoComplete="name"
+                                />
+                            </div>
+                            <div className="w-full">
+                                <Label
+                                    labelId={lastnameId}
+                                    labelTitle="Lastname"
+                                />
+                                <FormInput
+                                    id={lastnameId}
+                                    placeholder="Enter your lastname"
+                                    Icon={UserIcon}
+                                    type="text"
+                                    {...register("lastname", {
+                                        required: formType === "SIGN"? "Lastname is required": false,
+                                        minLength: { value: 1, message: "Lastname should be alteast 3 letters" },
+                                        maxLength: { value: 10, message: "Lastname should be below 15 letters or 15 letters" }
+                                    })}
+                                    aria-invalid={formErrors.lastname ? "true" : "false"}
+                                    autoComplete="name"
+                                />
+                            </div>
                         </div>
-                        <div className="w-full">
-                            <Label
-                                labelId={lastnameId}
-                                labelTitle="Lastname"
-                            />
-                            <FormInput
-                                id={lastnameId}
-                                placeholder="Enter your lastname"
-                                Icon={UserIcon}
-                                type="text"
-                                {...register("lastname", {
-                                    required: "Lastname is required",
-                                    minLength: { value: 1, message: "Lastname should be alteast 3 letters" },
-                                    maxLength: { value: 10, message: "Lastname should be below 15 letters or 15 letters" }
-                                })}
-                                aria-invalid={formErrors.lastname ? "true" : "false"}
-                                autoComplete="name"
-                            />
-                        </div>
-                    </div>
-                </Activity>
+                        :
+                        null
+                }
                 {/* Email section */}
                 <div className="w-full">
                     <Label
@@ -215,11 +255,11 @@ const Form = ({ formType }: FormProps) => {
                 <div className="w-full">
                     <Label
                         labelId={passwordId}
-                        labelTitle="Create New Password"
+                        labelTitle={formType === "SIGN"? "Create New Password": "Password"}
                     />
                     <PasswordInput
                         passwordId={passwordId}
-                        placeholder="Create new password"
+                        placeholder={formType === "SIGN"? "Create new password": "Enter your password"}
                         {...register("password", {
                             required: "Password is required",
                             minLength: { value: 6, message: "Password should be atleast 6 letters or above" },
@@ -229,46 +269,58 @@ const Form = ({ formType }: FormProps) => {
                         aria-invalid={formErrors.password ? "true" : "false"}
                         autoComplete="new-password"
                     />
-                    <PasswordStrengthIndicator
-                        password={passwordDetails.password}
-                    />
-                </div>
-                <div>
-                    <Label
-                        labelId={confirmPasswordId}
-                        labelTitle="Confirm New Password"
-                    />
-                    <PasswordInput
-                        passwordId={confirmPasswordId}
-                        placeholder="Confirm new password"
-                        {...register("confirmPassword", {
-                            required: "Password should be confirmed",
-                            minLength: { value: 6, message: "Password should be atleast 6 letters or above" },
-                            maxLength: { value: 20, message: "Password should be less than or equal to 20 letters" }
-                        })}
-                        onChange={(event) => setPasswordDetails({ ...passwordDetails, confirmPassword: event.target.value })}
-                        aria-invalid={formErrors.confirmPassword ? "true" : 'false'}
-                        autoComplete="current-password"
-                    />
-                    <Activity
-                        mode={
-                            (passwordDetails.password === passwordDetails.confirmPassword)
-                                ? "hidden"
-                                :
-                                (
-                                    passwordDetails.password.length
-                                        ?
-                                        "visible"
-                                        :
-                                        "hidden"
-                                )
-                        }
-                    >
-                        <WarningMessage
-                            message="Password is not matching"
+                    {
+                        formType === "SIGN"
+                        ?
+                        <PasswordStrengthIndicator
+                            password={passwordDetails.password}
                         />
-                    </Activity>
+                        :
+                        null
+                    }
                 </div>
+                {
+                    formType === "SIGN"
+                        ?
+                        <div>
+                            <Label
+                                labelId={confirmPasswordId}
+                                labelTitle="Confirm New Password"
+                            />
+                            <PasswordInput
+                                passwordId={confirmPasswordId}
+                                placeholder="Confirm new password"
+                                {...register("confirmPassword", {
+                                    required: formType === "SIGN"? "Password should be confirmed": false,
+                                    minLength: { value: 6, message: "Password should be atleast 6 letters or above" },
+                                    maxLength: { value: 20, message: "Password should be less than or equal to 20 letters" }
+                                })}
+                                onChange={(event) => setPasswordDetails({ ...passwordDetails, confirmPassword: event.target.value })}
+                                aria-invalid={formErrors.confirmPassword ? "true" : 'false'}
+                                autoComplete="current-password"
+                            />
+                            <Activity
+                                mode={
+                                    (passwordDetails.password === passwordDetails.confirmPassword)
+                                        ? "hidden"
+                                        :
+                                        (
+                                            passwordDetails.password.length
+                                                ?
+                                                "visible"
+                                                :
+                                                "hidden"
+                                        )
+                                }
+                            >
+                                <WarningMessage
+                                    message="Password is not matching"
+                                />
+                            </Activity>
+                        </div>
+                        :
+                        null
+                }
                 <Activity mode={currentTabValue === "ADMIN" ? "visible" : "hidden"}>
                     <div className="w-full">
                         <Label
@@ -289,23 +341,26 @@ const Form = ({ formType }: FormProps) => {
                     </div>
                 </Activity>
                 {/* Terms and condition section */}
-                <div className="flex gap-2 mt-3 items-start">
-                    <Checkbox
-                        className="border-2 border-disable-color"
-                        onClick={() => setAcceptTerms(!acceptTerms)}
-                    />
-                    <div className="flex flex-col justify-start">
-                        <span className="font-medium text-xs">Accept Terms and Condition</span>
-                        <p className="text-xs mt-1 text-disable-color">
-                            By signing in, you acknowledge that you are providing accurate account information and consent to its secure storage and use for authentication purposes. Your data will remain protected under our privacy and security policies, and will not be shared without your permission.
-                        </p>
+                <Activity mode={formType === "LOGIN" ? "hidden" : "visible"}>
+                    <div className="flex gap-2 mt-3 items-start">
+                        <Checkbox
+                            className="border-2 border-disable-color"
+                            onClick={() => setAcceptTerms(!acceptTerms)}
+                        />
+                        <div className="flex flex-col justify-start">
+                            <span className="font-medium text-xs">Accept Terms and Condition</span>
+                            <p className="text-xs mt-1 text-disable-color">
+                                By signing in, you acknowledge that you are providing accurate account information and consent to its secure storage and use for authentication purposes. Your data will remain protected under our privacy and security policies, and will not be shared without your permission.
+                            </p>
+                        </div>
                     </div>
-                </div>
+                </Activity>
                 {/* Button section */}
                 <div className="flex w-full justify-center items-center">
-                    <SubmitButton 
+                    <SubmitButton
                         acceptTerms={acceptTerms}
                         loading={loading}
+                        formType={formType}
                     />
                 </div>
                 <Activity mode={currentTabValue !== "ADMIN" ? "visible" : "hidden"}>
@@ -319,17 +374,48 @@ const Form = ({ formType }: FormProps) => {
                             type="button"
                             className="w-full bg-foreground-color border border-disable-color/20"
                             disabled={loading}
-                            onClick={() => googleAuth()}
+                            onClick={() => formType === "SIGN"? googleSignAuth(): googleLoginAuth()}
                         >
                             <Image src={assets.googleIcon} width={18} height={18} alt="google-sign-icon" />
-                            <span className="text-dark-foreground-color">Sign With Google</span>
+                            <span className="text-dark-foreground-color">
+                                {
+                                    formType === "SIGN"
+                                        ?
+                                        <>Sign With Google</>
+                                        :
+                                        <>Logn With Google</>
+                                }
+                            </span>
                         </Button>
                     </div>
                 </Activity>
 
                 {/* Login navigation */}
                 <p className="text-sm flex gap-2 w-full justify-center mt-2 font-medium">
-                    Already have an account? <Link href={"/login"} className="text-primary-color">Login</Link>
+                    {
+                        formType === "SIGN"
+                            ?
+                            <>
+                                Already have an account?
+                            </>
+                            :
+                            <>
+                                Don't have an account?
+                            </>
+                    }
+                    <Link href={formType === "SIGN" ? "/login" : "/sign"} className="text-primary-color">
+                        {
+                            formType === "SIGN"
+                                ?
+                                <>
+                                    Login
+                                </>
+                                :
+                                <>
+                                    Create Account
+                                </>
+                        }
+                    </Link>
                 </p>
             </div>
         </form>
