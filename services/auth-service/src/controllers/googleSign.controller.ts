@@ -59,7 +59,7 @@ export const googleSignController = handleError(async (request: FastifyRequest, 
 
         }else{
 
-            // await 
+            await UserModel.deleteUser(newUser.id)
 
             reply.status(502)
             return {success: false, statusCode: 502, error: "Something went wrong"}
