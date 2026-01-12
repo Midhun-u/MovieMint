@@ -22,7 +22,7 @@ export const googleSignController = handleError(async (request: FastifyRequest, 
     }
 
     // Checking if the email already exists
-    const user = await UserModel.getUserByEmail(email)
+    const user = await UserModel.getUserByEmail(email.trim())
 
     if (user) {
 

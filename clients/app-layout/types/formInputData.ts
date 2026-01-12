@@ -23,3 +23,7 @@ export type LoginFormInputData = {
     adminKey: string
     role: Role
 }
+
+export type GoogleLoginData = {
+    email: string
+}

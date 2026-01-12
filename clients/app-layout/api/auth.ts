@@ -1,7 +1,7 @@
 "use server"
 
 import { handleError } from "@/utils/handleError";
-import { GoogleSignData, LoginFormInputData, SignFormInputData } from "@/types/formInputData";
+import { GoogleLoginData, GoogleSignData, LoginFormInputData, SignFormInputData } from "@/types/formInputData";
 import * as zod from 'zod'
 import { emailRegex } from "@/utils/emailRegex";
 import { fetchInstance } from "./fetch";
@@ -26,12 +26,12 @@ export const signApi = handleError(async (formInputData: SignFormInputData) => {
     if (fields) {
 
         const data = await fetchInstance(AUTH_BASE_URL, "/sign", "POST", {
-            firstname: fields.firstname,
-            lastname: fields.lastname,
-            email: fields.email,
-            password: fields.password,
+            firstname: fields.firstname.trim(),
+            lastname: fields.lastname.trim(),
+            email: fields.email.trim(),
+            password: fields.password.trim(),
             role: fields.role,
-            adminKey: fields.adminKey
+            adminKey: fields.adminKey?.trim()
         })
 
         return data
@@ -93,5 +93,22 @@ export const loginApi = handleError(async (formInputData: LoginFormInputData) =>
         return data
 
     }
+
+})
+
+// Api for google login
+export const googleLoginApi = handleError(async (formInputData: GoogleLoginData) => {
+
+    const formInputDataObject = zod.object({
+        email: zod.string().nonempty().regex(emailRegex)
+    })
+
+    const fields = formInputDataObject.parse(formInputData)
+
+    const data = await fetchInstance(AUTH_BASE_URL, "/google-login", "POST", {
+        email: fields.email.trim()
+    })
+
+    return data
 
 })

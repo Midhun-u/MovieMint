@@ -1,7 +1,7 @@
 import * as zod from 'zod'
 import { emailRegex } from "./emailRegex.js";
 
-type FormType = "SIGN" | "LOGIN" | "GOOGLE_SIGN"
+type FormType = "SIGN" | "LOGIN" | "GOOGLE_SIGN" | "GOOGLE_LOGIN"
 
 // Function for validating body
 export const validateBody = (type: FormType, body: object): { success: boolean, errorMessage?: string } => {
@@ -48,6 +48,16 @@ export const validateBody = (type: FormType, body: object): { success: boolean, 
             obj.parse(body)
 
             return { success: true }
+
+        } else if(type === "GOOGLE_LOGIN"){
+
+            const obj = zod.object({
+                email: zod.string().nonempty().regex(emailRegex)
+            })
+
+            obj.parse(body)
+            
+            return {success: true}
 
         }
 

@@ -2,6 +2,7 @@ import { type FastifyInstance } from "fastify";
 import { signController } from "../controllers/sign.controller.js";
 import { googleSignController } from "../controllers/googleSign.controller.js";
 import { loginController } from "../controllers/login.controller.js";
+import { googleLoginController } from "../controllers/googleLogin.controller.js";
 
 // Auth routes
 export const authRoutes = (fastify: FastifyInstance) => {
@@ -14,5 +15,8 @@ export const authRoutes = (fastify: FastifyInstance) => {
 
     // Route for login
     fastify.post("/login", loginController)
+
+    // Route for google login
+    fastify.post("/google-login", googleLoginController)
 
 }

@@ -21,7 +21,7 @@ import PasswordStrengthIndicator from "./PasswordStrengthIndicator"
 import WarningMessage from "./WarningMessage"
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { emailRegex } from "@/utils/emailRegex"
-import { googleSignApi, loginApi, signApi } from "@/api/auth"
+import { googleLoginApi, googleSignApi, loginApi, signApi } from "@/api/auth"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { authFailed, authRequest, authSuccess } from "@/store/authSlice"
 import SubmitButton from "./SubmitButton"
@@ -99,23 +99,28 @@ const Form = ({ formType }: FormProps) => {
     // Function for submitting login form
     const submitLoginForm: SubmitHandler<Inputs> = async (data) => {
 
+        if (!data.password.trim()) {
+            toastContext?.triggerToastMessage("Fill Password", 'ERROR')
+            return
+        }
+
         dispatch(authRequest())
 
         const result = await loginApi({
             email: data.email,
             password: data.password,
             role: currentTabValue,
-            adminKey: data.adminKey? data.adminKey: ""
+            adminKey: data.adminKey ? data.adminKey : ""
         })
 
-        if(result.success){
+        if (result.success) {
 
-            dispatch(authSuccess({user: result.user, authToken: result.authToken}))
+            dispatch(authSuccess({ user: result.user, authToken: result.authToken }))
             toastContext?.triggerToastMessage("Login Success", 'SUCCESS')
 
-        }else{
+        } else {
             toastContext?.triggerToastMessage(result.error, 'ERROR')
-            dispatch(authFailed({errorMessage: result.error}))
+            dispatch(authFailed({ errorMessage: result.error }))
         }
 
     }
@@ -152,6 +157,8 @@ const Form = ({ formType }: FormProps) => {
                     toastContext?.triggerToastMessage(result.error, "ERROR")
                 }
 
+            } else {
+                dispatch(authFailed({ errorMessage: "Something went wrong" }))
             }
 
         } catch (error: any) {
@@ -164,10 +171,38 @@ const Form = ({ formType }: FormProps) => {
     // Function for google login
     const googleLoginAuth = async () => {
 
-        dispatch(authRequest())
+        try {
 
-        const googleAuthResult = await signInWithPopup(firebaseAuth, googleProvider)
-        
+            dispatch(authRequest())
+
+            const googleAuthResult = await signInWithPopup(firebaseAuth, googleProvider)
+
+            if (googleAuthResult.user) {
+
+                const result = await googleLoginApi({
+                    email: googleAuthResult.user.email as string
+                })
+
+                if (result.success) {
+
+                    toastContext?.triggerToastMessage(result.message, "ERROR")
+                    dispatch(authSuccess({ user: result.user, authToken: result.authToken }))
+
+                } else {
+
+                    toastContext?.triggerToastMessage(result.error, "ERROR")
+                    dispatch(authFailed({ errorMessage: result.error }))
+
+                }
+
+            } else {
+                dispatch(authFailed({ errorMessage: "Something went wrong" }))
+            }
+
+        } catch (error: any) {
+            toastContext?.triggerToastMessage("Something went wrong", "ERROR")
+            console.log(error.message)
+        }
 
     }
 
@@ -176,7 +211,7 @@ const Form = ({ formType }: FormProps) => {
         <form
             className="w-full"
             method="post"
-            onSubmit={handleSubmit(formType === "SIGN"? submitSignForm: submitLoginForm)}
+            onSubmit={handleSubmit(formType === "SIGN" ? submitSignForm : submitLoginForm)}
         >
             {/* Tab navigation section */}
             <AuthTab
@@ -201,7 +236,7 @@ const Form = ({ formType }: FormProps) => {
                                     Icon={UserIcon}
                                     type="text"
                                     {...register("firstname", {
-                                        required: formType === "SIGN"? "Firstname is required": false,
+                                        required: formType === "SIGN" ? "Firstname is required" : false,
                                         minLength: { value: 3, message: "Firstname should be alteast 3 letters" },
                                         maxLength: { value: 15, message: "Firstname should be below 15 letters or 15 letters" }
                                     })}
@@ -220,7 +255,7 @@ const Form = ({ formType }: FormProps) => {
                                     Icon={UserIcon}
                                     type="text"
                                     {...register("lastname", {
-                                        required: formType === "SIGN"? "Lastname is required": false,
+                                        required: formType === "SIGN" ? "Lastname is required" : false,
                                         minLength: { value: 1, message: "Lastname should be alteast 3 letters" },
                                         maxLength: { value: 10, message: "Lastname should be below 15 letters or 15 letters" }
                                     })}
@@ -255,11 +290,11 @@ const Form = ({ formType }: FormProps) => {
                 <div className="w-full">
                     <Label
                         labelId={passwordId}
-                        labelTitle={formType === "SIGN"? "Create New Password": "Password"}
+                        labelTitle={formType === "SIGN" ? "Create New Password" : "Password"}
                     />
                     <PasswordInput
                         passwordId={passwordId}
-                        placeholder={formType === "SIGN"? "Create new password": "Enter your password"}
+                        placeholder={formType === "SIGN" ? "Create new password" : "Enter your password"}
                         {...register("password", {
                             required: "Password is required",
                             minLength: { value: 6, message: "Password should be atleast 6 letters or above" },
@@ -271,12 +306,12 @@ const Form = ({ formType }: FormProps) => {
                     />
                     {
                         formType === "SIGN"
-                        ?
-                        <PasswordStrengthIndicator
-                            password={passwordDetails.password}
-                        />
-                        :
-                        null
+                            ?
+                            <PasswordStrengthIndicator
+                                password={passwordDetails.password}
+                            />
+                            :
+                            null
                     }
                 </div>
                 {
@@ -291,7 +326,7 @@ const Form = ({ formType }: FormProps) => {
                                 passwordId={confirmPasswordId}
                                 placeholder="Confirm new password"
                                 {...register("confirmPassword", {
-                                    required: formType === "SIGN"? "Password should be confirmed": false,
+                                    required: formType === "SIGN" ? "Password should be confirmed" : false,
                                     minLength: { value: 6, message: "Password should be atleast 6 letters or above" },
                                     maxLength: { value: 20, message: "Password should be less than or equal to 20 letters" }
                                 })}
@@ -374,7 +409,7 @@ const Form = ({ formType }: FormProps) => {
                             type="button"
                             className="w-full bg-foreground-color border border-disable-color/20"
                             disabled={loading}
-                            onClick={() => formType === "SIGN"? googleSignAuth(): googleLoginAuth()}
+                            onClick={() => formType === "SIGN" ? googleSignAuth() : googleLoginAuth()}
                         >
                             <Image src={assets.googleIcon} width={18} height={18} alt="google-sign-icon" />
                             <span className="text-dark-foreground-color">
