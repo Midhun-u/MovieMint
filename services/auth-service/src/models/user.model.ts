@@ -1,6 +1,7 @@
 import { Op } from "sequelize"
 import { User } from "../schemas/user.schema.js"
 import type { Role } from "../types/role.js"
+import { excludePassword } from "../utils/excludePassword.js"
 
 type AuthType = "EMAIL" | "GOOGLE"
 type UserData = {
@@ -52,7 +53,7 @@ export const UserModel = {
             role: userData.role
         })
 
-        const {password, ...newUserData} = newUser.dataValues
+        const newUserData = excludePassword(newUser.dataValues)
         return newUserData
 
     },

@@ -29,10 +29,10 @@ import { ToastProvider } from "../context/ToastMessage"
 import { useRouter } from 'next/navigation'
 import { signInWithPopup } from 'firebase/auth'
 import { firebaseAuth, googleProvider } from "@/lib/firebase"
-import { FormType } from "@/types/formType"
+import { AuthFormType } from "@/types/authFormType"
 
 interface FormProps {
-    formType: FormType
+    formType: AuthFormType
 }
 
 type Inputs = {
@@ -117,6 +117,7 @@ const Form = ({ formType }: FormProps) => {
 
             dispatch(authSuccess({ user: result.user, authToken: result.authToken }))
             toastContext?.triggerToastMessage("Login Success", 'SUCCESS')
+            router.push("/")
 
         } else {
             toastContext?.triggerToastMessage(result.error, 'ERROR')
@@ -185,8 +186,9 @@ const Form = ({ formType }: FormProps) => {
 
                 if (result.success) {
 
-                    toastContext?.triggerToastMessage(result.message, "ERROR")
+                    toastContext?.triggerToastMessage(result.message, "SUCCESS")
                     dispatch(authSuccess({ user: result.user, authToken: result.authToken }))
+                    router.push("/")
 
                 } else {
 
@@ -390,6 +392,21 @@ const Form = ({ formType }: FormProps) => {
                         </div>
                     </div>
                 </Activity>
+                {/* Password change section */}
+                {
+                    formType === "LOGIN"
+                        ?
+                        <div className="w-full flex justify-end">
+                            <Link
+                                href={"/verify-email"}
+                                className="text-primary-accent-color text-xs md:text-sm"
+                            >
+                                Forget Password ?
+                            </Link>
+                        </div>
+                        :
+                        null
+                }
                 {/* Button section */}
                 <div className="flex w-full justify-center items-center">
                     <SubmitButton
@@ -426,7 +443,7 @@ const Form = ({ formType }: FormProps) => {
                 </Activity>
 
                 {/* Login navigation */}
-                <p className="text-sm flex gap-2 w-full justify-center mt-2 font-medium">
+                <p className="text-sm flex flex-col items-center sm:flex-row gap-2 w-full sm:justify-center mt-2 font-medium">
                     {
                         formType === "SIGN"
                             ?

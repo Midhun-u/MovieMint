@@ -18,7 +18,7 @@ export const fetchInstance = handleError(async (
         },
     })
 
-    const data = await response.json()
+    const data = await response.json() || null
     return data
 
 })

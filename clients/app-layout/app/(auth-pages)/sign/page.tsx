@@ -1,14 +1,15 @@
-import Form from '@/components/form/Form'
-import AuthPage from '@/components/pages/AuthPage'
+import FormLayout from '@/components/layout/FormLayout'
 import { assets } from '@/public/assets/assets'
-import Image from 'next/image'
 
 const SignPage = () => {
 
   return (
 
-    <AuthPage
+    <FormLayout
       formType='SIGN'
+      vectorImage={assets.signVector}
+      formTitle='Sign In'
+      formAbout='Please sign in to securely access your account, manage your data, and continue using the platform.'
     />
 
   )

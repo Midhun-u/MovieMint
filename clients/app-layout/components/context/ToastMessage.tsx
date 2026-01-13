@@ -37,17 +37,17 @@ const ToastMessage = ({ children }: { children: ReactNode }) => {
 
     setShowToastMessage(true)
 
-    switch(type){
+    switch (type) {
 
       case "SUCCESS":
         setToastIcon(SuccessIcon)
-        setMessageDetails({...messageDetails, strokeColor: "stroke-primary-color", message: message, type: type})
-      break
+        setMessageDetails({ ...messageDetails, strokeColor: "stroke-primary-color", message: message, type: type })
+        break
 
       case "ERROR":
         setToastIcon(ErrorIcon)
-        setMessageDetails({...messageDetails, strokeColor: "stroke-error-foreground-color", message: message, type: type})
-      break
+        setMessageDetails({ ...messageDetails, strokeColor: "stroke-error-foreground-color", message: message, type: type })
+        break
 
     }
 
@@ -79,7 +79,7 @@ const ToastMessage = ({ children }: { children: ReactNode }) => {
           className='fixed transition-all duration-200 -top-15 w-full h-auto p-2 flex justify-center'
         >
           <div
-          className={`px-5 py-3 bg-foreground-color flex gap-2 items-center rounded-lg border ${messageDetails.type === "SUCCESS"? 'border-primary-color/40': 'border-error-foreground-color/40'}`}
+            className={`px-5 py-3 bg-foreground-color flex gap-2 items-center rounded-lg border ${messageDetails.type === "SUCCESS" ? 'border-primary-color/40' : 'border-error-foreground-color/40'}`}
           >
             <ToastIcon
               size={22}

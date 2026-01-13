@@ -1,4 +1,4 @@
-import { FormType } from '@/types/formType'
+import { FormType } from '@/types/authFormType'
 import { Button } from '../ui/button'
 import Spinner from '../ui/Spinner'
 

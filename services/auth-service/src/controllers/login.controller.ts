@@ -6,6 +6,7 @@ import { UserModel } from "../models/user.model.js";
 import { checkPassword } from "../utils/password.js";
 import { envVariables } from "../utils/envVariables.js";
 import { generateToken } from "../utils/generateToken.js";
+import { excludePassword } from "../utils/excludePassword.js";
 
 // Login Controller
 export const loginController = handleError(async (request: FastifyRequest, reply: FastifyReply) => {
@@ -57,7 +58,7 @@ export const loginController = handleError(async (request: FastifyRequest, reply
     })
 
     // Exclude user password
-    const {password: userPassword, ...userDetails} = user
+    const userDetails = excludePassword(user)
 
     return {success: true, message: "Login success", authToken: authToken, user: userDetails, statusCode: 200}
 
