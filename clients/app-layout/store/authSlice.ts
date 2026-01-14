@@ -26,7 +26,10 @@ const authSlice = createSlice({
             state.loading = false
             state.errorMessage = ""
             state.user = action.payload.user
-            addDataToLocalStorage("authToken", action.payload.authToken)
+            
+            if(action.payload.authToken){
+                addDataToLocalStorage("authToken", action.payload.authToken)
+            }
 
         },
         authFailed: (state, action) => {

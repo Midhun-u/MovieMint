@@ -36,7 +36,6 @@ export const sendOtpController = handleError(async (request: FastifyRequest, rep
 
     // Store OTP in redis
     await redisClient.set(email, otpDigits, {
-        condition: "NX", // Set if the key doesn't exists
         expiration: {
             type: "EX",
             value: 5 * 60 // Set expire time for 5 minute 
