@@ -112,3 +112,20 @@ export const googleLoginApi = handleError(async (formInputData: GoogleLoginData)
     return data
 
 })
+
+// Api for sending OTP
+export const sendOtpApi = handleError(async (formInputData: {email: string}) => {
+
+    const formInputDataObject = zod.object({
+        email: zod.string().regex(emailRegex)
+    })
+
+    const fields = formInputDataObject.parse(formInputData)
+
+    const result = await fetchInstance(AUTH_BASE_URL, "/send-otp", "POST", {
+        email: fields.email
+    })
+
+    return result
+
+})

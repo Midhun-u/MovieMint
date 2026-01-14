@@ -1,11 +1,11 @@
-import { FormType } from '@/types/authFormType'
+import { AuthFormType } from '@/types/authFormType'
 import { Button } from '../ui/button'
 import Spinner from '../ui/Spinner'
 
 interface SubmitButtonProps {
     loading: boolean,
     acceptTerms: boolean,
-    formType: FormType
+    formType: AuthFormType
 }
 
 const SubmitButton = ({loading, acceptTerms, formType}: SubmitButtonProps) => {

@@ -30,7 +30,7 @@ export default function RootLayout({
         className={`${spaceGrotesk.variable} bg-background-color`}
       >
         <StoreProvider>
-          <main>
+          <main className="w-screen overflow-scroll">
             <ToastMessage>
               {children}
             </ToastMessage>

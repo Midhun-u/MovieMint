@@ -44,7 +44,7 @@ type Inputs = {
     adminKey: string
 }
 
-const Form = ({ formType }: FormProps) => {
+const AuthForm = ({ formType }: FormProps) => {
 
     const firstnameId = useId()
     const lastnameId = useId()
@@ -211,7 +211,7 @@ const Form = ({ formType }: FormProps) => {
     return (
 
         <form
-            className="w-full"
+            className="w-full h-full "
             method="post"
             onSubmit={handleSubmit(formType === "SIGN" ? submitSignForm : submitLoginForm)}
         >
@@ -443,7 +443,7 @@ const Form = ({ formType }: FormProps) => {
                 </Activity>
 
                 {/* Login navigation */}
-                <p className="text-sm flex flex-col items-center sm:flex-row gap-2 w-full sm:justify-center mt-2 font-medium">
+                <p className="text-sm flex gap-2 w-full flex-wrap justify-center mt-2 font-medium">
                     {
                         formType === "SIGN"
                             ?
@@ -455,7 +455,7 @@ const Form = ({ formType }: FormProps) => {
                                 Don't have an account?
                             </>
                     }
-                    <Link href={formType === "SIGN" ? "/login" : "/sign"} className="text-primary-color">
+                    <Link href={formType === "SIGN" ? "/login" : "/sign"} className="text-primary-accent-color">
                         {
                             formType === "SIGN"
                                 ?
@@ -475,4 +475,4 @@ const Form = ({ formType }: FormProps) => {
     )
 }
 
-export default Form
+export default AuthForm

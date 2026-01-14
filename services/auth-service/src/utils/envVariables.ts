@@ -11,11 +11,9 @@ export const envVariables = {
     ADMIN_KEY: process.env.ADMIN_KEY as string,
     CLIENT_URL: process.env.CLIENT_URL as string,
     JWT_SECRET: process.env.JWT_SECRET as string,
-    FIREBASE_API_KEY: process.env.FIREBASE_API_KEY as string,
-    FIREBASE_AUTH_DOMAIN: process.env.FIREBASE_AUTH_DOMAIN as string,
-    FIREBASE_PROJECT_ID: process.env.FIREBASE_PROJECT_ID as string,
-    FIREBASE_STORAGE_BUCKET: process.env.FIREBASE_STORAGE_BUCKET as string,
-    FIREBASE_MESSAGING_SENDER_ID: process.env.FIREBASE_MESSAGING_SENDER_ID as string,
-    FIREBASE_APP_ID: process.env.FIREBASE_APP_ID as string,
     UPLOAD_IMAGE_BASE_URL: process.env.UPLOAD_IMAGE_BASE_URL as string,
+    NODEMAILER_GMAIL_APP_PASSWORD: process.env.NODEMAILER_GMAIL_APP_PASSWORD as string,
+    NODEMAILER_GMAIL_USER_EMAIL: process.env.NODEMAILER_GMAIL_USER_EMAIL as string,
+    REDIS_HOST: process.env.REDIS_HOST as string,
+    REDIS_PORT: Number(process.env.REDIS_PORT)
 }

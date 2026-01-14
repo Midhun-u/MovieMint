@@ -3,6 +3,7 @@ import { signController } from "../controllers/sign.controller.js";
 import { googleSignController } from "../controllers/googleSign.controller.js";
 import { loginController } from "../controllers/login.controller.js";
 import { googleLoginController } from "../controllers/googleLogin.controller.js";
+import { sendOtpController } from "../controllers/sendOtp.controller.js";
 
 // Auth routes
 export const authRoutes = (fastify: FastifyInstance) => {
@@ -18,5 +19,8 @@ export const authRoutes = (fastify: FastifyInstance) => {
 
     // Route for google login
     fastify.post("/google-login", googleLoginController)
+
+    // Route for sending OTP
+    fastify.post("/send-otp", sendOtpController)
 
 }

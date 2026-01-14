@@ -1,5 +1,6 @@
-import Form from '../form/Form'
+import AuthForm from '../form/AuthForm'
 import Image, { StaticImageData } from 'next/image'
+import VerifyEmailForm from '../form/VerifyEmailForm'
 
 type FormType = "LOGIN" | "SIGN" | "OTP" | "EMAIL" | "RESET PASSWORD"
 
@@ -14,9 +15,9 @@ const FormLayout = ({ formType, vectorImage, formTitle, formAbout }: FormLayoutP
 
     return (
 
-        <section className='w-full h-svh flex gap-2 justify-center md:p-5'>
+        <section className='w-full h-full flex gap-2 justify-center md:p-5'>
             {/* Image section */}
-            <div className='hidden md:flex justify-center px-10 items-center w-full h-full'>
+            <div className='hidden md:flex justify-center px-10 items-center w-full h-svh'>
                 <Image
                     src={vectorImage}
                     alt={`${formType} vector image`}
@@ -25,9 +26,9 @@ const FormLayout = ({ formType, vectorImage, formTitle, formAbout }: FormLayoutP
                 />
             </div>
             {/* Form section */}
-            <div className='flex flex-col w-full px-3 sm:px-5 sm:w-[70%] md:w-full items-center py-10 h-full'>
+            <div className='flex justify-center flex-col w-full px-3 sm:px-5 sm:w-[70%] md:w-full items-center py-10'>
                 {/* Heading section */}
-                <div className='flex flex-col items-center'>
+                <div className='flex justify-center flex-col items-center'>
                     <h1 className='font-bold text-lg'>
                         {formTitle}
                     </h1>
@@ -39,8 +40,16 @@ const FormLayout = ({ formType, vectorImage, formTitle, formAbout }: FormLayoutP
                 {
                     formType === "LOGIN" || formType === "SIGN"
                     ?
-                    <Form
+                    <AuthForm
                         formType={formType}
+                    />
+                    :
+                    null
+                }
+                {
+                    formType === "EMAIL"
+                    ?
+                    <VerifyEmailForm
                     />
                     :
                     null

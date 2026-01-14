@@ -3,9 +3,9 @@ import jwt from '@fastify/jwt'
 import { envVariables } from "../utils/envVariables.js";
 
 // Plugin for JWT
-export const initJWT = fastifyPlugin(async (fastify) => {
+export const initJWT = fastifyPlugin((fastify) => {
 
-    await fastify.register(jwt, {
+    fastify.register(jwt, {
         secret: envVariables.JWT_SECRET as string
     })
 
