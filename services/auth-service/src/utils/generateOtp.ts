@@ -10,10 +10,10 @@ const getRandomItem = (array: Array<any>) => {
 // Function for generating OTP
 export const generateOtp = (digitsLength: number) => {
 
-    const digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    const digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
     let otp = ""
 
-    for(let i = 1; i <= digitsLength; i ++){
+    for(let i = 0; i < digitsLength; i ++){
 
         const randomStringDigit = getRandomItem(digits).toString()
         otp = otp + randomStringDigit

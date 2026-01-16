@@ -148,3 +148,19 @@ export const verifyOtpApi = handleError(async (formInputData: {otp: number, emai
     return result
 
 })
+
+// Api for resetting password
+export const resetPasswordApi = handleError(async (formInputData: {newPassword: string, userId: string} ) => {
+
+    const formInputDataObject = zod.object()
+
+    const fields = formInputDataObject.parse(formInputData)
+
+    const result = await fetchInstance(AUTH_BASE_URL, "/reset-password", "PUT", {
+        newPassword: fields.newPassword,
+        userId: fields.userId
+    })
+
+    return result
+
+})

@@ -6,6 +6,7 @@ import { envVariables } from "../utils/envVariables.js";
 import { UserModel } from "../models/user.model.js";
 import { hashPassword } from "../utils/password.js";
 import { generateToken } from "../utils/generateToken.js";
+import { excludePassword } from "../utils/excludePassword.js";
 
 // Controller for signing
 export const signController = handleError(async (request: FastifyRequest, reply: FastifyReply) => {
@@ -66,8 +67,11 @@ export const signController = handleError(async (request: FastifyRequest, reply:
             role: newUser.role
         })
 
+        // Excluding user password
+        const newUserDetails = excludePassword(newUser)
+
         reply.status(201)
-        return {success: true, message: "Account is created", statusCode: 201, user: newUser, authToken: authToken}
+        return {success: true, message: "Account is created", statusCode: 201, user: newUserDetails, authToken: authToken}
     }
 
     reply.status(400)

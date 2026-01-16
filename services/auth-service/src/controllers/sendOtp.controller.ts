@@ -16,7 +16,7 @@ export const sendOtpController = handleError(async (request: FastifyRequest, rep
     }
 
     // Checking if user signed
-    const user = await UserModel.getUserByEmail(email.trim())
+    const user = await UserModel.getUserByEmailWithAuthType(email.trim(), "EMAIL")
 
     if(!user){
         reply.status(404)

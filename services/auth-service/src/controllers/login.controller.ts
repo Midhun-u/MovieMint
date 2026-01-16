@@ -57,7 +57,7 @@ export const loginController = handleError(async (request: FastifyRequest, reply
         role: user.role
     })
 
-    // Exclude user password
+    // Excluding user password
     const userDetails = excludePassword(user)
 
     return {success: true, message: "Login success", authToken: authToken, user: userDetails, statusCode: 200}

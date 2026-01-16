@@ -44,7 +44,7 @@ export const verifyOtpController = handleError(async (request: FastifyRequest, r
         await redisClient.del(email)
 
         reply.status(200)
-        return {success: true, message: "Email is verified", statusCode: 200}
+        return {success: true, message: "Email is verified", statusCode: 200, user: user}
 
     }else{
 

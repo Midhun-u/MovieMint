@@ -5,6 +5,7 @@ import { validateBody } from "../utils/validateBody.js";
 import { UserModel } from "../models/user.model.js";
 import { generateToken } from "../utils/generateToken.js";
 import { uploadUserProfile } from "../service/uploadImage.js";
+import { excludePassword } from "../utils/excludePassword.js";
 
 // Controller for google signing
 export const googleSignController = handleError(async (request: FastifyRequest, reply: FastifyReply) => {
@@ -53,9 +54,12 @@ export const googleSignController = handleError(async (request: FastifyRequest, 
                 email: newUser.email,
                 role: newUser.role
             })
+
+            // Excluding user password
+            const newUserDetails = excludePassword(newUser)
     
             reply.status(201)
-            return {success: true, message: "Account is created", statusCode: 201, user: newUser, authToken: authToken}
+            return {success: true, message: "Account is created", statusCode: 201, user: newUserDetails, authToken: authToken}
 
         }else{
 

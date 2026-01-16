@@ -10,7 +10,7 @@ import { sendOtpApi } from '@/api/auth'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { authFailed, authRequest, authSuccess } from '@/store/authSlice'
 import { ToastProvider } from '../context/ToastMessage'
-import OneInputFieldForm from './OneInputFieldForm'
+import AccountRecoveryForm from './AccountRecoveryForm'
 
 type Inputs = {
   email: string
@@ -20,7 +20,7 @@ const VerifyEmailForm = () => {
 
   const emailId = useId()
   const router = useRouter()
-  const { register, formState: { errors: formErrors } } = useForm<Inputs>()
+  const { register, handleSubmit,formState: { errors: formErrors } } = useForm<Inputs>()
   const dispatch = useAppDispatch()
   const { loading } = useAppSelector(state => state.auth)
   const toastContext = useContext(ToastProvider)
@@ -34,7 +34,7 @@ const VerifyEmailForm = () => {
     if (result.success) {
 
       toastContext?.triggerToastMessage(result.message, "SUCCESS")
-      dispatch(authSuccess({ user: {email: result.email} }))
+      dispatch(authSuccess({ user: {email: result.email || data.email} }))
 
       router.push("/reset-password")
 
@@ -49,7 +49,7 @@ const VerifyEmailForm = () => {
 
   return (
 
-    <OneInputFieldForm
+    <AccountRecoveryForm
       id={emailId}
       inputFieldType='email'
       labelText='Email'
@@ -60,9 +60,10 @@ const VerifyEmailForm = () => {
       ariaInvalid={formErrors.email? "true": "false"}
       Icon={EmailIcon}
       formSubmitFunction={submitEmail}
-      {...register("email", {
-        required: true
-      })}
+      register={register}
+      handleSubmit={handleSubmit}
+      inputFieldName='email'
+      rules={{required: true}}
     />
 
   )

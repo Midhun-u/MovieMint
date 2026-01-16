@@ -37,6 +37,7 @@ export const googleLoginController = handleError(async (request: FastifyRequest,
         role: user.role
     })
 
+    // Excluding user password
     const userDetails = excludePassword(user)
 
     return {success: true, message: "Login success", user: userDetails, authToken: authToken, statusCode: 200}

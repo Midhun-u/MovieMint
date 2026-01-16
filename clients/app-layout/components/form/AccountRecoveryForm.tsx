@@ -6,25 +6,28 @@ import FormInput from "./FormInput"
 import Label from "./Label"
 import Spinner from "../ui/Spinner"
 import BackButton from "./BackButton"
-import {useForm } from "react-hook-form"
+import { FieldValues, RegisterOptions, UseFormHandleSubmit, UseFormRegister } from "react-hook-form"
 import { BaseSyntheticEvent } from "react"
+import PasswordInput from "./PasswordInput"
 
-type OneInputFieldFormProps = {
+type AccountRecoveryFormProps = {
     id: string
     inputFieldType: "email" | "password" | "number" | "text"
     labelText: string
-    Icon: LucidReactIconType
+    Icon?: LucidReactIconType
     placeholder: string
     loading: boolean
     ariaInvalid: "true" | "false"
+    handleSubmit: UseFormHandleSubmit<FieldValues, FieldValues>
     formSubmitFunction: (data: any, event?: BaseSyntheticEvent<object, any, any> | undefined) => unknown
+    register: UseFormRegister<any>
     backNavigationUrl: string
     primaryButtonTitle: string
+    inputFieldName: string
+    rules: RegisterOptions<any, string>
 }
 
-const OneInputFieldForm =  ({id, labelText, inputFieldType, placeholder, formSubmitFunction, Icon, loading, ariaInvalid, backNavigationUrl, primaryButtonTitle, ...props}: OneInputFieldFormProps) => {
-
-    const {handleSubmit, register} = useForm()
+const AccountRecoveryForm = ({ id, labelText, inputFieldType, inputFieldName, placeholder, rules, formSubmitFunction, handleSubmit, register, Icon, loading, ariaInvalid, backNavigationUrl, primaryButtonTitle }: AccountRecoveryFormProps) => {
 
     return (
 
@@ -35,16 +38,24 @@ const OneInputFieldForm =  ({id, labelText, inputFieldType, placeholder, formSub
                     labelTitle={labelText}
                     labelId={id}
                 />
-                <FormInput
-                    id={id}
-                    {...register("email", {
-                        required: true
-                    })}
-                    type={inputFieldType}
-                    placeholder={placeholder}
-                    Icon={Icon}
-                    aria-invalid={ariaInvalid}
-                />
+                {
+                    inputFieldType === "password"
+                        ?
+                        <PasswordInput
+                            placeholder={placeholder}
+                            aria-invalid={ariaInvalid}
+                            {...register(inputFieldName, rules)}
+                        />
+                        :
+                        <FormInput
+                            {...register(inputFieldName, rules)}
+                            id={id}
+                            type={inputFieldType}
+                            placeholder={placeholder}
+                            Icon={Icon}
+                            aria-invalid={ariaInvalid}
+                        />
+                }
             </div>
             {/* Button section */}
             <div className='w-full flex flex-col gap-2'>
@@ -74,4 +85,4 @@ const OneInputFieldForm =  ({id, labelText, inputFieldType, placeholder, formSub
     )
 }
 
-export default OneInputFieldForm
+export default AccountRecoveryForm

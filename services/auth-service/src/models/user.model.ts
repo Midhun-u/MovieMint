@@ -1,7 +1,6 @@
 import { Op } from "sequelize"
 import { User } from "../schemas/user.schema.js"
 import type { Role } from "../types/role.js"
-import { excludePassword } from "../utils/excludePassword.js"
 
 type AuthType = "EMAIL" | "GOOGLE"
 type UserData = {
@@ -42,6 +41,13 @@ export const UserModel = {
 
     },
 
+    getUserById: async (userId: string) => {
+
+        const user = await User.findByPk(userId)
+        return user?.dataValues
+
+    },
+
     addUser: async (userData: UserData) => {
 
         const newUser = await User.create({
@@ -53,14 +59,13 @@ export const UserModel = {
             role: userData.role
         })
 
-        const newUserData = excludePassword(newUser.dataValues)
-        return newUserData
+        return newUser.dataValues
 
     },
 
-    deleteUser: async (userId: string) => {
+    updateUserById: async (userId: string, updateFields: object): Promise<number> => {
 
-        const data = await User.destroy({
+        const [affectedCount] = await User.update(updateFields, {
             where: {
                 id: {
                     [Op.eq]: userId
@@ -68,7 +73,21 @@ export const UserModel = {
             }
         })
 
-        return data
+        return affectedCount
+
+    },
+
+    deleteUser: async (userId: string): Promise<number> => {
+
+        const affectedCount = await User.destroy({
+            where: {
+                id: {
+                    [Op.eq]: userId
+                }
+            }
+        })
+
+        return affectedCount
 
     },
 

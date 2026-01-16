@@ -1,8 +1,10 @@
 import AuthForm from '../form/AuthForm'
 import Image, { StaticImageData } from 'next/image'
 import VerifyEmailForm from '../form/VerifyEmailForm'
+import OtpForm from '../form/OtpForm'
+import ResetPasswordForm from '../form/ResetPasswordForm'
 
-type FormType = "LOGIN" | "SIGN" |  "EMAIL" 
+type FormType = "LOGIN" | "SIGN" |  "EMAIL" | "OTP" | "RESET_PASSWORD"
 
 interface FormLayoutProps {
     formType: FormType
@@ -32,6 +34,7 @@ const FormLayout = ({ formType, vectorImage, formTitle, formAbout }: FormLayoutP
                     <h1 className='font-bold text-lg'>
                         {formTitle}
                     </h1>
+                    {/* Description section */}
                     <p className='text-sm w-full md:w-[70%] text-center'>
                         {formAbout}
                     </p>
@@ -50,6 +53,22 @@ const FormLayout = ({ formType, vectorImage, formTitle, formAbout }: FormLayoutP
                     formType === "EMAIL"
                     ?
                     <VerifyEmailForm
+                    />
+                    :
+                    null
+                }
+                {
+                    formType === "OTP"
+                    ?
+                    <OtpForm
+                    />
+                    :
+                    null
+                }
+                {
+                    formType === "RESET_PASSWORD"
+                    ?
+                    <ResetPasswordForm
                     />
                     :
                     null
