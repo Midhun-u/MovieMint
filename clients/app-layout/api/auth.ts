@@ -129,3 +129,22 @@ export const sendOtpApi = handleError(async (formInputData: {email: string}) => 
     return result
 
 })
+
+// Api for verifying OTP
+export const verifyOtpApi = handleError(async (formInputData: {otp: number, email: string}) => {
+
+    const formInputDataObject = zod.object({
+        otp: zod.number().nonoptional(),
+        email: zod.string().regex(emailRegex)
+    })
+
+    const fields = formInputDataObject.parse(formInputData)
+
+    const result = fetchInstance(AUTH_BASE_URL, "/verify-otp", "POST", {
+        otp: fields.otp,
+        email: fields.email
+    })
+
+    return result
+
+})

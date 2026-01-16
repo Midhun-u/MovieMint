@@ -1,9 +1,9 @@
-import React, { ForwardRefExoticComponent, InputHTMLAttributes, RefAttributes } from "react"
+import React, { InputHTMLAttributes } from "react"
 import { Input } from "../ui/input"
-import { LucideProps } from "lucide-react"
+import { LucidReactIconType } from "@/types/lucidReact"
 
 export interface FormInputProps extends InputHTMLAttributes<HTMLInputElement>{
-    Icon?: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>
+    Icon?: LucidReactIconType
     className?: string
     type: "text" | "password" | "email" | "number"
 }

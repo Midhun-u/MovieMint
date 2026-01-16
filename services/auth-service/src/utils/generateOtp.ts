@@ -1,9 +1,24 @@
+import { convertStringToNumber } from "./convertStringToNumber.js"
+
+// Function for getting random item from an array
+const getRandomItem = (array: Array<any>) => {
+
+    return array[Math.floor(Math.random() * array.length)]
+
+}
+
 // Function for generating OTP
-export const generateOtp = (digitsLength: number, durationNumber: number) => {
+export const generateOtp = (digitsLength: number) => {
 
-    const otpLength = parseInt("".toString().padEnd(digitsLength, "9"))
+    const digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    let otp = ""
 
-    const otp = Math.floor(Math.random() * otpLength)
-    return otp
+    for(let i = 1; i <= digitsLength; i ++){
 
+        const randomStringDigit = getRandomItem(digits).toString()
+        otp = otp + randomStringDigit
+
+    }
+
+    return convertStringToNumber(otp)
 }

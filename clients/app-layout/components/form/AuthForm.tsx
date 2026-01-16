@@ -365,6 +365,7 @@ const AuthForm = ({ formType }: FormProps) => {
                             labelTitle="Admin Key"
                         />
                         <FormInput
+                            id={adminKeyId}
                             type="text"
                             Icon={AdminKeyIcon}
                             placeholder="Enter admin key"

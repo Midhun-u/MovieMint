@@ -24,7 +24,7 @@ export const sendOtpController = handleError(async (request: FastifyRequest, rep
     }
 
     // Generating OTP
-    const otpDigits = generateOtp(6, 5)
+    const otpDigits = generateOtp(6)
     const result = await sendOtp(user.email, otpDigits, 5)
 
     if(result?.error){
@@ -43,6 +43,6 @@ export const sendOtpController = handleError(async (request: FastifyRequest, rep
     })
 
     reply.status(201)
-    return {success: true, message: "OTP sent to the mail", statusCode: 201}
+    return {success: true, message: "OTP sent to the mail", email: email, statusCode: 201}
 
 }, "sendOtpController error")

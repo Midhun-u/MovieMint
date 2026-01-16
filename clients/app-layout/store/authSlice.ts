@@ -5,7 +5,14 @@ const initialState = {
 
     loading: false,
     errorMessage: "",
-    user: null
+    user: {
+        id: "",
+        firstname: "",
+        lastname: "",
+        email: "",
+        role: "",
+        auth_type: ""
+    }
 
 }
 
@@ -18,25 +25,31 @@ const authSlice = createSlice({
             
             state.loading = true
             state.errorMessage = ""
-            state.user = null
+            state.user = initialState.user
 
         },
         authSuccess: (state, action) => {
             
             state.loading = false
             state.errorMessage = ""
-            state.user = action.payload.user
             
+            if(action.payload.user){
+                state.user = action.payload.user
+            }else{
+                state.user = initialState.user
+            }
+
             if(action.payload.authToken){
                 addDataToLocalStorage("authToken", action.payload.authToken)
             }
+
 
         },
         authFailed: (state, action) => {
 
             state.loading = false
             state.errorMessage = action.payload.errorMessage
-            state.user = null
+            state.user = initialState.user
 
         }
 

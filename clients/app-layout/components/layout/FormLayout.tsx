@@ -2,7 +2,7 @@ import AuthForm from '../form/AuthForm'
 import Image, { StaticImageData } from 'next/image'
 import VerifyEmailForm from '../form/VerifyEmailForm'
 
-type FormType = "LOGIN" | "SIGN" | "OTP" | "EMAIL" | "RESET PASSWORD"
+type FormType = "LOGIN" | "SIGN" |  "EMAIL" 
 
 interface FormLayoutProps {
     formType: FormType

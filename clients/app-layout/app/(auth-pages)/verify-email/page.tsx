@@ -1,7 +1,7 @@
 import FormLayout from "@/components/layout/FormLayout"
 import { assets } from "@/public/assets/assets"
 
-const VerifyEmailSection = () => {
+const VerifyEmailPage = () => {
 
   return (
 
@@ -15,4 +15,4 @@ const VerifyEmailSection = () => {
   )
 }
 
-export default VerifyEmailSection
+export default VerifyEmailPage
