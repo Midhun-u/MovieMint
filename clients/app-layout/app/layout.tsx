@@ -28,6 +28,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${spaceGrotesk.variable} bg-background-color`}
+        id="body"
       >
         <StoreProvider>
           <main className="w-screen overflow-scroll">

@@ -3,24 +3,13 @@
 
 @custom-variant dark (&:is(.dark *));
 
-* {
-  font-family: var(--font-space-grotesk);
-  box-sizing: border-box;
-}
-
-html{
-  scroll-behavior: smooth;
-}
-
-::-webkit-scrollbar{
-  display: none;
-}
 
 :root {
   --background-color: #f7f7f7;
   --foreground-color: #FFFF;
   --primary-color: #3CE062;
   --primary-accent-color: #0c8f2a;
+  --foreground-theme-color: #000;
   --success-background-color: #8EFFC8;
   --success-foreground-color: #1B5E20;
   --warn-background-color: #FEFFBE;
@@ -65,6 +54,19 @@ html{
   --sidebar-ring: oklch(0.708 0 0);
 }
 
+* {
+  font-family: var(--font-space-grotesk);
+  box-sizing: border-box;
+}
+
+html{
+  scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar{
+  display: none;
+}
+
 body {
   width: 100vw;
   height: 100dvh;
@@ -74,10 +76,9 @@ body {
   padding: 0px;
 }
 
-body .dark-theme {
-  --background-color: #161616;
-  --foreground-color: #000000;
-  --disable-color: #ABABAB;
+.switch-theme{
+  --foreground-color: blue;
+  --background-color: red;
 }
 
 @theme {
@@ -101,6 +102,7 @@ body .dark-theme {
   --color-dark-foreground-color: var(--dark-foreground-color);
   --color-dark-foreground-color: var(--dark-foreground-color);
   --color-dark-foreground-text-color: var(--dark-foreground-text-color);
+  --color-foreground-theme-color: var(--foreground-theme-color)
 }
 
 @theme inline {

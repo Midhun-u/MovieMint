@@ -4,6 +4,7 @@ import loginVector from './login-vector.svg'
 import forgetPasswordVector from './forget-password-vector.svg'
 import otpVector from './otp-vector.svg'
 import passwordVector from './password-vector.svg'
+import logo from './logo.svg'
 
 export const assets = {
 
@@ -12,6 +13,7 @@ export const assets = {
     loginVector,
     forgetPasswordVector,
     otpVector,
-    passwordVector
+    passwordVector,
+    logo
 
 }
