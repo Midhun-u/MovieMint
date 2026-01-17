@@ -48,6 +48,22 @@ export const UserModel = {
 
     },
 
+    getUserByEmailWithAuthTypeAndRole: async (email: string, authType: AuthType, role: Role) => {
+
+        const user = await User.findOne({
+            where: {
+                [Op.and]: [
+                    {email: email},
+                    {auth_type: authType},
+                    {role: role}
+                ]
+            }
+        })
+
+        return user?.dataValues
+
+    },
+
     addUser: async (userData: UserData) => {
 
         const newUser = await User.create({

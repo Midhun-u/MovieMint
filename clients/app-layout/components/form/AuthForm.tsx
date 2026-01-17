@@ -181,7 +181,8 @@ const AuthForm = ({ formType }: FormProps) => {
             if (googleAuthResult.user) {
 
                 const result = await googleLoginApi({
-                    email: googleAuthResult.user.email as string
+                    email: googleAuthResult.user.email as string,
+                    role: currentTabValue
                 })
 
                 if (result.success) {

@@ -100,13 +100,15 @@ export const loginApi = handleError(async (formInputData: LoginFormInputData) =>
 export const googleLoginApi = handleError(async (formInputData: GoogleLoginData) => {
 
     const formInputDataObject = zod.object({
-        email: zod.string().nonempty().regex(emailRegex)
+        email: zod.string().nonempty().regex(emailRegex),
+        role: zod.string().nonempty()
     })
 
     const fields = formInputDataObject.parse(formInputData)
 
     const data = await fetchInstance(AUTH_BASE_URL, "/google-login", "POST", {
-        email: fields.email.trim()
+        email: fields.email.trim(),
+        role: fields.role
     })
 
     return data

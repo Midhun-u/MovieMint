@@ -25,5 +25,6 @@ export type LoginFormInputData = {
 }
 
 export type GoogleLoginData = {
-    email: string
+    email: string,
+    role: Role
 }

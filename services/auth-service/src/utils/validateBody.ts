@@ -52,7 +52,8 @@ export const validateBody = (type: FormType, body: object): { success: boolean, 
         } else if(type === "GOOGLE_LOGIN"){
 
             const obj = zod.object({
-                email: zod.string().nonempty().regex(emailRegex)
+                email: zod.string().nonempty().regex(emailRegex),
+                role: zod.string().nonempty()
             })
 
             obj.parse(body)

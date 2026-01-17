@@ -8,7 +8,6 @@ export const resetPasswordController = handleError(async (request: FastifyReques
 
     const { userId, newPassword } = request.body as { newPassword: string, userId: string } || {}
 
-    console.log(request.body)
     if (!userId || !newPassword) {
 
         reply.status(400)

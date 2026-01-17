@@ -23,11 +23,23 @@ export const loginController = handleError(async (request: FastifyRequest, reply
     }
 
     // Check if user signed
-    const user = await UserModel.getUserByEmailWithAuthType(email.trim(), "EMAIL")
+    const user = await UserModel.getUserByEmailWithAuthTypeAndRole(email.trim(), "EMAIL", role)
 
     if(!user){
+
+        // Sending response according to role
         reply.status(404)
-        return {success: false, error: "User is not found", statusCode: 404}
+        let responseObj = {success: false, error: "", statusCode: 404}
+
+        if(role === "USER"){  
+            responseObj.error = "User is not found"
+        }else if(role === "ADMIN"){
+            responseObj.error = "Admin is not found"
+        }else{
+            responseObj.error = "Theater owner is not found"
+        }
+
+        return responseObj
     }
 
     // Checking password is correct

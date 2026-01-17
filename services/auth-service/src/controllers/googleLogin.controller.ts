@@ -4,28 +4,38 @@ import { validateBody } from "../utils/validateBody.js";
 import { UserModel } from "../models/user.model.js";
 import { generateToken } from "../utils/generateToken.js";
 import { excludePassword } from "../utils/excludePassword.js";
+import type { Role } from "../types/role.js";
 
 // Google login controller
 export const googleLoginController = handleError(async (request: FastifyRequest, reply: FastifyReply) => {
 
-    const {email} = request.body as {email: string} || {}
+    const { email, role } = request.body as { email: string, role: Role } || {}
 
-    const validateResult = validateBody("GOOGLE_LOGIN", request.body as {email: string})
-    
-    if(!validateResult.success){
+    const validateResult = validateBody("GOOGLE_LOGIN", request.body as { email: string, role: Role })
+
+    if (!validateResult.success) {
 
         reply.status(400)
-        return {success: false, error: validateResult.errorMessage, statusCode: 400}
+        return { success: false, error: validateResult.errorMessage, statusCode: 400 }
 
     }
 
     // Checking if user signed
-    const user = await UserModel.getUserByEmailWithAuthType(email, "GOOGLE")
+    const user = await UserModel.getUserByEmailWithAuthTypeAndRole(email, "GOOGLE", role)
 
-    if(!user){
+    if (!user) {
 
+        // Sending response according to role
         reply.status(404)
-        return {success: false, error: "User is not found", statusCode: 404}
+        let responseObj = { success: false, error: "", statusCode: 404 }
+
+        if (role === "USER") {
+            responseObj.error = "User is not found"
+        } else {
+            responseObj.error = "Theater owner is not found"
+        }
+
+        return responseObj
 
     }
 
@@ -40,6 +50,6 @@ export const googleLoginController = handleError(async (request: FastifyRequest,
     // Excluding user password
     const userDetails = excludePassword(user)
 
-    return {success: true, message: "Login success", user: userDetails, authToken: authToken, statusCode: 200}
+    return { success: true, message: "Login success", user: userDetails, authToken: authToken, statusCode: 200 }
 
 }, "googleLoginController error")
