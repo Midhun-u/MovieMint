@@ -7,7 +7,6 @@ import { useAppSelector } from "@/store/hooks"
 const ResetPasswordLayout = () => {
 
   const {verified} = useAppSelector(state => state.otp)
-  console.log(verified)
 
   return (
 

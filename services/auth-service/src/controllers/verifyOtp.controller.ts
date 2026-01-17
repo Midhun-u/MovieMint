@@ -3,6 +3,7 @@ import { handleError } from "../utils/handleError.js";
 import { UserModel } from "../models/user.model.js";
 import { redisClient } from "../config/redis.js";
 import { convertStringToNumber } from "../utils/convertStringToNumber.js";
+import { excludePassword } from "../utils/excludePassword.js";
 
 // Controller for verifying OTP
 export const verifyOtpController = handleError(async (request: FastifyRequest, reply: FastifyReply) => {
@@ -43,8 +44,11 @@ export const verifyOtpController = handleError(async (request: FastifyRequest, r
         // Deleting otp
         await redisClient.del(email)
 
+        // Excluding password
+        const userDetails = excludePassword(user)
+
         reply.status(200)
-        return {success: true, message: "Email is verified", statusCode: 200, user: user}
+        return {success: true, message: "Email is verified", statusCode: 200, user: userDetails}
 
     }else{
 

@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { useRouter } from "next/navigation"
 import { resetPasswordApi } from "@/api/auth"
 import { ToastProvider } from "../context/ToastMessage"
-import { authRequest } from "@/store/authSlice"
+import { authFailed, authRequest, authSuccess } from "@/store/authSlice"
 
 type Inputs = {
     newPassword: string
@@ -29,14 +29,22 @@ const ResetPasswordForm = () => {
 
             dispatch(authRequest())
             const result = await resetPasswordApi({newPassword: data.newPassword, userId: user.id})
-            console.log(result)
             
-            // if(result.success){
+            if(result.success){
 
-            // }else{
-            //     toastContext?.triggerToastMessage(result.error, "ERROR")
+                toastContext?.triggerToastMessage(result.message, "SUCCESS")
+                dispatch(authSuccess({user: null}))
 
-            // }
+                router.push("/login")
+
+            }else{
+
+                toastContext?.triggerToastMessage(result.error, "ERROR")
+                dispatch(authFailed({user: null}))
+
+                router.push("/verify-email")
+
+            }
 
         }else{
             router.push("/verify-email")

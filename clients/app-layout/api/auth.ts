@@ -152,7 +152,10 @@ export const verifyOtpApi = handleError(async (formInputData: {otp: number, emai
 // Api for resetting password
 export const resetPasswordApi = handleError(async (formInputData: {newPassword: string, userId: string} ) => {
 
-    const formInputDataObject = zod.object()
+    const formInputDataObject = zod.object({
+        newPassword: zod.string().min(6).max(50),
+        userId: zod.string().nonempty()
+    })
 
     const fields = formInputDataObject.parse(formInputData)
 

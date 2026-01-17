@@ -7,8 +7,9 @@ import Label from "./Label"
 import Spinner from "../ui/Spinner"
 import BackButton from "./BackButton"
 import { FieldValues, RegisterOptions, UseFormHandleSubmit, UseFormRegister } from "react-hook-form"
-import { BaseSyntheticEvent } from "react"
+import { BaseSyntheticEvent, useState } from "react"
 import PasswordInput from "./PasswordInput"
+import PasswordStrengthIndicator from "./PasswordStrengthIndicator"
 
 type AccountRecoveryFormProps = {
     id: string
@@ -29,6 +30,8 @@ type AccountRecoveryFormProps = {
 
 const AccountRecoveryForm = ({ id, labelText, inputFieldType, inputFieldName, placeholder, rules, formSubmitFunction, handleSubmit, register, Icon, loading, ariaInvalid, backNavigationUrl, primaryButtonTitle }: AccountRecoveryFormProps) => {
 
+    const [password, setPassword] = useState<string>("")
+
     return (
 
         <form onSubmit={handleSubmit(formSubmitFunction)} className="w-full flex flex-col gap-5 py-3 mt-10">
@@ -41,11 +44,17 @@ const AccountRecoveryForm = ({ id, labelText, inputFieldType, inputFieldName, pl
                 {
                     inputFieldType === "password"
                         ?
-                        <PasswordInput
-                            placeholder={placeholder}
-                            aria-invalid={ariaInvalid}
-                            {...register(inputFieldName, rules)}
-                        />
+                        <div>
+                            <PasswordInput
+                                placeholder={placeholder}
+                                aria-invalid={ariaInvalid}
+                                {...register(inputFieldName, rules)}
+                                onChange={(event) => setPassword(event.target.value)}
+                            />
+                            <PasswordStrengthIndicator
+                                password={password}
+                            />
+                        </div>
                         :
                         <FormInput
                             {...register(inputFieldName, rules)}
