@@ -129,7 +129,7 @@ const Header = () => {
                 </Button>
 
                 {/* Sidebar */}
-                <aside className={`absolute text-foreground-theme-color pt-17 px-3 sm:px-5 ${showSidebar ? "left-0" : "left-500"} flex flex-col sm:hidden w-full h-full  overflow-auto top-0 z-40 bg-foreground-color`}>
+                <aside className={`absolute text-foreground-theme-color pt-17 px-3 sm:px-5 ${showSidebar ? "left-0" : "left-500"} transition-all duration-200 flex flex-col sm:hidden w-full h-full  overflow-auto top-0 z-40 bg-foreground-color`}>
                     <Link
                         href={"/sign"}
                         className="font-medium border-b-2 pb-2 border-foreground-theme-color/20 w-full flex justify-end"

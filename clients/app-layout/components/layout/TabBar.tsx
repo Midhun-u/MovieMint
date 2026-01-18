@@ -10,14 +10,14 @@ const TabBar = () => {
 
     return (
 
-        <nav className="w-auto bg-foreground-color rounded-2xl px-1 py-1 flex items-center ">
+        <nav className="w-auto bg-foreground-color rounded-2xl px-1 py-1 flex items-center overflow-x-scroll">
             {
                 tabBarNavs.map((tabBarNav, index) => (
 
                     <Link
                         href={tabBarNav.route}
                         key={index}
-                        className={`text-xs font-medium px-5 py-1 ${pathname === tabBarNav.route? "bg-primary-color rounded-xl text-dark-foreground-color": ""}`}
+                        className={`text-xs shrink-0 font-medium px-5 py-1 ${pathname === tabBarNav.route? "bg-primary-color rounded-xl text-dark-foreground-color": ""}`}
                     >
                         {tabBarNav.title}
                     </Link>
