@@ -25,7 +25,7 @@ const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(({
                 <Icon
                     size={21}
                     strokeWidth={1.5}
-                    className="stroke-disable-color absolute left-2 "
+                    className="stroke-foreground-theme-color/50 absolute left-2 "
                 />
                 :
                 null
@@ -33,7 +33,7 @@ const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(({
             <Input
                 ref={ref}
                 type={type}
-                className={` ${className} text-sm border-[1.6px] h-10 border-background-color focus-visible:border-primary-color pl-9 w-full transition-all duration-200 bg-foreground-color`}
+                className={` ${className} text-sm border-[1.6px] h-10 border-background-color focus-visible:border-primary-color pl-9 w-full transition-all duration-200 bg-foreground-color text-foreground-theme-color`}
                 {...props}
             />
         </div>

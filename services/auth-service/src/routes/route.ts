@@ -29,6 +29,6 @@ export const authRoutes = (fastify: FastifyInstance) => {
     fastify.post("/verify-otp", verifyOtpController)
 
     // Route for resetting password
-    fastify.put("/reset-password", resetPasswordController)
+    fastify.patch("/reset-password", resetPasswordController)
 
 }

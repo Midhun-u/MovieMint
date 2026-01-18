@@ -17,7 +17,7 @@ const FormLayout = ({ formType, vectorImage, formTitle, formAbout }: FormLayoutP
 
     return (
 
-        <section className='w-full h-full flex gap-2 justify-center md:p-5'>
+        <section className='w-full h-full flex gap-2 justify-center md:p-5 text-foreground-theme-color'>
             {/* Image section */}
             <div className='hidden md:flex justify-center px-10 items-center w-full h-svh'>
                 <Image

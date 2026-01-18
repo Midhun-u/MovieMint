@@ -69,16 +69,17 @@ html{
 
 body {
   width: 100vw;
-  height: 100dvh;
-  overflow-y: auto;
-  overflow-x: hidden;
+  height: 100%;
   margin: 0px;
   padding: 0px;
+  overflow-x: hidden;
+  position: relative;
 }
 
-.switch-theme{
-  --foreground-color: blue;
-  --background-color: red;
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button{
+  display: none;
+  margin: 0px;
 }
 
 @theme {
@@ -178,6 +179,13 @@ body {
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+}
+
+.switch-theme{
+  --background-color: #161616;
+  --foreground-color: #000;
+  --foreground-theme-color: #fff;
+  --disable-color: #2F2F2F;
 }
 
 @layer base {

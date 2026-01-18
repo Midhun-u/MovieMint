@@ -212,7 +212,7 @@ const AuthForm = ({ formType }: FormProps) => {
     return (
 
         <form
-            className="w-full h-full "
+            className="w-full h-full text-foreground-theme-color"
             method="post"
             onSubmit={handleSubmit(formType === "SIGN" ? submitSignForm : submitLoginForm)}
         >
@@ -388,7 +388,7 @@ const AuthForm = ({ formType }: FormProps) => {
                         />
                         <div className="flex flex-col justify-start">
                             <span className="font-medium text-xs">Accept Terms and Condition</span>
-                            <p className="text-xs mt-1 text-disable-color">
+                            <p className="text-xs mt-1 text-foreground-theme-color/50">
                                 By signing in, you acknowledge that you are providing accurate account information and consent to its secure storage and use for authentication purposes. Your data will remain protected under our privacy and security policies, and will not be shared without your permission.
                             </p>
                         </div>
@@ -419,19 +419,19 @@ const AuthForm = ({ formType }: FormProps) => {
                 </div>
                 <Activity mode={currentTabValue !== "ADMIN" ? "visible" : "hidden"}>
                     <div className="flex gap-2 justify-center w-full items-center">
-                        <hr className="w-full border border-disable-color/30" />
+                        <hr className="w-full border border-foreground-theme-color/50" />
                         <span>OR</span>
-                        <hr className="w-full border border-disable-color/30" />
+                        <hr className="w-full border border-foreground-theme-color/50" />
                     </div>
                     <div className="w-full flex justify-center items-center">
                         <Button
                             type="button"
-                            className="w-full bg-foreground-color border border-disable-color/20"
+                            className="w-full bg-foreground-color border border-foreground-theme-color/50"
                             disabled={loading}
                             onClick={() => formType === "SIGN" ? googleSignAuth() : googleLoginAuth()}
                         >
                             <Image src={assets.googleIcon} width={18} height={18} alt="google-sign-icon" />
-                            <span className="text-dark-foreground-color">
+                            <span>
                                 {
                                     formType === "SIGN"
                                         ?

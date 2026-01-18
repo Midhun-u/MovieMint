@@ -34,7 +34,7 @@ const AccountRecoveryForm = ({ id, labelText, inputFieldType, inputFieldName, pl
 
     return (
 
-        <form onSubmit={handleSubmit(formSubmitFunction)} className="w-full flex flex-col gap-5 py-3 mt-10">
+        <form onSubmit={handleSubmit(formSubmitFunction)} className="w-full flex flex-col gap-5 py-3 mt-10 text-foreground-theme-color">
             {/* Input section */}
             <div className="w-full flex flex-col">
                 <Label

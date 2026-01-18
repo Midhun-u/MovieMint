@@ -9,7 +9,7 @@ const Label = ({labelId, labelTitle}: LabelProps) => {
 
     <label 
         htmlFor={labelId}
-        className='font-medium text-sm'
+        className='font-medium text-sm text-foreground-theme-color'
     >
         {labelTitle}
     </label>

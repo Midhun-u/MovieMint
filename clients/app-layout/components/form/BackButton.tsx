@@ -19,12 +19,12 @@ const BackButton = ({loading, navigationUrl}: BackButtonProps) => {
 
         <Button
             type='button'
-            className='bg-foreground-color border-2 border-disable-color/10 text-dark-foreground-color'
+            className='bg-foreground-color border border-foreground-theme-color/50'
             onClick={() => router.push(navigationUrl)}
             disabled={loading}
         >
             <BackIcon
-                className='stroke-dark-foreground-color'
+                className='stroke-foreground-theme-color'
                 size={20}
             />
             <span>Back</span>

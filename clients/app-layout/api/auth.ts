@@ -161,7 +161,7 @@ export const resetPasswordApi = handleError(async (formInputData: {newPassword: 
 
     const fields = formInputDataObject.parse(formInputData)
 
-    const result = await fetchInstance(AUTH_BASE_URL, "/reset-password", "PUT", {
+    const result = await fetchInstance(AUTH_BASE_URL, "/reset-password", "PATCH", {
         newPassword: fields.newPassword,
         userId: fields.userId
     })

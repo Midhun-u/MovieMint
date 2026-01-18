@@ -27,16 +27,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${spaceGrotesk.variable} bg-background-color`}
+        className={`${spaceGrotesk.variable} bg-background-color text-foreground-theme-color`}
         id="body"
       >
         <StoreProvider>
-          <main className="w-screen overflow-scroll">
+          <main className="w-full">
             <ToastMessage>
               {children}
             </ToastMessage>
+            <Footer />
           </main>
-          <Footer />
         </StoreProvider>
       </body>
     </html>

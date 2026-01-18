@@ -10,7 +10,7 @@ const Footer = () => {
     return (
 
         <footer
-            className="relative my-20 w-screen px-4 sm:px-7 flex md:justify-center flex-wrap gap-10 py-7 pt-9 bg-dark-foreground-color text-dark-foreground-text-color"
+            className="box-border bg-foreground-color w-screen h-auto pt-10 pb-20 mt-20 px-4 sm:px-7 flex md:justify-center flex-wrap gap-10 text-foreground-theme-color"
         >
             {/* About section */}
             <div className="w-100">
@@ -57,7 +57,7 @@ const Footer = () => {
                 </h2>
                 <div className="mt-3 flex w-full flex-col gap-2 sm:flex-row md:w-auto md:flex-row">
                     <Input
-                        className="focus-visible:ring-1 text-sm focus-visible:ring-primary-color h-9 md:h-8 sm:w-100 md:w-70 border-disable-color w-full"
+                        className="focus-visible:ring-1 text-sm focus-visible:ring-primary-color h-9 md:h-8 sm:w-100 md:w-70 border-disable-color/50 w-full"
                         placeholder="Enter your email"
                     />
                     <Button
@@ -96,7 +96,7 @@ const Footer = () => {
                 <hr className="text-white w-full"/>
                 <p className="text-xs mt-3 flex flex-wrap justify-center">
                     &copy;2026 MovieMint. All rights reserved. | 
-                    <Link href={"/"} className="text-primary-color cursor-pointer ml-1">Privacy Policy</Link> | 
+                    <Link href={"/"} className="text-primary-color cursor-pointer ml-1 mr-1">Privacy Policy</Link> | 
                     <Link href={"/"} className="text-primary-color cursor-pointer ml-1">Terms of Service</Link>
                 </p>
             </div>
