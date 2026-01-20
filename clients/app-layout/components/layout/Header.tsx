@@ -20,6 +20,7 @@ import { useRouter } from "next/navigation"
 import Authentication from "../features/Authentication"
 import DashboardNavigationUI from "../ui/DashboardNavigation"
 import NullProfilePic from "../ui/NullProfilePic"
+import { envVariables } from "@/utils/envVariables"
 
 const Header = () => {
 
@@ -200,7 +201,7 @@ const Header = () => {
                             user.role === "ADMIN"
                                 ?
                                 <Link
-                                    href={"/sign"}
+                                    href={envVariables.ADMIN_DASHBOARD_URL + authToken}
                                     className="font-medium mt-3 border-b-2 pb-2 border-foreground-theme-color/20 w-full flex justify-end"
                                 >
                                     Admin Dashboard
@@ -213,13 +214,13 @@ const Header = () => {
                                 ?
                                 <>
                                     <Link
-                                        href={"/sign"}
+                                        href={envVariables.THEATER_DASHBAORD_URL + authToken}
                                         className="font-medium mt-3 border-b-2 pb-2 border-foreground-theme-color/20 w-full flex justify-end"
                                     >
                                         Theater Dashboard
                                     </Link>
                                     <Link
-                                        href={"/sign"}
+                                        href={"/theater-registration"}
                                         className="font-medium mt-3 border-b-2 pb-2 border-foreground-theme-color/20 w-full flex justify-end"
                                     >
                                         Theater Registration

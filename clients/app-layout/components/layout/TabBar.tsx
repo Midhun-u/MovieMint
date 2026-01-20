@@ -10,7 +10,7 @@ const TabBar = () => {
 
     return (
 
-        <nav className="w-full sm:w-min bg-foreground-color rounded-2xl px-1 py-1 flex items-center overflow-x-scroll">
+        <nav className="w-full sm:w-auto bg-foreground-color rounded-2xl px-1 py-1 flex items-center overflow-x-scroll">
             {
                 tabBarNavs.map((tabBarNav, index) => (
 
