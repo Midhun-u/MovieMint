@@ -1,11 +1,11 @@
 'use client'
 
-import { Activity, createContext, ForwardRefExoticComponent, ReactNode, RefAttributes, useEffect, useRef, useState } from 'react'
+import { Activity, createContext, ReactNode, useEffect, useRef, useState } from 'react'
 import {
-  LucideProps,
   BadgeCheck as SuccessIcon,
   OctagonAlert as ErrorIcon
 } from 'lucide-react'
+import { LucidReactIconType } from '@/types/lucidReact'
 
 type ToastType = "SUCCESS" | "ERROR"
 type ToastStrokeColor = "stroke-primary-color" | "stroke-error-foreground-color"
@@ -28,9 +28,7 @@ const ToastMessage = ({ children }: { children: ReactNode }) => {
   })
   const [showToastMessage, setShowToastMessage] = useState<boolean>(false)
   const toastRef = useRef<HTMLDivElement>(null)
-  const [ToastIcon, setToastIcon] = useState<
-    ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>
-  >(SuccessIcon)
+  const [ToastIcon, setToastIcon] = useState<LucidReactIconType>(SuccessIcon)
 
   // Function for triggering toast message
   const triggerToastMessage = (message: string, type: ToastType) => {

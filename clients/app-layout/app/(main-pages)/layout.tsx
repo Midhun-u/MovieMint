@@ -12,7 +12,7 @@ const MainPagesLayout = ({
     <>
       <Header />
       <div className="w-full flex justify-center">
-        <div className="w-[70%]">
+        <div className="w-full px-3 sm:w-[90%] sm:px-0 md:w-[70%] overflow-x-scroll">
           {children}
         </div>
       </div>

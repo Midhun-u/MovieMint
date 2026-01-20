@@ -1,4 +1,4 @@
-type Method = "GET" | "POST" | "PUT" | "DELETE"
+type Method = "GET" | "POST" | "PUT" | "DELETE" | "PATCH"
 
 // Fetch instance
 export const fetchInstance = async (baseUrl: string, method: Method, path: string, data?: object) => {
@@ -10,7 +10,7 @@ export const fetchInstance = async (baseUrl: string, method: Method, path: strin
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(data)
+            body: method !== "GET"? JSON.stringify(data): null
         })
 
         const result = await response.json()

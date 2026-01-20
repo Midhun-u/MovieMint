@@ -4,7 +4,7 @@ import type { GoogleSignBody } from "../types/body.js";
 import { validateBody } from "../utils/validateBody.js";
 import { UserModel } from "../models/user.model.js";
 import { generateToken } from "../utils/generateToken.js";
-import { uploadUserProfile } from "../service/uploadImage.js";
+import {  uploadUserProfileImage } from "../service/uploadImage.js";
 import { excludePassword } from "../utils/excludePassword.js";
 
 // Controller for google signing
@@ -43,7 +43,7 @@ export const googleSignController = handleError(async (request: FastifyRequest, 
     if(newUser){
 
         // Uploading user image
-        const data = await uploadUserProfile({ imageUrl: profilePic, userId: newUser.id})
+        const data = await uploadUserProfileImage({ imageUrl: profilePic, userId: newUser.id})
 
         if(data.success){
 
@@ -77,4 +77,4 @@ export const googleSignController = handleError(async (request: FastifyRequest, 
     return {success: false, error: "Something went wrong", statusCode: 400}
 
 
-}, "google sign controller error")
+}, "googleSignController error")

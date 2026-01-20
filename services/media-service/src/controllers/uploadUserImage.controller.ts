@@ -5,7 +5,7 @@ import { sendResponse } from "../utils/sendResponse.js";
 import { uploadImage } from "../utils/uploadImage.js";
 import { deleteFileFromDisk, readFileFromDisk } from "../utils/fileOperations.js";
 import path from 'path'
-import { ImageModel } from "../models/image.model.js";
+import { UserImageModel } from "../models/userImage.model.js";
 
 // Controller for uploading user images
 export const uploadUserImageController = handleError(async (request: Request, response: Response): Promise<any> => {
@@ -34,7 +34,7 @@ export const uploadUserImageController = handleError(async (request: Request, re
         const fetchResponse = await fetch(imageUrl)
         const data = await fetchResponse.headers.get("Content-type")
 
-        const newImage = await ImageModel.addImage({
+        const newImage = await UserImageModel.addImage({
             userId: userId,
             imageUrl: imageUrl,
             imageType: data as ContentType || "image/jpeg"

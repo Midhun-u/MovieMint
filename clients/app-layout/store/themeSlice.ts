@@ -5,7 +5,7 @@ type InitialState = {
 }
 
 const initialState: InitialState = {
-    theme: "white"
+    theme:  "white"
 }
 
 const themeSlice = createSlice({
@@ -16,9 +16,15 @@ const themeSlice = createSlice({
         switchTheme: (state) => {
 
             if(state.theme === "dark"){
+
                 state.theme = "white" 
+                localStorage.setItem("theme", "white")
+
             }else{
+
                 state.theme = "dark"
+                localStorage.setItem("theme", "dark")
+
             }
 
         }

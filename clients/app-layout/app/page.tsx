@@ -2,7 +2,7 @@ import {redirect} from 'next/navigation'
 
 const RootPage = () => {
 
-  redirect("/movies")
+  return redirect("/movies")
 
 }
 

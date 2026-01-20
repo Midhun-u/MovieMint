@@ -7,7 +7,7 @@ export const initCors = fastifyPlugin((fastify) => {
 
     fastify.register(cors, {
         origin: envVariables.CLIENT_URL as string,
-        methods: ["GET", "POST", "PUT", "DELETE"],
+        methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
         credentials: true
     })
 

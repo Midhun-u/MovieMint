@@ -6,6 +6,8 @@ import { googleLoginController } from "../controllers/googleLogin.controller.js"
 import { sendOtpController } from "../controllers/sendOtp.controller.js";
 import { verifyOtpController } from "../controllers/verifyOtp.controller.js";
 import { resetPasswordController } from "../controllers/resetPassword.controller.js";
+import { getProfileController } from "../controllers/getProfile.controller.js";
+import { authenticationHook } from "../hooks/auth.hook.js";
 
 // Auth routes
 export const authRoutes = (fastify: FastifyInstance) => {
@@ -30,5 +32,8 @@ export const authRoutes = (fastify: FastifyInstance) => {
 
     // Route for resetting password
     fastify.patch("/reset-password", resetPasswordController)
+
+    // Route for getting profile
+    fastify.get("/get-profile", {onRequest: authenticationHook} ,getProfileController)
 
 }

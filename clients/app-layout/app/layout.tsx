@@ -4,6 +4,7 @@ import "./globals.css";
 import Footer from "@/components/layout/Footer";
 import StoreProvider from "@/components/features/StoreProvider";
 import ToastMessage from "@/components/context/ToastMessage";
+import Theme from "@/components/features/Theme";
 
 export const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -31,6 +32,7 @@ export default function RootLayout({
         id="body"
       >
         <StoreProvider>
+          <Theme />
           <main className="w-full">
             <ToastMessage>
               {children}

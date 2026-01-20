@@ -11,11 +11,12 @@ export const fetchInstance = handleError(async (
         
         const response = await fetch(baseurl + path, {
             method: method,
-            body: JSON.stringify(body),
+            body: method !== "GET"? JSON.stringify(body): null,
             headers: {
                 "Content-type": "application/json",
-                "Authorization": `Bearer ${token}`
+                "Authorization": token? `Bearer ${token}`: ""
             },
+            credentials: "include"
         })
     
         const data = await response.json() || null

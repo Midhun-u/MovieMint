@@ -426,7 +426,7 @@ const AuthForm = ({ formType }: FormProps) => {
                     <div className="w-full flex justify-center items-center">
                         <Button
                             type="button"
-                            className="w-full bg-foreground-color border border-foreground-theme-color/50"
+                            className="w-full bg-foreground-color border border-disable-color/20"
                             disabled={loading}
                             onClick={() => formType === "SIGN" ? googleSignAuth() : googleLoginAuth()}
                         >

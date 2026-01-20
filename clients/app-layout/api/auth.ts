@@ -169,3 +169,13 @@ export const resetPasswordApi = handleError(async (formInputData: {newPassword: 
     return result
 
 })
+
+// Api for getting profile
+export const getProfileApi = handleError(async (authToken: string) => {
+
+    if(!authToken) return
+
+    const result = await fetchInstance(AUTH_BASE_URL, "/get-profile", "GET", {}, authToken)
+    return result
+
+})

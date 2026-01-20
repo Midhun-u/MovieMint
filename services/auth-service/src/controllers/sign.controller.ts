@@ -77,4 +77,4 @@ export const signController = handleError(async (request: FastifyRequest, reply:
     reply.status(400)
     return {success: false, error: "Something went wrong", statusCode: 400}
 
-}, "sign controller error")
+}, "signController error")

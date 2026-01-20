@@ -1,4 +1,3 @@
-import { addDataToLocalStorage } from "@/utils/localStorage";
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
@@ -11,7 +10,12 @@ const initialState = {
         lastname: "",
         email: "",
         role: "",
-        auth_type: ""
+        auth_type: "",
+        profileImage: {
+            imageUrl: "",
+            imageType: "",
+            imageId: ""
+        }
     }
 
 }
@@ -40,7 +44,7 @@ const authSlice = createSlice({
             }
 
             if(action.payload.authToken){
-                addDataToLocalStorage("authToken", action.payload.authToken)
+                localStorage.setItem("authToken", action.payload.authToken)
             }
 
 

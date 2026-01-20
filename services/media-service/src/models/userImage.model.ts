@@ -1,8 +1,9 @@
+import { Op } from "sequelize";
 import { UserImage } from "../schemas/userImage.schema.js";
 import type { AddImageType } from "../types/addImageType.js";
 
 // Image model
-export const ImageModel = {
+export const UserImageModel = {
 
     addImage: async (data: AddImageType) => {
 
@@ -15,6 +16,20 @@ export const ImageModel = {
         })
 
         return newImage.dataValues
+
+    },
+
+    getImageByUserId: async (userId: string) => {
+
+        const userImage = await UserImage.findOne({
+            where: {
+                userId: {
+                    [Op.eq]: userId
+                }
+            }
+        })
+
+        return userImage?.dataValues
 
     }
 
