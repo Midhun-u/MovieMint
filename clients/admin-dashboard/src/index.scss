@@ -1,0 +1,18 @@
+@use './styles/variables' as variables;
+
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    font-family: "Space Grotesk", sans-serif;
+    font-optical-sizing: auto;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+body{
+    background-color: variables.$background-color;
+    color: variables.$foreground-theme-color;
+}

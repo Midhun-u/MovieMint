@@ -1,15 +1,12 @@
 import {
     UserIcon
 } from 'lucide-react'
+import style from '../../styles/ui/nullProfilePic.module.scss'
 
-interface NullProfilePic{
-    className?: string
-}
-
-const NullProfilePic = ({className}: NullProfilePic) => {
+const NullProfilePic = () => {
 
     return (
-        <div className={`${className} bg-background-color p-1 rounded-full border`}>
+        <div className={style.container}>
             <UserIcon
                 size={23}
                 strokeWidth={1.5}

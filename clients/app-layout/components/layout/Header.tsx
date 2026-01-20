@@ -109,7 +109,7 @@ const Header = () => {
                 <nav className="w-full flex items-center gap-2 justify-end sm:justify-center">
                     <div
                         onClick={() => dispatch(switchTheme())}
-                        className="p-1 rounded-full cursor-pointer hover:bg-foreground-theme-color/10"
+                        className="p-1 rounded-full cursor-pointer hover:bg-background-color"
                     >
                         {
                             theme === "dark"

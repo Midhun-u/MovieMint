@@ -1,0 +1,6 @@
+@use '../variables' as variables;
+
+.container{
+    background-color: variables.$background-color;
+    
+}
