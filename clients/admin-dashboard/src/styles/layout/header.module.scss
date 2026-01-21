@@ -1,4 +1,4 @@
-@use '../variables' as variables;
+$disable-color: #7F7F7F;
 
 .container{
     width: 100%;
@@ -8,7 +8,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: variables.$foreground-color;
+    background-color: var(--foreground-color);
 
     .logo{
         width: 30px;
@@ -21,6 +21,11 @@
     gap: 8px;
     align-items: center;
     position: relative;
+
+    .menu-icon{
+        display: none;
+        cursor: pointer;
+    }
 }
 
 .theme-icon-container{
@@ -33,11 +38,11 @@
     height: 100%;
 
     &:hover{
-        background-color: variables.$background-color;
+        background-color: var(--background-color);
     }
 }
 
-.option-menu-button{
+.option-menu-section{
     display: flex;
     align-items: center;
     gap: 3px;
@@ -56,17 +61,18 @@
 .option-menu{
     position: absolute;
     padding: 13px;
-    top: 53px;
-    right: -10px;
-    border: 1px solid rgb(variables.$disable-color, 0.2);
+    top: 52px;
+    right: 0px;
+    border: 1px solid rgba($disable-color, 0.4);
     border-radius: 7px;
-    background-color: variables.$foreground-color;
-    min-width: 200px;
+    background-color: var(--foreground-color);
+    width: min-content;
+    min-width: 150px;
 
     .option-menu-link{
         display: flex;
-        color: variables.$foreground-theme-color;
-        gap: 5px;
+        color: var(--foreground-theme-color);
+        gap: 10px;
         font-size: 0.9rem;
         display: flex;
         align-items: center;
@@ -74,4 +80,19 @@
         text-decoration: none;
         font-weight: 500;
     }
+}
+
+
+@media(max-width: 800px){
+
+    .option-menu-section{
+        display: none;
+    }
+
+    .navs{
+        .menu-icon{
+            display: block;
+        }
+    }
+
 }

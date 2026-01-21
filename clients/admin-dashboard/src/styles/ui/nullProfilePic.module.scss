@@ -1,7 +1,5 @@
-@use '../variables' as variables;
-
 .container{
-    background-color: variables.$background-color;
+    background-color: var(--background-color);
     padding: 5px;
     border-radius: 50%;
     display: flex;
@@ -9,5 +7,5 @@
     align-items: center;
     width: 33px;
     height: 33px;
-    border: 1px solid rgb(variables.$disable-color, 0.2);
+    border: 1px solid rgb(var(--disable-color), 0.2);
 }

@@ -10,9 +10,11 @@ import Link from 'next/link'
 interface DashboardNavigationUIProps{
     authToken: string | null
     handleLogout: () => void
+    theaterDashboardNavLink: string
+    adminDashboardNavLink: string
 }
 
-const DashboardNavigationUI = ({authToken, handleLogout}: DashboardNavigationUIProps) => {
+const DashboardNavigationUI = ({authToken, handleLogout, theaterDashboardNavLink, adminDashboardNavLink}: DashboardNavigationUIProps) => {
 
     const { user } = useAppSelector(state => state.auth)
 
@@ -23,7 +25,7 @@ const DashboardNavigationUI = ({authToken, handleLogout}: DashboardNavigationUIP
                     ?
                     <>
                         <Link
-                            href={envVariables.THEATER_DASHBAORD_URL + authToken}
+                            href={theaterDashboardNavLink}
                             className="flex gap-2"
                         >
                             <DashboardIcon
@@ -48,7 +50,7 @@ const DashboardNavigationUI = ({authToken, handleLogout}: DashboardNavigationUIP
                         user.role === "ADMIN"
                             ?
                             <Link
-                                href={envVariables.ADMIN_DASHBOARD_URL + authToken}
+                                href={adminDashboardNavLink}
                                 className="flex gap-2"
                             >
                                 <DashboardIcon

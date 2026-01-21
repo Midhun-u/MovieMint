@@ -1,7 +1,7 @@
-import { Route, Routes } from "react-router"
-import Dashboard from "./pages/Dashboard"
-import ProtectRoute from "./components/features/ProtectRoute"
 import Header from "./components/layout/Header"
+import Sidebar from "./components/layout/Sidebar"
+import Router from "./Router"
+import style from './app.module.scss'
 
 const App = () => {
 
@@ -9,18 +9,10 @@ const App = () => {
 
     <>
       <Header />
-      <Routes>
-        {/* Home route or dashboard route */}
-        <Route path="/:authToken" element={
-          <ProtectRoute>
-            <Dashboard />
-          </ProtectRoute>
-        }
-        />
-
-        {/* Not found */}
-        <Route path="*" element={<div>Not found</div>} />
-      </Routes>
+      <section className={style.container}>
+        <Sidebar />
+        <Router />
+      </section>
     </>
 
   )

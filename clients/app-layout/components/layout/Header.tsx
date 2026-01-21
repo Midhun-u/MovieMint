@@ -32,6 +32,8 @@ const Header = () => {
     const [showSidebar, setShowSidebar] = useState<boolean>(false)
     const [showOptionMenu, setShowOptionMenu] = useState<boolean>(false)
     const [authToken, setAuthToken] = useState<string | null>(null)
+    const theaterDashboardNavLink = envVariables.THEATER_DASHBAORD_URL + `?authToken=${authToken}`
+    const adminDashboardNavLink = envVariables.ADMIN_DASHBOARD_URL + `?authToken=${authToken}`
 
     // Function for logouting
     const handleLogout = () => {
@@ -175,6 +177,8 @@ const Header = () => {
                                     <DashboardNavigationUI 
                                         authToken={authToken}
                                         handleLogout={handleLogout}
+                                        theaterDashboardNavLink={theaterDashboardNavLink}
+                                        adminDashboardNavLink={adminDashboardNavLink}
                                     />
                                 </Activity>
                             </div>
@@ -201,7 +205,7 @@ const Header = () => {
                             user.role === "ADMIN"
                                 ?
                                 <Link
-                                    href={envVariables.ADMIN_DASHBOARD_URL + authToken}
+                                    href={adminDashboardNavLink}
                                     className="font-medium mt-3 border-b-2 pb-2 border-foreground-theme-color/20 w-full flex justify-end"
                                 >
                                     Admin Dashboard
@@ -214,7 +218,7 @@ const Header = () => {
                                 ?
                                 <>
                                     <Link
-                                        href={envVariables.THEATER_DASHBAORD_URL + authToken}
+                                        href={theaterDashboardNavLink}
                                         className="font-medium mt-3 border-b-2 pb-2 border-foreground-theme-color/20 w-full flex justify-end"
                                     >
                                         Theater Dashboard

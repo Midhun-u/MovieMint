@@ -185,7 +185,7 @@ input[type="number"]::-webkit-outer-spin-button{
   --background-color: #161616;
   --foreground-color: #000;
   --foreground-theme-color: #fff;
-  --disable-color: #2F2F2F;
+  --disable-color: #7a7a7a;
 }
 
 @layer base {
