@@ -39,3 +39,11 @@
 .container::-webkit-scrollbar {
     display: none;
 }
+
+@media(max-width: 800px){
+
+    .container{
+        display: none;
+    }
+
+}

@@ -2,7 +2,7 @@ import React, { InputHTMLAttributes } from "react"
 import { Input } from "../ui/input"
 import { LucidReactIconType } from "@/types/lucidReact"
 
-export interface FormInputProps extends InputHTMLAttributes<HTMLInputElement>{
+interface FormInputProps extends InputHTMLAttributes<HTMLInputElement>{
     Icon?: LucidReactIconType
     className?: string
     type: "text" | "password" | "email" | "number"

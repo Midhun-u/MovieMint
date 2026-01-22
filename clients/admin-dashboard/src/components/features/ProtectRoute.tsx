@@ -28,13 +28,13 @@ const ProtectRoute = ({
         }
 
         dispatch(authRequest())
-        const result = await getAdminProfile(authToken ? authToken : storedAuthToken as string)
+        const result = await getAdminProfile(storedAuthToken ? storedAuthToken : authToken as string)
 
         if (result.success && result?.user?.role === "ADMIN") {
 
             dispatch(authSuccess({ admin: result.user }))
 
-            localStorage.setItem("authToken", authToken as string)
+            localStorage.setItem("authToken", storedAuthToken? storedAuthToken: authToken as string)
             setAuthenticated(true)
 
             return

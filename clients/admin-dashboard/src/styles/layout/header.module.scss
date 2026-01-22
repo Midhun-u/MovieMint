@@ -21,10 +21,11 @@ $disable-color: #7F7F7F;
     gap: 8px;
     align-items: center;
     position: relative;
-
+  
     .menu-icon{
         display: none;
         cursor: pointer;
+        z-index: 9;
     }
 }
 
@@ -82,6 +83,44 @@ $disable-color: #7F7F7F;
     }
 }
 
+.sidebar{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: -100%;
+    background-color: var(--foreground-color);
+    z-index: 8;
+    transition: right 200ms linear;
+    padding-inline: 20px;
+    padding-block: 10px;
+    padding-top: 65px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 15px;
+
+    .sidebar-nav{
+        text-decoration: none;
+        color: var(--foreground-theme-color);
+        font-size: 1rem;
+        font-weight: 500;
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .sidebar-active-nav{
+        @extend .sidebar-nav;
+        color: var(--primary-color)
+    }
+}
+
+.active-sidebar{
+    @extend .sidebar;
+    left: 0px;
+    transition: left 200ms linear;
+}
 
 @media(max-width: 800px){
 

@@ -1,27 +1,11 @@
 import { NavLink, useLocation } from 'react-router'
 import style from '../../styles/layout/sidebar.module.scss'
 import { sidebarNavs } from '../../utils/sidebar'
-import { useEffect, useState } from 'react'
+import { isLinkActive } from '../../utils/isLinkActive'
 
 const Sidebar = () => {
 
     const pathname = useLocation().pathname
-    const [currentPathname, setCurrentPathname] = useState<string>(pathname)
-
-    // Function for checking if current link is active
-    const isLinkActive = (route: string) => {
-
-        if(route === currentPathname){
-            return true
-        }else{
-            return false
-        }
-
-    }
-
-    useEffect(() => {
-        setCurrentPathname(pathname)
-    }, [pathname])
 
     return (
 
@@ -32,7 +16,7 @@ const Sidebar = () => {
                     <NavLink
                         to={sidebarNav.route}
                         key={index}
-                        className={isLinkActive(sidebarNav.route)? style['active-nav-link']: style['nav-link']}
+                        className={isLinkActive(pathname, sidebarNav.route)? style['active-nav-link']: style['nav-link']}
                     >
                         <sidebarNav.Icon
                             size={23}

@@ -1,26 +1,84 @@
-.container{
+@use '../variables' as variables;
+
+.container {
     width: 100%;
     height: 100%;
     overflow-y: scroll;
     padding: 50px;
-}
 
-.container::-webkit-scrollbar{
-    display: none;
-}
-
-.dashboard-logs{
-    display: flex;
-    flex-direction: column;
-
-    .heading{
+    .heading {
         font-size: 1rem;
         font-weight: 600;
     }
 
-    .about{
-       font-size: 0.9rem; 
-       font-weight: 400;
-       color: var(--disable-color);
+    .about {
+        font-size: 0.9rem;
+        font-weight: 400;
+        color: var(--disable-color);
+    }
+}
+
+.container::-webkit-scrollbar {
+    display: none;
+}
+
+.dashboard-logs {
+    display: flex;
+    flex-direction: column;
+}
+
+.movie-banner-section{
+    margin-top: 40px;
+
+    .movies-card-container{
+        margin-top: 20px;
+        display: flex;
+        gap: 5px;
+        overflow-x: auto;
+    }
+
+    .movies-card-container::-webkit-scrollbar{
+        display: none;
+    }
+
+    .movie-card{
+        position: relative;
+        width: min-content;
+    }
+
+    .delete-icon-container{
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        background-color: var(--foreground-color);
+        top: 0px;
+        right: 0px;
+        @extend %container-center-style;
+        cursor: pointer;
+
+        .delete-icon{
+            color: var(--error-foreground-color);
+        }
+    }
+}
+
+.banner-add-section{
+    width: 100%;
+    margin-top: 10px;
+    width: 50px;
+    height: 50px;
+    background-color: var(--foreground-color);
+    @extend %container-center-style;
+    cursor: pointer;
+    @include variables.disableBorderColor(0.3);
+    border-radius: 5px;
+}
+
+
+@media(max-width: 800px) {
+
+    .container {
+        padding: 13px;
+        padding-top: 40px;
     }
 }

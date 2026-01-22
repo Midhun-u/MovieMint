@@ -5,14 +5,17 @@ import {
     ChevronDown as DownArrowIcon,
     HomeIcon,
     MenuIcon,
+    X as CloseMenuIcon,
     Sun as WhiteThemeIcon
 } from 'lucide-react'
 import NullProfilePic from '../ui/NullProfilePic'
 import { Activity, useEffect, useState } from 'react'
-import { Link } from 'react-router'
+import { Link, NavLink, useLocation } from 'react-router'
 import { envVariables } from '../../utils/envVariables'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { switchTheme } from '../../store/themeSlice'
+import { sidebarNavs } from '../../utils/sidebar'
+import { isLinkActive } from '../../utils/isLinkActive'
 
 
 const Header = () => {
@@ -20,18 +23,20 @@ const Header = () => {
     const [showOptionMenu, setShowOptionMenu] = useState<boolean>(false)
     const { theme } = useAppSelector(state => state.theme)
     const dispatch = useAppDispatch()
+    const [showSidebar, setShowSidebar] = useState<boolean>(false)
+    const pathname = useLocation().pathname
 
     // Function for switching theme
     const handleSwitchTheme = () => {
 
         const root = document.documentElement
-        
-        if(theme === "dark"){
+
+        if (theme === "dark") {
             root.classList.add("dark-theme")
-        }else{
+        } else {
             root.classList.remove("dark-theme")
         }
-        
+
     }
 
     useEffect(() => {
@@ -51,24 +56,37 @@ const Header = () => {
                 >
                     {
                         theme === "white"
-                        ?
-                        <DarkThemeIcon
-                            strokeWidth={1.5}
-                            size={23}
-                        />
-                        :
-                        <WhiteThemeIcon
-                            strokeWidth={1.5}
-                            size={23}
-                        />
+                            ?
+                            <DarkThemeIcon
+                                strokeWidth={1.5}
+                                size={23}
+                            />
+                            :
+                            <WhiteThemeIcon
+                                strokeWidth={1.5}
+                                size={23}
+                            />
                     }
                 </div>
-                {/* Menu icon */}
-                <MenuIcon
-                    size={23}
-                    strokeWidth={1.5}
-                    className={style['menu-icon']}
-                />
+                {/* Menu icon and close menu icon*/}
+                {
+                    showSidebar
+                        ?
+                        <CloseMenuIcon
+                            size={23}
+                            strokeWidth={1.5}
+                            className={style['menu-icon']}
+                            onClick={() => setShowSidebar(false)}
+                        />
+                        :
+                        <MenuIcon
+                            size={23}
+                            strokeWidth={1.5}
+                            className={style['menu-icon']}
+                            onClick={() => setShowSidebar(true)}
+                        />
+                }
+
                 <div
                     className={style['option-menu-section']}
                     onClick={() => setShowOptionMenu(!showOptionMenu)}
@@ -97,6 +115,22 @@ const Header = () => {
                     </Activity>
                 </div>
             </nav>
+            {/* Side bar */}
+            <aside className={showSidebar? style['active-sidebar']: style.sidebar}>
+                {
+                    sidebarNavs.map((sidebarnav, index) => (
+
+                        <NavLink
+                            to={sidebarnav.route}
+                            key={index}
+                            className={isLinkActive(pathname, sidebarnav.route)? style['sidebar-active-nav']: style['sidebar-nav']}
+                        >
+                            {sidebarnav.title}
+                        </NavLink>
+
+                    ))
+                }
+            </aside>
         </header>
 
     )

@@ -1,0 +1,21 @@
+@use '../variables' as variables;
+
+.container{
+    width: 100%;
+    height: calc(100dvh - 60px);
+    left: 0px;
+    @extend %container-center-style;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .image{
+        width: 200px;
+        height: 200px;
+        aspect-ratio: 1 / 1;
+    }
+}
+
+.nav-button{
+    @extend %primary-button-style;
+}

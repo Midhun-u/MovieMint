@@ -19,7 +19,7 @@ const BackButton = ({loading, navigationUrl}: BackButtonProps) => {
 
         <Button
             type='button'
-            className='bg-foreground-color border border-foreground-theme-color/50'
+            className='bg-foreground-color border border-disable-color/20'
             onClick={() => router.push(navigationUrl)}
             disabled={loading}
         >

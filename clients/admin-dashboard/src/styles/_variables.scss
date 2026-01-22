@@ -1,0 +1,28 @@
+@mixin disableBorderColor($opacity){
+    border: 1.5px solid rgb(from var(--disable-color) r g b / $opacity);
+}
+
+%container-center-style{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@mixin button-basic-style($color, $background-color){
+    @extend %container-center-style;
+    cursor: pointer;
+    border: none;
+    color: $color;
+    background-color: $background-color;
+    padding-block: 10px;
+    padding-inline: 20px;
+    border-radius: 10px;
+    font-weight: 500;
+}
+
+%primary-button-style{
+    @include button-basic-style(var(--dark-foreground-color), var(--primary-color));
+    &:hover, &:active{
+        background-color: var(--primary-accent-color);
+    }
+}
