@@ -1,10 +1,10 @@
-import type { LucidReactIconType } from "../../types/lucideReactType"
+import type { LucideReactIconType } from "../../types/lucideReactType"
 import style from '../../styles/dashboard/dashboardLogCard.module.scss'
 
 interface DashboardLogCardProps{
     title: string,
     data: string | number,
-    Icon: LucidReactIconType
+    Icon: LucideReactIconType
 }
 
 const DashboardLogCard = ({title, Icon, data}: DashboardLogCardProps) => {

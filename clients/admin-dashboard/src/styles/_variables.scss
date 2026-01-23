@@ -1,14 +1,9 @@
-@mixin disableBorderColor($opacity){
+// Mixins
+@mixin disableBorderColor($opacity) {
     border: 1.5px solid rgb(from var(--disable-color) r g b / $opacity);
 }
 
-%container-center-style{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-@mixin button-basic-style($color, $background-color){
+@mixin button-basic-style($color, $background-color) {
     @extend %container-center-style;
     cursor: pointer;
     border: none;
@@ -20,9 +15,37 @@
     font-weight: 500;
 }
 
-%primary-button-style{
+
+// Styles
+%container-center-style {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+%input-basic-style {
+    outline: none;
+    @include disableBorderColor(0.3);
+    border-radius: 5px;
+    background-color: var(--foreground-color);
+
+    &::placeholder {
+        font-family: "Space Grotesk", sans-serif;
+        font-optical-sizing: auto;
+        font-size: 0.9rem;
+        font-weight: 400;
+    }
+
+    &:focus {
+        border: 1.5px solid var(--primary-color);
+    }
+}
+
+%primary-button-style {
     @include button-basic-style(var(--dark-foreground-color), var(--primary-color));
-    &:hover, &:active{
+
+    &:hover,
+    &:active {
         background-color: var(--primary-accent-color);
     }
 }

@@ -14,8 +14,26 @@
         height: 200px;
         aspect-ratio: 1 / 1;
     }
+
+    .heading{
+        font-size: 1.2rem;
+        font-weight: 500;
+    }
+
+    .about{
+        font-size: 0.9rem;
+        font-weight: 400;
+        color: var(--disable-color);
+    }
+}
+
+.page-details{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .nav-button{
+    margin-top: 10px;
     @extend %primary-button-style;
 }

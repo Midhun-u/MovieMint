@@ -1,0 +1,75 @@
+@use '../variables' as variables;
+
+.container{
+    width: 450px;
+    padding: 10px;
+    background-color: var(--foreground-color);
+    @include variables.disableBorderColor(0.3);
+    cursor: pointer;
+    border-radius: 5px;
+    position: relative;
+}
+
+.menu{
+    position: absolute;
+    top: 50px;
+    width: 450px;
+    height: 250px;
+    background-color: var(--foreground-color);
+    padding-block: 10px;
+    left: 0px;
+    transition: all 200ms linear;
+    border-radius: 5px;
+    @include variables.disableBorderColor(0.3);
+    overflow-y: auto;
+
+    &::-webkit-scrollbar{
+        display: none;
+    }
+
+    li{
+        list-style: none;
+        flex-direction: column;
+        padding: 5px 10px;
+        font-size: 0.8rem;
+        font-weight: 500;
+
+        &:hover{
+            background-color: var(--primary-color);
+            color: var(--dark-foreground-color);
+        }
+    }
+
+    .active-value{
+        background-color: var(--background-color);
+    }
+}
+
+.menu-bar{
+    padding: 0px 30px 0px 30px;
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    .icon{
+        position: absolute;
+        left: 0px;
+        color: var(--disable-color);
+    }
+
+    .arrow-icon{
+        position: absolute;
+        right: 0px;
+        transition: all 200ms linear;
+    }
+
+    .rotate-arrow-icon{
+        @extend .arrow-icon;
+        rotate: 180deg;
+        transition: all 200ms linear;
+    }
+
+    span{
+        font-size: 0.9rem;
+    }
+}

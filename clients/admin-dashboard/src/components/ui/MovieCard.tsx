@@ -1,5 +1,5 @@
 import style from '../../styles/ui/movieCard.module.scss'
-import poster from './poster.jpg'
+import poster from '../../assets/poster.jpg'
 
 const MovieCard = () => {
 
