@@ -1,4 +1,4 @@
-import { Activity, useState, type Dispatch, type SetStateAction } from "react"
+import { Activity, useEffect, useState, type Dispatch, type SetStateAction } from "react"
 import style from '../../styles/ui/dropDownMenu.module.scss'
 import {
     ChevronDown as DownArrowIcon
@@ -15,6 +15,10 @@ interface DropDownMenuProps {
 const DropDownMenu = ({ Icon, values, value: selectedValue, setValue }: DropDownMenuProps) => {
 
     const [showMenu, setShowMenu] = useState<boolean>(false)
+
+    useEffect(() => {
+        setValue(values[0])
+    }, [])
 
     return (
 

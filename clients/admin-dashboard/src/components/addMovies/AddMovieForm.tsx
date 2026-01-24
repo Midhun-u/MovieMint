@@ -5,11 +5,16 @@ import {
     Film as MovieIcon,
     TextQuote as SubheadingIcon,
     TextAlignStart as SynopsisIcon,
-    LanguagesIcon as LanguageIcon
+    LanguagesIcon as LanguageIcon,
+    Grid3x2 as CertificateIcon
 } from 'lucide-react'
 import ImagePicker from './ImagePicker'
 import ListItems from './ListItems'
 import Iso6391 from 'iso-639-1'
+import { movieCertificates } from '../../utils/movieCertificates'
+import Label from '../form/Label'
+import { movieCategories } from '../../utils/movieCategories'
+import CheckBoxList from './CheckBoxList'
 
 const AddMovieForm = () => {
 
@@ -18,6 +23,8 @@ const AddMovieForm = () => {
     const synopsisId = useId()
     const languages = Iso6391.getAllCodes().map(code => Iso6391.getName(code))
     const [language, setLanguage] = useState<string>('')
+    const [certificate, setCertificate] = useState<string>('')
+    const [categories, setCategories] = useState<Array<string>>([])
 
     return (
 
@@ -66,6 +73,25 @@ const AddMovieForm = () => {
                 value={language}
                 setValue={setLanguage}
             />
+            {/* Movie certificate */}
+            <ListItems
+                labelTitle='Movie Certificate'
+                Icon={CertificateIcon}
+                values={movieCertificates}
+                value={certificate}
+                setValue={setCertificate}
+            />
+            {/* Movie category */}
+            <div className={style['category-container']}>
+                <Label
+                    title='Movie Category'
+                />
+                <CheckBoxList
+                    values={movieCategories}
+                    setValues={setCategories}
+                    checkedValues={categories}
+                />
+            </div>
         </form>
 
     )

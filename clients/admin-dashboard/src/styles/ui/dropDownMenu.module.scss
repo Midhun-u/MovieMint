@@ -14,7 +14,7 @@
     position: absolute;
     top: 50px;
     width: 450px;
-    height: 250px;
+    max-height: 250px;
     background-color: var(--foreground-color);
     padding-block: 10px;
     left: 0px;
@@ -22,6 +22,7 @@
     border-radius: 5px;
     @include variables.disableBorderColor(0.3);
     overflow-y: auto;
+    z-index: 7;
 
     &::-webkit-scrollbar{
         display: none;
