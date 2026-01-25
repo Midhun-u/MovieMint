@@ -1,4 +1,4 @@
-import { useId, useState } from 'react'
+import { Activity, useId, useState } from 'react'
 import style from '../../styles/addMovies/addMovieForm.module.scss'
 import FormInput from '../form/FormInput'
 import {
@@ -15,6 +15,8 @@ import { movieCertificates } from '../../utils/movieCertificates'
 import Label from '../form/Label'
 import { movieCategories } from '../../utils/movieCategories'
 import CheckBoxList from './CheckBoxList'
+import DateShowBar from '../ui/DateShowBar'
+import DatePicker from '../ui/DatePicker'
 
 const AddMovieForm = () => {
 
@@ -25,6 +27,16 @@ const AddMovieForm = () => {
     const [language, setLanguage] = useState<string>('')
     const [certificate, setCertificate] = useState<string>('')
     const [categories, setCategories] = useState<Array<string>>([])
+    const [releaseDate, setReleaseDate] = useState<{
+        year: number,
+        month: number,
+        day: number
+    }>({
+        year: new Date().getFullYear(),
+        month: new Date().getMonth(),
+        day: new Date().getDate()
+    })
+    const [showDatePicker, setShowDatePicker] = useState<boolean>(false)
 
     return (
 
@@ -91,6 +103,26 @@ const AddMovieForm = () => {
                     setValues={setCategories}
                     checkedValues={categories}
                 />
+            </div>
+            {/* Movie Release date */}
+            <div className={style['release-date-container']}>
+                <Label
+                    title='Movie Release Date'
+                />
+                <DateShowBar
+                    year={releaseDate.year}
+                    month={releaseDate.month}
+                    day={releaseDate.day}
+                    setShowDatePicker={setShowDatePicker}
+                />
+                <Activity mode={showDatePicker? "visible": "hidden"}>
+                    <DatePicker
+                        showTimePicker
+                        onClickOnDay={(dateDetails) =>
+                            setReleaseDate({ ...releaseDate, day: dateDetails.day, month: dateDetails.month, year: dateDetails.year })
+                        }
+                    />
+                </Activity>
             </div>
         </form>
 

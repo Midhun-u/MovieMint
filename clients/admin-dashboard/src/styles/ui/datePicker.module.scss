@@ -1,0 +1,98 @@
+@use '../variables' as variables;
+
+.container {
+    width: 450px;
+    background-color: var(--foreground-color);
+    border-radius: 5px;
+    @include variables.disableBorderColor(0.3);
+    position: absolute;
+    top: 70px;
+    padding: 20px;
+
+    &::selection{
+        background-color: var(--foreground-color); 
+    }
+
+    .top-bar {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        height: min-content;
+        align-items: center;
+        font-weight: 500;
+    }
+
+    .icon-container {
+        padding: 7px;
+        @extend %container-center-style;
+        border-radius: 10px;
+        @include variables.disableBorderColor(0.3);
+        cursor: pointer;
+
+        &:hover,
+        &:active {
+            background-color: var(--background-color);
+        }
+    }
+
+    .weeks-container {
+        width: 100%;
+        margin-top: 10px;
+        display: grid;
+        grid-template-columns: repeat(7, auto);
+        justify-items: stretch;
+        gap: 3px;
+    }
+
+    .week {
+        font-size: 0.7rem;
+        font-weight: 500;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        color: var(--disable-color);
+    }
+
+    .days-container{
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(7, auto);
+        justify-items: center;
+        margin-top: 7px;
+        gap: 3px;
+    }
+
+    .day{
+        padding: 5px;
+        width: 100%;
+        @extend %container-center-style;
+        cursor: pointer;
+        @include variables.disableBorderColor(0.3);
+        transition: background-color 200ms linear;
+        border-radius: 5px;
+
+        &:hover{
+            background-color: var(--primary-color);
+            border-color: var(--foreground-color);
+            transition: background-color 200ms linear;
+            color: var(--dark-foreground-color)
+        }
+    }
+
+    .disable-day{
+        @extend .day;
+
+        &:hover{
+            background-color: var(--foreground-color);
+            transition: none;
+            @include variables.disableBorderColor(0.3)
+        }
+    }
+
+    .time-container{
+        width: 100%;
+        margin-top: 30px;
+        display: grid;
+        grid-template-columns: repeat(4, auto);
+    }
+}

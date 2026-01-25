@@ -1,0 +1,19 @@
+@use '../variables' as variables;
+
+.container{
+    width: 450px;
+    padding: 10px 10px 10px 40px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    background-color: var(--foreground-color);
+    @include variables.disableBorderColor(0.3);
+    border-radius: 5px;
+    cursor: pointer;
+
+    .icon{
+        position: absolute;
+        left: 8px;
+        color: var(--disable-color);
+    }
+}

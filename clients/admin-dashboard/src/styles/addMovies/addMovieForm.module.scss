@@ -11,3 +11,10 @@
     gap: 15px;
     width: 450px;
 }
+
+.release-date-container{
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    position: relative;
+}
