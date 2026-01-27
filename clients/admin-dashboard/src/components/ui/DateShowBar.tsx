@@ -8,10 +8,12 @@ interface DateShowBarProps {
     year: number
     month: number
     day: number
+    hour: number
+    minute: number
     setShowDatePicker: Dispatch<SetStateAction<boolean>>
 }
 
-const DateShowBar = ({ year, month, day, setShowDatePicker }: DateShowBarProps) => {
+const DateShowBar = ({ year, month, day, hour, minute, setShowDatePicker }: DateShowBarProps) => {
 
     const monthName = new Date(year, month).toLocaleString("en-US", { month: "long" })
 
@@ -26,7 +28,17 @@ const DateShowBar = ({ year, month, day, setShowDatePicker }: DateShowBarProps) 
                 strokeWidth={1.5}
             />
             <span className={style.date}>
-                {monthName} {day}, {year}
+                {monthName} {day}, {year} 
+                {
+                    hour && minute
+                    ?
+                    <>
+                    &nbsp;-&nbsp; 
+                    {hour >= 12? hour - 12: hour}:{minute} {hour >= 12? "PM": "AM"}
+                    </>
+                    :
+                    null
+                }
             </span>
         </div>
     )

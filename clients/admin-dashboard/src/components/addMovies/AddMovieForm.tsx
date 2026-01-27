@@ -30,11 +30,15 @@ const AddMovieForm = () => {
     const [releaseDate, setReleaseDate] = useState<{
         year: number,
         month: number,
-        day: number
+        day: number,
+        hour: number,
+        minute: number
     }>({
         year: new Date().getFullYear(),
         month: new Date().getMonth(),
-        day: new Date().getDate()
+        day: new Date().getDate(),
+        hour: 0,
+        minute: 0
     })
     const [showDatePicker, setShowDatePicker] = useState<boolean>(false)
 
@@ -114,12 +118,17 @@ const AddMovieForm = () => {
                     month={releaseDate.month}
                     day={releaseDate.day}
                     setShowDatePicker={setShowDatePicker}
+                    hour={releaseDate.hour}
+                    minute={releaseDate.minute}
                 />
-                <Activity mode={showDatePicker? "visible": "hidden"}>
+                <Activity mode={showDatePicker ? "visible" : "hidden"}>
                     <DatePicker
                         showTimePicker
-                        onClickOnDay={(dateDetails) =>
+                        clickOnDay={(dateDetails) =>
                             setReleaseDate({ ...releaseDate, day: dateDetails.day, month: dateDetails.month, year: dateDetails.year })
+                        }
+                        clickOnTime={(timeDetails) =>
+                            setReleaseDate({ ...releaseDate, hour: timeDetails.hour, minute: timeDetails.minute })
                         }
                     />
                 </Activity>

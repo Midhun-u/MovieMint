@@ -7,35 +7,33 @@ import {
 
 interface DatePickerProps {
     showTimePicker: boolean
-    onClickOnDay: ({ }: { day: number, month: number, year: number }) => void
+    clickOnDay: (dateDetails: { day: number, month: number, year: number }) => void
+    clickOnTime: (timeDetails: { hour: number, minute: number }) => void
 }
 
-const DatePicker = ({ showTimePicker, onClickOnDay }: DatePickerProps) => {
+const DatePicker = ({ showTimePicker, clickOnDay, clickOnTime }: DatePickerProps) => {
 
     const weeks = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]
     const [days, setDays] = useState<Array<null | number>>([])
-    const [dateDetails, setDateDetails] = useState<{
-        day: number,
-        year: number,
-        month: number
-    }>({
-        day: new Date().getDate(),
-        month: new Date().getMonth(),
-        year: new Date().getFullYear()
-    })
-    const [timeDetails, setTimeDetails] = useState<Array<{
+    const [month, setMonth] = useState<number>(new Date().getMonth())
+    const [year, setYear] = useState<number>(new Date().getFullYear())
+    const [day, setDay] = useState<number>(new Date().getDate())
+    const [times, setTimes] = useState<Array<{
         hour: number,
         minute: number
     }>>([])
+    const [selectedTime, setSelectedTime] = useState<{ hour: number, minute: number }>()
+    const currentMonth = new Date().getMonth()
+    const currentYear = new Date().getFullYear()
 
     // Function for setting total days
     const handleSetCalendarDates = () => {
 
         // Getting total days of a month
-        const currentDays = new Date(dateDetails.year, dateDetails.month, 0).getDate()
+        const currentDays = new Date(year, month, 0).getDate()
 
         // Getting Week day or week which the first day starts of a month
-        const week = new Date(dateDetails.year, dateDetails.month, 1).getDay()
+        const week = new Date(year, month, 1).getDay()
 
         const calendarDays = []
 
@@ -56,20 +54,16 @@ const DatePicker = ({ showTimePicker, onClickOnDay }: DatePickerProps) => {
     // Function for incrementing month
     const handleIncrementMonth = () => {
 
-
-        if (dateDetails.month === 11) {
-            setDateDetails({ ...dateDetails, month: 0 })
+        if (month === 11) {
+            setMonth(0)
         } else {
-            setDateDetails({ ...dateDetails, month: 11 })
+            setMonth(month + 1)
         }
 
-        setDateDetails({...dateDetails, month: dateDetails.month + 1})
-        const monthName = new Date(dateDetails.year, dateDetails.month).toLocaleString("en-US", { month: "short" })
-
+        const monthName = new Date(year, month).toLocaleString("en-US", { month: "short" })
         // Incrementing year
         if (monthName === "Dec") {
-            console.log(dateDetails)
-            setDateDetails({ ...dateDetails, year: dateDetails.year + 1 })
+            setYear(year + 1)
         }
 
     }
@@ -77,40 +71,90 @@ const DatePicker = ({ showTimePicker, onClickOnDay }: DatePickerProps) => {
     // Function for decrementing month
     const handleDecrementMonth = () => {
 
-        if (dateDetails.month === 0) {
-            setDateDetails({ ...dateDetails, month: 11 })
+        if (month === 0) {
+            setMonth(11)
         } else {
-            setDateDetails({ ...dateDetails, month: 0 })
+            setMonth(month - 1)
         }
 
-        setDateDetails({...dateDetails, month: dateDetails.month - 1})
-        const monthName = new Date(dateDetails.year, dateDetails.month).toLocaleString("en-US", { month: "short" })
+        const monthName = new Date(year, month).toLocaleString("en-US", { month: "short" })
 
-        // Incrementing year
-        if (monthName === "Dec") {
-            setDateDetails({ ...dateDetails, year: dateDetails.year - 1 })
+        // Decrementing year
+        if (monthName === "Jan") {
+            setYear(year - 1)
         }
-
-    }
-
-    // Function for getting available time
-    const handleGetAvailableTime = () => {
-
-
 
     }
 
     // Function for running when click specific day
-    const handleOnClick = (day: number) => {
+    const handleClickOnDay = (day: number) => {
 
-        onClickOnDay({ day: day, month: dateDetails.month, year: dateDetails.year })
+        setDay(day)
+        clickOnDay({ day: day, month: month, year: year })
+
+    }
+
+    // Function for running when click time
+    const handleClickOnTime = (time: { hour: number, minute: number }) => {
+
+        setSelectedTime({ hour: time.hour, minute: time.minute })
+        clickOnTime(time)
+
+    }
+
+    // Function for getting available times
+    const handleGetAvailableTimes = () => {
+
+        const availableTimes = []
+        const currentDate = new Date()
+
+        // Checking if the selected day is today or not
+        if (
+            currentDate.getDate() === day &&
+            currentDate.getMonth() === month &&
+            currentDate.getFullYear() === year
+        ) {
+
+            const currentHour = currentDate.getHours() // For storing current hour before setting to constant
+            currentDate.setHours(22) // Setting hour to constant 8:00PM
+
+            for (let i = currentHour < 8 ? 8 : currentHour; i <= currentDate.getHours(); i++) {
+
+                availableTimes.push({ hour: i, minute: 0 })
+                availableTimes.push({ hour: i, minute: 30 })
+
+            }
+
+        } else {
+
+            // Pushing 8:00 AM to 10:00 PM times
+            for (let i = 8; i <= 22; i++) {
+
+                availableTimes.push({ hour: i, minute: 0 })
+                availableTimes.push({ hour: i, minute: 30 })
+
+            }
+
+        }
+
+        setTimes(availableTimes)
+
+        // Calling callback function which runs when clicked on time for the first render
+        clickOnTime(availableTimes[1])
+
+        setSelectedTime(availableTimes[1])
 
     }
 
     useEffect(() => {
+
         handleSetCalendarDates()
-        handleGetAvailableTime()
-    }, [dateDetails.month, dateDetails.year])
+
+        if (showTimePicker) {
+            handleGetAvailableTimes()
+        }
+
+    }, [month, year, day])
 
     return (
 
@@ -127,7 +171,7 @@ const DatePicker = ({ showTimePicker, onClickOnDay }: DatePickerProps) => {
                     />
                 </div>
                 <span>
-                    {new Date(dateDetails.year, dateDetails.month).toLocaleString("en-US", { month: "long" })} {dateDetails.year}
+                    {new Date(year, month).toLocaleString("en-US", { month: "long" })} {year}
                 </span>
                 <div
                     className={style['icon-container']}
@@ -149,11 +193,18 @@ const DatePicker = ({ showTimePicker, onClickOnDay }: DatePickerProps) => {
             </div>
             <div className={style['days-container']}>
                 {
-                    days.map((day, index) => (
-                        day
+                    days.map((calendarDay, index) => (
+                        calendarDay
                             ?
-                            <span onClick={() => handleOnClick(day)} className={style.day} key={index}>{day}</span>
+                            <span
+                                onClick={() => handleClickOnDay(calendarDay)}
+                                className={calendarDay === day && year === currentYear && month === currentMonth ? style['selected-day'] : style.day}
+                                key={index}
+                            >
+                                {calendarDay}
+                            </span>
                             :
+
                             <span className={style['disable-day']} key={index}></span>
                     ))
                 }
@@ -162,7 +213,23 @@ const DatePicker = ({ showTimePicker, onClickOnDay }: DatePickerProps) => {
                 showTimePicker
                     ?
                     <div className={style['time-container']}>
+                        {
+                            times.map((time, index) => (
 
+                                <span
+                                    key={index}
+                                    className={selectedTime?.hour === time.hour && selectedTime?.minute === time.minute? style['selected-time']: style.time}
+                                    onClick={() => handleClickOnTime(time)}
+                                >
+                                    {
+                                        time.hour >= 12
+                                            ?
+                                            `${time.hour > 12 ? time.hour - 12 : time.hour}:${time.minute === 30 ? time.minute : `00`} PM`
+                                            :
+                                            `${time.hour}:${time.minute === 30 ? time.minute : `00`} AM`}
+                                </span>
+                            ))
+                        }
                     </div>
                     :
                     null
