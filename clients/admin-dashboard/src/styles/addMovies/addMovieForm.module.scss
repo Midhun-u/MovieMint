@@ -1,20 +1,82 @@
-.container{
-    margin-top: 30px;
+@use '../variables' as variables;
+
+%add-movie-container-style {
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: 2px;
 }
 
-.category-container{
-    display: flex;
-    flex-direction: column;
+.container {
+    margin-top: 30px;
+    @extend %add-movie-container-style;
+    gap: 30px;
+    width: 100%;
+}
+
+.category-container {
+    @extend %add-movie-container-style;
     gap: 15px;
     width: 450px;
 }
 
-.release-date-container{
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
+.release-date-container {
+    @extend %add-movie-container-style;
     position: relative;
+}
+
+.duration-container {
+    @extend %add-movie-container-style;
+
+    .input-section-container{
+        @extend %add-movie-container-style;
+        gap: 5px;
+    }
+
+    .input-section {
+        width: 450px;
+        display: flex;
+        align-items: center;
+        position: relative;
+    }
+
+    .input {
+        @extend %input-basic-style;
+        width: 100%;
+        padding: 10px 10px 10px 40px;
+    }
+
+    .icon {
+        position: absolute;
+        left: 8px;
+        color: var(--disable-color);
+    }
+}
+
+.crew-container{
+    @extend %add-movie-container-style;
+
+    .add-cast-container{
+        width: 50px;
+        height: 50px;
+        background-color: var(--foreground-color);
+        @include variables.disableBorderColor(0.3);
+        border-radius: 5px;
+        @extend %container-center-style;
+        cursor: pointer;
+    }
+}
+
+
+@media(max-width: 600px){
+
+    .duration-container{
+        .input-section{
+            width: 100%;
+        }
+    }
+
+    .category-container{
+        width: 100%;
+    }
+
 }

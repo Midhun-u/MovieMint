@@ -124,6 +124,7 @@ const Header = () => {
                             to={sidebarnav.route}
                             key={index}
                             className={isLinkActive(pathname, sidebarnav.route)? style['sidebar-active-nav']: style['sidebar-nav']}
+                            onClick={() => setShowSidebar(false)}
                         >
                             {sidebarnav.title}
                         </NavLink>

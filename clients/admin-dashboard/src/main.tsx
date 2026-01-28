@@ -4,11 +4,14 @@ import './global.scss'
 import App from './App.tsx'
 import { Provider } from 'react-redux'
 import { store } from './store/store.ts'
+import ToastMessage from './components/context/ToastMessage.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
     <Provider store={store}>
-      <App />
+      <ToastMessage>
+        <App />
+      </ToastMessage>
     </Provider>
   </BrowserRouter>,
 )

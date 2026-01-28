@@ -17,3 +17,10 @@
         color: var(--disable-color);
     }
 }
+
+@media(max-width: 600px){
+    .container{
+        width: 100%;
+        font-size: 0.86rem;
+    }
+}

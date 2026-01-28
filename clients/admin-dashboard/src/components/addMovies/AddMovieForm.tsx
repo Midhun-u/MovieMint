@@ -6,24 +6,32 @@ import {
     TextQuote as SubheadingIcon,
     TextAlignStart as SynopsisIcon,
     LanguagesIcon as LanguageIcon,
-    Grid3x2 as CertificateIcon
+    Grid3x2 as CertificateIcon,
+    Paperclip as URLIcon,
+    TimerIcon,
+    Plus as AddIcon
 } from 'lucide-react'
 import ImagePicker from './ImagePicker'
 import ListItems from './ListItems'
 import Iso6391 from 'iso-639-1'
 import { movieCertificates } from '../../utils/movieCertificates'
-import Label from '../form/Label'
+import FormLabel from '../form/FormLabel'
 import { movieCategories } from '../../utils/movieCategories'
 import CheckBoxList from './CheckBoxList'
 import DateShowBar from '../ui/DateShowBar'
 import DatePicker from '../ui/DatePicker'
+import Input from '../ui/Input'
+import Radio from '../ui/Radio'
 
 const AddMovieForm = () => {
 
     const titleId = useId()
     const subheadingId = useId()
     const synopsisId = useId()
+    const movieTrailer = useId()
     const languages = Iso6391.getAllCodes().map(code => Iso6391.getName(code))
+    const [poster, setPoster] = useState<File | null>(null)
+    const [banner, setBanner] = useState<File | null>(null)
     const [language, setLanguage] = useState<string>('')
     const [certificate, setCertificate] = useState<string>('')
     const [categories, setCategories] = useState<Array<string>>([])
@@ -40,6 +48,7 @@ const AddMovieForm = () => {
         hour: 0,
         minute: 0
     })
+    const [movieType, setMovieType] = useState<"LIVE_ACTION" | "ANIMATED">("LIVE_ACTION")
     const [showDatePicker, setShowDatePicker] = useState<boolean>(false)
 
     return (
@@ -74,12 +83,14 @@ const AddMovieForm = () => {
                 labelTitle='Movie Poster'
                 title='Upload Movie Poster'
                 mode='portrait'
+                setFile={setPoster}
             />
             {/* Movie Banner */}
             <ImagePicker
                 labelTitle='Movie Banner'
                 title='Upload Movie Banner'
                 mode='landscape'
+                setFile={setBanner}
             />
             {/* Movie language */}
             <ListItems
@@ -99,7 +110,7 @@ const AddMovieForm = () => {
             />
             {/* Movie category */}
             <div className={style['category-container']}>
-                <Label
+                <FormLabel
                     title='Movie Category'
                 />
                 <CheckBoxList
@@ -110,7 +121,7 @@ const AddMovieForm = () => {
             </div>
             {/* Movie Release date */}
             <div className={style['release-date-container']}>
-                <Label
+                <FormLabel
                     title='Movie Release Date'
                 />
                 <DateShowBar
@@ -133,6 +144,96 @@ const AddMovieForm = () => {
                     />
                 </Activity>
             </div>
+            {/* Movie trailer */}
+            <FormInput
+                labelTitle='Movie Trailer'
+                inputType='input'
+                id={movieTrailer}
+                inputPlaceholder='Enter URL'
+                Icon={URLIcon}
+            />
+            {/* Movie duration */}
+            <div className={style['duration-container']}>
+                <FormLabel
+                    title='Movie Duration'
+                />
+                <div className={style['input-section-container']}>
+                    <div className={style['input-section']}>
+                        <TimerIcon
+                            size={22}
+                            strokeWidth={1.5}
+                            className={style.icon}
+                        />
+                        <Input
+                            className={style['input']}
+                            placeholder='Enter hour'
+                            type='number'
+                        />
+                    </div>
+                    <div className={style['input-section']}>
+                        <TimerIcon
+                            size={22}
+                            strokeWidth={1.5}
+                            className={style.icon}
+                        />
+                        <Input
+                            className={style['input']}
+                            placeholder='Enter minutes'
+                            type='number'
+                        />
+                    </div>
+                    <div className={style['input-section']}>
+                        <TimerIcon
+                            size={22}
+                            strokeWidth={1.5}
+                            className={style.icon}
+                        />
+                        <Input
+                            className={style['input']}
+                            placeholder='Enter seconds'
+                            type='number'
+                        />
+                    </div>
+                </div>
+            </div>
+            {/* Movie type */}
+            <div className={style['type-container']}>
+                <FormLabel
+                    title='Movie Type'
+                />
+                <div className={style['checkbox-container']}>
+                    <Radio
+                        values={[
+                            {
+                                title: "Live Action",
+                                value: "LIVE_ACTION"
+                            },
+                            {
+                                title: "Animated",
+                                value: "ANIMATED"
+                            },
+                        ]}
+                        selectedValue={movieType}
+                        onClick={(value) => setMovieType(value.value as "LIVE_ACTION" | "ANIMATED")}
+                    />
+                </div>
+            </div>
+            {/* Movie casts and crew */}
+            <Activity mode={movieType === "LIVE_ACTION"? "visible": "hidden"}>
+                <div className={style['crew-container']}>
+                    <FormLabel
+                        title='Movie Casts & Crew'
+                    />
+                    <div className={style['list']}>
+                        <div className={style['add-cast-container']}>
+                            <AddIcon
+                                size={23}
+                                strokeWidth={1.5}
+                            />
+                        </div>
+                    </div>
+                </div>
+            </Activity>
         </form>
 
     )

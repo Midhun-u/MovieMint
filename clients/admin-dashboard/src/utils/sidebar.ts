@@ -1,4 +1,4 @@
-import type { LucidReactIconType } from "../types/lucideReactType"
+import type { LucideReactIconType } from "../types/lucideReactType"
 import {
     LayoutGrid as DashboardIcon,
     Plus as AddMoviesIcon,
@@ -11,7 +11,7 @@ import {
 type SidebarNavs = Array<{
     title: string
     route: string
-    Icon: LucidReactIconType
+    Icon: LucideReactIconType
 }>
 
 export const sidebarNavs: SidebarNavs = [

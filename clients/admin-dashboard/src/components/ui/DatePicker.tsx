@@ -138,11 +138,10 @@ const DatePicker = ({ showTimePicker, clickOnDay, clickOnTime }: DatePickerProps
         }
 
         setTimes(availableTimes)
+        setSelectedTime(availableTimes[1])
 
         // Calling callback function which runs when clicked on time for the first render
         clickOnTime(availableTimes[1])
-
-        setSelectedTime(availableTimes[1])
 
     }
 

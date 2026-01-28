@@ -1,4 +1,5 @@
 // Mixins
+
 @mixin disableBorderColor($opacity) {
     border: 1.5px solid rgb(from var(--disable-color) r g b / $opacity);
 }
@@ -17,6 +18,7 @@
 
 
 // Styles
+
 %container-center-style {
     display: flex;
     justify-content: center;
@@ -28,6 +30,7 @@
     @include disableBorderColor(0.3);
     border-radius: 5px;
     background-color: var(--foreground-color);
+    color: var(--foreground-theme-color);
 
     &::placeholder {
         font-family: "Space Grotesk", sans-serif;
@@ -38,6 +41,10 @@
 
     &:focus {
         border: 1.5px solid var(--primary-color);
+    }
+
+    &::-webkit-inner-spin-button,&::-webkit-outer-spin-button{
+        display: none;
     }
 }
 

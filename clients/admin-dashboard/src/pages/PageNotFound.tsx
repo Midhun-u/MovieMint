@@ -1,8 +1,11 @@
 import Button from '../components/ui/Button'
 import { assets } from '../assets/assets'
 import style from '../styles/pages/pageNotFound.module.scss'
+import { useNavigate } from 'react-router'
 
 const PageNotFound = () => {
+
+    const navigation = useNavigate()
 
     return (
 
@@ -18,6 +21,7 @@ const PageNotFound = () => {
             <Button
                 title='Go To Dashboard'
                 className={style['nav-button']}
+                onClick={() => navigation("/")}
             />
         </div>
 

@@ -1,6 +1,6 @@
 import type { LucideReactIconType } from '@/types/lucideReactType'
 import style from '../../styles/addMovies/listitems.module.scss'
-import Label from '../form/Label'
+import FormLabel from '../form/FormLabel'
 import DropDownMenu from '../ui/DropDownMenu'
 import type { Dispatch, SetStateAction } from 'react'
 
@@ -17,7 +17,7 @@ const ListItems = ({labelTitle, Icon, values, value, setValue}: ListItemsProps) 
     return (
 
         <div className={style.container}>
-            <Label title={labelTitle} />
+            <FormLabel title={labelTitle} />
             <DropDownMenu
                 Icon={Icon}
                 values={values}

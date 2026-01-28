@@ -30,11 +30,11 @@ const DateShowBar = ({ year, month, day, hour, minute, setShowDatePicker }: Date
             <span className={style.date}>
                 {monthName} {day}, {year} 
                 {
-                    hour && minute
+                    hour && (minute === 30 || minute === 0)
                     ?
                     <>
                     &nbsp;-&nbsp; 
-                    {hour >= 12? hour - 12: hour}:{minute} {hour >= 12? "PM": "AM"}
+                    {hour >= 12? hour - 12: hour}:{minute === 30? minute: '00'} {hour >= 12? "PM": "AM"}
                     </>
                     :
                     null

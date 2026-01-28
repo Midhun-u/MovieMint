@@ -31,7 +31,6 @@ const ProtectRoute = ({
         const result = await getAdminProfile(storedAuthToken ? storedAuthToken : authToken as string)
 
         if (result.success && result?.user?.role === "ADMIN") {
-
             dispatch(authSuccess({ admin: result.user }))
 
             localStorage.setItem("authToken", storedAuthToken? storedAuthToken: authToken as string)

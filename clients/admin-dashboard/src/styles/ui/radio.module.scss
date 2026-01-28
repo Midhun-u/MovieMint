@@ -1,0 +1,36 @@
+@use '../variables' as variables;
+
+.container {
+    width: 100%;
+    display: flex;
+    margin-top: 10px;
+    gap: 10px;
+}
+
+.radio {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    .check {
+        width: 15px;
+        height: 15px;
+        @include variables.disableBorderColor(0.3);
+        @extend %container-center-style;
+        border-radius: 2px;
+        cursor: pointer;
+    }
+
+    .selected-check{
+        @extend .check;
+        border: var(--foreground-color);
+        background-color: var(--primary-color);
+        color: var(--dark-foreground-color);
+    }
+
+    span {
+        font-size: 0.85rem;
+        font-weight: 500;
+        cursor: pointer;
+    }
+}

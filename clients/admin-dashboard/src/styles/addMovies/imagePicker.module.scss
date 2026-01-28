@@ -17,11 +17,34 @@
         cursor: pointer;
         @include variables.disableBorderColor(0.3)
     }
-    
-    .image-picker-landscape{
+
+    .image-picker-landscape {
         @extend .image-picker-portrait;
         width: 300px;
         aspect-ratio: 16 / 9;
+    }
+
+    .image-container {
+        width: 100%;
+        height: auto;
+
+        .image {
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    .preview-image-portrait {
+        aspect-ratio: 2 / 3;
+        width: 200px;
+        height: auto;
+        position: relative;
+    }
+
+    .preview-image-landscape {
+        width: 300px;
+        aspect-ratio: 16 / 9;
+        cursor: pointer;
     }
 
     .icon {
@@ -32,4 +55,31 @@
         font-size: 0.9rem;
         color: var(--disable-color);
     }
+}
+
+@media(max-width: 500px){
+
+    .image-picker-container{
+        .image-picker-landscape{
+            width: 100%;
+        }
+
+        .preview-image-landscape{
+            width: 100%;
+        }
+    }
+
+}
+
+@media(max-width: 270px){
+
+    .image-picker-container{
+        .image-picker-portrait{
+            width: 100%;
+        }
+        .preview-image-portrait{
+            width: 100%;
+        }
+    }
+
 }

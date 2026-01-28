@@ -8,16 +8,15 @@
     cursor: pointer;
     border-radius: 5px;
     position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
 .menu{
-    position: absolute;
-    top: 50px;
     width: 450px;
     max-height: 250px;
     background-color: var(--foreground-color);
     padding-block: 10px;
-    left: 0px;
     transition: all 200ms linear;
     border-radius: 5px;
     @include variables.disableBorderColor(0.3);
@@ -73,4 +72,22 @@
     span{
         font-size: 0.9rem;
     }
+}
+
+@media(max-width: 600px){
+
+    .container{
+        width: 100%;
+    }
+    
+    .menu{
+        width: 100%;
+    }
+
+    .menu-bar{
+        span{
+            font-size: 0.8rem;
+        }
+    }
+
 }

@@ -22,7 +22,22 @@ const DropDownMenu = ({ Icon, values, value: selectedValue, setValue }: DropDown
 
     return (
 
-        <div className={style.container} onClick={() => setShowMenu(!showMenu)}>
+        <>
+            <div className={style.container} onClick={() => setShowMenu(!showMenu)}>
+                <div className={style['menu-bar']}>
+                    <Icon
+                        size={22}
+                        strokeWidth={1.5}
+                        className={style['icon']}
+                    />
+                    <span>{selectedValue ? selectedValue : values[0]}</span>
+                    <DownArrowIcon
+                        size={22}
+                        strokeWidth={1.5}
+                        className={showMenu ? style['rotate-arrow-icon'] : style['arrow-icon']}
+                    />
+                </div>
+            </div>
             <Activity mode={showMenu ? "visible" : "hidden"}>
                 <div className={style['menu']}>
                     {
@@ -30,7 +45,7 @@ const DropDownMenu = ({ Icon, values, value: selectedValue, setValue }: DropDown
                             <li
                                 key={index}
                                 onClick={() => setValue(value)}
-                                className={selectedValue === value? style['active-value']: ''}
+                                className={selectedValue === value ? style['active-value'] : ''}
                             >
                                 {value}
                             </li>
@@ -38,21 +53,7 @@ const DropDownMenu = ({ Icon, values, value: selectedValue, setValue }: DropDown
                     }
                 </div>
             </Activity>
-            <div className={style['menu-bar']}>
-                <Icon
-                    size={22}
-                    strokeWidth={1.5}
-                    className={style['icon']}
-                />
-                <span>{selectedValue ? selectedValue : values[0]}</span>
-                <DownArrowIcon
-                    size={22}
-                    strokeWidth={1.5}
-                    className={showMenu ? style['rotate-arrow-icon'] : style['arrow-icon']}
-                />
-            </div>
-        </div>
-
+        </>
     )
 
 }

@@ -1,5 +1,5 @@
 import Input from "../ui/Input"
-import Label from "./Label"
+import FormLabel from "./FormLabel"
 import style from '../../styles/form/formInput.module.scss'
 import type { LucideReactIconType } from "@/types/lucideReactType"
 import TextArea from "../ui/TextArea"
@@ -16,7 +16,7 @@ const FormInput = ({ labelTitle, id, inputPlaceholder, inputType, Icon }: FormIn
 
     return (
         <div className={style.container}>
-            <Label
+            <FormLabel
                 title={labelTitle}
                 id={id}
             />
