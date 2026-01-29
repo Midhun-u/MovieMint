@@ -1,0 +1,150 @@
+@use '../variables' as variables;
+
+.container{
+    width: 100%;
+    height: calc(100dvh - 60px);
+    position: absolute;
+    top: 60px;
+    right: 0px;
+    @extend %container-center-style;
+    z-index: 0;
+    
+    .background{
+        width: 100%;
+        height: 100%;
+        background-color: var(--foreground-color);
+        opacity: 0.6;
+        position: absolute;
+    }
+}
+
+.form-container{
+    width: 400px;
+    height: 400px;
+    background-color: var(--foreground-color);
+    opacity: 1;
+    border-radius: 5px;
+    @include variables.disableBorderColor(0.3);
+    position: relative;
+    padding-top: 60px;
+    padding-inline: 20px;
+    padding-bottom: 20px;
+    overflow-y: scroll;
+    gap: 10px;
+
+    &::-webkit-scrollbar{
+        display: none;
+    }
+
+    .close-icon{
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        cursor: pointer;
+        color: var(--disable-color);
+    }
+
+    .form-section{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .form{
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .input-section{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        position: relative;
+
+        .input{
+            @extend %input-basic-style;
+            width: 100%;
+            padding: 10px 10px 10px 40px;
+        }
+
+        .icon{
+            position: absolute;
+            left: 7px;
+            color: var(--disable-color);
+        }
+    }
+    
+    .image-section{
+        justify-self: start;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .image-container{
+        width: 100px;
+        height: 100px;
+        background-color: var(--foreground-color);
+        @include variables.disableBorderColor(0.3);
+        border-radius: 5px;
+        @extend %container-center-style;
+        color: var(--disable-color);
+        flex-direction: column;
+        cursor: pointer;
+
+        span{
+            font-size: 0.8rem;
+        }
+    }
+
+    .preview-image-container{
+        @extend .image-container;
+        border-color: var(--foreground-color);
+
+        .preview-image{
+            aspect-ratio: 1;
+            width: 100px;
+            height: 100px;
+        }
+
+        img{
+            aspect-ratio: 1 / 1;
+            width: 100%;
+            border-radius: 5px;
+        }
+    }
+
+    .button-container{
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .add-button{
+        width: 100%;
+        @extend %primary-button-style;
+        border-radius: 5px;
+    }
+
+    .remove-button{
+        @extend .add-button;
+        background-color: var(--foreground-color);
+        @include variables.disableBorderColor(0.3);
+
+        &:hover{
+            background-color: var(--foreground-color);
+        }
+    }
+}
+
+@media(max-width: 500px){
+
+    .container{
+        padding: 10px;
+    }
+}

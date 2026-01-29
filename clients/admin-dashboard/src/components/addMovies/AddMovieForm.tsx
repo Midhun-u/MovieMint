@@ -1,4 +1,4 @@
-import { Activity, useId, useState } from 'react'
+import { Activity, useContext, useId, useState } from 'react'
 import style from '../../styles/addMovies/addMovieForm.module.scss'
 import FormInput from '../form/FormInput'
 import {
@@ -9,7 +9,8 @@ import {
     Grid3x2 as CertificateIcon,
     Paperclip as URLIcon,
     TimerIcon,
-    Plus as AddIcon
+    Plus as AddIcon,
+    EditIcon
 } from 'lucide-react'
 import ImagePicker from './ImagePicker'
 import ListItems from './ListItems'
@@ -22,6 +23,41 @@ import DateShowBar from '../ui/DateShowBar'
 import DatePicker from '../ui/DatePicker'
 import Input from '../ui/Input'
 import Radio from '../ui/Radio'
+import { useForm, type SubmitHandler } from 'react-hook-form'
+import Button from '../ui/Button'
+import AddCrewForm from './AddCrewForm'
+import { ToastProvider } from '../context/ToastMessage'
+
+type Inputs = {
+    title: string
+    subheadig: string
+    synopsis: string
+    trailerUrl: string
+    durationHour: number
+    durationMinute: number
+    durationSeconds: number
+}
+
+type ReleaseDate = {
+    year: number
+    month: number
+    day: number
+    hour: number
+    minute: number
+}
+
+type Crews = Array<{
+    actorName: string
+    image: File
+    preview: string
+}>
+
+type CrewDetails = {
+    actorName: string
+    image: File
+    preview: string
+    index: number
+}
 
 const AddMovieForm = () => {
 
@@ -35,13 +71,7 @@ const AddMovieForm = () => {
     const [language, setLanguage] = useState<string>('')
     const [certificate, setCertificate] = useState<string>('')
     const [categories, setCategories] = useState<Array<string>>([])
-    const [releaseDate, setReleaseDate] = useState<{
-        year: number,
-        month: number,
-        day: number,
-        hour: number,
-        minute: number
-    }>({
+    const [releaseDate, setReleaseDate] = useState<ReleaseDate>({
         year: new Date().getFullYear(),
         month: new Date().getMonth(),
         day: new Date().getDate(),
@@ -49,35 +79,110 @@ const AddMovieForm = () => {
         minute: 0
     })
     const [movieType, setMovieType] = useState<"LIVE_ACTION" | "ANIMATED">("LIVE_ACTION")
+    const [crews, setCrews] = useState<Crews>([])
     const [showDatePicker, setShowDatePicker] = useState<boolean>(false)
+    const [showCrewScreen, setShowCrewScreen] = useState<boolean>(false)
+    const [selectedCrew, setSelectedCrew] = useState<{
+        actorName: string
+        image: File
+        preview: string
+        index: number
+    } | null>(null)
+    const { register, handleSubmit, formState: { errors: formErrors } } = useForm<Inputs>()
+    const toastContext = useContext(ToastProvider)
+
+    // Function for submitting form
+    const handleSubmitForm: SubmitHandler<Inputs> = (data) => {
+
+        if(
+            !poster ||
+            !banner ||
+            !language ||
+            !certificate ||
+            !categories.length ||
+            !movieTrailer
+        ){
+            toastContext?.triggerToastMessage("All fields are required", "ERROR")
+        }
+
+    }
+
+    // Function for editing crew details
+    const handleEditCrewDetails = (editedDetails: CrewDetails) => {
+        
+        const editedCrewDetails = crews.map((crew, index) => {
+            if(index === editedDetails.index){
+                return {
+                    actorName: editedDetails.actorName,
+                    image: editedDetails.image,
+                    preview: editedDetails.preview
+                }
+            }else{
+                return crew
+            }
+        })
+
+        setCrews(editedCrewDetails)
+        setSelectedCrew(null)
+
+    }
+
+    // Function for removing crew details
+    const handleRemoveCrewDetails = (removedCrewDetails: CrewDetails) => {
+        
+        if(!removedCrewDetails) return
+
+        const filteredCrews = crews.filter((crew, index) => index !== removedCrewDetails.index)
+        setCrews(filteredCrews)
+
+    }
 
     return (
 
-        <form className={style.container}>
+        <form onSubmit={handleSubmit(handleSubmitForm)} className={style.container}>
             {/* Movie title */}
-            <FormInput
-                labelTitle='Movie Title'
-                id={titleId}
-                inputPlaceholder='Enter movie title'
-                Icon={MovieIcon}
-                inputType='input'
-            />
+            <div className={style['form-field']}>
+                <FormInput
+                    labelTitle='Movie Title'
+                    id={titleId}
+                    inputPlaceholder='Enter movie title'
+                    Icon={MovieIcon}
+                    inputType='input'
+                    register={register}
+                    inputFieldName='title'
+                    minLength={3}
+                    maxLength={20}
+                    aria-invalid={formErrors.title ? "true" : "false"}
+                />
+            </div>
             {/* Movie subheading */}
-            <FormInput
-                labelTitle='Movie Subheading'
-                id={subheadingId}
-                inputPlaceholder='Enter movie subheading'
-                Icon={SubheadingIcon}
-                inputType='textarea'
-            />
+            <div className={style['form-field']}>
+                <FormInput
+                    labelTitle='Movie Subheading'
+                    id={subheadingId}
+                    inputPlaceholder='Enter movie subheading'
+                    Icon={SubheadingIcon}
+                    inputType='textarea'
+                    register={register}
+                    inputFieldName='subheading'
+                    minLength={5}
+                    maxLength={50}
+                />
+            </div>
             {/* Movie synopsis */}
-            <FormInput
-                labelTitle='Movie Synopsis'
-                id={synopsisId}
-                inputPlaceholder='Enter movie synopsis'
-                Icon={SynopsisIcon}
-                inputType='textarea'
-            />
+            <div className={style['form-field']}>
+                <FormInput
+                    labelTitle='Movie Synopsis'
+                    id={synopsisId}
+                    inputPlaceholder='Enter movie synopsis'
+                    Icon={SynopsisIcon}
+                    inputType='textarea'
+                    register={register}
+                    inputFieldName='synopsis'
+                    minLength={10}
+                    maxLength={250}
+                />
+            </div>
             {/* Movie poster */}
             <ImagePicker
                 labelTitle='Movie Poster'
@@ -145,13 +250,19 @@ const AddMovieForm = () => {
                 </Activity>
             </div>
             {/* Movie trailer */}
-            <FormInput
-                labelTitle='Movie Trailer'
-                inputType='input'
-                id={movieTrailer}
-                inputPlaceholder='Enter URL'
-                Icon={URLIcon}
-            />
+            <div className={style['form-field']}>
+                <FormInput
+                    labelTitle='Movie Trailer'
+                    inputType='input'
+                    id={movieTrailer}
+                    inputPlaceholder='Enter URL'
+                    Icon={URLIcon}
+                    register={register}
+                    inputFieldName='trailerUrl'
+                    minLength={5}
+                    maxLength={500}
+                />
+            </div>
             {/* Movie duration */}
             <div className={style['duration-container']}>
                 <FormLabel
@@ -166,8 +277,11 @@ const AddMovieForm = () => {
                         />
                         <Input
                             className={style['input']}
-                            placeholder='Enter hour'
+                            placeholder='Enter movie duration hour'
                             type='number'
+                            {...register("durationHour", {
+                                required: true
+                            })}
                         />
                     </div>
                     <div className={style['input-section']}>
@@ -178,8 +292,11 @@ const AddMovieForm = () => {
                         />
                         <Input
                             className={style['input']}
-                            placeholder='Enter minutes'
+                            placeholder='Enter movie duration minutes'
                             type='number'
+                            {...register("durationMinute", {
+                                required: true
+                            })}
                         />
                     </div>
                     <div className={style['input-section']}>
@@ -190,8 +307,11 @@ const AddMovieForm = () => {
                         />
                         <Input
                             className={style['input']}
-                            placeholder='Enter seconds'
+                            placeholder='Enter movie duration seconds'
                             type='number'
+                            {...register("durationSeconds", {
+                                required: true
+                            })}
                         />
                     </div>
                 </div>
@@ -219,21 +339,64 @@ const AddMovieForm = () => {
                 </div>
             </div>
             {/* Movie casts and crew */}
-            <Activity mode={movieType === "LIVE_ACTION"? "visible": "hidden"}>
+            <Activity mode={movieType === "LIVE_ACTION" ? "visible" : "hidden"}>
                 <div className={style['crew-container']}>
                     <FormLabel
                         title='Movie Casts & Crew'
                     />
                     <div className={style['list']}>
-                        <div className={style['add-cast-container']}>
+                        {
+                            crews.map((crewDetails, index) => (
+
+                                <div onClick={() => {
+                                    setSelectedCrew({...crewDetails, index: index})
+                                    setShowCrewScreen(true)
+                                }}
+                                    className={style['crew-details']}
+                                    key={index}
+                                >
+                                    <div className={style['image-container']}>
+                                        <EditIcon
+                                            size={20}
+                                            className={style.icon}
+                                            strokeWidth={1.5}
+                                        />
+                                        <img
+                                            src={crewDetails.preview}
+                                        />
+                                    </div>
+                                    <span>{crewDetails.actorName}</span>
+                                </div>
+
+                            ))
+                        }
+                        <div onClick={() => setShowCrewScreen(true)} className={style['add-cast-container']}>
                             <AddIcon
                                 size={23}
                                 strokeWidth={1.5}
                             />
                         </div>
                     </div>
+                    <Activity mode={showCrewScreen ? "visible" : "hidden"}>
+                        <AddCrewForm
+                            setShowCrewForm={setShowCrewScreen}
+                            submit={(actorName, actorImage, preview) => {
+                                return setCrews((pre) => [...pre, { actorName: actorName, image: actorImage, preview: preview }])
+                            }}
+                            selectedValue={selectedCrew}
+                            setSelectedValue={setSelectedCrew}
+                            onEdit={handleEditCrewDetails}
+                            onRemove={handleRemoveCrewDetails}
+                        />
+                    </Activity>
                 </div>
             </Activity>
+            {/* Submit button */}
+            <Button
+                title='Add Movie'
+                type='submit'
+                className={style['submit-button']}
+            />
         </form>
 
     )

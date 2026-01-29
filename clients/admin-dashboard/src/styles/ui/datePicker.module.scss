@@ -40,7 +40,7 @@
         align-items: center;
         font-weight: 500;
         flex-shrink: 0;
-        min-width: 250px;
+        min-width: 200px;
     }
 
     .icon-container {
@@ -63,7 +63,7 @@
         grid-template-columns: repeat(7, auto);
         justify-items: stretch;
         gap: 3px;
-        min-width: 250px;
+        min-width: 200px;
     }
 
     .week {
@@ -83,7 +83,7 @@
         justify-items: center;
         margin-top: 7px;
         gap: 3px;
-        min-width: 250px;
+        min-width: 200px;
     }
 
     .day {
@@ -120,7 +120,7 @@
         grid-template-columns: repeat(3, auto);
         justify-items: stretch;
         gap: 3px;
-        min-width: 250px;
+        min-width: 200px;
 
         .time {
             width: 100%;
@@ -156,6 +156,26 @@
             .time{
                 font-size: 0.8rem;
                 flex-shrink: 0;
+            }
+        }
+    }
+
+}
+
+@media(max-width: 350px){
+
+    .container{
+        .time-container{
+            grid-template-columns: repeat(2, auto);
+        }
+
+        .icon-container{
+            padding: 4px;
+        }
+
+        .top-bar{
+            span{
+                font-size: 0.9rem;
             }
         }
     }

@@ -3,16 +3,22 @@ import FormLabel from "./FormLabel"
 import style from '../../styles/form/formInput.module.scss'
 import type { LucideReactIconType } from "@/types/lucideReactType"
 import TextArea from "../ui/TextArea"
+import type {UseFormRegister } from "react-hook-form"
+import { forwardRef, type InputHTMLAttributes } from "react"
 
-interface FormInputProps {
+interface FormInputProps extends InputHTMLAttributes<HTMLElement> {
     labelTitle: string
     id?: string
     inputPlaceholder?: string
     Icon: LucideReactIconType
     inputType: "input" | "textarea"
+    register: UseFormRegister<any>
+    inputFieldName: string
+    minLength: number
+    maxLength: number
 }
 
-const FormInput = ({ labelTitle, id, inputPlaceholder, inputType, Icon }: FormInputProps) => {
+const FormInput = forwardRef<HTMLInputElement, FormInputProps>(({ labelTitle, id, inputPlaceholder, inputType, Icon, register, inputFieldName, maxLength, minLength, ...props }, ref) => {
 
     return (
         <div className={style.container}>
@@ -22,7 +28,7 @@ const FormInput = ({ labelTitle, id, inputPlaceholder, inputType, Icon }: FormIn
             />
             <div className={style['input-section']}>
                 <Icon
-                    className={inputType === "input"? style['input-icon']: style['textarea-icon']}
+                    className={inputType === "input" ? style['input-icon'] : style['textarea-icon']}
                     size={22}
                     strokeWidth={1.5}
                 />
@@ -34,18 +40,30 @@ const FormInput = ({ labelTitle, id, inputPlaceholder, inputType, Icon }: FormIn
                             className={style.input}
                             type="text"
                             id={id}
+                            {...register(inputFieldName, {
+                                required: true,
+                                minLength: minLength,
+                                maxLength: maxLength
+                            })}
+                            {...props}
                         />
                         :
                         <TextArea
                             className={style.textarea}
                             placeholder={inputPlaceholder}
                             id={id}
+                            {...register(inputFieldName, {
+                                required: true,
+                                minLength: minLength,
+                                maxLength: maxLength
+                            })}
+                            {...props}
                         />
                 }
             </div>
         </div>
     )
 
-}
+})
 
 export default FormInput

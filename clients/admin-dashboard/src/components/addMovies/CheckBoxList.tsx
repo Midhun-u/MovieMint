@@ -13,7 +13,15 @@ const CheckBoxList = ({ values, setValues, checkedValues }: CheckBoxListProps) =
     // Function for adding unchecked value to array
     const handlAddCategories = (unCheckedValue: string) => {
 
-        setValues((prevValues) => [...prevValues, unCheckedValue])
+        if(checkedValues.length <= 4){
+            setValues((prevValues) => [...prevValues, unCheckedValue])
+
+        }else{
+            // Removing category for maintaining length of categories
+            const filteredValues = checkedValues.filter((_, index) => index <= 3)
+            setValues([...filteredValues, unCheckedValue])
+        }
+       
 
     }
 
@@ -34,6 +42,7 @@ const CheckBoxList = ({ values, setValues, checkedValues }: CheckBoxListProps) =
                         key={index}
                         onMarkChecked={(unCheckedValue) => handlAddCategories(unCheckedValue)}
                         onUnmarkChecked={(checkedValue) => handleRemoveCategories(checkedValue)}
+                        checkedValue={checkedValues[checkedValues.indexOf(value)] || ""}
                     />
                 ))
             }

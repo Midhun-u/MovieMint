@@ -69,6 +69,7 @@ $disable-color: #7F7F7F;
     background-color: var(--foreground-color);
     width: min-content;
     min-width: 150px;
+    z-index: 2;
 
     .option-menu-link{
         display: flex;
