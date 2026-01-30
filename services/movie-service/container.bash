@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-server_name="media_server"
+server_name="movie_service"
 
 echo "Starts to building container"
 sudo docker build -t $server_name ./

@@ -2,6 +2,10 @@ import { Hono } from 'hono'
 import {logger} from 'hono/logger'
 import {cors} from 'hono/cors'
 import { envVariables } from './utils/envVariables'
+import { errorHandler } from './utils/errorHandler'
+import { notFound } from './utils/notFound'
+import { movieRouter } from './routes/routes'
+import { connectDatabase } from './config/db'
 
 // App instance
 const app = new Hono({strict: false})
@@ -16,6 +20,14 @@ app.use(cors({
   allowMethods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
   credentials: true
 }))
+
+// Routes
+app.onError(errorHandler)
+app.notFound(notFound)
+app.route("/api/v1/movie", movieRouter)
+
+// Connecting database
+connectDatabase()
 
 export {
   app,
