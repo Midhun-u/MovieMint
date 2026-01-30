@@ -7,7 +7,7 @@ import { getUserImageController } from '../controllers/getUserImage.controller.j
 export const userImageRouter = express()
 
 // Route for uploading user images
-userImageRouter.post("/upload-user-image", upload.single("file"), uploadUserImageController)
+userImageRouter.post("/upload-image", upload.single("file"), uploadUserImageController)
 
 // Route for getting user image
-userImageRouter.get("/get-user-image/:userId", getUserImageController)
+userImageRouter.get("/get-image/:userId", getUserImageController)

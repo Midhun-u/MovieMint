@@ -1,4 +1,4 @@
-import { Activity, useContext, useId, useState } from 'react'
+import { Activity, useContext, useId, useState, type ChangeEvent } from 'react'
 import style from '../../styles/addMovies/addMovieForm.module.scss'
 import FormInput from '../form/FormInput'
 import {
@@ -27,6 +27,8 @@ import { useForm, type SubmitHandler } from 'react-hook-form'
 import Button from '../ui/Button'
 import AddCrewForm from './AddCrewForm'
 import { ToastProvider } from '../context/ToastMessage'
+import ShowTrailer from './ShowTrailer'
+import { youtubeEmbedUrlRegex } from '../../utils/youtubeEmbedUrlRegex'
 
 type Inputs = {
     title: string
@@ -79,6 +81,7 @@ const AddMovieForm = () => {
         minute: 0
     })
     const [movieType, setMovieType] = useState<"LIVE_ACTION" | "ANIMATED">("LIVE_ACTION")
+    const [movieTrailerUrl, setMovieTrailerUrl] = useState<string>('')
     const [crews, setCrews] = useState<Crews>([])
     const [showDatePicker, setShowDatePicker] = useState<boolean>(false)
     const [showCrewScreen, setShowCrewScreen] = useState<boolean>(false)
@@ -91,33 +94,17 @@ const AddMovieForm = () => {
     const { register, handleSubmit, formState: { errors: formErrors } } = useForm<Inputs>()
     const toastContext = useContext(ToastProvider)
 
-    // Function for submitting form
-    const handleSubmitForm: SubmitHandler<Inputs> = (data) => {
-
-        if(
-            !poster ||
-            !banner ||
-            !language ||
-            !certificate ||
-            !categories.length ||
-            !movieTrailer
-        ){
-            toastContext?.triggerToastMessage("All fields are required", "ERROR")
-        }
-
-    }
-
     // Function for editing crew details
     const handleEditCrewDetails = (editedDetails: CrewDetails) => {
-        
+
         const editedCrewDetails = crews.map((crew, index) => {
-            if(index === editedDetails.index){
+            if (index === editedDetails.index) {
                 return {
                     actorName: editedDetails.actorName,
                     image: editedDetails.image,
                     preview: editedDetails.preview
                 }
-            }else{
+            } else {
                 return crew
             }
         })
@@ -129,11 +116,40 @@ const AddMovieForm = () => {
 
     // Function for removing crew details
     const handleRemoveCrewDetails = (removedCrewDetails: CrewDetails) => {
-        
-        if(!removedCrewDetails) return
+
+        if (!removedCrewDetails) return
 
         const filteredCrews = crews.filter((crew, index) => index !== removedCrewDetails.index)
         setCrews(filteredCrews)
+
+    }
+
+    // Function for submitting form
+    const handleSubmitForm: SubmitHandler<Inputs> = (data) => {
+
+        if (
+            !poster ||
+            !banner ||
+            !language ||
+            !certificate ||
+            !categories.length ||
+            !crews.length ||
+            !movieType
+        ) {
+            toastContext?.triggerToastMessage("All fields are required", "ERROR")
+            return
+        }
+
+        if (
+            categories.length > 5 ||
+            !youtubeEmbedUrlRegex.test(data.trailerUrl)
+
+        ) {
+            toastContext?.triggerToastMessage("Invalid fields", "ERROR")
+            return
+        }
+
+        console.log(data)
 
     }
 
@@ -261,6 +277,11 @@ const AddMovieForm = () => {
                     inputFieldName='trailerUrl'
                     minLength={5}
                     maxLength={500}
+                    onChange={(event: ChangeEvent<HTMLInputElement>) => setMovieTrailerUrl(event.target.value)}
+
+                />
+                <ShowTrailer
+                    trailerUrl={movieTrailerUrl}
                 />
             </div>
             {/* Movie duration */}
@@ -349,7 +370,7 @@ const AddMovieForm = () => {
                             crews.map((crewDetails, index) => (
 
                                 <div onClick={() => {
-                                    setSelectedCrew({...crewDetails, index: index})
+                                    setSelectedCrew({ ...crewDetails, index: index })
                                     setShowCrewScreen(true)
                                 }}
                                     className={style['crew-details']}

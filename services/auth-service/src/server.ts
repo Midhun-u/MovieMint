@@ -21,7 +21,7 @@ app.register(authRoutes, {prefix: "/api/v1/auth"})
 // Listening port
 app.listen({port: port}, (error, address) => {
 
-    if(error){
+    if(error){ 
         console.error(error)
         process.exit(1)
     }

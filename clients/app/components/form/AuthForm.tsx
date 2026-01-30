@@ -19,7 +19,7 @@ import Link from "next/link"
 import { Role } from "@/types/Role"
 import PasswordStrengthIndicator from "./PasswordStrengthIndicator"
 import WarningMessage from "./WarningMessage"
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useForm, SubmitHandler } from 'react-hook-form'
 import { emailRegex } from "@/utils/emailRegex"
 import { googleLoginApi, googleSignApi, loginApi, signApi } from "@/api/auth"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"

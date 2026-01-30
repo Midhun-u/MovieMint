@@ -40,7 +40,7 @@
     }
 
     &:focus {
-        border: 1.5px solid var(--primary-color);
+        outline: 1.6px solid var(--primary-color);
     }
 
     &::-webkit-inner-spin-button,&::-webkit-outer-spin-button{

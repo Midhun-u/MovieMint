@@ -3,7 +3,7 @@ import FormLabel from "./FormLabel"
 import style from '../../styles/form/formInput.module.scss'
 import type { LucideReactIconType } from "@/types/lucideReactType"
 import TextArea from "../ui/TextArea"
-import type {UseFormRegister } from "react-hook-form"
+import type { UseFormRegister } from "react-hook-form"
 import { forwardRef, type InputHTMLAttributes } from "react"
 
 interface FormInputProps extends InputHTMLAttributes<HTMLElement> {
@@ -43,7 +43,7 @@ const FormInput = forwardRef<HTMLInputElement, FormInputProps>(({ labelTitle, id
                             {...register(inputFieldName, {
                                 required: true,
                                 minLength: minLength,
-                                maxLength: maxLength
+                                maxLength: maxLength,
                             })}
                             {...props}
                         />
