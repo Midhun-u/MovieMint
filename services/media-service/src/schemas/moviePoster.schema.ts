@@ -9,7 +9,7 @@ export const Poster = sequelize.define("poster", {
         primaryKey: true,
         allowNull: false
     },
-    movieId: {
+    movie_id: {
         type: DataTypes.TEXT,
         unique: true,
         allowNull: false

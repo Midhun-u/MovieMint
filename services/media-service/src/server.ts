@@ -5,6 +5,7 @@ import { userImageRouter } from './routes/user.route.js'
 import morgan from 'morgan'
 import cors from 'cors'
 import { movieRouter } from './routes/movie.route.js'
+import { notFoundController } from './controllers/notFound.controller.js'
 
 // App instance
 const app = express()
@@ -24,6 +25,7 @@ app.use(cors({
 // Routes
 app.use("/api/v1/image/user", userImageRouter)
 app.use("/api/v1/image/movie", movieRouter)
+app.use(notFoundController)
 
 // Listening port
 app.listen(port, () => {

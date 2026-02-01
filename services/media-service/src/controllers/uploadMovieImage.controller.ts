@@ -26,6 +26,23 @@ export const uploadMovieImageController = handleError(async (request: Request, r
 
     }
 
+    // Checking if movie image exists
+    if(type === "poster"){
+
+        const poster = await MoviePosterModel.getPosterByMovieId(movieId)
+        if(poster){
+            return sendResponse(response, false, 409, "Movie poster is already exist")
+        }
+
+    }else{
+
+        const banner = await MovieBannerModel.getBannerByMovieId(movieId)
+        if(banner){
+            return sendResponse(response, false, 409, "Movie banner is already exist")
+        }
+
+    }
+
     // Reading file from disk
     const fileBuffer = readFileFromDisk(file.path)
     const extname = path.extname(file.path)

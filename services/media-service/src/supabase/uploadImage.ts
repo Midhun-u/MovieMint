@@ -22,9 +22,9 @@ export const uploadImage = async ({
     contentType: ContentType
 }) => {
 
-    const filePath = `./${id + crypto.randomUUID()}${extname}`
+    const filePath = `./${id + "-" + crypto.randomUUID()}${extname}`
 
-    const { data, error } = await supabase.storage.from(bucketName).upload(filePath, file, {
+    const { data, error } = await supabase.storage.from(bucketName.trim()).upload(filePath, file, {
         contentType: contentType
     })
 

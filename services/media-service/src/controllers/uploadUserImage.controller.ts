@@ -29,6 +29,12 @@ export const uploadUserImageController = handleError(async (request: Request, re
         return sendResponse(response, false, 400, "File is required")
     }
 
+    // Checking if user image is already exists
+    const image = await UserImageModel.getImageByUserId(userId)
+    if(image){
+        return sendResponse(response, false, 409, "User image is already exist")
+    }
+
     if (imageUrl) {
 
         // Fetching image for knowing the mime type

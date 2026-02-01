@@ -9,7 +9,7 @@ export const UserImage = sequelize.define("user_image", {
         primaryKey: true,
         allowNull: false
     },
-    userId: {
+    user_id: {
         type: DataTypes.TEXT,
         unique: true,
         allowNull: false

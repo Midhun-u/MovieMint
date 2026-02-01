@@ -15,3 +15,10 @@ export const uploadMovieImageApi = handleError(async (file: File, movieId: strin
     return result
 
 })
+
+// Api for uploading actors image
+export const uploadActorsImageApi = handleError(async () => {
+
+    
+
+})

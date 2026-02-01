@@ -1,3 +1,4 @@
 export const protectedRoutes = [
-    "/add-movie"
+    "/add-movie",
+    "/delete-movie"
 ]

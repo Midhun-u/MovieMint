@@ -8,7 +8,7 @@ export const UserImageModel = {
     addImage: async (data: AddUserImageType) => {
 
         const newImage = await UserImage.create({
-            userId: data.userId,
+            user_id: data.userId,
             image_url: data.imageUrl,
             image_path: data.imagePath || "",
             image_full_path: data.imageFullPath || "",
@@ -23,7 +23,7 @@ export const UserImageModel = {
 
         const userImage = await UserImage.findOne({
             where: {
-                userId: {
+                user_id: {
                     [Op.eq]: userId
                 }
             }

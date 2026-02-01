@@ -1,3 +1,4 @@
+import { Op } from "sequelize";
 import { Banner } from "../schemas/movieBanner.schema.js";
 import type { AddMovieImageType } from "../types/addMovieType.js";
 
@@ -6,7 +7,7 @@ export const MovieBannerModel = {
     addBanner: async (data: AddMovieImageType) => {
 
         const newPoster = await Banner.create({
-            movieId: data.movieId,
+            movie_id: data.movieId,
             image_url: data.imageUrl,
             image_path: data.imagePath || "",
             image_full_path: data.imageFullPath || "",
@@ -14,6 +15,27 @@ export const MovieBannerModel = {
         })
 
         return newPoster.dataValues
+
+    },
+
+    getBannerById: async (id: string) => {
+
+        const banner = await Banner.findByPk(id)
+        return banner?.dataValues
+
+    },
+
+    getBannerByMovieId: async (movieId: string) => {
+
+        const banner = await Banner.findOne({
+            where: {
+                movie_id: {
+                    [Op.eq]: movieId
+                }
+            }
+        })
+
+        return banner?.dataValues
 
     }
 

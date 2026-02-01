@@ -9,7 +9,7 @@ export const getImage = async (
 
     try {
         
-        const {data} = await supabase.storage.from(bucketName).getPublicUrl(filePath)
+        const {data} = await supabase.storage.from(bucketName.trim()).getPublicUrl(filePath.trim())
         return {publicUrl: data.publicUrl}
 
     } catch (error) {
