@@ -1,0 +1,1 @@
+export type SupabaseBucketName = "users" | "moviePosters" | "movieBanners" | "actors"

@@ -5,7 +5,7 @@ export type MovieType = {
     language: string
     certificate: string
     categories: Array<string>
-    releaseDate: Date
+    releaseDate: string
     trailer: string
     duration: {
         hour: number
@@ -14,6 +14,6 @@ export type MovieType = {
     }
     type: "LIVE_ACTION" | "ANIMATED"
     actors?: Array<{
-        actorName: string,
+        name: string,
     }>
 }

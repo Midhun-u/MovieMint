@@ -86,6 +86,12 @@ const movieSchema = new Schema({
         required: true,
         enum: ["SHOWING", "NOT_SHOWING", "PENDING"],
         trim: true
+    },
+    type: {
+        type: String,
+        required: true,
+        enum: ["LIVE_ACTION", "ANIMATED"],
+        trim: true
     }
 
 })

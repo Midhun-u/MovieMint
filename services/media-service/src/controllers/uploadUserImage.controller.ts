@@ -2,16 +2,16 @@ import type { Request, Response } from "express";
 import { handleError } from "../utils/handleError.js";
 import type { ContentType, UploadImageBody } from "../types/imageType.js";
 import { sendResponse } from "../utils/sendResponse.js";
-import { uploadUserImage } from "../supabase/user/uploadUserImage.js";
+import { uploadImage } from "../supabase/uploadImage.js";
 import { deleteFileFromDisk, readFileFromDisk } from "../utils/fileOperations.js";
 import path from 'path'
 import { UserImageModel } from "../models/userImage.model.js";
-import { getUserImage } from "../supabase/user/getUserImage.js";
+import { getImage } from "../supabase/getImage.js";
 
 // Controller for uploading user images
 export const uploadUserImageController = handleError(async (request: Request, response: Response): Promise<any> => {
 
-    const { userId , imageUrl} = request.body as UploadImageBody || {}
+    const { userId, imageUrl } = request.body as UploadImageBody || {}
 
     if (!userId) {
 
@@ -29,7 +29,7 @@ export const uploadUserImageController = handleError(async (request: Request, re
         return sendResponse(response, false, 400, "File is required")
     }
 
-    if(imageUrl){
+    if (imageUrl) {
 
         // Fetching image for knowing the mime type
         const fetchResponse = await fetch(imageUrl)
@@ -41,24 +41,32 @@ export const uploadUserImageController = handleError(async (request: Request, re
             imageType: data as ContentType || "image/jpeg"
         })
 
-        return sendResponse(response, true, 201, null, {newImage: newImage}, "Image is uploaded")
+        return sendResponse(response, true, 201, null, { newImage: newImage }, "Image is uploaded")
 
-    }else if(request.file){
+    } else if (request.file) {
 
+        // Reading file from disk
         const fileBuffer = readFileFromDisk(request.file.path as string)
         const extname = path.extname(request.file.path)
-    
-        // Uploading image to supabase
-        const result = await uploadUserImage(userId, request.file.path, extname, fileBuffer, request.file.mimetype as ContentType)
 
-        if(result.error){
+        // Uploading image to supabase
+        const result = await uploadImage({
+            id: userId,
+            path: request.file.path,
+            extname: extname,
+            file: fileBuffer,
+            bucketName: "users",
+            contentType: request.file.mimetype as ContentType
+        })
+
+        if (result.error) {
             return sendResponse(response, false, 400, "Couldn't upload the image")
         }
 
         // Getting public url
-        const data = await getUserImage(result.data?.path as string)
+        const data = await getImage(result.data?.path as string, "users")
 
-        if(data.error){
+        if (data.error) {
             return sendResponse(response, false, 400, "Couldn't get the public url")
         }
 
@@ -70,9 +78,9 @@ export const uploadUserImageController = handleError(async (request: Request, re
             imageType: `image/${extname.replace(".", "")}` as ContentType // eg: ".jpg" to "jpg"
         })
 
-        return sendResponse(response, true, 201, null, {success: true, message: "Image is uploaded", image: newImage, statusCode: 201})
- 
-    }else{
+        return sendResponse(response, true, 201, null, {image: newImage }, "Image is uploaded")
+
+    } else {
         return sendResponse(response, false, 400, "Something went wrong")
     }
 

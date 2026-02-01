@@ -47,6 +47,6 @@ export const addMovieApi = handleError(async (data: AddMovieData) => {
         Authorization: `Bearer ${authToken}`
     }})
 
-    console.log(result)
+    return result.data
 
 })

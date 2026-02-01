@@ -31,6 +31,7 @@ import ShowTrailer from './ShowTrailer'
 import { youtubeEmbedUrlRegex } from '../../utils/youtubeEmbedUrlRegex'
 import { addMovieApi } from '../../api/movie'
 import { convertToNumber } from '../../utils/convertToNumber'
+import { uploadMovieImageApi } from '../../api/media'
 
 
 type Inputs = {
@@ -151,22 +152,22 @@ const AddMovieForm = () => {
             return
         }
 
-        if(movieType === "LIVE_ACTION"){
-            if(crews.length < 1) return toastContext?.triggerToastMessage("Invalid fields", "ERROR")
+        if (movieType === "LIVE_ACTION") {
+            if (crews.length < 1) return toastContext?.triggerToastMessage("Invalid fields", "ERROR")
         }
 
         // If release date is today then checking if the time is correct
-        if(
-            releaseDate.month === new Date().getMonth() && 
-            releaseDate.year === new Date().getFullYear() && 
+        if (
+            releaseDate.month === new Date().getMonth() &&
+            releaseDate.year === new Date().getFullYear() &&
             releaseDate.day === new Date().getDate()
-        ){
-            if(releaseDate.hour <= new Date().getHours() && releaseDate.minute <= releaseDate.minute){
+        ) {
+            if (releaseDate.hour <= new Date().getHours() && releaseDate.minute <= releaseDate.minute) {
                 toastContext?.triggerToastMessage("Invalid release time", "ERROR")
                 return
             }
         }
-   
+
         const movieResult = await addMovieApi({
             title: data.title,
             subheading: data.subheading,
@@ -179,13 +180,26 @@ const AddMovieForm = () => {
                 seconds: convertToNumber(data.durationSeconds)
             },
             language: language,
-            releaseDate: new Date(Date.UTC(releaseDate.year, releaseDate.month, releaseDate.day, releaseDate.hour, releaseDate.minute)),
+            releaseDate: new Date(releaseDate.year, releaseDate.month, releaseDate.day, releaseDate.hour, releaseDate.minute),
             trailer: movieTrailerUrl,
             type: movieType,
-            actors: movieType === "LIVE_ACTION"? crews: []
+            actors: movieType === "LIVE_ACTION" ? crews : []
         })
 
-        console.log(movieResult)
+        if (movieResult.success && movieResult.movie) {
+
+            const [posterResult, bannerResult] = await Promise.all([
+                uploadMovieImageApi(poster, movieResult.movie._id, "poster"),
+                uploadMovieImageApi(banner, movieResult.movie._id, "banner"),
+            ])
+
+            console.log(posterResult)
+            console.log(bannerResult)
+
+        } else {
+            toastContext?.triggerToastMessage("Movie couldn't upload", "ERROR")
+            return
+        }
 
     }
 
@@ -427,7 +441,7 @@ const AddMovieForm = () => {
 
                             ))
                         }
-                        <Activity mode={crews.length <= 4? "visible": "hidden"}>
+                        <Activity mode={crews.length <= 4 ? "visible" : "hidden"}>
                             <div onClick={() => setShowCrewScreen(true)} className={style['add-cast-container']}>
                                 <AddIcon
                                     size={23}

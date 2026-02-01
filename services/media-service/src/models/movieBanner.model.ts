@@ -1,12 +1,11 @@
-import { Poster } from "../schemas/moviePoster.schema.js";
+import { Banner } from "../schemas/movieBanner.schema.js";
 import type { AddMovieImageType } from "../types/addMovieType.js";
 
-// Movie poster model
-export const MoviePosterModel = {
+export const MovieBannerModel = {
 
-    addPoster: async (data: AddMovieImageType) => {
+    addBanner: async (data: AddMovieImageType) => {
 
-        const newPoster = await Poster.create({
+        const newPoster = await Banner.create({
             movieId: data.movieId,
             image_url: data.imageUrl,
             image_path: data.imagePath || "",

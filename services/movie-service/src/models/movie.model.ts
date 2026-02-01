@@ -17,7 +17,8 @@ export const MovieModel = {
             categories: data.categories,
             actors: data.actors,
             releaseDate: data.releaseDate,
-            status: "PENDING"
+            status: "PENDING",
+            type: data.type
         })
 
         return newMovie

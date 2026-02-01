@@ -1,1 +1,1 @@
-export const youtubeEmbedUrlRegex = /^ https ?: \/\/(www\.)?youtube\.com\/embed\/[A-Za-z0-9_-]{11}/
+export const youtubeEmbedUrlRegex = /^https?:\/\/(www\.)?youtube\.com\/embed\/[A-Za-z0-9_-]{11}/
