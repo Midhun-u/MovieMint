@@ -1,11 +1,11 @@
-import { supabase } from "../config/supabase.js"
-import type { ContentType } from "../types/imageType.js"
-import { deleteFileFromDisk } from "./fileOperations.js"
+import { supabase } from "../../config/supabase.js"
+import type { ContentType } from "../../types/imageType.js"
+import { deleteFileFromDisk } from "../../utils/fileOperations.js"
 
 type FileType = Blob | File | ArrayBuffer | Buffer | ReadableStream
 
 // Function for uploading image
-export const uploadImage = async (
+export const uploadUserImage = async (
     userId: string, 
     path: string, 
     extname: string, 
@@ -21,7 +21,7 @@ export const uploadImage = async (
 
     if(error || data){
 
-        // Deleting file
+        // Deleting file from disk
         deleteFileFromDisk(path)
 
     }

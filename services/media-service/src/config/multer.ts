@@ -30,6 +30,7 @@ export const upload = multer({
             return callback(null, true)
         }else{
             console.log("Image is not supported")
+            callback(null, false)
         }
 
     },

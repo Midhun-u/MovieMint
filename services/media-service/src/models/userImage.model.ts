@@ -1,11 +1,11 @@
 import { Op } from "sequelize";
 import { UserImage } from "../schemas/userImage.schema.js";
-import type { AddImageType } from "../types/addImageType.js";
+import type { AddUserImageType } from "../types/addUserImageType.js";
 
-// Image model
+// User image model
 export const UserImageModel = {
 
-    addImage: async (data: AddImageType) => {
+    addImage: async (data: AddUserImageType) => {
 
         const newImage = await UserImage.create({
             userId: data.userId,

@@ -11,7 +11,6 @@ export const authenticationHook = async (request: FastifyRequest, reply: Fastify
     }
 
     await request.jwtVerify()
-    
     return
 
 }

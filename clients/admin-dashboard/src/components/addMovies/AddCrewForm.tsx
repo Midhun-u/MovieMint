@@ -10,7 +10,7 @@ import Button from '../ui/Button'
 import { ToastProvider } from '../context/ToastMessage'
 
 type CrewDetails = {
-    actorName: string
+    name: string
     image: File
     preview: string,
     index: number
@@ -82,7 +82,7 @@ const AddCrewForm = ({ setShowCrewForm, submit, selectedValue, onEdit, setSelect
         if(!selectedValue || !file || !onEdit) return 
 
         const editedDetails = {
-            actorName: actorName,
+            name: actorName,
             image: file,
             preview: preview,
             index: selectedValue.index
@@ -108,7 +108,7 @@ const AddCrewForm = ({ setShowCrewForm, submit, selectedValue, onEdit, setSelect
         if(!selectedValue) return
 
         setFile(selectedValue.image)
-        setActorName(selectedValue.actorName)
+        setActorName(selectedValue.name)
         setPreview(selectedValue.preview)
 
     }, [selectedValue])

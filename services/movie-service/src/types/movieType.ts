@@ -1,4 +1,4 @@
-export type AddMovieData = {
+export type MovieType = {
     title: string
     subheading: string
     synopsis: string
@@ -14,6 +14,6 @@ export type AddMovieData = {
     }
     type: "LIVE_ACTION" | "ANIMATED"
     actors?: Array<{
-        name: string
+        actorName: string,
     }>
 }

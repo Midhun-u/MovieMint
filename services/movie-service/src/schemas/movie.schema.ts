@@ -8,22 +8,6 @@ const movieCertificates = [
     "A/18+"
 ]
 
-const movieCategories = [
-    "Action",
-    "Adventure",
-    "Comedy",
-    "Drama",
-    "Thriller",
-    "Romance",
-    "Horror",
-    "Crime",
-    "Sci-Fi",
-    "Fantasy",
-    "Family",
-    "Animation",
-    "Documentary"
-]
-
 const durationSchema = new Schema({
 
     hour: {
@@ -47,60 +31,52 @@ const actorSchema = new Schema({
         type: String,
         required: true
     },
-    imageId: {
-        type: String,
-        required: true
-    }
 
-}, { _id: false, versionKey: false, timestamps: false })
+}, {versionKey: false, timestamps: false })
 
 const movieSchema = new Schema({
     title: {
         type: String,
         required: true,
         minLength: 3,
-        maxLength: 20
+        maxLength: 20,
+        trim: true
     },
     subHeading: {
         type: String,
         required: true,
         minLength: 5,
-        maxLength: 50
+        maxLength: 50,
+        trim: true
     },
     synopsis: {
         type: String,
         required: true,
         minLength: 10,
-        maxLength: 250
-    },
-    posterImageId: {
-        type: String,
-        required: true
-    },
-    bannerImageId: {
-        type: String,
-        required: true
+        maxLength: 250,
+        trim: true
     },
     language: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     certificate: {
         type: String,
         required: true,
-        enum: movieCertificates
+        enum: movieCertificates,
+        trim: true
     },
-    category: {
+    categories: [{
         type: String,
-        required: true,
-        enum: movieCategories
-    },
+        required: true
+    }],
     releaseDate: {
         type: Date,
         required: true
     },
     duration: durationSchema,
-    actors: actorSchema,
+    actors: [actorSchema],
     movieTrailer: {
         type: String,
         required: true
@@ -108,7 +84,8 @@ const movieSchema = new Schema({
     status: {
         type: String,
         required: true,
-        enum: ["SHOWING", "NOT_SHOWING"]
+        enum: ["SHOWING", "NOT_SHOWING", "PENDING"],
+        trim: true
     }
 
 })

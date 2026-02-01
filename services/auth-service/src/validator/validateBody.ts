@@ -1,5 +1,5 @@
 import * as zod from 'zod'
-import { emailRegex } from "./emailRegex.js";
+import { emailRegex } from "../utils/emailRegex.js";
 
 type FormType = "SIGN" | "LOGIN" | "GOOGLE_SIGN" | "GOOGLE_LOGIN"
 

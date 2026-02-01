@@ -4,6 +4,7 @@ import { envVariables } from "../utils/envVariables"
 // URLS
 const AUTH_BASE_URL = envVariables.AUTH_URL
 const MOVIE_BASE_URL = envVariables.MOVIE_URL
+const MEDIA_BASE_URL = envVariables.MEDIA_URL
 
 // Auth instance
 export const authAxiosInstance = axios.create({
@@ -11,7 +12,14 @@ export const authAxiosInstance = axios.create({
     withCredentials: true,
 })
 
+// Movie instance
 export const movieAxiosInstance = axios.create({
     baseURL: MOVIE_BASE_URL,
     withCredentials: true,
+})
+
+// Media instance
+export const mediaAxiosInstance = axios.create({
+    baseURL: MEDIA_BASE_URL,
+    withCredentials: true
 })

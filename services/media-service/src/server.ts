@@ -4,7 +4,7 @@ import { connectDatabase } from './config/sequelize.js'
 import { userImageRouter } from './routes/user.route.js'
 import morgan from 'morgan'
 import cors from 'cors'
-import { movieRouter } from './routes/movie.route.js'
+import { moviePosterRouter } from './routes/moviePoster.route.js'
 
 // App instance
 const app = express()
@@ -23,7 +23,7 @@ app.use(cors({
 
 // Routes
 app.use("/api/v1/image/user", userImageRouter)
-app.use("/api/v1/image/movie", movieRouter)
+app.use("/api/v1/image/movie/poster", moviePosterRouter)
 
 // Listening port
 app.listen(port, () => {

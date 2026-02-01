@@ -1,5 +1,5 @@
-import { envVariables } from "../utils/envVariables.js"
-import { fetchInstance } from "./fetch.js"
+import { envVariables } from "../../utils/envVariables.js"
+import { fetchInstance } from "../fetch.js"
 
 const UPLOAD_IMAGE_BASE_URL = envVariables.UPLOAD_IMAGE_BASE_URL
 

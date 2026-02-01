@@ -1,6 +1,6 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
 import { handleError } from "../utils/handleError.js";
-import { validateBody } from "../utils/validateBody.js";
+import { validateBody } from "../validator/validateBody.js";
 import { UserModel } from "../models/user.model.js";
 import { generateToken } from "../utils/generateToken.js";
 import { excludePassword } from "../utils/excludePassword.js";

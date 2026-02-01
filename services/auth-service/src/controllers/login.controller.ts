@@ -1,7 +1,7 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
 import { handleError } from "../utils/handleError.js";
 import type { LoginBody } from "../types/body.js";
-import { validateBody } from "../utils/validateBody.js";
+import { validateBody } from "../validator/validateBody.js";
 import { UserModel } from "../models/user.model.js";
 import { checkPassword } from "../utils/password.js";
 import { envVariables } from "../utils/envVariables.js";

@@ -29,14 +29,17 @@ import AddCrewForm from './AddCrewForm'
 import { ToastProvider } from '../context/ToastMessage'
 import ShowTrailer from './ShowTrailer'
 import { youtubeEmbedUrlRegex } from '../../utils/youtubeEmbedUrlRegex'
+import { addMovieApi } from '../../api/movie'
+import { convertToNumber } from '../../utils/convertToNumber'
+
 
 type Inputs = {
     title: string
-    subheadig: string
+    subheading: string
     synopsis: string
     trailerUrl: string
     durationHour: number
-    durationMinute: number
+    durationMinutes: number
     durationSeconds: number
 }
 
@@ -49,13 +52,13 @@ type ReleaseDate = {
 }
 
 type Crews = Array<{
-    actorName: string
+    name: string
     image: File
     preview: string
 }>
 
 type CrewDetails = {
-    actorName: string
+    name: string
     image: File
     preview: string
     index: number
@@ -86,7 +89,7 @@ const AddMovieForm = () => {
     const [showDatePicker, setShowDatePicker] = useState<boolean>(false)
     const [showCrewScreen, setShowCrewScreen] = useState<boolean>(false)
     const [selectedCrew, setSelectedCrew] = useState<{
-        actorName: string
+        name: string
         image: File
         preview: string
         index: number
@@ -100,7 +103,7 @@ const AddMovieForm = () => {
         const editedCrewDetails = crews.map((crew, index) => {
             if (index === editedDetails.index) {
                 return {
-                    actorName: editedDetails.actorName,
+                    name: editedDetails.name,
                     image: editedDetails.image,
                     preview: editedDetails.preview
                 }
@@ -119,13 +122,13 @@ const AddMovieForm = () => {
 
         if (!removedCrewDetails) return
 
-        const filteredCrews = crews.filter((crew, index) => index !== removedCrewDetails.index)
+        const filteredCrews = crews.filter((_, index) => index !== removedCrewDetails.index)
         setCrews(filteredCrews)
 
     }
 
     // Function for submitting form
-    const handleSubmitForm: SubmitHandler<Inputs> = (data) => {
+    const handleSubmitForm: SubmitHandler<Inputs> = async (data) => {
 
         if (
             !poster ||
@@ -133,7 +136,6 @@ const AddMovieForm = () => {
             !language ||
             !certificate ||
             !categories.length ||
-            !crews.length ||
             !movieType
         ) {
             toastContext?.triggerToastMessage("All fields are required", "ERROR")
@@ -149,7 +151,41 @@ const AddMovieForm = () => {
             return
         }
 
-        console.log(data)
+        if(movieType === "LIVE_ACTION"){
+            if(crews.length < 1) return toastContext?.triggerToastMessage("Invalid fields", "ERROR")
+        }
+
+        // If release date is today then checking if the time is correct
+        if(
+            releaseDate.month === new Date().getMonth() && 
+            releaseDate.year === new Date().getFullYear() && 
+            releaseDate.day === new Date().getDate()
+        ){
+            if(releaseDate.hour <= new Date().getHours() && releaseDate.minute <= releaseDate.minute){
+                toastContext?.triggerToastMessage("Invalid release time", "ERROR")
+                return
+            }
+        }
+   
+        const movieResult = await addMovieApi({
+            title: data.title,
+            subheading: data.subheading,
+            synopsis: data.synopsis,
+            categories: categories,
+            certificate: certificate,
+            duration: {
+                hour: convertToNumber(data.durationHour),
+                minutes: convertToNumber(data.durationMinutes),
+                seconds: convertToNumber(data.durationSeconds)
+            },
+            language: language,
+            releaseDate: new Date(Date.UTC(releaseDate.year, releaseDate.month, releaseDate.day, releaseDate.hour, releaseDate.minute)),
+            trailer: movieTrailerUrl,
+            type: movieType,
+            actors: movieType === "LIVE_ACTION"? crews: []
+        })
+
+        console.log(movieResult)
 
     }
 
@@ -315,7 +351,7 @@ const AddMovieForm = () => {
                             className={style['input']}
                             placeholder='Enter movie duration minutes'
                             type='number'
-                            {...register("durationMinute", {
+                            {...register("durationMinutes", {
                                 required: true
                             })}
                         />
@@ -386,23 +422,25 @@ const AddMovieForm = () => {
                                             src={crewDetails.preview}
                                         />
                                     </div>
-                                    <span>{crewDetails.actorName}</span>
+                                    <span>{crewDetails.name}</span>
                                 </div>
 
                             ))
                         }
-                        <div onClick={() => setShowCrewScreen(true)} className={style['add-cast-container']}>
-                            <AddIcon
-                                size={23}
-                                strokeWidth={1.5}
-                            />
-                        </div>
+                        <Activity mode={crews.length <= 4? "visible": "hidden"}>
+                            <div onClick={() => setShowCrewScreen(true)} className={style['add-cast-container']}>
+                                <AddIcon
+                                    size={23}
+                                    strokeWidth={1.5}
+                                />
+                            </div>
+                        </Activity>
                     </div>
                     <Activity mode={showCrewScreen ? "visible" : "hidden"}>
                         <AddCrewForm
                             setShowCrewForm={setShowCrewScreen}
                             submit={(actorName, actorImage, preview) => {
-                                return setCrews((pre) => [...pre, { actorName: actorName, image: actorImage, preview: preview }])
+                                return setCrews((pre) => [...pre, { name: actorName, image: actorImage, preview: preview }])
                             }}
                             selectedValue={selectedCrew}
                             setSelectedValue={setSelectedCrew}

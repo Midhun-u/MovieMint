@@ -1,6 +1,6 @@
 import type { ContentType } from "./imageType.js"
 
-export type AddImageType = {
+export type AddUserImageType = {
     userId: string,
     imageUrl: string,
     imagePath?: string,

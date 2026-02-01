@@ -44,7 +44,10 @@ const DropDownMenu = ({ Icon, values, value: selectedValue, setValue }: DropDown
                         values.map((value, index) => (
                             <li
                                 key={index}
-                                onClick={() => setValue(value)}
+                                onClick={() => {
+                                    setValue(value)
+                                    setShowMenu(false)
+                                }}
                                 className={selectedValue === value ? style['active-value'] : ''}
                             >
                                 {value}

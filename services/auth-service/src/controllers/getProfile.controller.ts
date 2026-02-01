@@ -3,7 +3,7 @@ import { handleError } from "../utils/handleError.js";
 import type { JWT_PAYLOAD } from "../types/jwt.js";
 import { UserModel } from "../models/user.model.js";
 import { excludePassword } from "../utils/excludePassword.js";
-import { getUserProfileImage } from "../service/getImage.js";
+import { getUserProfileImage } from "../service/image/getImage.js";
 
 // Controller for getting profile
 export const getProfileController = handleError(async (request: FastifyRequest, reply: FastifyReply) => {
