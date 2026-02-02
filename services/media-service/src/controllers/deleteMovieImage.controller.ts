@@ -21,7 +21,7 @@ export const deleteMovieImageController = handleError(async (request: Request, r
         if (!poster) return sendResponse(response, false, 404, "Poster is not found")
 
         // Deleting image from supabase
-        const {data, error} = await deleteImage(poster.image_path, "moviePosters")
+        const { data, error } = await deleteImage(poster.image_path, "moviePosters")
 
         if (error) return sendResponse(response, false, 502, "Couldn't delete the image")
         if (!data?.length) return sendResponse(response, false, 502, "Couldn't delete the image")
@@ -34,6 +34,19 @@ export const deleteMovieImageController = handleError(async (request: Request, r
     } else {
 
         const banner = await MovieBannerModel.getBannerById(imageId)
+
+        if (!banner) return sendResponse(response, false, 404, "Banner is not found")
+
+        // Deleting image from supabase
+        const { data, error } = await deleteImage(banner.image_path, "movieBanners")
+
+        if (error) return sendResponse(response, false, 502, "Couldn't delete the image")
+        if (!data?.length) return sendResponse(response, false, 502, "Couldn't delete the image")
+        const deletedCount = await MovieBannerModel.deleteBannerById(banner.id)
+
+        if (!deletedCount) return sendResponse(response, false, 502, "Couldn't delete the image")
+
+        return sendResponse(response, true, 200, null, null, "Image is deleted")
 
     }
 

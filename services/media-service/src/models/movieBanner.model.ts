@@ -37,6 +37,20 @@ export const MovieBannerModel = {
 
         return banner?.dataValues
 
+    },
+
+    deleteBannerById: async (id: string) => {
+
+        const deletedCount = Banner.destroy({
+            where: {
+                id: {
+                    [Op.eq]: id
+                }
+            }
+        })
+
+        return deletedCount
+
     }
 
 }
