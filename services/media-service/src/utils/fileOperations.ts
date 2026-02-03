@@ -1,19 +1,15 @@
-import fs from 'fs'
+import fs from 'fs/promises'
 
 // Function for reading file
 export const readFileFromDisk = (filePath: string) => {
 
-    return fs.readFileSync(filePath)
+    return fs.readFile(filePath)
 
 }
 
 // Function for deleting file
-export const deleteFileFromDisk = (filePath: string) => {
+export const deleteFileFromDisk = async (filePath: string) => {
 
-    fs.unlink(filePath, (error) => {
-
-        if(error) console.log(error.message)
-
-    })
+    await fs.unlink(filePath)
 
 }

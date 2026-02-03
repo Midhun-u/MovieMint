@@ -29,7 +29,7 @@ export const uploadImage = async ({
     })
 
     // Deleting file from disk
-    deleteFileFromDisk(path)
+    await deleteFileFromDisk(path)
 
     return { data, error }
 

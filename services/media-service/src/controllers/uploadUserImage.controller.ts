@@ -52,7 +52,7 @@ export const uploadUserImageController = handleError(async (request: Request, re
     } else if (request.file) {
 
         // Reading file from disk
-        const fileBuffer = readFileFromDisk(request.file.path as string)
+        const fileBuffer = await readFileFromDisk(request.file.path as string)
         const extname = path.extname(request.file.path)
 
         // Uploading image to supabase
