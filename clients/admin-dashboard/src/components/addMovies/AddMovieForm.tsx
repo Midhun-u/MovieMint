@@ -18,7 +18,7 @@ import Iso6391 from 'iso-639-1'
 import { movieCertificates } from '../../utils/movieCertificates'
 import FormLabel from '../form/FormLabel'
 import { movieCategories } from '../../utils/movieCategories'
-import CheckBoxList from './CheckBoxList'
+import CheckBoxList from '../ui/CheckBoxList'
 import DateShowBar from '../ui/DateShowBar'
 import DatePicker from '../ui/DatePicker'
 import Input from '../ui/Input'
@@ -34,6 +34,8 @@ import { convertToNumber } from '../../utils/convertToNumber'
 import { deleteActorImageApi, deleteMovieImageApi, uploadActorImageApi, uploadMovieImageApi } from '../../api/media'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { movieFailed, movieRequest, movieSuccess } from '../../store/movieSlice'
+import { movieFormats } from '../../utils/movieFormats'
+import { useNavigate } from 'react-router'
 
 
 type Inputs = {
@@ -90,6 +92,7 @@ const AddMovieForm = () => {
     const [movieType, setMovieType] = useState<"LIVE_ACTION" | "ANIMATED">("LIVE_ACTION")
     const [movieTrailerUrl, setMovieTrailerUrl] = useState<string>('')
     const [crews, setCrews] = useState<Crews>([])
+    const [formats, setFormats] = useState<Array<string>>([]) 
     const [showDatePicker, setShowDatePicker] = useState<boolean>(false)
     const [showCrewScreen, setShowCrewScreen] = useState<boolean>(false)
     const [selectedCrew, setSelectedCrew] = useState<{
@@ -102,6 +105,7 @@ const AddMovieForm = () => {
     const toastContext = useContext(ToastProvider)
     const {loading} = useAppSelector(state => state.movie)
     const dispatch = useAppDispatch()
+    const navigate = useNavigate()
 
     // Function for editing crew details
     const handleEditCrewDetails = (editedDetails: CrewDetails) => {
@@ -143,7 +147,8 @@ const AddMovieForm = () => {
             !language ||
             !certificate ||
             !categories.length ||
-            !movieType
+            !movieType ||
+            !formats.length
         ) {
             toastContext?.triggerToastMessage("All fields are required", "ERROR")
             return
@@ -180,6 +185,7 @@ const AddMovieForm = () => {
             subheading: data.subheading,
             synopsis: data.synopsis,
             categories: categories,
+            formats: formats,
             certificate: certificate,
             duration: {
                 hour: convertToNumber(data.durationHour),
@@ -242,6 +248,7 @@ const AddMovieForm = () => {
                 toastContext?.triggerToastMessage("Movie is uploaded", "SUCCESS")
                 dispatch(movieSuccess({movie: movieResult.movie}))
 
+                navigate("/admin/add-movies")
             }
 
         } else {
@@ -337,6 +344,19 @@ const AddMovieForm = () => {
                     values={movieCategories}
                     setValues={setCategories}
                     checkedValues={categories}
+                    selectedLimit={5}
+                />
+            </div>
+            {/* Movie format */}
+            <div className={style['format-container']}>
+                <FormLabel
+                    title='Movie Formats'
+                />
+                <CheckBoxList
+                    values={movieFormats}
+                    setValues={setFormats}
+                    checkedValues={formats}
+                    selectedLimit={null}
                 />
             </div>
             {/* Movie Release date */}

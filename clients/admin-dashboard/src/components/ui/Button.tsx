@@ -1,4 +1,4 @@
-import { Activity, forwardRef, type ButtonHTMLAttributes, type ReactNode } from "react"
+import {forwardRef, type ButtonHTMLAttributes, type ReactNode } from "react"
 import Spinner from "./Spinner"
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLElement> {

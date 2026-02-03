@@ -5,6 +5,7 @@ export type MovieType = {
     language: string
     certificate: string
     categories: Array<string>
+    formats: Array<string>
     releaseDate: string
     trailer: string
     duration: {

@@ -43,21 +43,21 @@ const movieSchema = new Schema({
         type: String,
         required: true,
         minLength: 3,
-        maxLength: 40,
+        maxLength: 50,
         trim: true
     },
     subHeading: {
         type: String,
         required: true,
         minLength: 5,
-        maxLength: 50,
+        maxLength: 100,
         trim: true
     },
     synopsis: {
         type: String,
         required: true,
         minLength: 10,
-        maxLength: 300,
+        maxLength: 350,
         trim: true
     },
     language: {
@@ -72,6 +72,10 @@ const movieSchema = new Schema({
         trim: true
     },
     categories: [{
+        type: String,
+        required: true
+    }],
+    formats: [{
         type: String,
         required: true
     }],

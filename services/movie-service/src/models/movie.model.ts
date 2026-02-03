@@ -15,6 +15,7 @@ export const MovieModel = {
             movieTrailer: data.trailer,
             duration: data.duration,
             categories: data.categories,
+            formats: data.formats,
             actors: data.actors,
             releaseDate: data.releaseDate,
             status: "PENDING",

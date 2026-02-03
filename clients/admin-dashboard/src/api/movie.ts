@@ -18,6 +18,7 @@ export const addMovieApi = handleError(async (data: AddMovieData) => {
         language: zod.string().nonempty().min(1).max(50),
         certificate: zod.string().nonempty(),
         categories: zod.array(zod.string()).min(1).max(5),
+        formats: zod.array(zod.string()).min(1),
         releaseDate: zod.date(),
         trailer: zod.string().nonempty().regex(youtubeEmbedUrlRegex),
         duration: zod.object({
@@ -38,6 +39,7 @@ export const addMovieApi = handleError(async (data: AddMovieData) => {
         language: fields.language,
         certificate: fields.certificate,
         categories: fields.categories,
+        formats: fields.formats,
         releaseDate: fields.releaseDate,
         trailer: fields.trailer,
         duration: fields.duration,

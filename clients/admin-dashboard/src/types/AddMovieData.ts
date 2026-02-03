@@ -5,6 +5,7 @@ export type AddMovieData = {
     language: string
     certificate: string
     categories: Array<string>
+    formats: Array<string>
     releaseDate: Date
     trailer: string
     duration: {

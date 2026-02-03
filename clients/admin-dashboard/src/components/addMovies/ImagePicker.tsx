@@ -81,6 +81,7 @@ const ImagePicker = ({ labelTitle, title, mode, setFile }: ImagePicker) => {
                                 className={style['icon']}
                             />
                             <p>{title}</p>
+                            <p>Max (10MB)</p>
                         </>
                 }
             </div>

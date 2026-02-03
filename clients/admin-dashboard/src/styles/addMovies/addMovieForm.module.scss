@@ -23,6 +23,12 @@
     width: 450px;
 }
 
+.format-container{
+    @extend %add-movie-container-style;
+    gap: 15px;
+    width: 450px;
+}
+
 .release-date-container {
     @extend %add-movie-container-style;
     position: relative;
@@ -134,6 +140,10 @@
     }
 
     .submit-button{
+        width: 100%;
+    }
+
+    .format-container{
         width: 100%;
     }
 
