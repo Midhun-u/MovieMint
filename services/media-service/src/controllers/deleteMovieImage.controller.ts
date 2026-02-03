@@ -8,15 +8,15 @@ import { deleteImage } from "../supabase/deleteImage.js";
 // Controller deleting movie image
 export const deleteMovieImageController = handleError(async (request: Request, response: Response) => {
 
-    const { imageId, type } = request.params as { imageId: string, type: "poster" | "banner" } || {}
+    const { movieId, type } = request.params as { movieId: string, type: "poster" | "banner" } || {}
 
-    if (!imageId || !type) {
+    if (!movieId || !type) {
         return sendResponse(response, false, 400, "All fields are required")
     }
 
     if (type === "poster") {
 
-        const poster = await MoviePosterModel.getPosterById(imageId)
+        const poster = await MoviePosterModel.getPosterByMovieId(movieId)
 
         if (!poster) return sendResponse(response, false, 404, "Poster is not found")
 
@@ -33,7 +33,7 @@ export const deleteMovieImageController = handleError(async (request: Request, r
 
     } else {
 
-        const banner = await MovieBannerModel.getBannerById(imageId)
+        const banner = await MovieBannerModel.getBannerByMovieId(movieId)
 
         if (!banner) return sendResponse(response, false, 404, "Banner is not found")
 

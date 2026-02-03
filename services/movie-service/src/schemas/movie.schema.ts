@@ -31,8 +31,12 @@ const actorSchema = new Schema({
         type: String,
         required: true
     },
+    id: {
+        type: String,
+        required: true
+    }
 
-}, {versionKey: false, timestamps: false })
+}, {_id: false, versionKey: false, timestamps: false })
 
 const movieSchema = new Schema({
     title: {

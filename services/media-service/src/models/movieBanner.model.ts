@@ -2,6 +2,7 @@ import { Op } from "sequelize";
 import { Banner } from "../schemas/movieBanner.schema.js";
 import type { AddMovieImageType } from "../types/addMovieType.js";
 
+// Movie banner model
 export const MovieBannerModel = {
 
     addBanner: async (data: AddMovieImageType) => {

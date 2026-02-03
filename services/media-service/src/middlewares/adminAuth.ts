@@ -1,0 +1,28 @@
+import type { NextFunction, Request, Response } from "express";
+import { sendResponse } from "../utils/sendResponse.js";
+import { getAdmin } from "../services/getAdmin.js";
+
+// Middleware for checking authentication
+export const adminAuthMiddleware = async (request: Request, response: Response, next: NextFunction) => {
+
+    try {
+        
+        const authToken = request.headers.authorization
+        
+        if(!authToken){
+            return sendResponse(response, false, 401, "Unauthorized user")
+        }
+
+        const result = await getAdmin(authToken)
+       
+        if(!result.success || !result.user || result.user?.role !== "ADMIN"){
+            return sendResponse(response, false, 403, "Only admin has the access for processing")
+        }
+        
+        return next()
+
+    } catch (error) {
+        return sendResponse(response, false, 500, "Server error")
+    }
+
+}

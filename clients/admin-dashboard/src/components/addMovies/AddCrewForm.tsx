@@ -13,7 +13,7 @@ type CrewDetails = {
     name: string
     image: File
     preview: string,
-    index: number
+    id: string
 }
 
 interface AddCrewFormProps {
@@ -85,7 +85,7 @@ const AddCrewForm = ({ setShowCrewForm, submit, selectedValue, onEdit, setSelect
             name: actorName,
             image: file,
             preview: preview,
-            index: selectedValue.index
+            id: selectedValue.id
         }
         
         onEdit(editedDetails)

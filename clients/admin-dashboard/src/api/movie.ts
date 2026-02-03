@@ -26,7 +26,7 @@ export const addMovieApi = handleError(async (data: AddMovieData) => {
             seconds: zod.number().min(1)
         }),
         type: zod.enum(["LIVE_ACTION", "ANIMATED"]),
-        actors: zod.array(zod.object({name: zod.string()}))
+        actors: zod.array(zod.object({name: zod.string(), id: zod.string()}))
     })
 
     const fields = validator.parse(data)
@@ -48,5 +48,17 @@ export const addMovieApi = handleError(async (data: AddMovieData) => {
     }})
 
     return result.data
+
+})
+
+// Api for deleting movie
+export const deleteMovieApi = handleError(async (movieId: string) => {
+
+    const result = (await movieAxiosInstance.delete(`/delete-movie/${movieId}`, {
+        headers: {
+            Authorization: `Bearer ${authToken}`
+        }
+    })).data
+    return result
 
 })

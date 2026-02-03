@@ -29,9 +29,9 @@ import AddCrewForm from './AddCrewForm'
 import { ToastProvider } from '../context/ToastMessage'
 import ShowTrailer from './ShowTrailer'
 import { youtubeEmbedUrlRegex } from '../../utils/youtubeEmbedUrlRegex'
-import { addMovieApi } from '../../api/movie'
+import { addMovieApi, deleteMovieApi } from '../../api/movie'
 import { convertToNumber } from '../../utils/convertToNumber'
-import { uploadMovieImageApi } from '../../api/media'
+import { deleteActorImageApi, deleteMovieImageApi, uploadActorImageApi, uploadMovieImageApi } from '../../api/media'
 
 
 type Inputs = {
@@ -56,13 +56,14 @@ type Crews = Array<{
     name: string
     image: File
     preview: string
+    id: string
 }>
 
 type CrewDetails = {
     name: string
     image: File
     preview: string
-    index: number
+    id: string
 }
 
 const AddMovieForm = () => {
@@ -93,7 +94,7 @@ const AddMovieForm = () => {
         name: string
         image: File
         preview: string
-        index: number
+        id: string
     } | null>(null)
     const { register, handleSubmit, formState: { errors: formErrors } } = useForm<Inputs>()
     const toastContext = useContext(ToastProvider)
@@ -101,12 +102,13 @@ const AddMovieForm = () => {
     // Function for editing crew details
     const handleEditCrewDetails = (editedDetails: CrewDetails) => {
 
-        const editedCrewDetails = crews.map((crew, index) => {
-            if (index === editedDetails.index) {
+        const editedCrewDetails = crews.map((crew) => {
+            if (crew.id === editedDetails.id) {
                 return {
                     name: editedDetails.name,
                     image: editedDetails.image,
-                    preview: editedDetails.preview
+                    preview: editedDetails.preview,
+                    id: editedDetails.id
                 }
             } else {
                 return crew
@@ -123,7 +125,7 @@ const AddMovieForm = () => {
 
         if (!removedCrewDetails) return
 
-        const filteredCrews = crews.filter((_, index) => index !== removedCrewDetails.index)
+        const filteredCrews = crews.filter((crew) => crew.id !== removedCrewDetails.id)
         setCrews(filteredCrews)
 
     }
@@ -193,8 +195,41 @@ const AddMovieForm = () => {
                 uploadMovieImageApi(banner, movieResult.movie._id, "banner"),
             ])
 
-            console.log(posterResult)
-            console.log(bannerResult)
+            // Uploading actors image
+            const actorResult = await Promise.all(crews.map(async (crew) => {
+
+                const actorImageResult = await uploadActorImageApi({
+                    actorId: crew.id,
+                    actorImage: crew.image,
+                    movieId: movieResult.movie._id
+                })
+
+                if (actorImageResult.success) {
+                    return { success: true }
+                } else {
+                    return { success: false }
+                }
+
+            }) || [])
+
+            // Checking if all actors images are uploaded
+            const isNotActorImageUploaded = actorResult.some((result) => {
+                if (!result.success) return true
+            })
+
+            if (!posterResult.success || !bannerResult.success || isNotActorImageUploaded) {
+
+                // Deleting all images of this movie because some images didn't upload
+                await Promise.all([
+                    deleteMovieImageApi(movieResult.movie._id, "poster"),
+                    deleteMovieImageApi(movieResult.movie._id, "banner"),
+                    deleteActorImageApi(movieResult.movie._id)
+                ])
+
+                // Deleting movie because some failed response from images
+                await deleteMovieApi(movieResult.movie._id)
+                
+            }
 
         } else {
             toastContext?.triggerToastMessage("Movie couldn't upload", "ERROR")
@@ -420,7 +455,7 @@ const AddMovieForm = () => {
                             crews.map((crewDetails, index) => (
 
                                 <div onClick={() => {
-                                    setSelectedCrew({ ...crewDetails, index: index })
+                                    setSelectedCrew({ ...crewDetails, id: crewDetails.id })
                                     setShowCrewScreen(true)
                                 }}
                                     className={style['crew-details']}
@@ -454,7 +489,7 @@ const AddMovieForm = () => {
                         <AddCrewForm
                             setShowCrewForm={setShowCrewScreen}
                             submit={(actorName, actorImage, preview) => {
-                                return setCrews((pre) => [...pre, { name: actorName, image: actorImage, preview: preview }])
+                                return setCrews((pre) => [...pre, { name: actorName, image: actorImage, preview: preview, id: crypto.randomUUID() }])
                             }}
                             selectedValue={selectedCrew}
                             setSelectedValue={setSelectedCrew}

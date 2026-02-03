@@ -14,14 +14,14 @@ export const adminAuthMiddleware = async (context: Context, next: Function) => {
 
     if(!authToken){
         context.status(401)
-        return context.json({success: false, error: "Unautherized admin"})
+        return context.json({success: false, error: "Unautherized admin", statusCode: 401})
     }
 
     const result = await getAdmin(authToken)
 
     if(!result.success || result?.user?.role !== "ADMIN" || !result?.user){
-        context.status(401)
-        return context.json({success: false, error: "Unautherized admin"})
+        context.status(403)
+        return context.json({success: false, error: "Only admin has the access for processing", statusCode: 403})
     }
 
     // Storing admin details

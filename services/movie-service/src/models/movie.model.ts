@@ -23,6 +23,20 @@ export const MovieModel = {
 
         return newMovie
 
+    },
+
+    getMovieById: async (id: string) => {
+
+        const movie = await Movie.findById(id)
+        return movie
+
+    },
+
+    deleteMovieById : async (id: string) => {
+
+        const deletedMovieDetails = await Movie.findByIdAndDelete(id)
+        return deletedMovieDetails
+
     }
 
 }
