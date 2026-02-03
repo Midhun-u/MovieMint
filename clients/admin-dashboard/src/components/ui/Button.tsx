@@ -1,21 +1,36 @@
-import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from "react"
+import { Activity, forwardRef, type ButtonHTMLAttributes, type ReactNode } from "react"
+import Spinner from "./Spinner"
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLElement> {
     title: string,
     className?: string,
-    children?: ReactNode
+    children?: ReactNode,
+    loading?: boolean,
+    loadingSpinnerColor?: "white" | "black"
 }
 
-const Button = forwardRef<HTMLButtonElement, ButtonProps>(({ title, className, children, ...props }, ref) => {
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(({ title, className, children, loading, loadingSpinnerColor, ...props }, ref) => {
 
     return (
         <button
             className={className}
             ref={ref}
             {...props}
+            disabled={loading}
         >
-            {title}
-            {children}
+            {
+                loading
+                    ?
+                    <Spinner
+                        size={20}
+                        color={loadingSpinnerColor ? loadingSpinnerColor : "black"}
+                    />
+                    :
+                    <>
+                        { title }
+                        {children}
+                    </>
+            }
         </button>
     )
 

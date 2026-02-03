@@ -43,7 +43,7 @@ const movieSchema = new Schema({
         type: String,
         required: true,
         minLength: 3,
-        maxLength: 20,
+        maxLength: 40,
         trim: true
     },
     subHeading: {
@@ -57,7 +57,7 @@ const movieSchema = new Schema({
         type: String,
         required: true,
         minLength: 10,
-        maxLength: 250,
+        maxLength: 300,
         trim: true
     },
     language: {

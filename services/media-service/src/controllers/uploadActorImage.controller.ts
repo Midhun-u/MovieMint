@@ -33,7 +33,7 @@ export const uploadActorImageController = handleError(async (request: Request, r
     }
 
     // Uploading actor image to supabase
-    const fileBuffer = readFileFromDisk(file.path)
+    const fileBuffer = await readFileFromDisk(file.path)
     const extname = path.extname(file.path)
     const {data, error} = await uploadImage({
         id: `${actorId}` + '-' + `${movieId}`,

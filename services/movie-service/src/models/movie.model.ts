@@ -37,6 +37,16 @@ export const MovieModel = {
         const deletedMovieDetails = await Movie.findByIdAndDelete(id)
         return deletedMovieDetails
 
+    },
+
+    updateMovieById: async (id: string, data: object) => {
+
+        const updatedMovie = await Movie.findByIdAndUpdate(id, data, {
+            new: true,
+        })
+
+        return updatedMovie
+
     }
 
 }

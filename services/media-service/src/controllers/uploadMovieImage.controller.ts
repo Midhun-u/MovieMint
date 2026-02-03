@@ -44,7 +44,7 @@ export const uploadMovieImageController = handleError(async (request: Request, r
     }
 
     // Reading file from disk
-    const fileBuffer = readFileFromDisk(file.path)
+    const fileBuffer = await readFileFromDisk(file.path)
     const extname = path.extname(file.path)
 
     // Uploading movie image file to supabase

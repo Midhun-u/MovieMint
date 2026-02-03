@@ -32,6 +32,8 @@ import { youtubeEmbedUrlRegex } from '../../utils/youtubeEmbedUrlRegex'
 import { addMovieApi, deleteMovieApi } from '../../api/movie'
 import { convertToNumber } from '../../utils/convertToNumber'
 import { deleteActorImageApi, deleteMovieImageApi, uploadActorImageApi, uploadMovieImageApi } from '../../api/media'
+import { useAppDispatch, useAppSelector } from '../../store/hooks'
+import { movieFailed, movieRequest, movieSuccess } from '../../store/movieSlice'
 
 
 type Inputs = {
@@ -98,6 +100,8 @@ const AddMovieForm = () => {
     } | null>(null)
     const { register, handleSubmit, formState: { errors: formErrors } } = useForm<Inputs>()
     const toastContext = useContext(ToastProvider)
+    const {loading} = useAppSelector(state => state.movie)
+    const dispatch = useAppDispatch()
 
     // Function for editing crew details
     const handleEditCrewDetails = (editedDetails: CrewDetails) => {
@@ -164,12 +168,13 @@ const AddMovieForm = () => {
             releaseDate.year === new Date().getFullYear() &&
             releaseDate.day === new Date().getDate()
         ) {
-            if (releaseDate.hour <= new Date().getHours() && releaseDate.minute <= releaseDate.minute) {
+            if (releaseDate.hour <= new Date().getHours() && releaseDate.minute <= new Date().getMinutes()) {
                 toastContext?.triggerToastMessage("Invalid release time", "ERROR")
                 return
             }
         }
 
+        dispatch(movieRequest())
         const movieResult = await addMovieApi({
             title: data.title,
             subheading: data.subheading,
@@ -228,11 +233,20 @@ const AddMovieForm = () => {
 
                 // Deleting movie because some failed response from images
                 await deleteMovieApi(movieResult.movie._id)
+
+                toastContext?.triggerToastMessage("Movie couldn't upload", "ERROR")
+                dispatch(movieFailed({errorMessage: "Images are not uploaded"}))
                 
+            }else{
+
+                toastContext?.triggerToastMessage("Movie is uploaded", "SUCCESS")
+                dispatch(movieSuccess({movie: movieResult.movie}))
+
             }
 
         } else {
             toastContext?.triggerToastMessage("Movie couldn't upload", "ERROR")
+            dispatch(movieFailed({errorMessage: movieResult.errorMessage}))
             return
         }
 
@@ -252,7 +266,7 @@ const AddMovieForm = () => {
                     register={register}
                     inputFieldName='title'
                     minLength={3}
-                    maxLength={20}
+                    maxLength={50}
                     aria-invalid={formErrors.title ? "true" : "false"}
                 />
             </div>
@@ -267,7 +281,7 @@ const AddMovieForm = () => {
                     register={register}
                     inputFieldName='subheading'
                     minLength={5}
-                    maxLength={50}
+                    maxLength={100}
                 />
             </div>
             {/* Movie synopsis */}
@@ -281,7 +295,7 @@ const AddMovieForm = () => {
                     register={register}
                     inputFieldName='synopsis'
                     minLength={10}
-                    maxLength={250}
+                    maxLength={350}
                 />
             </div>
             {/* Movie poster */}
@@ -504,6 +518,8 @@ const AddMovieForm = () => {
                 title='Add Movie'
                 type='submit'
                 className={style['submit-button']}
+                loading={loading}
+                loadingSpinnerColor='black'
             />
         </form>
 

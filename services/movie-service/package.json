@@ -2,10 +2,13 @@
   "name": "movie-service",
   "scripts": {
     "dev": "bun run --hot ./index.ts",
-    "start": "bun run ./index.ts"
+    "start": "bun run ./index.ts",
+    "movie-worker": "bun run --hot ./src/workers/movieWorker.ts"
   },
   "dependencies": {
+    "bullmq": "^5.67.2",
     "hono": "^4.11.7",
+    "ioredis": "^5.9.2",
     "mongoose": "^9.1.5",
     "redis": "^5.10.0",
     "zod": "^4.3.6"

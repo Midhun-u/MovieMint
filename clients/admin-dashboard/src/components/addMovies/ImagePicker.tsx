@@ -47,10 +47,10 @@ const ImagePicker = ({ labelTitle, title, mode, setFile }: ImagePicker) => {
     return (
         <div
             className={style['image-picker-container']}
-            onClick={() => imageRef.current?.click()}
         >
             <Label title={labelTitle} />
             <div
+                onClick={() => imageRef.current?.click()}
                 className={
                     mode === "portrait" ?
                         (
@@ -62,10 +62,10 @@ const ImagePicker = ({ labelTitle, title, mode, setFile }: ImagePicker) => {
                         )
                         :
                         previewImage
-                        ?
-                        style['preview-image-landscape']
-                        :
-                        style['image-picker-landscape']}
+                            ?
+                            style['preview-image-landscape']
+                            :
+                            style['image-picker-landscape']}
             >
                 {
                     previewImage

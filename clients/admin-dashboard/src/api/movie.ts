@@ -12,9 +12,9 @@ export const addMovieApi = handleError(async (data: AddMovieData) => {
     if(!authToken) return {success: false, errorMessage: "Unautherized Admin"}
 
     const validator = zod.object({
-        title: zod.string().nonempty().min(3).max(20),
-        subheading: zod.string().nonempty().min(5).max(50),
-        synopsis: zod.string().nonempty().min(10).max(250),
+        title: zod.string().nonempty().min(3).max(50),
+        subheading: zod.string().nonempty().min(5).max(100),
+        synopsis: zod.string().nonempty().min(10).max(350),
         language: zod.string().nonempty().min(1).max(50),
         certificate: zod.string().nonempty(),
         categories: zod.array(zod.string()).min(1).max(5),
@@ -23,7 +23,7 @@ export const addMovieApi = handleError(async (data: AddMovieData) => {
         duration: zod.object({
             hour: zod.number().min(1),
             minutes: zod.number().min(1),
-            seconds: zod.number().min(1)
+            seconds: zod.number().min(0)
         }),
         type: zod.enum(["LIVE_ACTION", "ANIMATED"]),
         actors: zod.array(zod.object({name: zod.string(), id: zod.string()}))
