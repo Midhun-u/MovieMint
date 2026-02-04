@@ -35,8 +35,6 @@ import { deleteActorImageApi, deleteMovieImageApi, uploadActorImageApi, uploadMo
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { movieFailed, movieRequest, movieSuccess } from '../../store/movieSlice'
 import { movieFormats } from '../../utils/movieFormats'
-import { useNavigate } from 'react-router'
-
 
 type Inputs = {
     title: string
@@ -105,7 +103,6 @@ const AddMovieForm = () => {
     const toastContext = useContext(ToastProvider)
     const {loading} = useAppSelector(state => state.movie)
     const dispatch = useAppDispatch()
-    const navigate = useNavigate()
 
     // Function for editing crew details
     const handleEditCrewDetails = (editedDetails: CrewDetails) => {
@@ -247,8 +244,6 @@ const AddMovieForm = () => {
 
                 toastContext?.triggerToastMessage("Movie is uploaded", "SUCCESS")
                 dispatch(movieSuccess({movie: movieResult.movie}))
-
-                navigate("/admin/add-movies")
             }
 
         } else {
@@ -275,6 +270,7 @@ const AddMovieForm = () => {
                     minLength={3}
                     maxLength={50}
                     aria-invalid={formErrors.title ? "true" : "false"}
+                    
                 />
             </div>
             {/* Movie subheading */}

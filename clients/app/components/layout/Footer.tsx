@@ -57,7 +57,7 @@ const Footer = () => {
                 </h2>
                 <div className="mt-3 flex w-full flex-col gap-2 sm:flex-row md:w-auto md:flex-row">
                     <Input
-                        className="focus-visible:ring-1 text-sm focus-visible:ring-primary-color h-9 md:h-8 sm:w-100 md:w-70 border border-foreground-theme-color/30 w-full"
+                        className="focus-visible:ring-0 text-sm focus:border-primary-color h-9 md:h-8 sm:w-100 md:w-70 border border-foreground-theme-color/30 w-full"
                         placeholder="Enter your email"
                     />
                     <Button
@@ -93,7 +93,7 @@ const Footer = () => {
             </div>
             {/* Terms and condition section */}
             <div className="w-full flex flex-col items-center">
-                <hr className="w-full"/>
+                <hr className="w-full border-[0.1px] border-foreground-theme-color/10"/>
                 <p className="text-xs mt-3 flex flex-wrap justify-center">
                     &copy;2026 MovieMint. All rights reserved. | 
                     <Link href={"/"} className="text-primary-color cursor-pointer ml-1 mr-1">Privacy Policy</Link> | 

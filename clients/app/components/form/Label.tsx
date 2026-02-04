@@ -1,18 +1,26 @@
-interface LabelProps{
-    labelId?: string
-    labelTitle: string
+interface LabelProps {
+  labelId?: string
+  labelTitle: string
 }
 
-const Label = ({labelId, labelTitle}: LabelProps) => {
+const Label = ({ labelId, labelTitle }: LabelProps) => {
 
   return (
 
-    <label 
+    labelId
+      ?
+      <label
         htmlFor={labelId}
         className='font-medium text-sm text-foreground-theme-color'
-    >
+      >
         {labelTitle}
-    </label>
+      </label>
+      :
+      <span
+        className='font-medium text-sm text-foreground-theme-color'
+      >
+        {labelTitle}
+      </span>
 
   )
 }
