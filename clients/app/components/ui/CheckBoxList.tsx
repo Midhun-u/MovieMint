@@ -1,5 +1,5 @@
 import type { Dispatch, SetStateAction } from 'react'
-import CheckBox from './CustomCheckBox'
+import CustomCheckBox from './CustomCheckBox'
 
 interface CheckBoxListProps {
     values: Array<string>
@@ -37,12 +37,11 @@ const CheckBoxList = ({ values, setValues, checkedValues, selectedLimit }: Check
         <div className='flex flex-wrap gap-3 mt-2'>
             {
                 values?.map((value, index) => (
-                    <CheckBox
+                    <CustomCheckBox
                         value={value}
                         key={index}
                         onMarkChecked={(unCheckedValue) => handlAddCategories(unCheckedValue)}
                         onUnmarkChecked={(checkedValue) => handleRemoveCategories(checkedValue)}
-                        checkedValue={checkedValues[checkedValues.indexOf(value)] || ""}
                     />
                 ))
             }

@@ -1,0 +1,4 @@
+#!/usr/bin/bash
+
+bun install
+bun run start

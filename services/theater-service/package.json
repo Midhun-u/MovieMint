@@ -1,0 +1,13 @@
+{
+  "name": "theater-service",
+  "scripts": {
+    "dev": "bun run --hot ./index.ts",
+    "start": "bun ./index.ts"
+  },
+  "dependencies": {
+    "hono": "^4.11.7"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  }
+}

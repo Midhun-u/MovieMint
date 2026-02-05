@@ -246,7 +246,7 @@ const Header = () => {
                 <nav
                     className={`${showSidebar ? "hidden" : ""} sm:hidden fixed left-0 justify-center bottom-4 z-30 w-full h-13 flex`}
                 >
-                    <div className="flex px-5 rounded-lg items-center h-full justify-center gap-8 bg-foreground-color border border-disable-color/20">
+                    <div className="flex px-5 rounded-lg items-center h-full justify-center gap-8 bg-foreground-color border border-foreground-theme-color/20">
                         {
                             navbarLinks.map((navbarLink, index) => (
 
