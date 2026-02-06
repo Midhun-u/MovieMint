@@ -86,7 +86,7 @@ const TheaterSeatLayout = ({ preview, layoutNumber = 0, setsNumber = 0, rowNumbe
 
                                                                 <div
                                                                     key={seatIndex}
-                                                                    className={`${isSeatSelected({layoutIndex: layoutIndex, seatIndex: seatIndex, rowIndex: rowIndex, setIndex: setIndex})? "bg-primary-color border-none text-dark-foreground-color": ""} w-8 h-8 bg-foreground-color border-2 border-foreground-theme-color/30 rounded-sm cursor-pointer flex justify-center items-center text-xs font-medium transition-all duration-200`}
+                                                                    className={`${!preview && isSeatSelected({layoutIndex: layoutIndex, seatIndex: seatIndex, rowIndex: rowIndex, setIndex: setIndex})? "bg-primary-color border-none text-dark-foreground-color": ""} w-8 h-8 bg-foreground-color border-2 border-foreground-theme-color/30 rounded-sm cursor-pointer flex justify-center items-center text-xs font-medium transition-all duration-200`}
                                                                     onClick={() =>
                                                                         setSelectedSeat((pre) => [...pre, {
                                                                             layoutNumber: layoutIndex + 1,

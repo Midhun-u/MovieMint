@@ -5,9 +5,10 @@ interface CustomCheckBoxProps {
     value: string
     onMarkChecked?: (value: string) => void
     onUnmarkChecked?: (value: string) => void
+    defaultChecked: boolean
 }
 
-const CustomCheckBox = ({ value, onMarkChecked, onUnmarkChecked }: CustomCheckBoxProps) => {
+const CustomCheckBox = ({ value, onMarkChecked, onUnmarkChecked, defaultChecked }: CustomCheckBoxProps) => {
 
     const [checked, setChecked] = useState<boolean>(false)
 
@@ -34,6 +35,7 @@ const CustomCheckBox = ({ value, onMarkChecked, onUnmarkChecked }: CustomCheckBo
                 <Checkbox
                     className='cursor-pointer'
                     onClick={onClick}
+                    defaultChecked={defaultChecked}
                 />
             </div>
             <span

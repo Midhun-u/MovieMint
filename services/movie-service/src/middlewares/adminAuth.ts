@@ -1,9 +1,9 @@
-import { Context } from "hono"
+import { Context, Next } from "hono"
 import { protectedRoutes } from "../utils/protectedRoutes"
 import { getAdmin } from "../services/admin/getAdmin"
 
 // Middleware for checking authentication
-export const adminAuthMiddleware = async (context: Context, next: Function) => {
+export const adminAuthMiddleware = async (context: Context, next: Next) => {
 
     const authToken = context.req.header('Authorization')
     const url = new URL(context.req.url)

@@ -1,7 +1,7 @@
 import type { ContentType } from "./imageType.js"
 
-export type AddMovieImageType = {
-    movieId: string,
+export type AddTheaterImageType = {
+    theaterId: string,
     imageUrl: string,
     imagePath: string,
     imageFullPath: string,

@@ -1,1 +1,1 @@
-export type SupabaseBucketName = "users" | "moviePosters" | "movieBanners" | "actors"
+export type SupabaseBucketName = "users" | "moviePosters" | "movieBanners" | "actors" | "theaters"

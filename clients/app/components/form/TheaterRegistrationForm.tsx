@@ -1,6 +1,6 @@
 'use client'
 
-import { useId, useState } from "react"
+import { useContext, useId, useRef, useState } from "react"
 import ScreenProgress from "../ui/ScreenProgress"
 import {
     CameraIcon,
@@ -19,6 +19,21 @@ import { theaterFormats } from "@/utils/theaterFormats"
 import CustomCheckBox from "../ui/CustomCheckBox"
 import { Button } from "../ui/button"
 import TheaterSeatLayout from "../layout/TheaterSeatLayout"
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { Input } from "../ui/input"
+import { ToastProvider } from "../context/ToastMessage"
+import Image from "next/image"
+import { convertStringToNumber } from "@/utils/convertStringToNumber"
+import { registerTheaterApi } from "@/api/theater"
+
+type Inputs = {
+    theaterName: string
+    theaterLocation: string
+    totalLayout: number
+    totalSets: number
+    totalRows: number
+    totalSeats: number
+}
 
 const TheaterRegistrationForm = () => {
 
@@ -35,6 +50,85 @@ const TheaterRegistrationForm = () => {
     const theaterTotalSeatsId = useId()
     const [formats, setFormats] = useState<Array<string>>([])
     const [allowCancellation, setAllowCancellation] = useState<boolean>(false)
+    const { handleSubmit, register, formState: { errors: formErrors } } = useForm<Inputs>()
+    const imageRef = useRef<HTMLInputElement | null>(null)
+    const [theaterLogo, setTheaterLogo] = useState<{
+        file: File | null,
+        preview: string
+    }>({
+        file: null,
+        preview: ''
+    })
+    const [theaterDetails, setTheaterDetails] = useState<Inputs & { file: File, formats: Array<string>, allowCancellation: boolean }>()
+    const toastContext = useContext(ToastProvider)
+
+    // Function for storing theater logo
+    const handleStoreLogo = (files: FileList | null) => {
+
+        if (!files?.length) return
+
+        const file = files[0]
+        const fileSize = 10 * 1024 * 1024 // 10MB
+
+        if (!file.type.includes("image")) return toastContext?.triggerToastMessage("Invalid file", "ERROR")
+
+        if (file.size > fileSize) return toastContext?.triggerToastMessage("File size is exceeded the limit", "ERROR")
+        // Reading file as base64 for showing preview
+        const fileReader = new FileReader()
+        fileReader.readAsDataURL(file)
+        fileReader.onload = async () => {
+            await setTheaterLogo({ file: file, preview: fileReader.result as string })
+        }
+
+    }
+
+    // Function for submitting form
+    const submitForm: SubmitHandler<Inputs> = (data) => {
+
+        if (
+            !data.theaterName.trim() ||
+            !data.theaterLocation.trim()
+        ) {
+            toastContext?.triggerToastMessage("Invalid fields", "ERROR")
+            return
+        }
+
+        if (formats.length <= 2) {
+            return toastContext?.triggerToastMessage("Add atleast two supported formats", "ERROR")
+        }
+
+        if (!theaterLogo.file) {
+            return toastContext?.triggerToastMessage("Upload theater logo", "ERROR")
+        }
+
+        setTheaterDetails({
+            file: theaterLogo.file,
+            theaterName: data.theaterName,
+            theaterLocation: data.theaterLocation,
+            totalLayout: convertStringToNumber(data.totalLayout),
+            totalSets: convertStringToNumber(data.totalSets),
+            totalRows: convertStringToNumber(data.totalRows),
+            totalSeats: convertStringToNumber(data.totalSeats),
+            allowCancellation: allowCancellation,
+            formats: formats
+        })
+
+        setCurrentScreen("PREVIEW")
+        setScreenProgressState({...screenProgressState, currentScreen: 2})
+
+        window.scrollTo({
+            behavior: "smooth",
+            top: 0
+        })
+
+    }
+
+    // Function for registering theater
+    const handleCreateTheaterRequest = async () => {
+
+        
+
+    }
 
     return (
 
@@ -43,7 +137,7 @@ const TheaterRegistrationForm = () => {
                 totalScreen={screenProgressState.totalScreen}
                 currentScreen={screenProgressState.currentScreen}
             />
-            <form className="w-full mt-10 flex flex-col items-start">
+            <form onSubmit={handleSubmit(submitForm)} className="w-full mt-10 flex flex-col items-start">
                 {/* Heading section */}
                 <div className="flex flex-col">
                     <h1
@@ -83,11 +177,35 @@ const TheaterRegistrationForm = () => {
                         <>
                             {/* Image section */}
                             <div className="flex flex-col-reverse gap-2 sm:gap-5 my-10 items-start sm:flex-row sm:items-center">
-                                <div className="w-25 h-25 bg-foreground-color border border-foreground-theme-color/20 rounded-lg flex justify-center items-center cursor-pointer">
-                                    <CameraIcon
-                                        size={23}
-                                        strokeWidth={1.5}
-                                    />
+                                <div
+                                    onClick={() => imageRef.current?.click()}
+                                    className={`${theaterLogo.file && theaterLogo.preview ? "border-none bg-background-color" : ""} w-25 h-25 bg-foreground-color border border-foreground-theme-color/20 rounded-lg flex justify-center items-center cursor-pointer`}
+                                >
+                                    {
+                                        theaterLogo.file && theaterLogo.preview
+                                            ?
+                                            <Image
+                                                src={theaterLogo.preview}
+                                                width={50}
+                                                height={50}
+                                                alt="Theater logo"
+                                                className="w-full h-auto rounded-lg"
+                                            />
+                                            :
+                                            <>
+                                                <CameraIcon
+                                                    size={23}
+                                                    strokeWidth={1.5}
+                                                    className="stroke-disable-color"
+                                                />
+                                                <Input
+                                                    type="file"
+                                                    hidden
+                                                    ref={imageRef}
+                                                    onChange={(event) => handleStoreLogo(event.target.files)}
+                                                />
+                                            </>
+                                    }
                                 </div>
                                 <div>
                                     <h2 className="text-sm font-medium">Theater Logo</h2>
@@ -107,6 +225,12 @@ const TheaterRegistrationForm = () => {
                                         Icon={TheaterIcon}
                                         placeholder="Enter theater name"
                                         id={theaterNameId}
+                                        {...register("theaterName", {
+                                            minLength: 3,
+                                            maxLength: 25,
+                                            required: true
+                                        })}
+                                        aria-invalid={formErrors.theaterName ? "true" : "false"}
                                     />
                                 </div>
                                 {/* Theater Location */}
@@ -120,6 +244,12 @@ const TheaterRegistrationForm = () => {
                                         Icon={LocationIcon}
                                         placeholder="Enter theater location"
                                         id={theaterLocationId}
+                                        {...register("theaterLocation", {
+                                            minLength: 10,
+                                            maxLength: 100,
+                                            required: true
+                                        })}
+                                        aria-invalid={formErrors.theaterLocation ? "true" : "false"}
                                     />
                                 </div>
                                 {/* Total Layout */}
@@ -133,6 +263,12 @@ const TheaterRegistrationForm = () => {
                                         Icon={TheaterLayoutIcon}
                                         placeholder="Enter total seat layout (eg: 1). Max 3"
                                         id={theaterLayoutId}
+                                        {...register("totalLayout", {
+                                            minLength: 1,
+                                            maxLength: 3,
+                                            required: true
+                                        })}
+                                        aria-invalid={formErrors.totalLayout ? "true" : "false"}
                                     />
                                 </div>
                                 {/* Total Sets */}
@@ -146,6 +282,12 @@ const TheaterRegistrationForm = () => {
                                         Icon={TheaterSetsIcon}
                                         placeholder="Enter total sets in a layout (eg: 2). Max 4"
                                         id={theaterTotalSetsId}
+                                        {...register("totalSets", {
+                                            required: true,
+                                            minLength: 1,
+                                            maxLength: 4
+                                        })}
+                                        aria-invalid={formErrors.totalSets ? "true" : "false"}
                                     />
                                 </div>
                                 {/* Total Rows */}
@@ -159,6 +301,12 @@ const TheaterRegistrationForm = () => {
                                         type="number"
                                         placeholder="Enter total rows in a sets (eg: 4). Max 5"
                                         id={theaterTotalRowsId}
+                                        {...register("totalRows", {
+                                            required: true,
+                                            minLength: 1,
+                                            maxLength: 5
+                                        })}
+                                        aria-invalid={formErrors.totalRows ? "true" : "false"}
                                     />
                                 </div>
                                 {/* Total seats */}
@@ -172,6 +320,12 @@ const TheaterRegistrationForm = () => {
                                         id={theaterTotalSeatsId}
                                         type="number"
                                         placeholder="Enter total seats in a row (eg: 5). Max 7"
+                                        {...register("totalSeats", {
+                                            required: true,
+                                            minLength: 1,
+                                            maxLength: 7
+                                        })}
+                                        aria-invalid={formErrors.totalSeats ? "true" : "false"}
                                     />
                                 </div>
                                 {/* Formats */}
@@ -179,7 +333,7 @@ const TheaterRegistrationForm = () => {
                                     <Label
                                         labelTitle="Formats"
                                     />
-                                    <div>
+                                    <div className="px-px">
                                         <CheckBoxList
                                             values={theaterFormats}
                                             selectedLimit={null}
@@ -193,25 +347,24 @@ const TheaterRegistrationForm = () => {
                                     <Label
                                         labelTitle="Allow Cancellation"
                                     />
-                                    <CustomCheckBox
-                                        onMarkChecked={() => setAllowCancellation(false)}
-                                        onUnmarkChecked={() => setAllowCancellation(true)}
-                                        value="Allow"
-                                    />
+                                    <div className="px-px">
+                                        <CustomCheckBox
+                                            onMarkChecked={() => {
+                                                if (!allowCancellation) setAllowCancellation(true)
+                                            }}
+                                            onUnmarkChecked={() => {
+                                                if (allowCancellation) setAllowCancellation(false)
+                                            }}
+                                            value="Allow"
+                                            defaultChecked={allowCancellation}
+                                        />
+                                    </div>
                                 </div>
                                 {/* Proceed button */}
                                 <div className="mt-3 w-full">
                                     <Button
                                         className="w-full "
-                                        type="button"
-                                        onClick={() => {
-                                            setCurrentScreen("PREVIEW")
-                                            setScreenProgressState({ ...screenProgressState, currentScreen: 2 })
-                                            window.scrollTo({
-                                                behavior: "smooth",
-                                                top: 0
-                                            })
-                                        }}
+                                        type="submit"
                                     >
                                         <span>Proceed</span>
                                     </Button>
@@ -222,7 +375,7 @@ const TheaterRegistrationForm = () => {
                         <div className="mt-13 w-full">
                             {/* Preview section */}
                             <TheaterSeatLayout
-                                preview={false}
+                                preview={true}
                                 layoutNumber={3}
                                 setsNumber={3}
                                 rowNumber={3}
@@ -237,7 +390,7 @@ const TheaterRegistrationForm = () => {
                                 </Button>
                                 <Button
                                     className="w-full sm:w-[60%] md:w-[60%] lg:w-[40%] bg-foreground-color border border-foreground-theme-color/20 text-foreground-theme-color hover:bg-background-color"
-                                    onClick={() =>{
+                                    onClick={() => {
                                         setCurrentScreen("FORM")
                                         window.scrollTo({
                                             behavior: "smooth",

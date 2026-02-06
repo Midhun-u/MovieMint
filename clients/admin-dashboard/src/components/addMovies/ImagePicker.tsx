@@ -25,11 +25,14 @@ const ImagePicker = ({ labelTitle, title, mode, setFile }: ImagePicker) => {
         if (event.target.files?.length) {
 
             const file = event.target.files[0]
+            const fileSize = 10 * 1024 * 1024 // 10MB
 
             if (!file.type.includes("image")) {
                 toastContext?.triggerToastMessage("Invalid File", "ERROR")
                 return
             }
+
+            if(file.size > fileSize) return toastContext?.triggerToastMessage("File size is exceeded the limit", "ERROR")
 
             // Making preview of the image
             const fileReader = new FileReader()

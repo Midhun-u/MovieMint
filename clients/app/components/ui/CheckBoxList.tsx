@@ -42,6 +42,7 @@ const CheckBoxList = ({ values, setValues, checkedValues, selectedLimit }: Check
                         key={index}
                         onMarkChecked={(unCheckedValue) => handlAddCategories(unCheckedValue)}
                         onUnmarkChecked={(checkedValue) => handleRemoveCategories(checkedValue)}
+                        defaultChecked={checkedValues.includes(value)? true: false}
                     />
                 ))
             }

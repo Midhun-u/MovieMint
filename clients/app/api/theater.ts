@@ -1,0 +1,32 @@
+'use server'
+
+import { Theater } from "@/types/theater";
+import { envVariables } from "@/utils/envVariables";
+import * as zod from 'zod'
+import { fetchInstance } from "./fetch";
+import { handleError } from "@/utils/handleError";
+
+const THEATER_BASE_URL = envVariables.THEATER_URL
+
+// Api for registering theater
+export const registerTheaterApi = handleError(async (data: Theater, authToken: string) => {
+
+    if (!authToken) return
+
+    const theaterDataObj = zod.object({
+        theaterName: zod.string().min(3).max(25).nonempty().trim(),
+        theaterLocation: zod.string().min(5).max(100).nonempty().trim(),
+        formats: zod.array(zod.string()).min(2),
+        layoutNumber: zod.number().min(1).max(3),
+        setsNumber: zod.number().min(1).max(4),
+        rowsNumber: zod.number().min(1).max(5),
+        seatsNumber: zod.number().min(1).max(7),
+        allowCancellation: zod.boolean()
+    })
+
+    const fields = theaterDataObj.parse(data)
+
+    const result = await fetchInstance(THEATER_BASE_URL, "/add-theater-request", "POST", fields, authToken)
+    console.log(result)
+
+})

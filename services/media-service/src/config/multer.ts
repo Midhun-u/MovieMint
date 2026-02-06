@@ -20,6 +20,9 @@ const storage = multer.diskStorage({
 // Upload middleware
 export const upload = multer({
 
+    limits: {
+        fieldSize: 10 * 1024 * 1024 // 10MB
+    },
     fileFilter(req, file, callback) {  // Checking if file contain supported mime type
 
         const supportedMimeTypes = ["image/jpg", "image/jpeg", "image/png", "image/webp"]
@@ -34,5 +37,6 @@ export const upload = multer({
         }
 
     },
+    
     storage: storage,
 })
