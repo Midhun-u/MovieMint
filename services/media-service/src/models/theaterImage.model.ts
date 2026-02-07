@@ -1,3 +1,4 @@
+import { Op } from "sequelize";
 import { TheaterImage } from "../schemas/theaterImage.schema.js";
 import type { AddTheaterImageType } from "../types/addTheaterImageType.js";
 
@@ -15,6 +16,20 @@ export const TheaterImageModel = {
         })
 
         return newImage.dataValues
+
+    },
+
+    getImageByTheaterId: async (theaterId: string) => {
+
+        const image = await TheaterImage.findOne({
+           where: {
+                theater_id: {
+                    [Op.eq]: theaterId
+                }
+           } 
+        })
+
+        return image
 
     }
 

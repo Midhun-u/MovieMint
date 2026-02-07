@@ -31,6 +31,10 @@ export const uploadMovieImageController = handleError(async (request: Request, r
 
         const poster = await MoviePosterModel.getPosterByMovieId(movieId)
         if(poster){
+
+            // Deleting file from disk
+            deleteFileFromDisk(file.path)
+
             return sendResponse(response, false, 409, "Movie poster is already exist")
         }
 
@@ -38,6 +42,10 @@ export const uploadMovieImageController = handleError(async (request: Request, r
 
         const banner = await MovieBannerModel.getBannerByMovieId(movieId)
         if(banner){
+
+            // Deleting file from disk
+            deleteFileFromDisk(file.path)
+
             return sendResponse(response, false, 409, "Movie banner is already exist")
         }
 

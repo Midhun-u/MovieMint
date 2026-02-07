@@ -9,5 +9,6 @@ export const envVariables = {
     FIREBASE_APP_ID: process.env.NEXT_PUBLIC_FIREBASE_APP_ID as string,
     ADMIN_DASHBOARD_URL: process.env.NEXT_PUBLIC_ADMIN_DASHBOARD_URL as string,
     THEATER_DASHBAORD_URL: process.env.NEXT_PUBLIC_THEATER_DASHBOARD_URL as string,
-    THEATER_URL: process.env.THEATER_URL as string
+    THEATER_URL: process.env.THEATER_URL as string,
+    MEDIA_URL: process.env.MEDIA_URL as string
 }

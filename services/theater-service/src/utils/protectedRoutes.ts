@@ -1,3 +1,4 @@
 export const protectedRoutes = [
-    "/add-theater-request",
+    "/add-theater-registration",
+    "/delete-theater-registration"
 ]

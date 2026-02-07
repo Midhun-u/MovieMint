@@ -32,7 +32,7 @@ export const signApi = handleError(async (formInputData: SignFormInputData) => {
             password: fields.password.trim(),
             role: fields.role,
             adminKey: fields.adminKey?.trim()
-        })
+        }, "json")
 
         return data
 
@@ -63,7 +63,7 @@ export const googleSignApi = handleError(async (signData: GoogleSignData) => {
         email: fields.email.trim(),
         profilePic: fields.profilePic,
         role: fields.role
-    })
+    }, "json")
 
     return data
 
@@ -88,7 +88,7 @@ export const loginApi = handleError(async (formInputData: LoginFormInputData) =>
             password: fields.password.trim(),
             adminKey: fields.adminKey?.trim(),
             role: formInputData.role
-        })
+        }, "json")
 
         return data
 
@@ -109,7 +109,7 @@ export const googleLoginApi = handleError(async (formInputData: GoogleLoginData)
     const data = await fetchInstance(AUTH_BASE_URL, "/google-login", "POST", {
         email: fields.email.trim(),
         role: fields.role
-    })
+    }, "json")
 
     return data
 
@@ -126,7 +126,7 @@ export const sendOtpApi = handleError(async (formInputData: {email: string}) => 
 
     const result = await fetchInstance(AUTH_BASE_URL, "/send-otp", "POST", {
         email: fields.email
-    })
+    }, "json")
 
     return result
 
@@ -145,7 +145,7 @@ export const verifyOtpApi = handleError(async (formInputData: {otp: number, emai
     const result = fetchInstance(AUTH_BASE_URL, "/verify-otp", "POST", {
         otp: fields.otp,
         email: fields.email
-    })
+    }, "json")
 
     return result
 
@@ -164,7 +164,7 @@ export const resetPasswordApi = handleError(async (formInputData: {newPassword: 
     const result = await fetchInstance(AUTH_BASE_URL, "/reset-password", "PATCH", {
         newPassword: fields.newPassword,
         userId: fields.userId
-    })
+    }, "json")
 
     return result
 
@@ -175,7 +175,7 @@ export const getProfileApi = handleError(async (authToken: string) => {
 
     if(!authToken) return
 
-    const result = await fetchInstance(AUTH_BASE_URL, "/get-profile", "GET", {}, authToken)
+    const result = await fetchInstance(AUTH_BASE_URL, "/get-profile", "GET", {}, "json", authToken)
     return result
 
 })

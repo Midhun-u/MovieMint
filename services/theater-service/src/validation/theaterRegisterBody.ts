@@ -2,7 +2,7 @@ import { TheaterBody } from "../types/theaterBody";
 import * as zod from 'zod'
 
 // Function for validating theater request body
-export const validateTheaterRequestBody = (body: TheaterBody): {success: boolean, fields?: TheaterBody, error?: string} => {
+export const validateTheaterRegisterBody = (body: TheaterBody): {success: boolean, fields?: TheaterBody, error?: string} => {
 
     try {
         

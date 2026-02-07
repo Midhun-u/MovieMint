@@ -29,6 +29,10 @@ export const uploadActorImageController = handleError(async (request: Request, r
     const actorImage = await ActorImageModel.getActorImageByActorId(actorId)
    
     if (actorImage) {
+
+        // Deleting file from disk
+        deleteFileFromDisk(file.path)
+        
         return sendResponse(response, false, 409, "Actor image is already exists")
     }
 

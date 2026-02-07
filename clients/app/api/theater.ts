@@ -11,7 +11,7 @@ const THEATER_BASE_URL = envVariables.THEATER_URL
 // Api for registering theater
 export const registerTheaterApi = handleError(async (data: Theater, authToken: string) => {
 
-    if (!authToken) return
+    if (!authToken) return { success: false }
 
     const theaterDataObj = zod.object({
         theaterName: zod.string().min(3).max(25).nonempty().trim(),
@@ -26,7 +26,23 @@ export const registerTheaterApi = handleError(async (data: Theater, authToken: s
 
     const fields = theaterDataObj.parse(data)
 
-    const result = await fetchInstance(THEATER_BASE_URL, "/add-theater-request", "POST", fields, authToken)
-    console.log(result)
+    const result = await fetchInstance(THEATER_BASE_URL, "/add-theater-registration", "POST", fields, "json", authToken)
+    return result
+
+})
+
+// Api for deleting theater
+export const deleteTheaterApi = handleError(async (theaterId: string, authToken: string) => {
+
+    const result = await fetchInstance(
+        THEATER_BASE_URL,
+        `/delete-theater-registration/${theaterId}`,
+        "DELETE",
+        {},
+        "json",
+        authToken
+    )
+
+    return result
 
 })

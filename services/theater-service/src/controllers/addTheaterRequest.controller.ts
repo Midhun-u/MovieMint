@@ -1,17 +1,17 @@
 import { Context } from "hono";
 import { sendErrorResponse } from "../utils/sendErrorResponse";
 import { TheaterBody } from "../types/theaterBody";
-import { validateTheaterRequestBody } from "../validation/theaterRequestBody";
+import { validateTheaterRegisterBody } from "../validation/theaterRegisterBody";
 import { TheaterModel } from "../models/theater.model";
 
-// Controller for adding theater request
-export const addTheaterRequestController = sendErrorResponse(async (context: Context) => {
+// Controller for registering theater
+export const addTheatereRegisterController = sendErrorResponse(async (context: Context) => {
 
     const body = await context.req.json() as TheaterBody || {}
     const theaterOwner = context.get("theaterOwner")
 
     // Validating request body
-    const validationResult = validateTheaterRequestBody(body)
+    const validationResult = validateTheaterRegisterBody(body)
     
     if(!validationResult.success || !validationResult.fields){
         context.status(400)

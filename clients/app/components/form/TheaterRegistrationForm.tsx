@@ -1,6 +1,6 @@
 'use client'
 
-import { useContext, useId, useRef, useState } from "react"
+import React, { Suspense, useContext, useId, useRef, useState } from "react"
 import ScreenProgress from "../ui/ScreenProgress"
 import {
     CameraIcon,
@@ -18,13 +18,17 @@ import CheckBoxList from "../ui/CheckBoxList"
 import { theaterFormats } from "@/utils/theaterFormats"
 import CustomCheckBox from "../ui/CustomCheckBox"
 import { Button } from "../ui/button"
-import TheaterSeatLayout from "../layout/TheaterSeatLayout"
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Input } from "../ui/input"
 import { ToastProvider } from "../context/ToastMessage"
 import Image from "next/image"
 import { convertStringToNumber } from "@/utils/convertStringToNumber"
-import { registerTheaterApi } from "@/api/theater"
+import { deleteTheaterApi, registerTheaterApi } from "@/api/theater"
+import { uploadTheaterImageApi } from "@/api/media"
+import Spinner from "../ui/Spinner"
+import { useAppDispatch, useAppSelector } from "@/store/hooks"
+import { theaterFailed, theaterRequest, theaterSuccess } from "@/store/theaterSlice"
+import { useRouter } from "next/navigation"
 
 type Inputs = {
     theaterName: string
@@ -34,6 +38,8 @@ type Inputs = {
     totalRows: number
     totalSeats: number
 }
+
+const TheaterSeatLayout = React.lazy(() => import("../layout/TheaterSeatLayout"))
 
 const TheaterRegistrationForm = () => {
 
@@ -61,6 +67,10 @@ const TheaterRegistrationForm = () => {
     })
     const [theaterDetails, setTheaterDetails] = useState<Inputs & { file: File, formats: Array<string>, allowCancellation: boolean }>()
     const toastContext = useContext(ToastProvider)
+    const { theme } = useAppSelector(state => state.theme)
+    const { loading } = useAppSelector(state => state.theater)
+    const dispatch = useAppDispatch()
+    const router = useRouter()
 
     // Function for storing theater logo
     const handleStoreLogo = (files: FileList | null) => {
@@ -114,7 +124,7 @@ const TheaterRegistrationForm = () => {
         })
 
         setCurrentScreen("PREVIEW")
-        setScreenProgressState({...screenProgressState, currentScreen: 2})
+        setScreenProgressState({ ...screenProgressState, currentScreen: 2 })
 
         window.scrollTo({
             behavior: "smooth",
@@ -124,9 +134,45 @@ const TheaterRegistrationForm = () => {
     }
 
     // Function for registering theater
-    const handleCreateTheaterRequest = async () => {
+    const handleRegisterTheater = async () => {
 
-        
+        if (!theaterDetails) return
+
+        const authToken = localStorage.getItem("authToken") || ""
+
+        dispatch(theaterRequest())
+        const theaterResult = await registerTheaterApi({
+            theaterName: theaterDetails.theaterName,
+            theaterLocation: theaterDetails.theaterLocation,
+            formats: theaterDetails.formats,
+            layoutNumber: theaterDetails.totalLayout,
+            setsNumber: theaterDetails.totalSets,
+            rowsNumber: theaterDetails.totalRows,
+            seatsNumber: theaterDetails.totalSeats,
+            allowCancellation: theaterDetails.allowCancellation
+        }, authToken)
+
+        if (theaterResult.success && theaterResult.theater) {
+
+            const imageResult = await uploadTheaterImageApi(theaterResult.theater.id, theaterDetails.file, authToken)
+
+            if (imageResult.success) {
+
+                toastContext?.triggerToastMessage("Theater is registered", "SUCCESS")
+                dispatch(theaterSuccess({ theater: theaterResult.theater }))
+
+            } else {
+                // Deleting theater registration because of the failure in uploading theater image
+                await deleteTheaterApi(theaterResult.theater.id, authToken)
+
+                toastContext?.triggerToastMessage("Theater couldn't registered", "ERROR")
+                dispatch(theaterFailed({ errorMessage: imageResult.error }))
+            }
+
+        } else {
+            toastContext?.triggerToastMessage(theaterResult.error, "ERROR")
+            dispatch(theaterFailed({ errorMessage: theaterResult.error }))
+        }
 
     }
 
@@ -374,19 +420,39 @@ const TheaterRegistrationForm = () => {
                         :
                         <div className="mt-13 w-full">
                             {/* Preview section */}
-                            <TheaterSeatLayout
-                                preview={true}
-                                layoutNumber={3}
-                                setsNumber={3}
-                                rowNumber={3}
-                                seatNumber={7}
-                            />
+                            {
+                                theaterDetails
+                                    ?
+                                    <Suspense fallback={<Spinner size={25} color={theme === "dark" ? "white" : "black"} />}>
+                                        <TheaterSeatLayout
+                                            preview={true}
+                                            layoutNumber={theaterDetails.totalLayout as number}
+                                            setsNumber={theaterDetails.totalSets as number}
+                                            rowNumber={theaterDetails.totalRows as number}
+                                            seatNumber={theaterDetails.totalSeats as number}
+                                        />
+                                    </Suspense>
+                                    :
+                                    null
+                            }
                             {/* Button section */}
                             <div className="mt-15 w-full flex flex-col items-center gap-3">
                                 <Button
                                     className="w-full sm:w-[60%] md:w-[60%] lg:w-[40%]"
+                                    onClick={() => handleRegisterTheater()}
+                                    type="button"
+                                    disabled={loading}
                                 >
-                                    <span>Register</span>
+                                    {
+                                        loading
+                                            ?
+                                            <Spinner
+                                                size={20}
+                                                color="black"
+                                            />
+                                            :
+                                            <span>Register</span>
+                                    }
                                 </Button>
                                 <Button
                                     className="w-full sm:w-[60%] md:w-[60%] lg:w-[40%] bg-foreground-color border border-foreground-theme-color/20 text-foreground-theme-color hover:bg-background-color"

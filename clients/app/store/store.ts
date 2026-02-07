@@ -2,6 +2,7 @@ import {configureStore} from '@reduxjs/toolkit'
 import { authReducer } from './authSlice'
 import { otpReducer } from './otpSlice'
 import { themeReducer } from './themeSlice'
+import { theaterReducer } from './theaterSlice'
 
 export const store = () => {
 
@@ -9,7 +10,8 @@ export const store = () => {
         reducer: {
             auth: authReducer,
             otp: otpReducer,
-            theme: themeReducer
+            theme: themeReducer,
+            theater: theaterReducer
         }
     })
 

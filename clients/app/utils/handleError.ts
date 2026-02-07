@@ -10,7 +10,7 @@ export const handleError = <Type extends (...args: any[]) => any>(fn: Type) => {
         } catch (error: any) {
 
             console.log(error)
-            return {success: false, errorMessage: error.message, error: error}
+            return {success: false, error: error.message}
 
         }
 

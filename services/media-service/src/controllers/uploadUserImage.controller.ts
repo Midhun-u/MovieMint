@@ -12,26 +12,31 @@ import { getImage } from "../supabase/getImage.js";
 export const uploadUserImageController = handleError(async (request: Request, response: Response): Promise<any> => {
 
     const { userId, imageUrl } = request.body as UploadImageBody || {}
+    const file = request.file
 
-    if (!userId) {
+    if (!userId || !file) {
 
-        if (request.file) {
+        if (file) {
 
             // Deleting file
-            deleteFileFromDisk(request.file.path as string)
+            deleteFileFromDisk(file.path)
 
         }
 
         return sendResponse(response, false, 400, "All fields are required")
     }
 
-    if (!request.file && !imageUrl) {
+    if (!file && !imageUrl) {
         return sendResponse(response, false, 400, "File is required")
     }
 
     // Checking if user image is already exists
     const image = await UserImageModel.getImageByUserId(userId)
-    if(image){
+    if (image) {
+
+        // Deleting file from disk
+        deleteFileFromDisk(file.path)
+
         return sendResponse(response, false, 409, "User image is already exist")
     }
 
@@ -49,20 +54,20 @@ export const uploadUserImageController = handleError(async (request: Request, re
 
         return sendResponse(response, true, 201, null, { newImage: newImage }, "Image is uploaded")
 
-    } else if (request.file) {
+    } else if (file) {
 
         // Reading file from disk
-        const fileBuffer = await readFileFromDisk(request.file.path as string)
-        const extname = path.extname(request.file.path)
+        const fileBuffer = await readFileFromDisk(file.path as string)
+        const extname = path.extname(file.path)
 
         // Uploading image to supabase
         const result = await uploadImage({
             id: userId,
-            path: request.file.path,
+            path: file.path,
             extname: extname,
             file: fileBuffer,
             bucketName: "users",
-            contentType: request.file.mimetype as ContentType
+            contentType: file.mimetype as ContentType
         })
 
         if (result.error) {
@@ -84,7 +89,7 @@ export const uploadUserImageController = handleError(async (request: Request, re
             imageType: `image/${extname.replace(".", "")}` as ContentType // eg: ".jpg" to "jpg"
         })
 
-        return sendResponse(response, true, 201, null, {image: newImage }, "Image is uploaded")
+        return sendResponse(response, true, 201, null, { image: newImage }, "Image is uploaded")
 
     } else {
         return sendResponse(response, false, 400, "Something went wrong")

@@ -36,6 +36,27 @@ export const TheaterModel = {
 
         return theater?.dataValues
 
+    },
+
+    getTheaterById: async (theaterId: string) => {
+
+        const theater = await Theater.findByPk(theaterId)
+        return theater?.dataValues
+
+    },
+
+    deleteTheaterById: async (theaterId: string) => {
+
+        const deletedCount = await Theater.destroy({
+            where: {
+                id: {
+                    [Op.eq]: theaterId
+                }
+            }
+        })
+
+        return deletedCount
+
     }
 
 }
