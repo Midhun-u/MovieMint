@@ -5,8 +5,8 @@ import { UserModel } from "../models/user.model.js";
 import { excludePassword } from "../utils/excludePassword.js";
 import { getUserProfileImage } from "../service/image/getImage.js";
 
-// Controller for getting profile
-export const getProfileController = handleError(async (request: FastifyRequest, reply: FastifyReply) => {
+// Controller for getting auth profile
+export const getAuthProfileController = handleError(async (request: FastifyRequest, reply: FastifyReply) => {
 
     const jwtPayload = request.user as JWT_PAYLOAD
 
@@ -32,14 +32,10 @@ export const getProfileController = handleError(async (request: FastifyRequest, 
 
     if(imageResult.success && imageResult.data?.userImage){
 
-        userData.profileImage = {
-            imageId: imageResult.data?.userImage.id,
-            imageType: imageResult.data?.userImage.image_type,
-            imageUrl: imageResult.data?.userImage.image_url
-        }
+        userData.profile_image = {...imageResult.data.userImage}
 
     }else{
-        userData.profileImage = {}
+        userData.profile_image = {}
     }
 
     return {success: true, user: userData, statusCode: 200}

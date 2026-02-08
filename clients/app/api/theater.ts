@@ -46,3 +46,19 @@ export const deleteTheaterApi = handleError(async (theaterId: string, authToken:
     return result
 
 })
+
+// Api for getting theater
+export const getTheaterApi = handleError(async (authToken: string) => {
+
+    const result = await fetchInstance(
+        THEATER_BASE_URL, 
+        "/get-theater-registration",
+        "GET",
+        {},
+        "json",
+        authToken
+    )
+
+    return result
+
+})

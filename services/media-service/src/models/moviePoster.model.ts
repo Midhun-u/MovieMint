@@ -19,9 +19,13 @@ export const MoviePosterModel = {
 
     },
 
-    getPosterById: async (id: string) => {
+    getPosterById: async (id: string, attributes?: Array<string>) => {
 
-        const poster = await Poster.findByPk(id)
+        const attributesCondition = attributes?.length ? { attributes: attributes } : {}
+
+        const poster = await Poster.findByPk(id, {
+            ...attributesCondition
+        })
         return poster?.dataValues
 
     },
@@ -40,14 +44,17 @@ export const MoviePosterModel = {
 
     },
 
-    getPosterByMovieId: async (movieId: string) => {
+    getPosterByMovieId: async (movieId: string, attributes?: Array<string>) => {
+
+        const attributesCondition = attributes?.length ? { attributes: attributes } : {}
 
         const poster = await Poster.findOne({
             where: {
                 movie_id: {
                     [Op.eq]: movieId
-                } 
-            }
+                }
+            },
+            ...attributesCondition
         })
 
         return poster?.dataValues

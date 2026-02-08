@@ -8,16 +8,16 @@ export const MovieModel = {
 
         const newMovie = await Movie.create({
             title: data.title,
-            subHeading: data.subheading,
+            sub_heading: data.subheading,
             synopsis: data.synopsis,
             language: data.language,
             certificate: data.certificate,
-            movieTrailer: data.trailer,
+            movie_trailer: data.trailer,
             duration: data.duration,
             categories: data.categories,
             formats: data.formats,
             actors: data.actors,
-            releaseDate: data.releaseDate,
+            release_date: data.releaseDate,
             status: "PENDING",
             type: data.type
         })

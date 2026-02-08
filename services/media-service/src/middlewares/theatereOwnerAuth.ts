@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
 import { sendResponse } from "../utils/sendResponse.js";
-import { getUser } from "../services/getUser.js";
+import { getAuthProfile } from "../services/getAuthProfile.js";
 
 // Middleware for checking authentication
 export const theaterOwnerAuthMiddleware = async (request: Request, response: Response, next: NextFunction) => {
@@ -14,7 +14,7 @@ export const theaterOwnerAuthMiddleware = async (request: Request, response: Res
             (response, false, 401, "Unauthorized user")
         }
 
-        const result = await getUser(authToken)
+        const result = await getAuthProfile(authToken)
 
         if (!result.success || !result.user || result.user?.role !== "THEATER_OWNER") {
             return sendResponse(response, false, 403, "Only theater owner has the access for processing")

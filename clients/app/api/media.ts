@@ -14,7 +14,6 @@ export const uploadTheaterImageApi = handleError(async (theaterId: string, file:
     const formData = new FormData()
     formData.append("theaterId", theaterId)
     formData.append("file", file)
-    console.log(formData)
 
     const result = await fetchInstance(MEDIA_BASE_URL, "/theater/upload-image", "POST", formData, "formData", authToken)
     return result

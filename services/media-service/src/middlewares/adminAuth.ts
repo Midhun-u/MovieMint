@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
 import { sendResponse } from "../utils/sendResponse.js";
-import { getUser } from "../services/getUser.js";
+import { getAuthProfile } from "../services/getAuthProfile.js";
 
 // Middleware for checking authentication
 export const adminAuthMiddleware = async (request: Request, response: Response, next: NextFunction) => {
@@ -13,7 +13,7 @@ export const adminAuthMiddleware = async (request: Request, response: Response, 
             return sendResponse(response, false, 401, "Unauthorized user")
         }
 
-        const result = await getUser(authToken)
+        const result = await getAuthProfile(authToken)
        
         if(!result.success || !result.user || result.user?.role !== "ADMIN"){
             return sendResponse(response, false, 403, "Only admin has the access for processing")

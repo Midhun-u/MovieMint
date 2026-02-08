@@ -8,7 +8,7 @@ import { TheaterModel } from "../models/theater.model";
 export const addTheatereRegisterController = sendErrorResponse(async (context: Context) => {
 
     const body = await context.req.json() as TheaterBody || {}
-    const theaterOwner = context.get("theaterOwner")
+    const theaterOwner = context.get("auth")
 
     // Validating request body
     const validationResult = validateTheaterRegisterBody(body)

@@ -57,9 +57,7 @@ const Header = () => {
     }
 
     useEffect(() => {
-
         handleSwitchTheme()
-
     }, [theme])
 
     useEffect(() => {
@@ -148,17 +146,17 @@ const Header = () => {
                     }
                     {/* Sign button or user profile */}
                     {
-                        user.id && user?.profileImage
+                        user.id && user?.profile_image
                             ?
                             <div
                                 className="hidden w-auto sm:flex items-center gap-1 cursor-pointer relative"
                                 onClick={() => setShowOptionMenu(!showOptionMenu)}
                             >
                                 {
-                                    user.profileImage?.imageUrl
+                                    user.profile_image?.image_url
                                         ?
                                         <Image
-                                            src={user.profileImage.imageUrl}
+                                            src={user.profile_image.image_url}
                                             alt="User profile image"
                                             width={30}
                                             height={30}

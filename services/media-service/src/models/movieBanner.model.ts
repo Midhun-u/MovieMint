@@ -19,21 +19,28 @@ export const MovieBannerModel = {
 
     },
 
-    getBannerById: async (id: string) => {
+    getBannerById: async (id: string, attributes?: Array<string>) => {
 
-        const banner = await Banner.findByPk(id)
+        const attributesCondition = attributes?.length ? { attributes: attributes } : {}
+
+        const banner = await Banner.findByPk(id, {
+            ...attributesCondition
+        })
         return banner?.dataValues
 
     },
 
-    getBannerByMovieId: async (movieId: string) => {
+    getBannerByMovieId: async (movieId: string, attributes?: Array<string>) => {
+
+        const attributesCondition = attributes?.length ? { attributes: attributes } : {}
 
         const banner = await Banner.findOne({
             where: {
                 movie_id: {
                     [Op.eq]: movieId
                 }
-            }
+            },
+            ...attributesCondition
         })
 
         return banner?.dataValues

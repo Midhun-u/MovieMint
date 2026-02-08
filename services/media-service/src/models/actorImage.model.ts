@@ -20,28 +20,37 @@ export const ActorImageModel = {
 
     },
 
-    getActorImageById: async (id: string) => {
+    getActorImageById: async (id: string, attributes?: Array<string>) => {
 
-        const image = await Actor.findByPk(id)
+        const attributesCondition = attributes?.length ? { attributes: attributes } : {}
+        
+        const image = await Actor.findByPk(id, {
+            ...attributesCondition
+        })
         return image?.dataValues
 
     },
 
-    getActorImageByActorId: async (actorId: string) => {
+    getActorImageByActorId: async (actorId: string, attributes?: Array<string>) => {
+
+        const attributesCondition = attributes?.length ? { attributes: attributes } : {}
 
         const image = await Actor.findOne({
             where: {
                 actor_id: {
                     [Op.eq]: actorId
                 }
-            }
+            },
+            ...attributesCondition
         })
 
         return image?.dataValues
 
     },
 
-    getActorImagesByMovieId: async (movieId: string) => {
+    getActorImagesByMovieId: async (movieId: string, attributes?: Array<string>) => {
+
+        const attributesCondition = attributes?.length ? { attributes: attributes } : {}
 
         const actorImages = await Actor.findAll({
             where: {
@@ -49,6 +58,7 @@ export const ActorImageModel = {
                     [Op.eq]: movieId
                 }
             },
+            ...attributesCondition,
             limit: 5,
             raw: true
         })

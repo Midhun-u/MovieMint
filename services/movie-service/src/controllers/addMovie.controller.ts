@@ -20,7 +20,7 @@ export const addMovieController = sendErrorResponse(async (context: Context) => 
 
     if(movie){
 
-        const targetDate = new Date(movie.releaseDate)
+        const targetDate = new Date(movie.release_date)
         const delayedTime = targetDate.getTime() - Date.now()
         
         // Scheduling job

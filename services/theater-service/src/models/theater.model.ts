@@ -31,7 +31,7 @@ export const TheaterModel = {
                 owner_id: {
                     [Op.eq]: ownerId
                 }
-            }
+            },
         })
 
         return theater?.dataValues
@@ -57,6 +57,6 @@ export const TheaterModel = {
 
         return deletedCount
 
-    }
+    },
 
 }

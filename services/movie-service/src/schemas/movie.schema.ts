@@ -46,7 +46,7 @@ const movieSchema = new Schema({
         maxLength: 50,
         trim: true
     },
-    subHeading: {
+    sub_heading: {
         type: String,
         required: true,
         minLength: 5,
@@ -79,13 +79,13 @@ const movieSchema = new Schema({
         type: String,
         required: true
     }],
-    releaseDate: {
+    release_date: {
         type: Date,
         required: true
     },
     duration: durationSchema,
     actors: [actorSchema],
-    movieTrailer: {
+    movie_trailer: {
         type: String,
         required: true
     },

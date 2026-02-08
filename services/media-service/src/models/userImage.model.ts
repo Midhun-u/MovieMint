@@ -19,14 +19,17 @@ export const UserImageModel = {
 
     },
 
-    getImageByUserId: async (userId: string) => {
+    getImageByUserId: async (userId: string, attributes?: Array<string>) => {
+
+        const attributesCondition = attributes?.length ? { attributes: attributes } : {}
 
         const userImage = await UserImage.findOne({
             where: {
                 user_id: {
                     [Op.eq]: userId
                 }
-            }
+            },
+            ...attributesCondition
         })
 
         return userImage?.dataValues

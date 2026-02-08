@@ -175,7 +175,7 @@ export const getProfileApi = handleError(async (authToken: string) => {
 
     if(!authToken) return
 
-    const result = await fetchInstance(AUTH_BASE_URL, "/get-profile", "GET", {}, "json", authToken)
+    const result = await fetchInstance(AUTH_BASE_URL, "/auth-profile", "GET", {}, "json", authToken)
     return result
 
 })

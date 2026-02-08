@@ -28,7 +28,6 @@ import { uploadTheaterImageApi } from "@/api/media"
 import Spinner from "../ui/Spinner"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { theaterFailed, theaterRequest, theaterSuccess } from "@/store/theaterSlice"
-import { useRouter } from "next/navigation"
 
 type Inputs = {
     theaterName: string
@@ -70,7 +69,6 @@ const TheaterRegistrationForm = () => {
     const { theme } = useAppSelector(state => state.theme)
     const { loading } = useAppSelector(state => state.theater)
     const dispatch = useAppDispatch()
-    const router = useRouter()
 
     // Function for storing theater logo
     const handleStoreLogo = (files: FileList | null) => {

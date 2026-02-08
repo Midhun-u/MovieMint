@@ -1,6 +1,6 @@
 import { Context, Next } from "hono"
 import { protectedRoutes } from "../utils/protectedRoutes"
-import { getAdmin } from "../services/admin/getAdmin"
+import { getAuthProfile } from "../services/getAuthProfile"
 
 // Middleware for checking authentication
 export const adminAuthMiddleware = async (context: Context, next: Next) => {
@@ -17,7 +17,7 @@ export const adminAuthMiddleware = async (context: Context, next: Next) => {
         return context.json({success: false, error: "Unautherized admin", statusCode: 401})
     }
 
-    const result = await getAdmin(authToken)
+    const result = await getAuthProfile(authToken)
 
     if(!result.success || result?.user?.role !== "ADMIN" || !result?.user){
         context.status(403)

@@ -1,15 +1,48 @@
+'use client'
+
+import { getTheaterApi } from "@/api/theater"
 import Authentication from "@/components/features/Authentication"
 import TheaterRegistrationForm from "@/components/form/TheaterRegistrationForm"
+import TheaterRegistrationDetails from "@/components/pages/theaterRegistration/TheaterRegistrationDetails"
+import { TheaterDetails } from "@/types/theater"
+import { useEffect, useState } from "react"
 
 const TheaterRegistrationPage = () => {
+
+    const [theater, setTheater] = useState<TheaterDetails | null>(null)
+
+    // Function for getting theater
+    const handleGetTheater = async () => {
+
+        const authToken = localStorage.getItem('authToken') || ""
+
+        const result = await getTheaterApi(authToken)
+        if (result.success) {
+            setTheater(result.theater)
+        }
+
+    }
+
+    useEffect(() => {
+        handleGetTheater()
+    }, [])
+    console.log(theater)
 
     return (
         <Authentication
             redirectToAuthPage
         >
             <section className="pt-15">
-                <TheaterRegistrationForm
-                />
+                {
+                    theater
+                        ?
+                        <TheaterRegistrationDetails
+                            theaterDetails={theater}
+                        />
+                        :
+                        <TheaterRegistrationForm
+                        />
+                }
             </section>
         </Authentication>
     )

@@ -12,7 +12,7 @@ export const getUserImageController = handleError(async (request: Request, respo
         return sendResponse(response, false, 400, "User id is missing")
     }
 
-    const userImage = await UserImageModel.getImageByUserId(userId)
+    const userImage = await UserImageModel.getImageByUserId(userId, ["id", "image_url", "user_id"])
     
     return sendResponse(response, true, 200, null, {userImage: userImage || null})
 

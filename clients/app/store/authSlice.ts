@@ -11,10 +11,10 @@ const initialState = {
         email: "",
         role: "",
         auth_type: "",
-        profileImage: {
-            imageUrl: "",
-            imageType: "",
-            imageId: ""
+        profile_image: {
+            image_url: "",
+            id: "",
+            user_id: ""
         }
     }
 

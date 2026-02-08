@@ -9,7 +9,7 @@ const LoadingUI = () => {
 
     return (
 
-        <div className="w-full">
+        <div className="w-full h-[50dvh] flex justify-center items-center">
             <Spinner
                 size={25}
                 color={theme === "dark"? "white": "black"}

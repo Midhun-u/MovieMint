@@ -4,7 +4,7 @@ export const fetchInstance = async (
     path: string,
     method: "POST" | "GET" | "PUT" | "PATCH",
     body: object | null,
-    authToken: string
+    authToken: string | null
 ) => {
 
     try {
@@ -13,7 +13,7 @@ export const fetchInstance = async (
             method: method,
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": authToken
+                "Authorization": authToken? authToken: ""
             },
             body: method !== "GET" ? JSON.stringify(body) : null
         })

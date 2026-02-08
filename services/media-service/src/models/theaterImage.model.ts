@@ -19,18 +19,21 @@ export const TheaterImageModel = {
 
     },
 
-    getImageByTheaterId: async (theaterId: string) => {
+    getImageByTheaterId: async (theaterId: string, attributes?: Array<string>) => {
+
+        const attributesCondition = attributes?.length? {attributes: attributes}: {}
 
         const image = await TheaterImage.findOne({
-           where: {
+            where: {
                 theater_id: {
                     [Op.eq]: theaterId
-                }
-           } 
+                },
+            },
+            ...attributesCondition
         })
 
-        return image
+        return image?.dataValues
 
-    }
+    },
 
 }
