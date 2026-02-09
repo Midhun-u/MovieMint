@@ -1,8 +1,8 @@
 import { Route, Routes } from "react-router"
 import ProtectRoute from "./components/features/ProtectRoute"
-import Dashboard from "./pages/Dashboard"
-import AddMovies from "./pages/AddMovies"
-import PageNotFound from "./pages/PageNotFound"
+import Dashboard from "./components/pages/Dashboard"
+import AddMovies from "./components/pages/AddMovies"
+import PageNotFound from "./components/pages/PageNotFound"
 
 const Router = () => {
 

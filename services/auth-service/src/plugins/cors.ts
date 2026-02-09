@@ -6,7 +6,7 @@ import { envVariables } from "../utils/envVariables.js";
 export const initCors = fastifyPlugin((fastify) => {
 
     fastify.register(cors, {
-        origin: [envVariables.APP_CLIENT_URL, envVariables.ADMIN_DASHBOARD_URL],
+        origin: [envVariables.APP_CLIENT_URL, envVariables.ADMIN_DASHBOARD_URL, envVariables.THEATER_DASHBOARD_URL],
         methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
         credentials: true
     })

@@ -1,0 +1,15 @@
+.spinner{
+    animation: rotateAnimation 900ms linear infinite;
+}
+
+@keyframes rotateAnimation{
+
+    from{
+        rotate: 0deg;
+    }
+
+    to{
+        rotate: 360deg;
+    }
+
+}

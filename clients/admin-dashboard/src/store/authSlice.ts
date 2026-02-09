@@ -10,7 +10,7 @@ const initialState = {
         email: "",
         role: "",
         auth_type: "",
-        profile_mage: {
+        profile_image: {
             image_url: "",
             id: "",
             user_id: ""

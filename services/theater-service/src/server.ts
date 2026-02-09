@@ -15,7 +15,7 @@ const port = envVariables.PORT
 //Middlewares
 app.use(logger())
 app.use(cors({
-  origin: [envVariables.APP_URL],
+  origin: [envVariables.APP_URL, envVariables.THEATER_DASHBOARD_URL],
   allowMethods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   credentials: true
 }))

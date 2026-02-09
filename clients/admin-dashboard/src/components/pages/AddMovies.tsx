@@ -1,5 +1,5 @@
-import AddMovieForm from '../components/addMovies/AddMovieForm'
-import style from '../styles/pages/addMovies.module.scss'
+import AddMovieForm from '../addMovies/AddMovieForm'
+import style from '../../styles/pages/addMovies.module.scss'
 
 const AddMovies = () => {
 

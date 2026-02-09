@@ -1,6 +1,6 @@
-import DashboardLogs from '../components/dashboard/DashboardLogs'
-import MovieCard from '../components/ui/MovieCard'
-import style from '../styles/pages/dashboard.module.scss'
+import DashboardLogs from '../dashboard/DashboardLogs'
+import MovieCard from '../ui/MovieCard'
+import style from '../../styles/pages/dashboard.module.scss'
 import {
     Trash as DeleteIcon,
     Plus as AddIcon

@@ -1,6 +1,6 @@
 $disable-color: #7F7F7F;
 
-.container{
+.container {
     width: 100%;
     height: 60px;
     padding-inline: 20px;
@@ -10,26 +10,32 @@ $disable-color: #7F7F7F;
     justify-content: space-between;
     background-color: var(--foreground-color);
 
-    .logo{
+    .logo {
         width: 30px;
         height: 30px;
     }
 }
 
-.navs{
+.navs {
     display: flex;
     gap: 8px;
     align-items: center;
     position: relative;
-  
-    .menu-icon{
+
+    .menu-icon {
         display: none;
         cursor: pointer;
         z-index: 9;
     }
+
+    .profile-image {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+    }
 }
 
-.theme-icon-container{
+.theme-icon-container {
     padding: 5px;
     display: flex;
     justify-content: center;
@@ -38,28 +44,28 @@ $disable-color: #7F7F7F;
     cursor: pointer;
     height: 100%;
 
-    &:hover{
+    &:hover {
         background-color: var(--background-color);
     }
 }
 
-.option-menu-section{
+.option-menu-section {
     display: flex;
     align-items: center;
     gap: 3px;
     cursor: pointer;
 
-    .arrow-icon{
+    .arrow-icon {
         transition: rotate 200ms linear;
     }
 
-    .rotate-arrow-icon{
+    .rotate-arrow-icon {
         rotate: 180deg;
         transition: rotate 200ms linear;
     }
 }
 
-.option-menu{
+.option-menu {
     position: absolute;
     padding: 13px;
     top: 52px;
@@ -71,7 +77,7 @@ $disable-color: #7F7F7F;
     min-width: 150px;
     z-index: 2;
 
-    .option-menu-link{
+    .option-menu-link {
         display: flex;
         color: var(--foreground-theme-color);
         gap: 10px;
@@ -84,7 +90,7 @@ $disable-color: #7F7F7F;
     }
 }
 
-.sidebar{
+.sidebar {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -101,7 +107,7 @@ $disable-color: #7F7F7F;
     align-items: flex-end;
     gap: 15px;
 
-    .sidebar-nav{
+    .sidebar-nav {
         text-decoration: none;
         color: var(--foreground-theme-color);
         font-size: 1rem;
@@ -111,26 +117,26 @@ $disable-color: #7F7F7F;
         justify-content: flex-end;
     }
 
-    .sidebar-active-nav{
+    .sidebar-active-nav {
         @extend .sidebar-nav;
         color: var(--primary-color)
     }
 }
 
-.active-sidebar{
+.active-sidebar {
     @extend .sidebar;
     left: 0px;
     transition: left 200ms linear;
 }
 
-@media(max-width: 800px){
+@media(max-width: 800px) {
 
-    .option-menu-section{
+    .option-menu-section {
         display: none;
     }
 
-    .navs{
-        .menu-icon{
+    .navs {
+        .menu-icon {
             display: block;
         }
     }

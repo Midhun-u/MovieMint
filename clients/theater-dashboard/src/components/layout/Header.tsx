@@ -1,4 +1,4 @@
-import { Activity, useState } from 'react'
+import { Activity, useEffect, useState } from 'react'
 import { assets } from '../../assets/assets'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { switchTheme } from '../../store/themeSlice'
@@ -21,9 +21,27 @@ const Header = () => {
 
     const [showSidebar, setShowSidebar] = useState<boolean>(false)
     const [showOptionMenu, setShowOptionMenu] = useState<boolean>(false)
-    const {theme} = useAppSelector(state => state.theme)
+    const { theme } = useAppSelector(state => state.theme)
+    const { theaterOwner } = useAppSelector(state => state.auth)
     const dispatch = useAppDispatch()
     const pathname = useLocation().pathname
+
+    // Function for switching theme
+    const handleSwitchTheme = () => {
+
+        const root = document.documentElement
+
+        if (theme === "dark") {
+            root.classList.add("dark-theme")
+        } else {
+            root.classList.remove("dark-theme")
+        }
+
+    }
+
+    useEffect(() => {
+        handleSwitchTheme()
+    }, [theme])
 
     return (
         <header className={style.container}>
@@ -72,8 +90,17 @@ const Header = () => {
                     className={style['option-menu-section']}
                     onClick={() => setShowOptionMenu(!showOptionMenu)}
                 >
-                    <NullProfilePic
-                    />
+                    {
+                        theaterOwner?.profile_image?.image_url
+                            ?
+                            <img
+                                src={theaterOwner.profile_image.image_url}
+                                className={style['profile-image']}
+                            />
+                            :
+                            <NullProfilePic
+                            />
+                    }
                     <DownArrowIcon
                         strokeWidth={1.5}
                         size={23}

@@ -34,6 +34,7 @@ const Header = () => {
     const [authToken, setAuthToken] = useState<string | null>(null)
     const theaterDashboardNavLink = envVariables.THEATER_DASHBAORD_URL + `?authToken=${authToken}`
     const adminDashboardNavLink = envVariables.ADMIN_DASHBOARD_URL + `?authToken=${authToken}`
+    const linkClass = "font-medium mt-3 pb-2 w-full flex justify-end"
 
     // Function for logouting
     const handleLogout = () => {
@@ -200,7 +201,7 @@ const Header = () => {
                                 :
                                 <Link
                                     href={"/sign"}
-                                    className="font-medium border-b-2 pb-2 border-foreground-theme-color/20 w-full flex justify-end"
+                                    className={linkClass + " mt-0"}
                                 >
                                     Sign In
                                 </Link>
@@ -223,13 +224,13 @@ const Header = () => {
                                 <>
                                     <Link
                                         href={theaterDashboardNavLink}
-                                        className="font-medium mt-3 border-b-2 pb-2 border-foreground-theme-color/20 w-full flex justify-end"
+                                        className={linkClass}
                                     >
                                         Theater Dashboard
                                     </Link>
                                     <Link
                                         href={"/theater-registration"}
-                                        className="font-medium mt-3 border-b-2 pb-2 border-foreground-theme-color/20 w-full flex justify-end"
+                                        className={linkClass}
                                     >
                                         Theater Registration
                                     </Link>
@@ -239,7 +240,7 @@ const Header = () => {
                         }
                         <li
                             onClick={handleLogout}
-                            className="font-medium mt-3 border-b-2 pb-2 border-foreground-theme-color/20 w-full flex justify-end"
+                            className={linkClass}
                         >
                             Logout
                         </li>

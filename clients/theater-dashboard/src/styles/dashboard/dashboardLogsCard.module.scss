@@ -1,0 +1,51 @@
+@use '../variables' as variables;
+
+.container{
+    padding: 12px;
+    background-color: var(--foreground-color);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 200px;
+    @include variables.disableBorderColor(0.3);
+
+    .icon-container{
+        padding: 5px;
+        background-color: var(--success-background-color);
+        border-radius: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: min-content;
+        height: min-content;
+    }
+
+    .title{
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: var(--disable-color);
+    }
+
+    .data{
+        font-size: 1.9rem;
+    }
+}
+
+.icon-container{
+    .icon{
+        color: var(--success-foreground-color);
+    }
+}
+
+@media(max-width: 500px){
+
+    .container{
+        width: 100%;
+
+        .data{
+            font-size: 1.7rem;
+        }
+    }
+
+}

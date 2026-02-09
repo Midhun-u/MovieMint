@@ -1,6 +1,6 @@
-import Button from '../components/ui/Button'
-import { assets } from '../assets/assets'
-import style from '../styles/pages/pageNotFound.module.scss'
+import Button from '../ui/Button'
+import { assets } from '../../assets/assets'
+import style from '../../styles/pages/pageNotFound.module.scss'
 import { useNavigate } from 'react-router'
 
 const PageNotFound = () => {

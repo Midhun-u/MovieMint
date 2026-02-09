@@ -3,14 +3,14 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     loading: false,
     errorMessage: "",
-    admin: {
+    theaterOwner: {
         id: "",
         firstname: "",
         lastname: "",
         email: "",
         role: "",
         auth_type: "",
-        profile_mage: {
+        profile_image: {
             image_url: "",
             id: "",
             user_id: ""
@@ -26,7 +26,7 @@ const authSlice = createSlice({
         authRequest: (state) => {
 
             state.loading = true
-            state.admin = initialState.admin,
+            state.theaterOwner = initialState.theaterOwner,
             state.errorMessage = initialState.errorMessage
 
         },
@@ -34,7 +34,7 @@ const authSlice = createSlice({
         authSuccess: (state, action) => {
 
             state.loading = false
-            state.admin = action.payload.admin
+            state.theaterOwner = action.payload.theaterOwner
             state.errorMessage = initialState.errorMessage
 
         },
@@ -42,7 +42,7 @@ const authSlice = createSlice({
         authFailed: (state, action) => {
 
             state.loading = false
-            state.admin = initialState.admin
+            state.theaterOwner = initialState.theaterOwner
             state.errorMessage = action.payload.errorMessage
 
         }

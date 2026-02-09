@@ -1,5 +1,7 @@
 import { Route, Routes } from "react-router"
 import Dashboard from "./components/pages/Dashboard"
+import ProtectRoute from "./components/features/ProtectRoute"
+import PageNotFound from "./components/pages/PageNotFound"
 
 const Router = () => {
 
@@ -7,7 +9,15 @@ const Router = () => {
         <Routes>
             {/* Dashboard route  */}
             <Route path="/" element={
-                <Dashboard />
+                <ProtectRoute>
+                    <Dashboard />
+                </ProtectRoute>
+            } />
+
+            {/* Page not found */}
+            <Route path="*" element={
+                <PageNotFound
+                />
             } />
         </Routes>
     )

@@ -11,6 +11,7 @@ export const envVariables = {
     ADMIN_KEY: process.env.ADMIN_KEY as string,
     APP_CLIENT_URL: process.env.APP_CLIENT_URL as string,
     ADMIN_DASHBOARD_URL: process.env.ADMIN_DASHBOARD_URL as string,
+    THEATER_DASHBOARD_URL: process.env.THEATER_DASHBOARD_URL as string,
     JWT_SECRET: process.env.JWT_SECRET as string,
     UPLOAD_IMAGE_BASE_URL: process.env.UPLOAD_IMAGE_BASE_URL as string,
     NODEMAILER_GMAIL_APP_PASSWORD: process.env.NODEMAILER_GMAIL_APP_PASSWORD as string,
