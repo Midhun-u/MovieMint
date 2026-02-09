@@ -1,0 +1,55 @@
+:root {
+    --background-color: #f7f7f7;
+    --foreground-color: #FFFF;
+    --primary-color: #3CE062;
+    --primary-accent-color: #24bc47;
+    --foreground-theme-color: #000;
+    --success-background-color: #8EFFC8;
+    --success-foreground-color: #1B5E20;
+    --warn-background-color: #FEFFBE;
+    --warn-foreground-color: #768600;
+    --error-background-color: #FFDFDF;
+    --error-foreground-color: #FF0000;
+    --disable-color: #7F7F7F;
+    --dark-background-color: #161616;
+    --dark-foreground-color: #000000;
+    --dark-foreground-text-color: #FFFF;
+}
+
+.dark-theme {
+    --background-color: #161616;
+    --foreground-color: #000;
+    --foreground-theme-color: #fff;
+    --disable-color: #7a7a7a;
+    --success-background-color: #052e1a;
+    --success-foreground-color: #4ade80;
+}
+
+%maxWidthAndMaxHeight {
+    width: 100%;
+    height: 100%;
+}
+
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    font-family: "Space Grotesk", sans-serif;
+    font-optical-sizing: auto;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--foreground-theme-color);
+    @extend %maxWidthAndMaxHeight;
+}
+
+main {
+    width: 100%;
+    height: 100%;
+    @extend %maxWidthAndMaxHeight;
+}

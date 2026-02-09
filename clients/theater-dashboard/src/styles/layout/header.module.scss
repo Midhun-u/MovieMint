@@ -1,0 +1,138 @@
+$disable-color: #7F7F7F;
+
+.container{
+    width: 100%;
+    height: 60px;
+    padding-inline: 20px;
+    padding-block: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--foreground-color);
+
+    .logo{
+        width: 30px;
+        height: 30px;
+    }
+}
+
+.navs{
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    position: relative;
+  
+    .menu-icon{
+        display: none;
+        cursor: pointer;
+        z-index: 9;
+    }
+}
+
+.theme-icon-container{
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    cursor: pointer;
+    height: 100%;
+
+    &:hover{
+        background-color: var(--background-color);
+    }
+}
+
+.option-menu-section{
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    cursor: pointer;
+
+    .arrow-icon{
+        transition: rotate 200ms linear;
+    }
+
+    .rotate-arrow-icon{
+        rotate: 180deg;
+        transition: rotate 200ms linear;
+    }
+}
+
+.option-menu{
+    position: absolute;
+    padding: 13px;
+    top: 52px;
+    right: 0px;
+    border: 1px solid rgba($disable-color, 0.4);
+    border-radius: 7px;
+    background-color: var(--foreground-color);
+    width: min-content;
+    min-width: 150px;
+    z-index: 2;
+
+    .option-menu-link{
+        display: flex;
+        color: var(--foreground-theme-color);
+        gap: 10px;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        text-decoration: none;
+        font-weight: 500;
+    }
+}
+
+.sidebar{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: -100%;
+    background-color: var(--foreground-color);
+    z-index: 8;
+    transition: right 200ms linear;
+    padding-inline: 20px;
+    padding-block: 10px;
+    padding-top: 65px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 15px;
+
+    .sidebar-nav{
+        text-decoration: none;
+        color: var(--foreground-theme-color);
+        font-size: 1rem;
+        font-weight: 500;
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .sidebar-active-nav{
+        @extend .sidebar-nav;
+        color: var(--primary-color)
+    }
+}
+
+.active-sidebar{
+    @extend .sidebar;
+    left: 0px;
+    transition: left 200ms linear;
+}
+
+@media(max-width: 800px){
+
+    .option-menu-section{
+        display: none;
+    }
+
+    .navs{
+        .menu-icon{
+            display: block;
+        }
+    }
+
+}

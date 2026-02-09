@@ -1,0 +1,11 @@
+.container {
+    background-color: var(--background-color);
+    padding: 5px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 33px;
+    height: 33px;
+    border: 1px solid rgb(var(--disable-color), 0.2);
+}

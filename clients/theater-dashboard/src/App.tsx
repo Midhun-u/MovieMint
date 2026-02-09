@@ -1,6 +1,18 @@
+import style from './App.module.scss'
+import Header from './components/layout/Header'
+import Router from './Router'
+
 const App = () => {
+
   return (
-    <div>App</div>
+
+    <>
+      <Header
+      />
+      <Router
+      />
+    </>
+
   )
 }
 

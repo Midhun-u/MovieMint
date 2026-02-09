@@ -1,7 +1,8 @@
 import style from '../../styles/ui/movieCard.module.scss'
-import poster from '../../assets/poster.jpg'
 
 const MovieCard = () => {
+
+    const poster = "https://zwexilnvicwoyiprjnuz.supabase.co/storage/v1/object/public/moviePosters/6981ed0904622cf91103482b-20fec69e-4656-4d0b-b850-b1bbaacb5ca5.jpg"
 
     return (
 
