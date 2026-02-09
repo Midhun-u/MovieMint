@@ -31,8 +31,8 @@ export const registerTheaterApi = handleError(async (data: Theater, authToken: s
 
 })
 
-// Api for deleting theater
-export const deleteTheaterApi = handleError(async (theaterId: string, authToken: string) => {
+// Api for deleting theater registration
+export const deleteTheaterRegistrationApi = handleError(async (theaterId: string, authToken: string) => {
 
     const result = await fetchInstance(
         THEATER_BASE_URL,

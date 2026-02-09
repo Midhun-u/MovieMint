@@ -19,3 +19,11 @@ export const uploadTheaterImageApi = handleError(async (theaterId: string, file:
     return result
 
 })
+
+// Api for deleting theater image
+export const deleteTheaterImageApi = handleError(async (theaterId: string, authToken: string) => {
+
+    const result = await fetchInstance(MEDIA_BASE_URL, `/theater/delete-image/${theaterId}`, "DELETE", {}, "json", authToken)
+    return result
+
+})

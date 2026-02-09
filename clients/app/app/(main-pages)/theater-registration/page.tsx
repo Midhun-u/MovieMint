@@ -26,7 +26,6 @@ const TheaterRegistrationPage = () => {
     useEffect(() => {
         handleGetTheater()
     }, [])
-    console.log(theater)
 
     return (
         <Authentication
@@ -38,6 +37,7 @@ const TheaterRegistrationPage = () => {
                         ?
                         <TheaterRegistrationDetails
                             theaterDetails={theater}
+                            setTheater={setTheater}
                         />
                         :
                         <TheaterRegistrationForm

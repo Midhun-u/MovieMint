@@ -172,7 +172,7 @@ const Header = () => {
                                     className={`${showOptionMenu ? "rotate-180" : ""} transition-[rotate] duration-200`}
                                 />
                                 <Activity mode={showOptionMenu ? "visible" : "hidden"}>
-                                    <DashboardNavigationUI 
+                                    <DashboardNavigationUI
                                         authToken={authToken}
                                         handleLogout={handleLogout}
                                         theaterDashboardNavLink={theaterDashboardNavLink}
@@ -193,12 +193,18 @@ const Header = () => {
 
                     {/* Sidebar */}
                     <aside className={`absolute text-foreground-theme-color pt-17 px-3 sm:px-5 ${showSidebar ? "left-0" : "-left-500"} transition-all duration-200 flex flex-col sm:hidden w-full h-full  overflow-auto top-0 z-40 bg-foreground-color`}>
-                        <Link
-                            href={"/sign"}
-                            className="font-medium border-b-2 pb-2 border-foreground-theme-color/20 w-full flex justify-end"
-                        >
-                            Sign In
-                        </Link>
+                        {
+                            user
+                                ?
+                                null
+                                :
+                                <Link
+                                    href={"/sign"}
+                                    className="font-medium border-b-2 pb-2 border-foreground-theme-color/20 w-full flex justify-end"
+                                >
+                                    Sign In
+                                </Link>
+                        }
                         {
                             user.role === "ADMIN"
                                 ?

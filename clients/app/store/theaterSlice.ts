@@ -18,7 +18,7 @@ const theaterSlice = createSlice({
         },
         theaterSuccess: (state, action) => {
             state.loading = false
-            state.theater = action.payload.theater
+            state.theater = action.payload.theater || initialState.theater
             state.errorMessage = ""
         },
         theaterFailed: (state, action) => {

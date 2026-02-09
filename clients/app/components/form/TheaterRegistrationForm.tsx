@@ -23,7 +23,7 @@ import { Input } from "../ui/input"
 import { ToastProvider } from "../context/ToastMessage"
 import Image from "next/image"
 import { convertStringToNumber } from "@/utils/convertStringToNumber"
-import { deleteTheaterApi, registerTheaterApi } from "@/api/theater"
+import { deleteTheaterRegistrationApi, registerTheaterApi } from "@/api/theater"
 import { uploadTheaterImageApi } from "@/api/media"
 import Spinner from "../ui/Spinner"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
@@ -101,7 +101,7 @@ const TheaterRegistrationForm = () => {
             return
         }
 
-        if (formats.length <= 2) {
+        if (formats.length < 2) {
             return toastContext?.triggerToastMessage("Add atleast two supported formats", "ERROR")
         }
 
@@ -161,7 +161,7 @@ const TheaterRegistrationForm = () => {
 
             } else {
                 // Deleting theater registration because of the failure in uploading theater image
-                await deleteTheaterApi(theaterResult.theater.id, authToken)
+                await deleteTheaterRegistrationApi(theaterResult.theater.id, authToken)
 
                 toastContext?.triggerToastMessage("Theater couldn't registered", "ERROR")
                 dispatch(theaterFailed({ errorMessage: imageResult.error }))
@@ -233,7 +233,7 @@ const TheaterRegistrationForm = () => {
                                                 width={50}
                                                 height={50}
                                                 alt="Theater logo"
-                                                className="w-full h-auto rounded-lg"
+                                                className="w-full h-auto rounded-lg aspect-square"
                                             />
                                             :
                                             <>

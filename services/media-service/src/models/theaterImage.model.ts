@@ -36,4 +36,18 @@ export const TheaterImageModel = {
 
     },
 
+    deleteImageById: async (id: string) => {
+
+        const deletedCount = await TheaterImage.destroy({
+            where: {
+                id: {
+                    [Op.eq]: id
+                }
+            }
+        })
+
+        return deletedCount
+
+    }
+
 }

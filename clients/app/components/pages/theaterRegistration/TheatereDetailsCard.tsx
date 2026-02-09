@@ -6,7 +6,8 @@ import {
     LayoutPanelTop as LayoutIcon,
     TableCellsMerge as SetsIcon,
     Grid2X2 as RowsIcon,
-    Armchair as SeatIcon
+    Armchair as SeatIcon,
+    BanknoteArrowDownIcon as CancellationIcon
 } from 'lucide-react'
 import { convertIsoDateToNormalFormat } from "@/utils/convertIsoDateToNoramlFormat"
 
@@ -16,13 +17,13 @@ interface TheaterDetailsCardProps {
 
 const TheaterDetailsCard = ({ theaterDetails }: TheaterDetailsCardProps) => {
 
-    const detailsContainerClass = "flex items-center gap-[7px]"
+    const detailsContainerClass = "flex items-center gap-[8px]"
     const iconClass = "stroke-foreground-theme-color/50 shrink-0"
     const textClass = "text-xs font-medium text-foreground-theme-color/60"
 
     return (
         <div
-            className="relative flex flex-col gap-3 w-112.5 p-7 bg-foreground-color border border-foreground-theme-color/20 rounded-md"
+            className="relative flex flex-col gap-3 w-full sm:w-112.5 p-7 bg-foreground-color border border-foreground-theme-color/20 rounded-md"
         >
             {/* Status section */}
             <p
@@ -48,7 +49,7 @@ const TheaterDetailsCard = ({ theaterDetails }: TheaterDetailsCardProps) => {
                     alt="Theater logo"
                     width={85}
                     height={85}
-                    className="rounded-md"
+                    className="rounded-md aspect-square"
                 />
             </div>
             {/* Details section */}
@@ -104,6 +105,26 @@ const TheaterDetailsCard = ({ theaterDetails }: TheaterDetailsCardProps) => {
                         className={iconClass}
                     />
                     <p className={textClass}>{theaterDetails.seats_number} Seats</p>
+                </div>
+                {/* Cancellation */}
+                <div className={detailsContainerClass}>
+                    <CancellationIcon
+                        size={21}
+                        className={iconClass}
+                    />
+                    <p className={textClass}>
+                        {
+                            theaterDetails.allow_cancellation
+                            ?
+                            <>
+                                Allow Cancellation
+                            </>
+                            :
+                            <>
+                                Not Allow Cancellation
+                            </>
+                        }
+                    </p>
                 </div>
             </div>
         </div>
