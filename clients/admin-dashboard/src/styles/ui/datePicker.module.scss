@@ -16,7 +16,7 @@
 
 .container {
     text-align: center;
-    width: 450px;
+    width: 100%;
     background-color: var(--foreground-color);
     border-radius: 5px;
     @include variables.disableBorderColor(0.3);
@@ -142,7 +142,6 @@
 @media(max-width: 600px){
 
     .container{
-        width: 100%;
         padding: 20px;
 
         .days-container{

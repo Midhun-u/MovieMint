@@ -139,6 +139,12 @@ const Header = () => {
 
                     ))
                 }
+                <NavLink
+                    className={style['sidebar-nav']}
+                    to={envVariables.APP_URL}
+                >
+                    Home
+                </NavLink>
             </aside>
         </header>
     )

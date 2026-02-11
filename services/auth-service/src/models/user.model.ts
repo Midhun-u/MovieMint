@@ -41,9 +41,13 @@ export const UserModel = {
 
     },
 
-    getUserById: async (userId: string) => {
+    getUserById: async (userId: string, attributes: Array<string> = []) => {
 
-        const user = await User.findByPk(userId)
+        const attributesCondition = attributes.length? {attributes: attributes}: {}
+
+        const user = await User.findByPk(userId, {
+            ...attributesCondition
+        })
         return user?.dataValues
 
     },

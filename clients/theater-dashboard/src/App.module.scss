@@ -1,6 +1,6 @@
 .container{
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: max-content 1fr;
     gap: 10px;
     width: 100%;
     height: calc(100dvh - 60px);
@@ -12,7 +12,7 @@
     width: 100%;
 }
 
-@media(max-width: 800px){
+@media(max-width: 900px){
 
     .container{
         display: flex;

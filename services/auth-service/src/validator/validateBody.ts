@@ -26,7 +26,7 @@ export const validateBody = (type: FormType, body: object): { success: boolean, 
 
             const obj = zod.object({
                 firstname: zod.string().min(3).max(15).nonempty(),
-                lastname: zod.string().min(1).max(10).nonempty(),
+                lastname: zod.string().min(0).max(10).optional(),
                 email: zod.string().regex(emailRegex).nonempty(),
                 profilePic: zod.string(),
                 role: zod.string().nonempty()

@@ -14,7 +14,7 @@ const SubmitButton = ({loading, acceptTerms, formType}: SubmitButtonProps) => {
 
         <Button
             type="submit"
-            className="w-full bg-primary-color active:bg-primary-accent-color hover:bg-primary-color"
+            className="w-full bg-primary-color active:bg-primary-accent-color hover:bg-primary-accent-color"
             disabled={!acceptTerms && formType === "SIGN" || loading}
         >
             {

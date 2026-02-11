@@ -4,7 +4,7 @@ export const fetchInstance = async (
     path: string,
     method: "POST" | "GET" | "PUT" | "PATCH",
     body: object | null,
-    authToken: string | null
+    authToken?: string | null
 ) => {
 
     try {

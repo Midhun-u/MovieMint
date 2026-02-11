@@ -32,6 +32,10 @@
 .release-date-container {
     @extend %add-movie-container-style;
     position: relative;
+
+    .date-picker{
+        width: 450px;
+    }
 }
 
 .duration-container {
@@ -125,6 +129,12 @@
 
     .container{
         .form-field{
+            width: 100%;
+        }
+    }
+
+    .release-date-container{
+        .date-picker{
             width: 100%;
         }
     }

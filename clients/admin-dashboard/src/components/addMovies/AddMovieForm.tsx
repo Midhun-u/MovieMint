@@ -7,8 +7,8 @@ import {
     TextAlignStart as SynopsisIcon,
     LanguagesIcon as LanguageIcon,
     Grid3x2 as CertificateIcon,
-    Paperclip as URLIcon,
-    TimerIcon,
+    Link2 as URLIcon,
+    Clock as TimerIcon,
     Plus as AddIcon,
     EditIcon
 } from 'lucide-react'
@@ -90,7 +90,7 @@ const AddMovieForm = () => {
     const [movieType, setMovieType] = useState<"LIVE_ACTION" | "ANIMATED">("LIVE_ACTION")
     const [movieTrailerUrl, setMovieTrailerUrl] = useState<string>('')
     const [crews, setCrews] = useState<Crews>([])
-    const [formats, setFormats] = useState<Array<string>>([]) 
+    const [formats, setFormats] = useState<Array<string>>([])
     const [showDatePicker, setShowDatePicker] = useState<boolean>(false)
     const [showCrewScreen, setShowCrewScreen] = useState<boolean>(false)
     const [selectedCrew, setSelectedCrew] = useState<{
@@ -101,7 +101,7 @@ const AddMovieForm = () => {
     } | null>(null)
     const { register, handleSubmit, formState: { errors: formErrors } } = useForm<Inputs>()
     const toastContext = useContext(ToastProvider)
-    const {loading} = useAppSelector(state => state.movie)
+    const { loading } = useAppSelector(state => state.movie)
     const dispatch = useAppDispatch()
 
     // Function for editing crew details
@@ -238,17 +238,17 @@ const AddMovieForm = () => {
                 await deleteMovieApi(movieResult.movie._id)
 
                 toastContext?.triggerToastMessage("Movie couldn't upload", "ERROR")
-                dispatch(movieFailed({errorMessage: "Images are not uploaded"}))
-                
-            }else{
+                dispatch(movieFailed({ errorMessage: "Images are not uploaded" }))
+
+            } else {
 
                 toastContext?.triggerToastMessage("Movie is uploaded", "SUCCESS")
-                dispatch(movieSuccess({movie: movieResult.movie}))
+                dispatch(movieSuccess({ movie: movieResult.movie }))
             }
 
         } else {
             toastContext?.triggerToastMessage("Movie couldn't upload", "ERROR")
-            dispatch(movieFailed({errorMessage: movieResult.errorMessage}))
+            dispatch(movieFailed({ errorMessage: movieResult.errorMessage }))
             return
         }
 
@@ -270,7 +270,7 @@ const AddMovieForm = () => {
                     minLength={3}
                     maxLength={50}
                     aria-invalid={formErrors.title ? "true" : "false"}
-                    
+
                 />
             </div>
             {/* Movie subheading */}
@@ -369,15 +369,18 @@ const AddMovieForm = () => {
                     minute={releaseDate.minute}
                 />
                 <Activity mode={showDatePicker ? "visible" : "hidden"}>
-                    <DatePicker
-                        showTimePicker
-                        clickOnDay={(dateDetails) =>
-                            setReleaseDate({ ...releaseDate, day: dateDetails.day, month: dateDetails.month, year: dateDetails.year })
-                        }
-                        clickOnTime={(timeDetails) =>
-                            setReleaseDate({ ...releaseDate, hour: timeDetails.hour, minute: timeDetails.minute })
-                        }
-                    />
+                    <div className={style['date-picker']}>
+                        <DatePicker
+                            showTimePicker
+                            clickOnDay={(dateDetails) =>
+                                setReleaseDate({ ...releaseDate, day: dateDetails.day, month: dateDetails.month, year: dateDetails.year })
+                            }
+                            clickOnTime={(timeDetails) =>
+                                setReleaseDate({ ...releaseDate, hour: timeDetails.hour, minute: timeDetails.minute })
+                            }
+                            selectedDate={new Date(releaseDate.year, releaseDate.month, releaseDate.day)}
+                        />
+                    </div>
                 </Activity>
             </div>
             {/* Movie trailer */}

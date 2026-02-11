@@ -14,7 +14,7 @@ export const uploadUserImageController = handleError(async (request: Request, re
     const { userId, imageUrl } = request.body as UploadImageBody || {}
     const file = request.file
 
-    if (!userId || !file) {
+    if (!userId) {
 
         if (file) {
 
@@ -27,7 +27,7 @@ export const uploadUserImageController = handleError(async (request: Request, re
     }
 
     if (!file && !imageUrl) {
-        return sendResponse(response, false, 400, "File is required")
+        return sendResponse(response, false, 400, "File or image url is required")
     }
 
     // Checking if user image is already exists
@@ -35,7 +35,9 @@ export const uploadUserImageController = handleError(async (request: Request, re
     if (image) {
 
         // Deleting file from disk
-        deleteFileFromDisk(file.path)
+        if(file){
+            deleteFileFromDisk(file.path)
+        }
 
         return sendResponse(response, false, 409, "User image is already exist")
     }

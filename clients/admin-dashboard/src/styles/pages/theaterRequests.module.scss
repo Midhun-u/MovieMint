@@ -1,23 +1,19 @@
-.container{
+.container {
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
-    width: 100%;
 
-    &::-webkit-scrollbar{
-        display: none;
-    }
-}
-
-.page-details{
-    .heading{
+    .title {
         font-size: 1rem;
         font-weight: 600;
     }
 
-    .about{
+    .about {
         font-size: 0.9rem;
         font-weight: 400;
         color: var(--disable-color);
+    }
+
+    .list-container{
+        margin-top: 30px;
     }
 }

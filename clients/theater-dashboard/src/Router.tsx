@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router"
 import Dashboard from "./components/pages/Dashboard"
 import ProtectRoute from "./components/features/ProtectRoute"
 import PageNotFound from "./components/pages/PageNotFound"
+import CheckTheaterAvailability from "./components/features/CheckTheaterAvailability"
 
 const Router = () => {
 
@@ -10,7 +11,9 @@ const Router = () => {
             {/* Dashboard route  */}
             <Route path="/" element={
                 <ProtectRoute>
-                    <Dashboard />
+                    <CheckTheaterAvailability>
+                        <Dashboard />
+                    </CheckTheaterAvailability>
                 </ProtectRoute>
             } />
 

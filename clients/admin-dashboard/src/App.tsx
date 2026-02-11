@@ -11,7 +11,9 @@ const App = () => {
       <Header />
       <section className={style.container}>
         <Sidebar />
-        <Router />
+        <div className={style.pages}>
+          <Router />
+        </div>
       </section>
     </>
 

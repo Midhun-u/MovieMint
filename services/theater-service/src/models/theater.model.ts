@@ -5,7 +5,7 @@ import { TheaterBody } from "../types/theaterBody";
 // Theater model
 export const TheaterModel = {
 
-    addTheater: async (data: TheaterBody & { ownerId: string } & {status: "PENDING" | "AVAILABLE"}) => {
+    addTheater: async (data: TheaterBody & { ownerId: string } & { status: "PENDING" | "AVAILABLE" }) => {
 
         const newTheater = await Theater.create({
             owner_id: data.ownerId,
@@ -59,4 +59,26 @@ export const TheaterModel = {
 
     },
 
+    getTheaterRequests: async (page: number, limit: number, attributes: Array<string> = [], date?: string) => {
+
+        const attributesCondition = attributes.length ? { attributes: attributes } : {}
+        const createdAtCondition = date? {createdAt: {[Op.eq]: date}}: {}
+
+        const { rows, count } = await Theater.findAndCountAll({
+            where: {
+                status: {
+                    [Op.eq]: "PENDING"
+                },
+                ...createdAtCondition
+            },
+            ...attributesCondition,
+            offset: (page - 1) * limit,
+            limit: limit,
+            order: [["createdAt", "DESC"]],
+            raw: true
+        })
+
+        return { rows, count }
+
+    }
 }

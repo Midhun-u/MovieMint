@@ -4,7 +4,7 @@
     border: 1.5px solid rgb(from var(--disable-color) r g b / $opacity);
 }
 
-@mixin button-basic-style($color, $background-color) {
+@mixin buttonBasicStyle($color, $background-color) {
     @extend %container-center-style;
     cursor: pointer;
     border: none;
@@ -49,7 +49,7 @@
 }
 
 %primary-button-style {
-    @include button-basic-style(var(--dark-foreground-color), var(--primary-color));
+    @include buttonBasicStyle(var(--dark-foreground-color), var(--primary-color));
 
     &:hover,
     &:active {

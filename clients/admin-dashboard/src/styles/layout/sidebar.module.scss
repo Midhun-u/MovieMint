@@ -17,7 +17,7 @@
         font-weight: 500;
         padding-inline: 20px;
         padding-right: 40px;
-        padding-block: 10px
+        padding-block: 10px;
     }
 
     .active-nav-link {
@@ -34,13 +34,17 @@
             background-color: var(--primary-color);
         }
     }
+
+    .icon{
+        flex-shrink: 0;
+    }
 }
 
 .container::-webkit-scrollbar {
     display: none;
 }
 
-@media(max-width: 800px){
+@media(max-width: 900px){
 
     .container{
         display: none;

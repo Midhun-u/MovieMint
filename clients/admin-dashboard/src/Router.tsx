@@ -3,6 +3,7 @@ import ProtectRoute from "./components/features/ProtectRoute"
 import Dashboard from "./components/pages/Dashboard"
 import AddMovies from "./components/pages/AddMovies"
 import PageNotFound from "./components/pages/PageNotFound"
+import TheaterRequests from "./components/pages/TheaterRequests"
 
 const Router = () => {
 
@@ -25,6 +26,17 @@ const Router = () => {
                 element={
                     <ProtectRoute>
                         <AddMovies />
+                    </ProtectRoute>
+                }
+            />
+
+            {/* Theater Requests route */}
+            <Route
+                path="/admin/theater-requests"
+                element={
+                    <ProtectRoute>
+                        <TheaterRequests
+                        />
                     </ProtectRoute>
                 }
             />

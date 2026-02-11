@@ -14,7 +14,7 @@ export const signApi = handleError(async (formInputData: SignFormInputData) => {
 
     const formInputDataObject = zod.object({
         firstname: zod.string().nonempty().min(3).max(15),
-        lastname: zod.string().nonempty().min(1).max(10),
+        lastname: zod.string().min(1).max(10),
         email: zod.string().nonempty().regex(emailRegex),
         password: zod.string().nonempty().min(6).max(50),
         role: zod.string(),
@@ -27,7 +27,7 @@ export const signApi = handleError(async (formInputData: SignFormInputData) => {
 
         const data = await fetchInstance(AUTH_BASE_URL, "/sign", "POST", {
             firstname: fields.firstname.trim(),
-            lastname: fields.lastname.trim(),
+            lastname: fields.lastname,
             email: fields.email.trim(),
             password: fields.password.trim(),
             role: fields.role,
@@ -48,7 +48,7 @@ export const googleSignApi = handleError(async (signData: GoogleSignData) => {
 
     const signDataObj = zod.object({
         firstname: zod.string().trim().nonempty().min(3).max(15),
-        lastname: zod.string().trim().nonempty().min(1).max(10),
+        lastname: zod.string().min(0).max(10).optional(),
         email: zod.string().trim().nonempty().regex(emailRegex),
         profilePic: zod.string(),
         role: zod.string(),
@@ -59,7 +59,7 @@ export const googleSignApi = handleError(async (signData: GoogleSignData) => {
 
     const data = await fetchInstance(AUTH_BASE_URL, "/google-sign", "POST", {
         firstname: fields.firstname.trim(),
-        lastname: fields.lastname.trim(),
+        lastname: fields.lastname? fields.lastname.trim(): "",
         email: fields.email.trim(),
         profilePic: fields.profilePic,
         role: fields.role

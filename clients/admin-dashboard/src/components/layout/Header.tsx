@@ -116,14 +116,14 @@ const Header = () => {
                 </div>
             </nav>
             {/* Side bar */}
-            <aside className={showSidebar? style['active-sidebar']: style.sidebar}>
+            <aside className={showSidebar ? style['active-sidebar'] : style.sidebar}>
                 {
                     sidebarNavs.map((sidebarnav, index) => (
 
                         <NavLink
                             to={sidebarnav.route}
                             key={index}
-                            className={isLinkActive(pathname, sidebarnav.route)? style['sidebar-active-nav']: style['sidebar-nav']}
+                            className={isLinkActive(pathname, sidebarnav.route) ? style['sidebar-active-nav'] : style['sidebar-nav']}
                             onClick={() => setShowSidebar(false)}
                         >
                             {sidebarnav.title}
@@ -131,6 +131,12 @@ const Header = () => {
 
                     ))
                 }
+                <NavLink
+                    className={style['sidebar-nav']}
+                    to={envVariables.APP_URL}
+                >
+                    Home
+                </NavLink>
             </aside>
         </header>
 

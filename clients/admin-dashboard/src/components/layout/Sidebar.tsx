@@ -21,6 +21,7 @@ const Sidebar = () => {
                         <sidebarNav.Icon
                             size={23}
                             strokeWidth={1.6}
+                            className={style['icon']}
                         />
                         <span>{sidebarNav.title}</span>
                     </NavLink>

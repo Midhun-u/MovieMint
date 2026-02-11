@@ -8,6 +8,7 @@ import { verifyOtpController } from "../controllers/verifyOtp.controller.js";
 import { resetPasswordController } from "../controllers/resetPassword.controller.js";
 import { getAuthProfileController } from "../controllers/getAuthProfile.controller.js";
 import { authenticationHook } from "../hooks/auth.hook.js";
+import { getUserController } from "../controllers/getUser.controller.js";
 
 // Auth routes
 export const authRoutes = (fastify: FastifyInstance) => {
@@ -35,5 +36,8 @@ export const authRoutes = (fastify: FastifyInstance) => {
 
     // Route for getting auth profile
     fastify.get("/auth-profile", {onRequest: authenticationHook} ,getAuthProfileController)
+
+    // Route for getting a specific user
+    fastify.get("/get-user/:userId", getUserController)
 
 }

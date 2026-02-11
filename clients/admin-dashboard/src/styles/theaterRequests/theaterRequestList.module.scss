@@ -1,0 +1,189 @@
+@use '../variables' as variables;
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .date-picker-container {
+        width: 100%;
+        position: relative;
+        z-index: 7;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .date-picker-button {
+        @extend %container-center-style;
+        width: max-content;
+        padding-block: 7px;
+        padding-inline: 15px;
+        gap: 7px;
+        background-color: var(--foreground-color);
+        @include variables.disableBorderColor(0.3);
+        color: var(--foreground-theme-color);
+        cursor: pointer;
+        border-radius: 20px;
+
+        span {
+            font-weight: 500;
+        }
+    }
+
+    .date-picker {
+        position: absolute;
+        top: 45px;
+        left: 0px;
+        width: 100%;
+        height: 50px;
+        width: 450px;
+    }
+
+    .loading-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 5px;
+    }
+
+    .date{
+        @include variables.disableBorderColor(0.3);
+        @extend %container-center-style;
+        padding-inline: 20px;
+        border-radius: 15px;
+        background-color: var(--foreground-color);
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: var(--disable-color);
+        cursor: pointer;
+        gap: 10px;
+    }
+}
+
+.list {
+    width: 700px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+
+    .theater-details-container {
+        width: 100%;
+        padding-block: 20px;
+        padding-inline: 20px;
+        background-color: var(--foreground-color);
+        @include variables.disableBorderColor(0.3);
+        border-radius: 5px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+}
+
+.theater-details-container {
+    .status {
+        position: absolute;
+        top: 7px;
+        right: 7px;
+        font-size: 0.6rem;
+        font-weight: 500;
+        background-color: var(--warn-background-color);
+        color: var(--warn-foreground-color);
+        padding-block: 5px;
+        padding-inline: 10px;
+        border-radius: 7px;
+    }
+
+    .theater-image {
+        width: 70px;
+        aspect-ratio: 1 / 1;
+        border-radius: 10px;
+        margin-top: 15px;
+    }
+
+    .theater-details {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+}
+
+.theater-details-container {
+    .theater-details {
+        h1 {
+            font-size: 0.9rem;
+            max-height: 23px;
+            overflow: hidden;
+        }
+
+        .details {
+            margin-top: 7px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+
+            p {
+                font-size: 0.8rem;
+                max-height: 36px;
+                color: var(--disable-color);
+                overflow: hidden;
+            }
+        }
+
+        .icon {
+            flex-shrink: 0;
+            color: var(--disable-color);
+        }
+
+        .button-container {
+            display: flex;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .button {
+            width: 100%;
+            padding-block: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            @include variables.disableBorderColor(0.3);
+            background-color: var(--foreground-color);
+            border-radius: 5px;
+            cursor: pointer;
+
+            &:last-child {
+                background-color: var(--primary-color);
+                border: none;
+            }
+        }
+    }
+}
+
+@media(max-width: 1050px) {
+    .list {
+        width: 100%;
+    }
+}
+
+@media(max-width: 700px) {
+    .list {
+        grid-template-columns: 1fr;
+        justify-content: center;
+    }
+}
+
+@media(max-width: 500px) {
+
+    .container {
+        .date-picker {
+            width: 100%;
+        }
+    }
+
+    .theater-details {
+        .button-container {
+            flex-direction: column;
+        }
+    }
+
+}

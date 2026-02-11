@@ -41,7 +41,7 @@ export const googleSignController = handleError(async (request: FastifyRequest, 
     })
 
     if(newUser){
-
+        
         // Uploading user image
         const data = await uploadUserProfileImage({ imageUrl: profilePic, userId: newUser.id})
 

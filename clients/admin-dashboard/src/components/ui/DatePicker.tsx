@@ -8,16 +8,17 @@ import {
 interface DatePickerProps {
     showTimePicker: boolean
     clickOnDay: (dateDetails: { day: number, month: number, year: number }) => void
-    clickOnTime: (timeDetails: { hour: number, minute: number }) => void
+    clickOnTime?: (timeDetails: { hour: number, minute: number }) => void
+    selectedDate: Date
 }
 
-const DatePicker = ({ showTimePicker, clickOnDay, clickOnTime }: DatePickerProps) => {
+const DatePicker = ({ showTimePicker, clickOnDay, clickOnTime, selectedDate }: DatePickerProps) => {
 
     const weeks = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]
     const [days, setDays] = useState<Array<null | number>>([])
-    const [month, setMonth] = useState<number>(new Date().getMonth())
-    const [year, setYear] = useState<number>(new Date().getFullYear())
-    const [day, setDay] = useState<number>(new Date().getDate())
+    const [month, setMonth] = useState<number>(new Date(selectedDate).getMonth())
+    const [year, setYear] = useState<number>(new Date(selectedDate).getFullYear())
+    const [day, setDay] = useState<number>(new Date(selectedDate).getDate())
     const [times, setTimes] = useState<Array<{
         hour: number,
         minute: number
@@ -98,7 +99,10 @@ const DatePicker = ({ showTimePicker, clickOnDay, clickOnTime }: DatePickerProps
     const handleClickOnTime = (time: { hour: number, minute: number }) => {
 
         setSelectedTime({ hour: time.hour, minute: time.minute })
-        clickOnTime(time)
+
+        if (clickOnTime) {
+            clickOnTime(time)
+        }
 
     }
 
@@ -141,7 +145,9 @@ const DatePicker = ({ showTimePicker, clickOnDay, clickOnTime }: DatePickerProps
         setSelectedTime(availableTimes[1])
 
         // Calling callback function which runs when clicked on time for the first render
-        clickOnTime(availableTimes[1])
+        if(clickOnTime){
+            clickOnTime(availableTimes[1])
+        }
 
     }
 
@@ -217,7 +223,7 @@ const DatePicker = ({ showTimePicker, clickOnDay, clickOnTime }: DatePickerProps
 
                                 <span
                                     key={index}
-                                    className={selectedTime?.hour === time.hour && selectedTime?.minute === time.minute? style['selected-time']: style.time}
+                                    className={selectedTime?.hour === time.hour && selectedTime?.minute === time.minute ? style['selected-time'] : style.time}
                                     onClick={() => handleClickOnTime(time)}
                                 >
                                     {

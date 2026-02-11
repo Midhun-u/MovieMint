@@ -3,6 +3,7 @@ import { addTheatereRegisterController } from "../controllers/addTheaterRegistra
 import { authMiddleware } from "../middlewares/auth";
 import { deleteTheaterRegistrationController } from "../controllers/deleteTheaterRegistration.controller";
 import { getTheaterRegistrationController } from "../controllers/getTheaterRegistration.controller";
+import { getTheaterRequestsController } from "../controllers/getTheaterRequests.controller";
 
 // Theater router
 export const theaterRouter = new Hono()
@@ -18,3 +19,6 @@ theaterRouter.delete("/delete-theater-registration/:theaterId", deleteTheaterReg
 
 // Route for getting theater registration
 theaterRouter.get("/get-theater-registration", getTheaterRegistrationController)
+
+// Route for getting all theater request
+theaterRouter.get("/get-theater-requests", getTheaterRequestsController)

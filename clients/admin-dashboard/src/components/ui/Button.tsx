@@ -2,7 +2,7 @@ import {forwardRef, type ButtonHTMLAttributes, type ReactNode } from "react"
 import Spinner from "./Spinner"
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLElement> {
-    title: string,
+    title?: string,
     className?: string,
     children?: ReactNode,
     loading?: boolean,
