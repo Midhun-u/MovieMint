@@ -5,6 +5,7 @@ import {
     Trash as DeleteIcon,
     Plus as AddIcon
 } from 'lucide-react'
+import PageDetails from '../ui/PageDetails'
 
 const Dashboard = () => {
 
@@ -13,14 +14,20 @@ const Dashboard = () => {
         <div className={style.container}>
             {/* Performance overview or dashboard logs */}
             <div className={style['dashboard-logs']}>
-                <h1 className={style.heading}>Performance Overview</h1>
-                <p className={style.about}>View the overview of bookings, upcoming movies and more .</p>
+                <PageDetails
+                    title='Performance Overview'
+                    about='View the overview of bookings, upcoming movies and more .'
+                    backButton={false}
+                />
                 <DashboardLogs />
             </div>
             {/* Movie banner section */}
             <div className={style['movie-banner-section']}>
-                <h1 className={style.heading}>Banner Movies</h1>
-                <p className={style.about}>View, edit and manage banner movies</p>
+                <PageDetails
+                    title='Banner Movies'
+                    about='View, edit and manage banner movies'
+                    backButton={false}
+                />
                 <div className={style['movies-card-container']}>
                     <div className={style['movie-card']}>
                         <MovieCard

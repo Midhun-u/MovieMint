@@ -8,13 +8,9 @@ import { getTheaterImage } from "../services/getTheaterImage";
 // Controller for getting all theater request
 export const getTheaterRequestsController = sendErrorResponse(async (context: Context) => {
 
-    const { page = 1, limit = 10, date = "" } = context.req.query()
+    const { page = 1, limit = 10} = context.req.query()
     const pageNumber = convertStringToNumber(page)
     const limitNumber = convertStringToNumber(limit)
-    const dateDetails = new Date(date)
-    console.log(dateDetails.getDay())
-    console.log(dateDetails.getFullYear())
-    console.log(dateDetails.getMonth())
 
     const { rows: theaters, count: totalCount } = await TheaterModel.getTheaterRequests(
         pageNumber,
@@ -31,7 +27,6 @@ export const getTheaterRequestsController = sendErrorResponse(async (context: Co
             "owner_id",
             "createdAt"
         ],
-        date
     )
 
     const theatersDetails = await Promise.all(theaters.map(async (theater: any) => {

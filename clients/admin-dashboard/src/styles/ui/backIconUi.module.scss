@@ -1,0 +1,15 @@
+@use '../variables' as variables;
+
+.container{
+    align-self: flex-start;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    @extend %container-center-style;
+    cursor: pointer;
+    color: var(--disable-color);
+
+    &:hover{
+        background-color: var(--foreground-color);
+    }
+}

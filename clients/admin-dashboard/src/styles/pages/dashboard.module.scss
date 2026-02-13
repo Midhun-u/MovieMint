@@ -3,17 +3,6 @@
 .container {
     width: 100%;
     position: relative;
-
-    .heading {
-        font-size: 1rem;
-        font-weight: 600;
-    }
-
-    .about {
-        font-size: 0.9rem;
-        font-weight: 400;
-        color: var(--disable-color);
-    }
 }
 
 .container::-webkit-scrollbar {

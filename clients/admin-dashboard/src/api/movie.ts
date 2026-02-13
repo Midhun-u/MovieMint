@@ -64,3 +64,11 @@ export const deleteMovieApi = handleError(async (movieId: string) => {
     return result
 
 })
+
+// Api for getting movies
+export const getMoviesApi = handleError(async () => {
+
+    const result = (await movieAxiosInstance.get("/get-movies")).data
+    return result
+
+})

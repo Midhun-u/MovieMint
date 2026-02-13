@@ -1,15 +1,18 @@
 import style from '../../styles/pages/theaterRequests.module.scss'
 import TheaterRequestList from '../theaterRequests/TheaterRequestList'
+import PageDetails from '../ui/PageDetails'
 
 const TheaterRequests = () => {
 
     return (
         <div className={style.container}>
             {/* Page Details */}
-            <div className={style['page-details']}>
-                <h1 className={style.title}>Theater Requests</h1>
-                <p className={style.about}>This section allows to see the requests of theaters which are made by theater owners</p>
-            </div>
+                <PageDetails
+                    title='Theater Requests'
+                    about='This section allows to see the requests of theaters which are made by theater owners'
+                    backButton={false}
+                />
+            
             {/* List of theater request */}
             <div className={style['list-container']}>
                 <TheaterRequestList

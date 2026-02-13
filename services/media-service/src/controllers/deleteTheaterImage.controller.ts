@@ -18,7 +18,7 @@ export const deleteTheaterImageController = handleError(async (request: Request,
         return sendResponse(response, false, 404, "Theater image is not found")
     }
    
-    // Deleting image from supabase
+    // // Deleting image from supabase
     const {data, error} = await deleteImage(theaterImage.image_path, "theaters")
 
     if(error || !data){

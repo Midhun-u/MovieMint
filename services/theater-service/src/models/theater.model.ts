@@ -59,17 +59,15 @@ export const TheaterModel = {
 
     },
 
-    getTheaterRequests: async (page: number, limit: number, attributes: Array<string> = [], date?: string) => {
+    getTheaterRequests: async (page: number, limit: number, attributes: Array<string> = []) => {
 
         const attributesCondition = attributes.length ? { attributes: attributes } : {}
-        const createdAtCondition = date? {createdAt: {[Op.eq]: date}}: {}
 
         const { rows, count } = await Theater.findAndCountAll({
             where: {
                 status: {
                     [Op.eq]: "PENDING"
                 },
-                ...createdAtCondition
             },
             ...attributesCondition,
             offset: (page - 1) * limit,
@@ -79,6 +77,20 @@ export const TheaterModel = {
         })
 
         return { rows, count }
+
+    },
+
+    updateTheaterById: async (id: string, updateData: object) => {
+
+        const [updatedCount] = await Theater.update(updateData, {
+            where: {
+                id: {
+                    [Op.eq]: id
+                }
+            }
+        })
+
+        return updatedCount
 
     }
 }

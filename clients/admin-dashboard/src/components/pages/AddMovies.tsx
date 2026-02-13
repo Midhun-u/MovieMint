@@ -1,5 +1,6 @@
 import AddMovieForm from '../addMovies/AddMovieForm'
 import style from '../../styles/pages/addMovies.module.scss'
+import PageDetails from '../ui/PageDetails'
 
 const AddMovies = () => {
 
@@ -7,10 +8,11 @@ const AddMovies = () => {
 
         <div className={style.container}>
             {/* Page details */}
-            <div className={style['page-details']}>
-                <h1 className={style.heading}>Add Movie</h1>
-                <p className={style.about}>This section allows administrators to add and manage movie details</p>
-            </div>
+            <PageDetails
+                title='Add Movie'
+                about='This section allows administrators to add and manage movie details'
+                backButton={false}
+            />
             {/* Form section */}
             <AddMovieForm
             />

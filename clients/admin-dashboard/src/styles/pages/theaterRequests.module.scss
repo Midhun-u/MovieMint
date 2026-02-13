@@ -2,17 +2,6 @@
     display: flex;
     flex-direction: column;
 
-    .title {
-        font-size: 1rem;
-        font-weight: 600;
-    }
-
-    .about {
-        font-size: 0.9rem;
-        font-weight: 400;
-        color: var(--disable-color);
-    }
-
     .list-container{
         margin-top: 30px;
     }

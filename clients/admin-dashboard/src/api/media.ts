@@ -62,3 +62,15 @@ export const deleteActorImageApi = handleError(async (movieId: string) => {
     return result
 
 })
+
+// Api for deleting theater image
+export const deleteTheaterImageApi = handleError(async (theaterId: string) => {
+
+    const result = (await mediaAxiosInstance.delete(`/theater/delete-image/${theaterId}`, {
+        headers: {
+            Authorization: `Bearer ${authToken}`
+        }
+    })).data
+    return result
+
+})

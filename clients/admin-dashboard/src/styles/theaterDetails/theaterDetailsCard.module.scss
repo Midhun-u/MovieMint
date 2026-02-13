@@ -1,0 +1,76 @@
+@use '../variables' as variables;
+
+%disable-color {
+    color: rgb(from var(--foreground-theme-color) r g b / 0.5);
+}
+
+.container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 450px;
+    padding: 28px;
+    background-color: var(--foreground-color);
+    @include variables.disableBorderColor(0.3);
+    border-radius: 10px;
+    margin-top: 20px;
+
+    .status {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 0.7rem;
+        background-color: var(--warn-background-color);
+        color: var(--warn-foreground-color);
+        padding-block: 4px;
+        padding-inline: 10px;
+        font-weight: 500;
+        border-radius: 7px;
+    }
+
+    .image-container {
+        margin-top: 20px;
+
+        img {
+            aspect-ratio: 1 / 1;
+            border-radius: 10px;
+        }
+    }
+
+    .details-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .name {
+        font-size: 1rem;
+        font-weight: 500;
+    }
+
+    .details {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .icon {
+        @extend %disable-color;
+        flex-shrink: 0;
+    }
+
+    .text {
+        font-size: 0.8rem;
+        font-weight: 500;
+        @extend %disable-color;
+    }
+}
+
+@media(max-width: 700px){
+
+    .container{
+        width: 100%;
+    }
+
+}

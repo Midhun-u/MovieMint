@@ -1,0 +1,86 @@
+@use '../variables' as variables;
+
+.container{
+    width: 100%;
+    margin-top: 20px;
+    
+    .image-container{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        flex-shrink: 0;
+
+        img{
+            rotate: 180deg;
+            aspect-ratio: 2 / 1;
+            width: auto;
+        }
+
+        &::-webkit-scrollbar{
+            display: none;
+        }
+    }
+
+    .seat-section{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        overflow: auto;
+        margin-top: 30px;
+        overflow: auto;
+
+        &::-webkit-scrollbar{
+            display: none;
+        }
+    }
+
+    .layout{
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .sets{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .rows{
+        display: flex;
+        gap: 10px;
+    }
+
+    .seat{
+        border: 2px solid rgb(from var(--foreground-theme-color) r g b / 0.3);
+        width: 32px;
+        height: 32px;
+        @extend %container-center-style;
+        border-radius: 5px;
+        font-size: 0.8rem;
+        font-weight: 500;
+    }
+}
+
+@media(max-width: 1270px){
+
+    .container{
+        .seat-section{
+            justify-content: start;
+        }
+    }
+
+}
+
+@media(max-width: 500px){
+
+    .container{
+        .image-container{
+            img{
+                width: 100%;
+            }
+        }
+    }
+
+}

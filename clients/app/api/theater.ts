@@ -36,7 +36,7 @@ export const deleteTheaterRegistrationApi = handleError(async (theaterId: string
 
     const result = await fetchInstance(
         THEATER_BASE_URL,
-        `/delete-theater-registration/${theaterId}`,
+        `/delete-theater/${theaterId}`,
         "DELETE",
         {},
         "json",

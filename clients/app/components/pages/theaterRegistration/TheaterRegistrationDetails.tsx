@@ -71,22 +71,28 @@ const TheaterRegistrationDetails = ({ theaterDetails, setTheater }: TheaterRegis
                         rowNumber={theaterDetails.rows_number || 0}
                         seatNumber={theaterDetails.seats_number || 0}
                     />
-                    <Button
-                        className="mt-15 w-full sm:w-[60%] md:w-[50%] lg:w-[40%] bg-foreground-color text-sm border border-foreground-theme-color/20 text-foreground-theme-color hover:bg-background-color"
-                        disabled={loading}
-                        onClick={handleDeleteTheaterRegistration}
-                    >
-                        {
-                            loading
-                                ?
-                                <Spinner
-                                    size={21}
-                                    color={theme === "dark" ? "white" : "black"}
-                                />
-                                :
-                                <span>Cancel Registration</span>
-                        }
-                    </Button>
+                    {
+                        theaterDetails.status === "PENDING"
+                            ?
+                            <Button
+                                className="mt-15 w-full sm:w-[60%] md:w-[50%] lg:w-[40%] bg-foreground-color text-sm border border-foreground-theme-color/20 text-foreground-theme-color hover:bg-background-color"
+                                disabled={loading}
+                                onClick={handleDeleteTheaterRegistration}
+                            >
+                                {
+                                    loading
+                                        ?
+                                        <Spinner
+                                            size={21}
+                                            color={theme === "dark" ? "white" : "black"}
+                                        />
+                                        :
+                                        <span>Cancel Registration</span>
+                                }
+                            </Button>
+                            :
+                            null
+                    }
                 </div>
             </div>
         </div>

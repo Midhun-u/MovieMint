@@ -1,5 +1,4 @@
-import { TheaterDetails } from "@/types/theater"
-import Image from "next/image"
+import type { Theater } from "../../types/theater"
 import {
     MapPin as LocationIcon,
     Calendar as DateIcon,
@@ -10,25 +9,22 @@ import {
     BanknoteArrowDownIcon as CancellationIcon,
     Tv as FormatsIcon
 } from 'lucide-react'
-import { convertIsoDateToNormalFormat } from "@/utils/convertIsoDateToNoramlFormat"
+import { convertIsoDateToNormalFormat } from "../../utils/convertIsoDateToNoramlFormat"
+import style from '../../styles/theaterDetails/theaterDetailsCard.module.scss'
 
 interface TheaterDetailsCardProps {
-    theaterDetails: TheaterDetails
+    theaterDetails: Theater
 }
 
 const TheaterDetailsCard = ({ theaterDetails }: TheaterDetailsCardProps) => {
 
-    const detailsContainerClass = "flex items-center gap-[8px]"
-    const iconClass = "stroke-foreground-theme-color/50 shrink-0"
-    const textClass = "text-xs font-medium text-foreground-theme-color/60"
-
     return (
         <div
-            className="relative flex flex-col gap-3 w-full sm:w-112.5 p-7 bg-foreground-color border border-foreground-theme-color/20 rounded-md"
+            className={style.container}
         >
             {/* Status section */}
             <p
-                className={`${theaterDetails.status === "PENDING" ? "bg-warn-background-color text-warn-foreground-color" : "bg-success-background-color text-success-foreground-color"} rounded-sm text-xs font-medium absolute top-3 right-3 py-1 px-2`}
+                className={style.status}
             >
                 {
                     theaterDetails.status === "PENDING"
@@ -44,83 +40,83 @@ const TheaterDetailsCard = ({ theaterDetails }: TheaterDetailsCardProps) => {
             </p>
 
             {/* Theater image section */}
-            <div className="mt-4">
-                <Image
+            <div className={style['image-container']}>
+                <img
                     src={theaterDetails.theater_image.image_url}
                     alt="Theater logo"
                     width={85}
                     height={85}
-                    className="rounded-md aspect-square"
                 />
             </div>
             {/* Details section */}
-            <div className="flex flex-col gap-2">
+            <div className={style['details-container']}>
                 {/* Theater title */}
-                <h1 className="text-md font-medium">
+                <h1 className={style.name}>
                     {theaterDetails.theater_name}
                 </h1>
                 {/* Theater location */}
-                <div className={detailsContainerClass}>
+                <div className={style.details}>
                     <LocationIcon
                         size={21}
-                        className={iconClass}
+                        className={style.icon}
                     />
-                    <p className={textClass}>{theaterDetails.theater_location}</p>
+                    <p className={style.text}>{theaterDetails.theater_location}</p>
                 </div>
-                {/* Theater registered date */}
-                <div className={detailsContainerClass}>
-                    <DateIcon
-                        size={21}
-                        className={iconClass}
-                    />
-                    <p className={textClass}>{convertIsoDateToNormalFormat(theaterDetails.createdAt)}</p>
-                </div>
-                <div className={detailsContainerClass}>
+                {/* Theater supported formats */}
+                <div className={style.details}>
                     <FormatsIcon
                         size={21}
-                        className={iconClass}
+                        className={style.icon}
                     />
-                    <p className={textClass}>{theaterDetails.formats.join(", ")}</p>
+                    <p className={style.text}>{theaterDetails.formats.join(", ")}</p>
+                </div>
+                {/* Theater registered date */}
+                <div className={style.details}>
+                    <DateIcon
+                        size={21}
+                        className={style.icon}
+                    />
+                    <p className={style.text}>{convertIsoDateToNormalFormat(theaterDetails.createdAt)}</p>
                 </div>
                 {/* Theater layout */}
-                <div className={detailsContainerClass}>
+                <div className={style.details}>
                     <LayoutIcon
                         size={21}
-                        className={iconClass}
+                        className={style.icon}
                     />
-                    <p className={textClass}>{theaterDetails.layout_number} Layout</p>
+                    <p className={style.text}>{theaterDetails.layout_number} Layout</p>
                 </div>
                 {/* Theater sets in layout */}
-                <div className={detailsContainerClass}>
+                <div className={style.details}>
                     <SetsIcon
                         size={21}
-                        className={iconClass}
+                        className={style.icon}
                     />
-                    <p className={textClass}>{theaterDetails.sets_number} Sets</p>
+                    <p className={style.text}>{theaterDetails.sets_number} Sets</p>
                 </div>
                 {/* Theater Rows in sets */}
-                <div className={detailsContainerClass}>
+                <div className={style.details}>
                     <RowsIcon
                         size={21}
-                        className={iconClass}
+                        className={style.icon}
                     />
-                    <p className={textClass}>{theaterDetails.rows_number} Rows</p>
+                    <p className={style.text}>{theaterDetails.rows_number} Rows</p>
                 </div>
                 {/* Theater seats in row */}
-                <div className={detailsContainerClass}>
+                <div className={style.details}>
                     <SeatIcon
                         size={21}
-                        className={iconClass}
+                        className={style.icon}
                     />
-                    <p className={textClass}>{theaterDetails.seats_number} Seats</p>
+                    <p className={style.text}>{theaterDetails.seats_number} Seats</p>
                 </div>
                 {/* Cancellation */}
-                <div className={detailsContainerClass}>
+                <div className={style.details}>
                     <CancellationIcon
                         size={21}
-                        className={iconClass}
+                        className={style.icon}
                     />
-                    <p className={textClass}>
+                    <p className={style.text}>
                         {
                             theaterDetails.allow_cancellation
                             ?

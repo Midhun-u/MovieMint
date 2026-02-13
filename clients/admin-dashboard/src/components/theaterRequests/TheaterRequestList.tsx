@@ -1,48 +1,26 @@
-import { Activity, useEffect, useState } from 'react'
+import { Activity, useContext, useEffect, useState } from 'react'
 import style from '../../styles/theaterRequests/theaterRequestList.module.scss'
 import Button from '../ui/Button'
 import {
     Calendar as DateIcon,
     MapPinIcon as LocationIcon,
     Armchair as SeatIcon,
-    X as CloseIcon
 } from 'lucide-react'
-import DatePicker from '../ui/DatePicker'
-import { getTheaterRequestsApi } from '../../api/theater'
+import { approveTheaterApi, deleteTheaterApi, getTheaterRequestsApi } from '../../api/theater'
 import { convertIsoDateToNormalFormat } from '../../utils/convertIsoDateToNoramlFormat'
-import Spinner from '../ui/Spinner'
 import useObserver from '../hooks/useObserver'
+import { useNavigate } from 'react-router'
+import { ToastProvider } from '../context/ToastMessage'
+import { useAppDispatch, useAppSelector } from '../../store/hooks'
+import { theaterFailed, theaterRequest, theaterSuccess } from '../../store/theatersRequestSlice'
+import TheaterRequestSkeleton from './TheaterRequestSkeleton'
+import { deleteTheaterImageApi } from '../../api/media'
+import Spinner from '../ui/Spinner'
+import NoResult from '../ui/NoResult'
 
-type TheaterRequests = {
-    id: string
-    theater_name: string
-    theater_location: string
-    layout_number: number
-    sets_number: number
-    rows_number: number
-    seats_number: number
-    status: "PENDING"
-    theater_owner: {
-        id: string
-        firstname: string
-        lastname: string
-        email: string
-        profile_image: {
-            id: string
-            image_url: string
-        }
-        role: "THEATER_OWNER"
-    }
-    theater_image: {
-        id: string
-        image_url: string
-    }
-    createdAt: string
-}
 
 const TheaterRequestList = () => {
 
-    const [showDatePicker, setShowDatePicker] = useState<boolean>(false)
     const [pagination, setPagination] = useState<{
         page: number,
         limit: number,
@@ -52,31 +30,112 @@ const TheaterRequestList = () => {
         limit: 10,
         totalCount: 0
     })
-    const [theatersRequests, setTheatersRequests] = useState<Array<TheaterRequests>>([])
+    const { loading, theatersRequests } = useAppSelector(state => state.theaterRequestReducer)
+    const { theme } = useAppSelector(state => state.theme)
+    const dispatch = useAppDispatch()
     const { ref, isIntersecting } = useObserver<HTMLDivElement>({ threshold: 0.5 })
-    const [selectedDate, setSelectedDate] = useState<Date | null>(null)
+    const navigate = useNavigate()
+    const toastContext = useContext(ToastProvider)
+    const [approveLoadingDetails, setApproveLoadingDetails] = useState<{
+        loading: boolean
+        theaterId: string
+    }>({
+        loading: false,
+        theaterId: ""
+    })
+    const [deleteLoadingDetails, setDeleteLoadingDetails] = useState<{ loading: boolean, theaterId: string }>({
+        loading: false,
+        theaterId: ""
+    })
+
 
     // Function for getting theater requests
     const handleGetTheaterRequests = async () => {
 
-        const result = await getTheaterRequestsApi(pagination.page, pagination.limit, new Date())
+        dispatch(theaterRequest())
+
+        const result = await getTheaterRequestsApi(pagination.page, pagination.limit)
         if (result.success) {
 
-            setTheatersRequests((pre) => {
-                return pagination.page === 1 ? [...result.theaters] : [...pre, ...result.theaters]
-            })
+            const theaterRequestList = pagination.page === 1 || theatersRequests.length <= 0 ? [...result.theaters] : [...theatersRequests, ...result.theaters]
+            dispatch(theaterSuccess({ theatersRequests: theaterRequestList }))
 
             if (result.totalCount) {
                 setPagination({ ...pagination, totalCount: result.totalCount })
             }
 
+        } else {
+            dispatch(theaterFailed({ errorMessage: result.error }))
         }
+
+
+    }
+
+    // Function for approving theater request
+    const handleApproveTheaterRequest = async (event: React.MouseEvent<HTMLElement, MouseEvent>, theaterId: string) => {
+
+        // For stopping parent click event
+        event.stopPropagation()
+
+        setApproveLoadingDetails({
+            loading: true,
+            theaterId: theaterId
+        })
+        const result = await approveTheaterApi(theaterId)
+
+        if (result.success) {
+
+            setPagination({ ...pagination, totalCount: pagination.totalCount - 1 })
+            toastContext?.triggerToastMessage("Theater is approved", "SUCCESS")
+
+        } else {
+            toastContext?.triggerToastMessage("Theater couldn't approve", "ERROR")
+        }
+
+        setApproveLoadingDetails({
+            loading: false,
+            theaterId: ""
+        })
+
+    }
+
+    // Function for deleting theater request
+    const handleDeleteTheaterRequest = async (event: React.MouseEvent<HTMLElement, MouseEvent>, theaterId: string) => {
+
+        // For stopping parent click event
+        event.stopPropagation()
+
+        setDeleteLoadingDetails({
+            loading: true,
+            theaterId: theaterId
+        })
+        const theaterResult = await deleteTheaterApi(theaterId)
+
+        if (theaterResult.success) {
+
+            const imageResult = await deleteTheaterImageApi(theaterId)
+            
+            if(imageResult.success){
+                toastContext?.triggerToastMessage("Theater request is refused", "SUCCESS")
+                setPagination({...pagination, totalCount: pagination.totalCount - 1})
+            }else{
+                toastContext?.triggerToastMessage("Theater request is couldn't refuse", "ERROR")
+            }
+
+        }else{
+            toastContext?.triggerToastMessage("Theater request is couldn't refuse", "ERROR")
+        }
+
+        setDeleteLoadingDetails({
+            loading: false,
+            theaterId: ""
+        })
 
     }
 
     useEffect(() => {
         handleGetTheaterRequests()
-    }, [pagination.page, selectedDate])
+    }, [pagination.page, pagination.totalCount])
 
     useEffect(() => {
 
@@ -90,42 +149,9 @@ const TheaterRequestList = () => {
 
     return (
 
+        theatersRequests.length
+        ?
         <div className={style.container}>
-            {/* Date picker */}
-            <div className={style['date-picker-container']}>
-                <Button
-                    className={style['date-picker-button']}
-                    onClick={() => setShowDatePicker(!showDatePicker)}
-                >
-                    <DateIcon
-                        size={20}
-                        strokeWidth={1.5}
-                        className={style.icon}
-                    />
-                    <span>Select Date</span>
-                </Button>
-                <Activity mode={showDatePicker ? "visible" : "hidden"}>
-                    <div className={style['date-picker']}>
-                        <DatePicker
-                            showTimePicker={false}
-                            clickOnDay={(dateDetails) => {
-                                setSelectedDate(new Date(dateDetails.year, dateDetails.month, dateDetails.day))
-                                setShowDatePicker(false)
-                            }}
-                            selectedDate={selectedDate ? selectedDate : new Date()}
-                        />
-                    </div>
-                </Activity>
-                <Activity mode={selectedDate? "visible": "hidden"}>
-                    <div onClick={() => setSelectedDate(null)} className={style['date']}>
-                        <span>{convertIsoDateToNormalFormat(selectedDate? selectedDate.toString(): "")}</span>
-                        <CloseIcon
-                            size={18}
-                            className={style.icon}
-                        />
-                    </div>
-                </Activity>
-            </div>
             {/* Theater requests list */}
             <div className={style['list']}>
                 {
@@ -134,6 +160,7 @@ const TheaterRequestList = () => {
                         <div
                             key={theaterRequest.id}
                             className={style['theater-details-container']}
+                            onClick={() => navigate(`/admin/theater-requests/${theaterRequest.id}`)}
                         >
                             <p className={style.status}>
                                 Pending Review
@@ -142,6 +169,7 @@ const TheaterRequestList = () => {
                             <img
                                 src={theaterRequest.theater_image.image_url}
                                 className={style['theater-image']}
+                                loading='lazy'
                             />
                             <div className={style['theater-details']}>
                                 {/* Theater title */}
@@ -172,13 +200,43 @@ const TheaterRequestList = () => {
                                 </div>
                                 <div className={style['button-container']}>
                                     <Button
-                                        title='Refuse'
                                         className={style['button']}
-                                    />
+                                        onClick={(event) => handleDeleteTheaterRequest(event, theaterRequest.id)}
+                                        disabled={approveLoadingDetails.loading || deleteLoadingDetails.loading ? true : false}
+                                    >
+                                        {
+                                            deleteLoadingDetails.loading && deleteLoadingDetails.theaterId === theaterRequest.id
+                                                ?
+                                                <Spinner
+                                                    color={theme === "dark" ? "white" : "black"}
+                                                    size={13}
+                                                />
+                                                :
+                                                <>
+                                                    Refuse
+                                                </>
+
+                                        }
+                                    </Button>
                                     <Button
-                                        title='Approve'
                                         className={style['button']}
-                                    />
+                                        disabled={approveLoadingDetails.loading || deleteLoadingDetails.loading ? true : false}
+                                        onClick={(event) => handleApproveTheaterRequest(event, theaterRequest.id)}
+                                    >
+                                        {
+                                            approveLoadingDetails.loading && approveLoadingDetails.theaterId === theaterRequest.id
+                                                ?
+                                                <Spinner
+                                                    color={theme === "dark" ? "white" : "black"}
+                                                    size={13}
+                                                />
+                                                :
+                                                <>
+                                                    Approve
+                                                </>
+
+                                        }
+                                    </Button>
                                 </div>
                             </div>
                         </div>
@@ -186,19 +244,17 @@ const TheaterRequestList = () => {
                     ))
                 }
             </div>
-            {
-                pagination.page * pagination.limit < pagination.totalCount
-                    ?
-                    <div ref={ref} className={style['loading-container']}>
-                        <Spinner
-                            color='black'
-                            size={22}
-                        />
-                    </div>
-                    :
-                    null
-            }
-        </div >
+            <Activity mode={loading ? "visible" : "hidden"}>
+                <TheaterRequestSkeleton
+                />
+            </Activity>
+            <Activity mode={pagination.page * pagination.limit < pagination.totalCount ? "visible" : "hidden"}>
+                <div ref={ref}></div>
+            </Activity>
+        </div>
+        :
+        <NoResult
+        />
 
     )
 
