@@ -1,8 +1,14 @@
-import style from '../../styles/ui/movieCard.module.scss'
+import style from '../../styles/movies/movieCard.module.scss'
 
-const MovieCard = () => {
+interface MovieCardProps{
+    poster: string
+    title: string
+    certificate: string
+    language: string
+    categories: Array<string>
+}
 
-    const poster = "https://zwexilnvicwoyiprjnuz.supabase.co/storage/v1/object/public/moviePosters/6981ed0904622cf91103482b-20fec69e-4656-4d0b-b850-b1bbaacb5ca5.jpg"
+const MovieCard = ({poster, title, certificate, language, categories}: MovieCardProps) => {
 
     return (
 
@@ -18,15 +24,15 @@ const MovieCard = () => {
             <div className={style['movie-details']}>
                 {/* Movie title */}
                 <h2 className={style['movie-title']}>
-                    Demon Slayer: Infinity castel
+                    {title}
                 </h2>
                 {/* Movie certificate and language */}
                 <p className={style['movie-other-details']}>
-                    UA16+ | English
+                    {certificate} | {language}
                 </p>
                 {/* Movie categories */}
                 <p className={style['movie-category']}>
-                    Action, Adventure, Supernatural
+                    {categories?.join(", ")}
                 </p>
             </div>
         </div>

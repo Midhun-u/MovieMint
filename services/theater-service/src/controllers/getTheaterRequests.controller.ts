@@ -12,7 +12,7 @@ export const getTheaterRequestsController = sendErrorResponse(async (context: Co
     const pageNumber = convertStringToNumber(page)
     const limitNumber = convertStringToNumber(limit)
 
-    const { rows: theaters, count: totalCount } = await TheaterModel.getTheaterRequests(
+    const theaters = await TheaterModel.getTheaterRequests(
         pageNumber,
         limitNumber,
         [
@@ -52,8 +52,7 @@ export const getTheaterRequestsController = sendErrorResponse(async (context: Co
 
     return context.json({ 
         success: true, 
-        theaters: theatersDetails.length? theatersDetails: theaters, 
-        totalCount: totalCount, 
+        theaters: theatersDetails.length? theatersDetails: theaters,  
         statusCode: 200 
     })
 

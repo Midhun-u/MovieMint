@@ -6,4 +6,5 @@ export const envVariables = {
     AUTH_SERVICE_URL: Bun.env.AUTH_SERVICE_URL as string,
     REDIS_HOST: Bun.env.REDIS_HOST as string,
     REDIS_PORT: Number(Bun.env.REDIS_PORT),
+    MEDIA_SERVICE_URL: Bun.env.MEDIA_SERVICE_URL as string
 }

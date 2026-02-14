@@ -33,7 +33,7 @@ export const MovieModel = {
 
     },
 
-    deleteMovieById : async (id: string) => {
+    deleteMovieById: async (id: string) => {
 
         const deletedMovieDetails = await Movie.findByIdAndDelete(id)
         return deletedMovieDetails
@@ -47,6 +47,17 @@ export const MovieModel = {
         })
 
         return updatedMovie
+
+    },
+
+    getMovies: async (condition: object = {}, page: number, limit: number, projection: object = {}) => {
+
+        const movies = await Movie.find(condition, {...projection})
+            .skip((page - 1) * limit)
+            .limit(limit)
+            .sort({release_date: 1}).lean()
+
+        return movies
 
     }
 

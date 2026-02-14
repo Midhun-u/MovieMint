@@ -66,9 +66,9 @@ export const deleteMovieApi = handleError(async (movieId: string) => {
 })
 
 // Api for getting movies
-export const getMoviesApi = handleError(async () => {
+export const getMoviesApi = handleError(async (page: number = 1, limit: number = 10) => {
 
-    const result = (await movieAxiosInstance.get("/get-movies")).data
+    const result = (await movieAxiosInstance.get(`/get-movies/?page=${page}&limit=${limit}`)).data
     return result
 
 })

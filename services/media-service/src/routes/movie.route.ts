@@ -3,6 +3,7 @@ import { upload } from '../config/multer.js'
 import { uploadMovieImageController } from '../controllers/uploadMovieImage.controller.js'
 import { deleteMovieImageController } from '../controllers/deleteMovieImage.controller.js'
 import { adminAuthMiddleware } from '../middlewares/adminAuth.js'
+import { getMovieImageController } from '../controllers/getMovieImage.controller.js'
 
 // Movie image router
 export const movieRouter = express()
@@ -12,3 +13,6 @@ movieRouter.post("/upload-image", adminAuthMiddleware,upload.single("file"), upl
 
 // Route for deleting movie image
 movieRouter.delete("/delete-image/:movieId/:type", adminAuthMiddleware, deleteMovieImageController)
+
+// Route for getting movie image
+movieRouter.get("/get-image/:type/:movieId", getMovieImageController)

@@ -1,9 +1,28 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+type InitialState = {
+    loading: boolean
+    movie: object
+    errorMessage: string
+    movies: Array<{
+        _id: string
+        title: string
+        language: string
+        certificate: string
+        categories: Array<string>
+        status: "SHOWING" | "NOT_SHOWING" | "PENDING",
+        poster: {
+            id: string
+            image_url: string
+        }
+    }>
+}
+
+const initialState: InitialState = {
     loading: false,
     movie: {},
-    errorMessage: ""
+    errorMessage: "",
+    movies: []
 }
 
 const movieSlice = createSlice({
@@ -20,6 +39,7 @@ const movieSlice = createSlice({
         movieSuccess: (state, action) => {
             state.loading = false
             state.movie = action.payload.movie
+            state.movies = action.payload.movies || []
             state.errorMessage = ""
         },
 

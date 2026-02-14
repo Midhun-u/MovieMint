@@ -102,6 +102,6 @@ const movieSchema = new Schema({
         trim: true
     }
 
-})
+}, {timestamps: true})
 
 export const Movie = model("Movie", movieSchema)

@@ -1,5 +1,5 @@
 import DashboardLogs from '../dashboard/DashboardLogs'
-import MovieCard from '../ui/MovieCard'
+import MovieCard from '../movies/MovieCard'
 import style from '../../styles/pages/dashboard.module.scss'
 import {
     Trash as DeleteIcon,
@@ -31,6 +31,11 @@ const Dashboard = () => {
                 <div className={style['movies-card-container']}>
                     <div className={style['movie-card']}>
                         <MovieCard
+                            poster=''
+                            title='Title'
+                            categories={["category", "category"]}
+                            certificate='Certificate'
+                            language="English"
                         />
                         <div className={style['delete-icon-container']}>
                             <DeleteIcon
@@ -42,6 +47,11 @@ const Dashboard = () => {
                     </div>
                     <div className={style['movie-card']}>
                         <MovieCard
+                            poster=''
+                            title='Title'
+                            categories={["category", "category"]}
+                            certificate='Certificate'
+                            language="English"
                         />
                         <div className={style['delete-icon-container']}>
                             <DeleteIcon
@@ -53,6 +63,11 @@ const Dashboard = () => {
                     </div>
                     <div className={style['movie-card']}>
                         <MovieCard
+                            poster=''
+                            title='Title'
+                            categories={["category", "category"]}
+                            certificate='Certificate'
+                            language="English"
                         />
                         <div className={style['delete-icon-container']}>
                             <DeleteIcon

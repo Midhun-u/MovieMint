@@ -1,10 +1,10 @@
-import type { TheaterDetails } from "@/types/theater";
+import type { Theater } from "@/types/theater";
 import { createSlice } from "@reduxjs/toolkit";
 
 type InitialState = {
     loading: boolean
     errorMessage: string
-    theatersRequests: Array<TheaterDetails>
+    theatersRequests: Array<Theater>
 }
 
 const initialState: InitialState = {

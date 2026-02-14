@@ -63,7 +63,7 @@ export const TheaterModel = {
 
         const attributesCondition = attributes.length ? { attributes: attributes } : {}
 
-        const { rows, count } = await Theater.findAndCountAll({
+        const theaters = await Theater.findAll({
             where: {
                 status: {
                     [Op.eq]: "PENDING"
@@ -76,7 +76,7 @@ export const TheaterModel = {
             raw: true
         })
 
-        return { rows, count }
+        return theaters
 
     },
 

@@ -1,7 +1,7 @@
 import { forwardRef, type InputHTMLAttributes } from "react"
 
 interface InputProps extends InputHTMLAttributes<HTMLElement>{
-    className: string
+    className?: string
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(({className, ...props}, ref) => {

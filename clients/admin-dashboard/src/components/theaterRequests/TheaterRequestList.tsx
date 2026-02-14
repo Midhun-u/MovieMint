@@ -1,4 +1,4 @@
-import { Activity, useContext, useEffect, useState } from 'react'
+import { Activity, useContext, useEffect, useOptimistic, useState, useTransition } from 'react'
 import style from '../../styles/theaterRequests/theaterRequestList.module.scss'
 import Button from '../ui/Button'
 import {
@@ -24,18 +24,19 @@ const TheaterRequestList = () => {
     const [pagination, setPagination] = useState<{
         page: number,
         limit: number,
-        totalCount: number
     }>({
         page: 1,
         limit: 10,
-        totalCount: 0
     })
+    const [hasMore, setHasMore] = useState<boolean>(false)
     const { loading, theatersRequests } = useAppSelector(state => state.theaterRequestReducer)
     const { theme } = useAppSelector(state => state.theme)
     const dispatch = useAppDispatch()
     const { ref, isIntersecting } = useObserver<HTMLDivElement>({ threshold: 0.5 })
     const navigate = useNavigate()
     const toastContext = useContext(ToastProvider)
+    const [optimisticTheatersRequests, setOptimisticTheaterRequests] = useOptimistic(theatersRequests)
+    const [isPending, startTransition] = useTransition()
     const [approveLoadingDetails, setApproveLoadingDetails] = useState<{
         loading: boolean
         theaterId: string
@@ -60,8 +61,10 @@ const TheaterRequestList = () => {
             const theaterRequestList = pagination.page === 1 || theatersRequests.length <= 0 ? [...result.theaters] : [...theatersRequests, ...result.theaters]
             dispatch(theaterSuccess({ theatersRequests: theaterRequestList }))
 
-            if (result.totalCount) {
-                setPagination({ ...pagination, totalCount: result.totalCount })
+            if (result.theaters?.length < pagination.limit) {
+                setHasMore(false)
+            } else {
+                setHasMore(true)
             }
 
         } else {
@@ -85,7 +88,14 @@ const TheaterRequestList = () => {
 
         if (result.success) {
 
-            setPagination({ ...pagination, totalCount: pagination.totalCount - 1 })
+            startTransition(() => {
+                setOptimisticTheaterRequests((pre) => {
+
+                    const filteredTheaterRequests = pre.filter((theater) => theater.id !== theaterId)
+                    return filteredTheaterRequests
+
+                })
+            })
             toastContext?.triggerToastMessage("Theater is approved", "SUCCESS")
 
         } else {
@@ -114,15 +124,14 @@ const TheaterRequestList = () => {
         if (theaterResult.success) {
 
             const imageResult = await deleteTheaterImageApi(theaterId)
-            
-            if(imageResult.success){
+
+            if (imageResult.success) {
                 toastContext?.triggerToastMessage("Theater request is refused", "SUCCESS")
-                setPagination({...pagination, totalCount: pagination.totalCount - 1})
-            }else{
+            } else {
                 toastContext?.triggerToastMessage("Theater request is couldn't refuse", "ERROR")
             }
 
-        }else{
+        } else {
             toastContext?.triggerToastMessage("Theater request is couldn't refuse", "ERROR")
         }
 
@@ -133,128 +142,130 @@ const TheaterRequestList = () => {
 
     }
 
+
     useEffect(() => {
         handleGetTheaterRequests()
-    }, [pagination.page, pagination.totalCount])
+    }, [pagination.page])
 
     useEffect(() => {
 
-        if (!isIntersecting) return
+        if (!isIntersecting || loading || !hasMore) return
 
         setPagination((pre) => {
             return { ...pre, page: pre.page + 1 }
         })
 
-    }, [isIntersecting])
+    }, [isIntersecting, loading, hasMore])
+    console.log(optimisticTheatersRequests)
 
     return (
 
-        theatersRequests.length
-        ?
-        <div className={style.container}>
-            {/* Theater requests list */}
-            <div className={style['list']}>
-                {
-                    theatersRequests.map((theaterRequest) => (
+        optimisticTheatersRequests.length
+            ?
+            <div className={style.container}>
+                {/* Theater requests list */}
+                <div className={style['list']}>
+                    {
+                        optimisticTheatersRequests.map((theaterRequest) => (
 
-                        <div
-                            key={theaterRequest.id}
-                            className={style['theater-details-container']}
-                            onClick={() => navigate(`/admin/theater-requests/${theaterRequest.id}`)}
-                        >
-                            <p className={style.status}>
-                                Pending Review
-                            </p>
-                            {/* Theater image */}
-                            <img
-                                src={theaterRequest.theater_image.image_url}
-                                className={style['theater-image']}
-                                loading='lazy'
-                            />
-                            <div className={style['theater-details']}>
-                                {/* Theater title */}
-                                <h1>{theaterRequest.theater_name}</h1>
-                                {/* Theater location */}
-                                <div className={style.details}>
-                                    <LocationIcon
-                                        size={18}
-                                        className={style.icon}
-                                    />
-                                    <p>{theaterRequest.theater_location}</p>
-                                </div>
-                                {/* Theater request date */}
-                                <div className={style.details}>
-                                    <DateIcon
-                                        size={18}
-                                        className={style.icon}
-                                    />
-                                    <p>{convertIsoDateToNormalFormat(theaterRequest.createdAt)}</p>
-                                </div>
-                                {/* Theater total seats */}
-                                <div className={style.details}>
-                                    <SeatIcon
-                                        size={18}
-                                        className={style.icon}
-                                    />
-                                    <p>{theaterRequest.layout_number * theaterRequest.sets_number * theaterRequest.rows_number * theaterRequest.seats_number} seats</p>
-                                </div>
-                                <div className={style['button-container']}>
-                                    <Button
-                                        className={style['button']}
-                                        onClick={(event) => handleDeleteTheaterRequest(event, theaterRequest.id)}
-                                        disabled={approveLoadingDetails.loading || deleteLoadingDetails.loading ? true : false}
-                                    >
-                                        {
-                                            deleteLoadingDetails.loading && deleteLoadingDetails.theaterId === theaterRequest.id
-                                                ?
-                                                <Spinner
-                                                    color={theme === "dark" ? "white" : "black"}
-                                                    size={13}
-                                                />
-                                                :
-                                                <>
-                                                    Refuse
-                                                </>
+                            <div
+                                key={theaterRequest.id}
+                                className={style['theater-details-container']}
+                                onClick={() => navigate(`/admin/theater-requests/${theaterRequest.id}`)}
+                            >
+                                <p className={style.status}>
+                                    Pending Review
+                                </p>
+                                {/* Theater image */}
+                                <img
+                                    src={theaterRequest.theater_image.image_url}
+                                    className={style['theater-image']}
+                                    loading='lazy'
+                                />
+                                <div className={style['theater-details']}>
+                                    {/* Theater title */}
+                                    <h1>{theaterRequest.theater_name}</h1>
+                                    {/* Theater location */}
+                                    <div className={style.details}>
+                                        <LocationIcon
+                                            size={18}
+                                            className={style.icon}
+                                        />
+                                        <p>{theaterRequest.theater_location}</p>
+                                    </div>
+                                    {/* Theater request date */}
+                                    <div className={style.details}>
+                                        <DateIcon
+                                            size={18}
+                                            className={style.icon}
+                                        />
+                                        <p>{convertIsoDateToNormalFormat(theaterRequest.createdAt)}</p>
+                                    </div>
+                                    {/* Theater total seats */}
+                                    <div className={style.details}>
+                                        <SeatIcon
+                                            size={18}
+                                            className={style.icon}
+                                        />
+                                        <p>{theaterRequest.layout_number * theaterRequest.sets_number * theaterRequest.rows_number * theaterRequest.seats_number} seats</p>
+                                    </div>
+                                    <div className={style['button-container']}>
+                                        <Button
+                                            className={style['button']}
+                                            onClick={(event) => handleDeleteTheaterRequest(event, theaterRequest.id)}
+                                            disabled={approveLoadingDetails.loading || deleteLoadingDetails.loading ? true : false}
+                                        >
+                                            {
+                                                deleteLoadingDetails.loading && deleteLoadingDetails.theaterId === theaterRequest.id
+                                                    ?
+                                                    <Spinner
+                                                        color={theme === "dark" ? "white" : "black"}
+                                                        size={13}
+                                                    />
+                                                    :
+                                                    <>
+                                                        Refuse
+                                                    </>
 
-                                        }
-                                    </Button>
-                                    <Button
-                                        className={style['button']}
-                                        disabled={approveLoadingDetails.loading || deleteLoadingDetails.loading ? true : false}
-                                        onClick={(event) => handleApproveTheaterRequest(event, theaterRequest.id)}
-                                    >
-                                        {
-                                            approveLoadingDetails.loading && approveLoadingDetails.theaterId === theaterRequest.id
-                                                ?
-                                                <Spinner
-                                                    color={theme === "dark" ? "white" : "black"}
-                                                    size={13}
-                                                />
-                                                :
-                                                <>
-                                                    Approve
-                                                </>
+                                            }
+                                        </Button>
+                                        <Button
+                                            className={style['button']}
+                                            disabled={approveLoadingDetails.loading || deleteLoadingDetails.loading ? true : false}
+                                            onClick={(event) => handleApproveTheaterRequest(event, theaterRequest.id)}
+                                        >
+                                            {
+                                                approveLoadingDetails.loading && approveLoadingDetails.theaterId === theaterRequest.id
+                                                    ?
+                                                    <Spinner
+                                                        color={theme === "dark" ? "white" : "black"}
+                                                        size={13}
+                                                    />
+                                                    :
+                                                    <>
+                                                        Approve
+                                                    </>
 
-                                        }
-                                    </Button>
+                                            }
+                                        </Button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                    ))
-                }
+                        ))
+                    }
+                </div>
+                <Activity mode={loading ? "visible" : "hidden"}>
+                    <TheaterRequestSkeleton
+                    />
+                </Activity>
+                <Activity mode={hasMore ? "visible" : "hidden"}>
+                    <div ref={ref}></div>
+                </Activity>
             </div>
-            <Activity mode={loading ? "visible" : "hidden"}>
-                <TheaterRequestSkeleton
-                />
-            </Activity>
-            <Activity mode={pagination.page * pagination.limit < pagination.totalCount ? "visible" : "hidden"}>
-                <div ref={ref}></div>
-            </Activity>
-        </div>
-        :
-        <NoResult
-        />
+            :
+            <NoResult
+            />
 
     )
 
