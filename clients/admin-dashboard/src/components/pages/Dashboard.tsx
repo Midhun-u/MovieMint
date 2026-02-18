@@ -3,7 +3,6 @@ import MovieCard from '../movies/MovieCard'
 import style from '../../styles/pages/dashboard.module.scss'
 import {
     Trash as DeleteIcon,
-    Plus as AddIcon
 } from 'lucide-react'
 import PageDetails from '../ui/PageDetails'
 
@@ -77,12 +76,6 @@ const Dashboard = () => {
                             />
                         </div>
                     </div>
-                </div>
-                <div className={style['banner-add-section']}>
-                    <AddIcon
-                        size={23}
-                        strokeWidth={1.8}
-                    />
                 </div>
             </div>
         </div>

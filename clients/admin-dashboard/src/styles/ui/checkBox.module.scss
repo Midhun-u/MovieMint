@@ -12,6 +12,7 @@
     }
 
     .checkbox{
+        flex-shrink: 0;
         width: 15px;
         height: 15px;
         background-color: var(--foreground-color);

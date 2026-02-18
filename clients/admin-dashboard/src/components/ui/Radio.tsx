@@ -8,13 +8,14 @@ interface RadioProps {
     values: Array<{ title: string, value: string }>
     selectedValue: string
     onClick: (value: {title: string, value: string}) => void
+    className?: string
 }
 
-const Radio = ({ values, selectedValue, onClick }: RadioProps) => {
+const Radio = ({ values, selectedValue, onClick, className }: RadioProps) => {
 
     return (
 
-        <div className={style.container}>
+        <div className={className}>
             {
                 values.map((value, index) => (
                     <div

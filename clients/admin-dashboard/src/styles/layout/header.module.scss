@@ -100,6 +100,7 @@ $disable-color: #7F7F7F;
     flex-direction: column;
     align-items: flex-end;
     gap: 15px;
+    transition: all 200ms linear;
 
     .sidebar-nav{
         text-decoration: none;

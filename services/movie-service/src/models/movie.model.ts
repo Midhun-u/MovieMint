@@ -28,7 +28,7 @@ export const MovieModel = {
 
     getMovieById: async (id: string) => {
 
-        const movie = await Movie.findById(id)
+        const movie = await Movie.findById(id).lean()
         return movie
 
     },

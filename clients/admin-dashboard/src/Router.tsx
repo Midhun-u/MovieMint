@@ -6,6 +6,7 @@ import PageNotFound from "./components/pages/PageNotFound"
 import TheaterRequests from "./components/pages/TheaterRequests"
 import TheaterDetails from "./components/pages/TheaterDetails"
 import Movies from "./components/pages/Movies"
+import EditMovie from "./components/pages/EditMovie"
 
 const Router = () => {
 
@@ -60,6 +61,17 @@ const Router = () => {
                 element={
                     <ProtectRoute>
                         <Movies
+                        />
+                    </ProtectRoute>
+                }
+            />
+
+            {/* Edit movie route */}
+            <Route
+                path="/admin/movies/edit/:movieId"
+                element={
+                    <ProtectRoute>
+                        <EditMovie
                         />
                     </ProtectRoute>
                 }

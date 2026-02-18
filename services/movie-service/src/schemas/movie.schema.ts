@@ -44,7 +44,8 @@ const movieSchema = new Schema({
         required: true,
         minLength: 3,
         maxLength: 50,
-        trim: true
+        trim: true,
+        index: true
     },
     sub_heading: {
         type: String,

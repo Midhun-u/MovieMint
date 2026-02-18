@@ -1,49 +1,69 @@
-import type { Dispatch, SetStateAction } from 'react'
-import style from '../../styles/addMovies/checkBoxList.module.scss'
+import { useState, type Dispatch, type SetStateAction } from 'react'
 import CheckBox from './CheckBox'
 
 interface CheckBoxListProps {
     values: Array<string>
-    setValues: Dispatch<SetStateAction<Array<string>>>
+    setValues: Dispatch<SetStateAction<Array<string>>> | null
     checkedValues: Array<string>
     selectedLimit: number | null
+    className?: string
 }
 
-const CheckBoxList = ({ values, setValues, checkedValues, selectedLimit }: CheckBoxListProps) => {
+const CheckBoxList = ({ values = [], setValues, checkedValues, selectedLimit, className }: CheckBoxListProps) => {
+
+    const [checkedValuesState, setCheckedValuesState] = useState<Array<string>>(checkedValues)
 
     // Function for adding unchecked value to array
-    const handlAddCategories = (unCheckedValue: string) => {
+    const handleAddValue = (value: string) => {
 
-        if(selectedLimit && checkedValues.length <= selectedLimit - 1){
-            setValues((prevValues) => [...prevValues, unCheckedValue])
+        if (selectedLimit && checkedValuesState.length < selectedLimit && setValues) {
 
-        }else{
-            // Removing category for maintaining length of categories
-            const filteredValues = checkedValues.filter((_, index) => selectedLimit? index <= selectedLimit - 1: true)
-            setValues([...filteredValues, unCheckedValue])
+            setCheckedValuesState((pre) => [...pre, value])
+            setValues((pre) => [...pre, value])
+
+        } else if (setValues) {
+
+            // Removing last element in checked values to maintain length
+            if (!selectedLimit) {
+                setCheckedValuesState((pre) => [...pre, value])
+                setValues((pre) => [...pre, value])
+            }else{
+
+                const filteredCheckedValues = checkedValuesState.filter((_, index) => index <= selectedLimit - 1)
+                setCheckedValuesState([...filteredCheckedValues, value])
+                setValues([...filteredCheckedValues, value])
+
+            }
+
         }
-       
+
 
     }
 
     // Function for removing checked value from array
-    const handleRemoveCategories = (checkedValue: string) => {
+    const handleRemoveValue = (unCheckedValue: string) => {
 
-        const filteredList = checkedValues.filter((value) => value !== checkedValue)
-        setValues(filteredList)
+        if (setValues) {
+
+            const filteredCheckedValues = checkedValuesState.filter((value) => value !== unCheckedValue)
+            setCheckedValuesState(filteredCheckedValues)
+            setValues(filteredCheckedValues)
+
+        }
 
     }
 
     return (
-        <div className={style.container}>
+        <div className={className}>
             {
-                values?.map((value, index) => (
+                values.map((value, index) => (
                     <CheckBox
                         value={value}
                         key={index}
-                        onMarkChecked={(unCheckedValue) => handlAddCategories(unCheckedValue)}
-                        onUnmarkChecked={(checkedValue) => handleRemoveCategories(checkedValue)}
-                        checkedValue={checkedValues[checkedValues.indexOf(value)] || ""}
+                        onMarkChecked={(checkedValue) => handleAddValue(checkedValue)}
+                        onUnmarkChecked={(unCheckedValue) => handleRemoveValue(unCheckedValue)}
+                        defaultChecked={checkedValuesState.includes(value)}
+                        checkedValue={checkedValuesState.find((checkedValue) => checkedValue === value)}
                     />
                 ))
             }

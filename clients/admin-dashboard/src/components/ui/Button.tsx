@@ -7,9 +7,10 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLElement> {
     children?: ReactNode,
     loading?: boolean,
     loadingSpinnerColor?: "white" | "black"
+    spinnerSize?: number
 }
 
-const Button = forwardRef<HTMLButtonElement, ButtonProps>(({ title, className, children, loading, loadingSpinnerColor, ...props }, ref) => {
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(({ title, className, children, loading, loadingSpinnerColor, spinnerSize, ...props }, ref) => {
 
     return (
         <button
@@ -22,7 +23,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(({ title, className, c
                 loading
                     ?
                     <Spinner
-                        size={20}
+                        size={spinnerSize? spinnerSize: 20}
                         color={loadingSpinnerColor ? loadingSpinnerColor : "black"}
                     />
                     :

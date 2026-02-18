@@ -18,3 +18,15 @@ export type AddMovieData = {
         name: string
     }>
 }
+
+export type MovieData = Omit<AddMovieData, "trailer"> & {
+    movie_trailer: string
+    poster: {
+        id: string
+        image_url: string
+    }
+    banner: {
+        id: string
+        image_url: string
+    }
+}

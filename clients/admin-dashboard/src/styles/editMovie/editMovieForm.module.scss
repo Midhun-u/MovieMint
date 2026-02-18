@@ -1,0 +1,75 @@
+@use '../variables' as variables;
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin-top: 30px;
+
+    .form-input {
+        width: 450px;
+    }
+
+    .poster {
+        aspect-ratio: 2 / 3;
+        width: 200px;
+    }
+
+    .banner {
+        width: 300px;
+        aspect-ratio: 16 / 9;
+    }
+
+    .update-button{
+        margin-top: 20px;
+        width: 450px;
+        @extend %primary-button-style;
+    }
+}
+
+.checkbox-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .checkbox-list {
+        display: flex;
+        width: 450px;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+}
+
+@media(max-width: 600px){
+
+    .container{
+        .form-input{
+            width: 100%;
+        }
+
+        .banner{
+            width: 100%;
+        }
+
+        .update-button{
+            width: 100%;
+        }
+    }
+
+    .checkbox-container{
+        .checkbox-list{
+            width: 100%;
+        }
+    }
+
+}
+
+@media(max-width: 300px){
+
+    .container{
+        .poster{
+            width: 100%;
+        }
+    }
+
+}

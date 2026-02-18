@@ -17,6 +17,7 @@ import TheaterRequestSkeleton from './TheaterRequestSkeleton'
 import { deleteTheaterImageApi } from '../../api/media'
 import Spinner from '../ui/Spinner'
 import NoResult from '../ui/NoResult'
+import type { Theater } from '@/types/theater'
 
 
 const TheaterRequestList = () => {
@@ -35,8 +36,10 @@ const TheaterRequestList = () => {
     const { ref, isIntersecting } = useObserver<HTMLDivElement>({ threshold: 0.5 })
     const navigate = useNavigate()
     const toastContext = useContext(ToastProvider)
-    const [optimisticTheatersRequests, setOptimisticTheaterRequests] = useOptimistic(theatersRequests)
-    const [isPending, startTransition] = useTransition()
+    const [optimisticTheatersRequests, setOptimisticTheaterRequests] = useOptimistic(theatersRequests, (state, id: string) => {
+        return state.filter((theater) => theater.id !== id)
+    })
+    const [_, startTransition] = useTransition()
     const [approveLoadingDetails, setApproveLoadingDetails] = useState<{
         loading: boolean
         theaterId: string
@@ -89,13 +92,12 @@ const TheaterRequestList = () => {
         if (result.success) {
 
             startTransition(() => {
-                setOptimisticTheaterRequests((pre) => {
+                setOptimisticTheaterRequests(theaterId)
 
-                    const filteredTheaterRequests = pre.filter((theater) => theater.id !== theaterId)
-                    return filteredTheaterRequests
-
-                })
+                const filteredTheater = theatersRequests.filter((theater) => theater.id !== theaterId)
+                dispatch(theaterSuccess({ theatersRequests: filteredTheater }))
             })
+
             toastContext?.triggerToastMessage("Theater is approved", "SUCCESS")
 
         } else {
@@ -126,7 +128,17 @@ const TheaterRequestList = () => {
             const imageResult = await deleteTheaterImageApi(theaterId)
 
             if (imageResult.success) {
+
+                startTransition(() => {
+                    setOptimisticTheaterRequests(theaterId)
+
+                    const filteredTheater = theatersRequests.filter((theater) => theater.id !== theaterId)
+                    dispatch(theaterSuccess({ theatersRequests: filteredTheater }))
+                })
+
+
                 toastContext?.triggerToastMessage("Theater request is refused", "SUCCESS")
+
             } else {
                 toastContext?.triggerToastMessage("Theater request is couldn't refuse", "ERROR")
             }
@@ -156,7 +168,6 @@ const TheaterRequestList = () => {
         })
 
     }, [isIntersecting, loading, hasMore])
-    console.log(optimisticTheatersRequests)
 
     return (
 
@@ -214,40 +225,20 @@ const TheaterRequestList = () => {
                                             className={style['button']}
                                             onClick={(event) => handleDeleteTheaterRequest(event, theaterRequest.id)}
                                             disabled={approveLoadingDetails.loading || deleteLoadingDetails.loading ? true : false}
-                                        >
-                                            {
-                                                deleteLoadingDetails.loading && deleteLoadingDetails.theaterId === theaterRequest.id
-                                                    ?
-                                                    <Spinner
-                                                        color={theme === "dark" ? "white" : "black"}
-                                                        size={13}
-                                                    />
-                                                    :
-                                                    <>
-                                                        Refuse
-                                                    </>
-
-                                            }
-                                        </Button>
+                                            loading={deleteLoadingDetails.loading && deleteLoadingDetails.theaterId === theaterRequest.id}
+                                            loadingSpinnerColor={theme === "dark" ? "white" : "black"}
+                                            spinnerSize={15}
+                                            title='Refuse'
+                                        />
                                         <Button
                                             className={style['button']}
                                             disabled={approveLoadingDetails.loading || deleteLoadingDetails.loading ? true : false}
                                             onClick={(event) => handleApproveTheaterRequest(event, theaterRequest.id)}
-                                        >
-                                            {
-                                                approveLoadingDetails.loading && approveLoadingDetails.theaterId === theaterRequest.id
-                                                    ?
-                                                    <Spinner
-                                                        color={theme === "dark" ? "white" : "black"}
-                                                        size={13}
-                                                    />
-                                                    :
-                                                    <>
-                                                        Approve
-                                                    </>
-
-                                            }
-                                        </Button>
+                                            loading={approveLoadingDetails.loading && approveLoadingDetails.theaterId === theaterRequest.id}
+                                            loadingSpinnerColor={"black"}
+                                            title='Approve'
+                                            spinnerSize={15}
+                                        />
                                     </div>
                                 </div>
                             </div>

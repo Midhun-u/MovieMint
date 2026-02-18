@@ -1,14 +1,18 @@
+import React from 'react'
 import style from '../../styles/movies/movieCard.module.scss'
 
-interface MovieCardProps{
+interface MovieCardProps {
     poster: string
     title: string
     certificate: string
     language: string
     categories: Array<string>
+    status?: "SHOWING" | "NOT_SHOWING" | "PENDING"
 }
 
-const MovieCard = ({poster, title, certificate, language, categories}: MovieCardProps) => {
+const MovieCard = ({ poster, title, certificate, language, categories, status }: MovieCardProps) => {
+
+    const sortedCategories = [...categories].sort()
 
     return (
 
@@ -32,8 +36,52 @@ const MovieCard = ({poster, title, certificate, language, categories}: MovieCard
                 </p>
                 {/* Movie categories */}
                 <p className={style['movie-category']}>
-                    {categories?.join(", ")}
+                    {
+                        sortedCategories.map((category, index) => (
+                            <React.Fragment
+                                key={index}
+                            >
+
+                                {category + (index < categories.length - 1 ? ", " : "")}
+                            </React.Fragment>
+                        ))
+                    }
                 </p>
+                {
+                    status
+                        ?
+                        <p
+                            className={
+                                status === "SHOWING"
+                                    ?
+                                    style['status-showing']
+                                    :
+                                    (
+                                        status === "NOT_SHOWING"
+                                            ?
+                                            style['status-not-showing']
+                                            :
+                                            style['status-pending']
+                                    )
+                            }
+                        >{
+                                status === "SHOWING"
+                                ?
+                                <>Showing</>
+                                :
+                                (
+                                    status === "NOT_SHOWING"
+                                    ?
+                                    <>Not Showing</>
+                                    :
+                                    <>
+                                        Pending
+                                    </>
+                                )
+                            }</p>
+                        :
+                        null
+                }
             </div>
         </div>
 

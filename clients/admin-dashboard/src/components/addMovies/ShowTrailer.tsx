@@ -1,22 +1,35 @@
 import { youtubeEmbedUrlRegex } from '../../utils/youtubeEmbedUrlRegex'
 import style from '../../styles/addMovies/showTrailer.module.scss'
+import { useEffect, useState } from 'react'
 
-interface ShowTrailerProps{
+interface ShowTrailerProps {
     trailerUrl: string | null | undefined
 }
 
-const ShowTrailer = ({trailerUrl}: ShowTrailerProps) => {
+const ShowTrailer = ({ trailerUrl }: ShowTrailerProps) => {
 
-    if(!trailerUrl) return
-    if(!youtubeEmbedUrlRegex.test(trailerUrl)) return
+    const [url, setUrl] = useState<string>("")
+
+    useEffect(() => {
+
+        if (!trailerUrl) return
+        if (!youtubeEmbedUrlRegex.test(trailerUrl)) return
+
+        setUrl(trailerUrl)
+
+    }, [trailerUrl])
 
     return (
 
+        url
+        ?
         <div className={style.container}>
             <iframe
-                src={trailerUrl}
+                src={url}
             />
         </div>
+        :
+        null
 
     )
 

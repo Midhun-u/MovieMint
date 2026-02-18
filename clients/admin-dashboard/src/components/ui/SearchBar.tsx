@@ -19,7 +19,7 @@ const SearchBarInput = forwardRef<HTMLInputElement, SearchBarInputProps>(({...pr
             <Input
                 className={style.input}
                 type='text'
-                placeholder='Search for movies'
+                placeholder='Search for movies by title'
                 {...props}
                 ref={ref}
             />

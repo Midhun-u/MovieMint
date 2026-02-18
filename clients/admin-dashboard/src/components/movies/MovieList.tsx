@@ -1,4 +1,4 @@
-import { Activity, useEffect, useState } from 'react'
+import { Activity, Fragment, useCallback, useEffect, useState, type ChangeEvent } from 'react'
 import style from '../../styles/movies/movieList.module.scss'
 import { getMoviesApi } from '../../api/movie'
 import SearchBarInput from '../ui/SearchBar'
@@ -9,6 +9,10 @@ import MovieCard from './MovieCard'
 import MovieSkeleton from './MovieSkeleton'
 import useObserver from '../hooks/useObserver'
 import NoResult from '../ui/NoResult'
+import {
+    SquarePen as EditIcon
+} from 'lucide-react'
+import { useNavigate } from 'react-router'
 
 const MovieList = () => {
 
@@ -18,26 +22,30 @@ const MovieList = () => {
         limit: number
     }>({
         page: 1,
-        limit: 1,
+        limit: 10,
     })
     const dispatch = useAppDispatch()
     const { isIntersecting, ref } = useObserver<HTMLDivElement>({ threshold: 0.5 })
     const [hasMore, setHasMore] = useState<boolean>(false)
+    const [selectedCategories, setSelectedCategories] = useState<Array<string>>([])
+    const [selectedLanguage, setSelectedLanguage] = useState<string>("")
+    const [selectedFormats, setSelectedFormats] = useState<Array<string>>([])
+    const navigate = useNavigate()
 
     // Function for fetching movies
-    const handleFetchMovies = async () => {
+    const handleFetchMovies = async (searchQuery: string = "") => {
 
         dispatch(movieRequest())
-        const result = await getMoviesApi(pagination.page, pagination.limit)
+        const result = await getMoviesApi(pagination.page, pagination.limit, searchQuery, selectedCategories, selectedFormats, selectedLanguage)
 
         if (result.success) {
 
             const movieList = pagination.page === 1 || movies.length <= 0 ? result.movies : [...movies, ...result.movies]
             dispatch(movieSuccess({ movies: movieList }))
 
-            if(result.movies?.length < pagination.limit){
+            if (result.movies?.length < pagination.limit) {
                 setHasMore(false)
-            }else{
+            } else {
                 setHasMore(true)
             }
 
@@ -45,6 +53,19 @@ const MovieList = () => {
             dispatch(movieFailed({ errorMessage: result.errorMessage }))
         }
 
+    }
+
+    // Function for searching movies which has debouncing feature
+    const debounceSearch = useCallback((searchQuery: string) => {
+
+        setTimeout(() => {
+            handleFetchMovies(searchQuery)
+        }, 500)
+
+    }, [])
+
+    const handleChangeEvent = (event: ChangeEvent<HTMLInputElement>) => {
+        debounceSearch(event.target.value)
     }
 
     useEffect(() => {
@@ -59,15 +80,19 @@ const MovieList = () => {
 
     useEffect(() => {
         handleFetchMovies()
-    }, [pagination.page])
+    }, [pagination.page, selectedCategories, selectedFormats, selectedLanguage])
 
     return (
 
         <div className={style.container}>
             <div className={style['search-container']}>
                 <SearchBarInput
+                    onChange={handleChangeEvent}
                 />
                 <MovieFilter
+                    setSelectedCategories={setSelectedCategories}
+                    setSelectedFormats={setSelectedFormats}
+                    setSelectedLanguage={setSelectedLanguage}
                 />
             </div>
             {
@@ -78,14 +103,32 @@ const MovieList = () => {
                         <div className={style['list']}>
                             {
                                 movies.map((movie) => (
-                                    <MovieCard
-                                        key={movie._id}
-                                        title={movie.title}
-                                        poster={movie.poster.image_url}
-                                        categories={movie.categories}
-                                        certificate={movie.certificate}
-                                        language={movie.language}
-                                    />
+                                    <div
+                                        className={style['movie-card-container']}
+
+                                    >
+                                        <MovieCard
+                                            key={movie._id}
+                                            title={movie.title}
+                                            poster={movie.poster.image_url}
+                                            categories={movie.categories}
+                                            certificate={movie.certificate}
+                                            language={movie.language}
+                                            status={movie.status}
+                                        />
+                                        <div
+                                            className={style['movie-edit']}
+                                            onClick={(event) => {
+                                                event.stopPropagation()
+                                                navigate(`edit/${movie._id}`)
+                                            }}
+                                        >
+                                            <EditIcon
+                                                size={22}
+                                                strokeWidth={1.5}
+                                            />
+                                        </div>
+                                    </div>
                                 ))
                             }
                             <Activity mode={loading ? "visible" : "hidden"}>

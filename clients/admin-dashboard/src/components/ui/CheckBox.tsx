@@ -8,12 +8,13 @@ interface CheckBoxProps {
     value: string
     onMarkChecked?: (value: string) => void
     onUnmarkChecked?: (value: string) => void
-    checkedValue: string
+    defaultChecked?: boolean
+    checkedValue?: string
 }
 
-const CheckBox = ({ value, onMarkChecked, onUnmarkChecked, checkedValue }: CheckBoxProps) => {
+const CheckBox = ({ value, onMarkChecked, onUnmarkChecked, defaultChecked = false, checkedValue = "" }: CheckBoxProps) => {
 
-    const [checked, setChecked] = useState<boolean>(false)
+    const [checked, setChecked] = useState<boolean>(defaultChecked)
 
     // Function for marking checked or unmarking
     const onClick = () => {
@@ -30,10 +31,10 @@ const CheckBox = ({ value, onMarkChecked, onUnmarkChecked, checkedValue }: Check
     return (
         <div className={style.container}>
             <div
-                className={checked && value === checkedValue ? style['checkbox-checked'] : style.checkbox}
+                className={!checked && checkedValue === value || defaultChecked ? style['checkbox-checked'] : style.checkbox}
                 onClick={onClick}
             >
-                <Activity mode={checked && value === checkedValue ? "visible" : "hidden"}>
+                <Activity mode={!checked && checkedValue === value || defaultChecked ? "visible" : "hidden"}>
                     <CheckIcon
                         size={12}
                         strokeWidth={2}

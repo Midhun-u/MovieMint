@@ -69,14 +69,13 @@ const ToastMessage = ({ children }: { children: ReactNode }) => {
     <ToastProvider.Provider value={{
       triggerToastMessage: triggerToastMessage
     }}>
-      {children}
       <Activity mode={showToastMessage ? "visible" : "hidden"}>
         <div
           ref={toastRef}
           className={style['container']}
         >
           <div
-            className={messageDetails.type === "ERROR"? style['error-toast-message']: style['toast-message']}
+            className={messageDetails.type === "ERROR" ? style['error-toast-message'] : style['toast-message']}
           >
             <ToastIcon
               size={22}
@@ -91,6 +90,7 @@ const ToastMessage = ({ children }: { children: ReactNode }) => {
           </div>
         </div>
       </Activity>
+      {children}
     </ToastProvider.Provider>
 
   )

@@ -12,7 +12,7 @@
     gap: 30px;
     width: 100%;
 
-    .form-field{
+    .form-field {
         width: 450px;
     }
 }
@@ -21,19 +21,31 @@
     @extend %add-movie-container-style;
     gap: 15px;
     width: 450px;
+
+    .category {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
 }
 
-.format-container{
+.format-container {
     @extend %add-movie-container-style;
     gap: 15px;
     width: 450px;
+
+    .formats {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
 }
 
 .release-date-container {
     @extend %add-movie-container-style;
     position: relative;
 
-    .date-picker{
+    .date-picker {
         width: 450px;
     }
 }
@@ -41,7 +53,7 @@
 .duration-container {
     @extend %add-movie-container-style;
 
-    .input-section-container{
+    .input-section-container {
         @extend %add-movie-container-style;
         gap: 5px;
     }
@@ -66,10 +78,22 @@
     }
 }
 
-.crew-container{
+.type-container{
+    width: 450px;
+
+    .checkbox-container{
+        width: 100%;
+        display: flex;
+        margin-top: 10px;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+}
+
+.crew-container {
     @extend %add-movie-container-style;
 
-    .add-cast-container{
+    .add-cast-container {
         width: 50px;
         height: 50px;
         background-color: var(--foreground-color);
@@ -80,27 +104,27 @@
         color: var(--disable-color);
     }
 
-    .list{
+    .list {
         display: flex;
         gap: 10px;
         margin-top: 20px;
         flex-wrap: wrap;
     }
 
-    .crew-details{
+    .crew-details {
         display: flex;
         flex-direction: column;
         align-items: center;
         cursor: pointer;
 
-        img{
+        img {
             width: 50px;
             aspect-ratio: 1 / 1;
             border-radius: 10px;
             opacity: 0.3;
         }
 
-        span{
+        span {
             font-size: 0.8rem;
             font-weight: 500;
             text-align: center;
@@ -109,51 +133,55 @@
             overflow: hidden;
         }
 
-        .image-container{
+        .image-container {
             @extend %container-center-style;
             position: relative;
         }
 
-        .icon{
+        .icon {
             position: absolute;
         }
     }
 }
 
-.submit-button{
+.submit-button {
     width: 450px;
     @extend %primary-button-style;
 }
 
-@media(max-width: 600px){
+@media(max-width: 600px) {
 
-    .container{
-        .form-field{
+    .container {
+        .form-field {
             width: 100%;
         }
     }
 
-    .release-date-container{
-        .date-picker{
+    .release-date-container {
+        .date-picker {
             width: 100%;
         }
     }
 
-    .duration-container{
-        .input-section{
+    .duration-container {
+        .input-section {
             width: 100%;
         }
     }
 
-    .category-container{
+    .category-container {
         width: 100%;
     }
 
-    .submit-button{
+    .type-container{
         width: 100%;
     }
 
-    .format-container{
+    .submit-button {
+        width: 100%;
+    }
+
+    .format-container {
         width: 100%;
     }
 

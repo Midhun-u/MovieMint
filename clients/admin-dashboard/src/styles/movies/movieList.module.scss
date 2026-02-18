@@ -1,14 +1,16 @@
-.container{
+@use '../variables' as variables;
+
+.container {
     display: flex;
     flex-direction: column;
 
-    .search-container{
+    .search-container {
         width: 550px;
         display: flex;
         gap: 15px;
     }
 
-    .list{
+    .list {
         margin-top: 20px;
         display: grid;
         grid-template-columns: repeat(4, auto);
@@ -16,16 +18,30 @@
         overflow: auto;
         justify-content: start;
 
-        &::-webkit-scrollbar{
+        &::-webkit-scrollbar {
             display: none;
+        }
+    }
+
+    .movie-card-container {
+        position: relative;
+
+        .movie-edit{
+            position: absolute;
+            top: 3px;
+            right: 3px;
+            padding: 6px;
+            @extend %container-center-style;
+            background-color: var(--foreground-color);
+            cursor: pointer;
         }
     }
 }
 
-@media(max-width: 650px){
+@media(max-width: 650px) {
 
-    .container{
-        .search-container{
+    .container {
+        .search-container {
             flex-direction: column;
             gap: 10px;
             width: 100%;
@@ -34,10 +50,10 @@
 
 }
 
-@media(max-width: 900px){
+@media(max-width: 900px) {
 
-    .container{
-        .list{
+    .container {
+        .list {
             grid-template-columns: repeat(3, auto);
         }
     }

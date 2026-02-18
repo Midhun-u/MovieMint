@@ -14,7 +14,6 @@ import {
 } from 'lucide-react'
 import ImagePicker from './ImagePicker'
 import ListItems from './ListItems'
-import Iso6391 from 'iso-639-1'
 import { movieCertificates } from '../../utils/movieCertificates'
 import FormLabel from '../form/FormLabel'
 import { movieCategories } from '../../utils/movieCategories'
@@ -35,6 +34,7 @@ import { deleteActorImageApi, deleteMovieImageApi, uploadActorImageApi, uploadMo
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { movieFailed, movieRequest, movieSuccess } from '../../store/movieSlice'
 import { movieFormats } from '../../utils/movieFormats'
+import { movieLanguages } from '../../utils/movieLanguages'
 
 type Inputs = {
     title: string
@@ -74,7 +74,6 @@ const AddMovieForm = () => {
     const subheadingId = useId()
     const synopsisId = useId()
     const movieTrailer = useId()
-    const languages = Iso6391.getAllCodes().map(code => Iso6391.getName(code))
     const [poster, setPoster] = useState<File | null>(null)
     const [banner, setBanner] = useState<File | null>(null)
     const [language, setLanguage] = useState<string>('')
@@ -253,7 +252,7 @@ const AddMovieForm = () => {
         }
 
     }
-
+    
     return (
 
         <form onSubmit={handleSubmit(handleSubmitForm)} className={style.container}>
@@ -319,7 +318,7 @@ const AddMovieForm = () => {
             <ListItems
                 labelTitle='Movie Language'
                 Icon={LanguageIcon}
-                values={languages}
+                values={movieLanguages}
                 value={language}
                 setValue={setLanguage}
             />
@@ -340,7 +339,8 @@ const AddMovieForm = () => {
                     values={movieCategories}
                     setValues={setCategories}
                     checkedValues={categories}
-                    selectedLimit={5}
+                    selectedLimit={4}
+                    className={style['category']}
                 />
             </div>
             {/* Movie format */}
@@ -353,6 +353,7 @@ const AddMovieForm = () => {
                     setValues={setFormats}
                     checkedValues={formats}
                     selectedLimit={null}
+                    className={style['formats']}
                 />
             </div>
             {/* Movie Release date */}
@@ -460,8 +461,9 @@ const AddMovieForm = () => {
                 <FormLabel
                     title='Movie Type'
                 />
-                <div className={style['checkbox-container']}>
+                <div>
                     <Radio
+                        className={style['checkbox-container']}
                         values={[
                             {
                                 title: "Live Action",
