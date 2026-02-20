@@ -90,11 +90,22 @@ export const getMoviesApi = handleError(async (
 
 })
 
-
 // Api for getting specific movie
 export const getMovieApi = handleError(async (movieId: string) => {
 
     const result = (await movieAxiosInstance.get(`/get-movie/${movieId}`)).data
     return result
+
+})
+
+// Api for updating movie
+export const updateMovieApi = handleError(async (movieId: string, data: object) => {
+
+    const result = await movieAxiosInstance.patch(`/update-movie/${movieId}`, data, {
+        headers: {
+            Authorization: `Bearer ${authToken}`
+        }
+    })
+    return result.data
 
 })

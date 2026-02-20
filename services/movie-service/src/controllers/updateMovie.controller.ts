@@ -8,6 +8,11 @@ export const updateMovieController = sendErrorResponse(async (context: Context) 
     const body = await context.req.json()
     const {movieId} = context.req.param()
 
+    if (body.actors && body.type && body.release_date){
+        context.status(400)
+        return context.json({success: false, error: "These fields are not editable", statusCode: 400})
+    }
+
     if(!movieId){
         context.status(400)
         return context.json({success: false, error: "Movie id is required", statusCode: 400})

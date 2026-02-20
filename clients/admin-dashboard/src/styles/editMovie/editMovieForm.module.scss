@@ -10,6 +10,21 @@
         width: 450px;
     }
 
+    .image-container {
+        position: relative;
+    }
+
+    .icon-container {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        @include variables.disableBackgroundColor(0.6);
+        @extend %container-center-style;
+        border-radius: 50%;
+        padding: 5px;
+        cursor: pointer;
+    }
+
     .poster {
         aspect-ratio: 2 / 3;
         width: 200px;
@@ -20,7 +35,7 @@
         aspect-ratio: 16 / 9;
     }
 
-    .update-button{
+    .update-button {
         margin-top: 20px;
         width: 450px;
         @extend %primary-button-style;
@@ -38,36 +53,42 @@
         flex-wrap: wrap;
         gap: 10px;
     }
+
+    .radio {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
 }
 
-@media(max-width: 600px){
+@media(max-width: 600px) {
 
-    .container{
-        .form-input{
+    .container {
+        .form-input {
             width: 100%;
         }
 
-        .banner{
+        .banner {
             width: 100%;
         }
 
-        .update-button{
+        .update-button {
             width: 100%;
         }
     }
 
-    .checkbox-container{
-        .checkbox-list{
+    .checkbox-container {
+        .checkbox-list {
             width: 100%;
         }
     }
 
 }
 
-@media(max-width: 300px){
+@media(max-width: 300px) {
 
-    .container{
-        .poster{
+    .container {
+        .poster {
             width: 100%;
         }
     }

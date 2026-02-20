@@ -1,4 +1,4 @@
-import { Activity, Fragment, useCallback, useEffect, useState, type ChangeEvent } from 'react'
+import { Activity, useCallback, useEffect, useState, type ChangeEvent } from 'react'
 import style from '../../styles/movies/movieList.module.scss'
 import { getMoviesApi } from '../../api/movie'
 import SearchBarInput from '../ui/SearchBar'
@@ -13,6 +13,8 @@ import {
     SquarePen as EditIcon
 } from 'lucide-react'
 import { useNavigate } from 'react-router'
+
+import MovieDetails from './MoveDetails'
 
 const MovieList = () => {
 
@@ -30,6 +32,13 @@ const MovieList = () => {
     const [selectedCategories, setSelectedCategories] = useState<Array<string>>([])
     const [selectedLanguage, setSelectedLanguage] = useState<string>("")
     const [selectedFormats, setSelectedFormats] = useState<Array<string>>([])
+    const [showMovieScreenDetails, setShowMovieScreenDetails] = useState<{
+        showScreen: boolean
+        movieId: string
+    }>({
+        showScreen: false,
+        movieId: ""
+    })
     const navigate = useNavigate()
 
     // Function for fetching movies
@@ -80,7 +89,12 @@ const MovieList = () => {
 
     useEffect(() => {
         handleFetchMovies()
-    }, [pagination.page, selectedCategories, selectedFormats, selectedLanguage])
+    }, [
+        pagination.page,
+        selectedCategories,
+        selectedFormats,
+        selectedLanguage
+    ])
 
     return (
 
@@ -105,10 +119,10 @@ const MovieList = () => {
                                 movies.map((movie) => (
                                     <div
                                         className={style['movie-card-container']}
-
+                                        key={movie._id}
+                                        onClick={() => setShowMovieScreenDetails({ showScreen: true, movieId: movie._id })}
                                     >
                                         <MovieCard
-                                            key={movie._id}
                                             title={movie.title}
                                             poster={movie.poster.image_url}
                                             categories={movie.categories}
@@ -146,6 +160,15 @@ const MovieList = () => {
                                 <div ref={ref}></div>
                             </Activity>
                         </div>
+                        <Activity mode={showMovieScreenDetails.showScreen ? "visible" : "hidden"}>
+                            <div  className={style['movie-details-container']}>
+                                <div className={style.background}></div>
+                                <MovieDetails
+                                    movieId={showMovieScreenDetails.movieId}
+                                    onClickOnClose={() => setShowMovieScreenDetails({movieId: "", showScreen: false})}
+                                />
+                            </div>
+                        </Activity>
                     </>
                     :
                     <NoResult

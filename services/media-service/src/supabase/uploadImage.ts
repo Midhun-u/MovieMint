@@ -24,8 +24,8 @@ export const uploadImage = async ({
 
     const filePath = `./${id + "-" + crypto.randomUUID()}${extname}`
 
-    const { data, error } = await supabase.storage.from(bucketName.trim()).upload(filePath, file, {
-        contentType: contentType
+    const { data, error } = await supabase.storage.from(bucketName).upload(filePath, file, {
+        contentType: contentType,
     })
 
     // Deleting file from disk

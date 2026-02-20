@@ -36,6 +36,24 @@
             cursor: pointer;
         }
     }
+
+    .movie-details-container{
+        width: 100%;
+        height: calc(100% - 60px);
+        position: absolute;
+        top: 60px;
+        left: 0px;
+        overflow: hidden;
+        @extend %container-center-style;
+    }
+
+    .background{
+        width: 100%;
+        height: 100%;
+        position: absolute; 
+        background-color: var(--foreground-color);
+        opacity: 0.4; 
+    }
 }
 
 @media(max-width: 650px) {

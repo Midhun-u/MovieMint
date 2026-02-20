@@ -11,5 +11,6 @@ export const envVariables = {
     SUPABASE_PROJECT_URL: process.env.SUPABASE_PROJECT_URL as string,
     SUPABASE_API_KEY: process.env.SUPABASE_API_KEY as string,
     ADMIN_DASHBOARD_URL: process.env.ADMIN_DASHBOARD_URL as string,
-    AUTH_SERVICE_URL: process.env.AUTH_SERVICE_URL as string
+    AUTH_SERVICE_URL: process.env.AUTH_SERVICE_URL as string,
+    THEATER_DASHBOARD_URL: process.env.THEATER_DASHBOARD_URL as string
 }

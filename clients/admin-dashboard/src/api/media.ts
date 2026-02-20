@@ -74,3 +74,18 @@ export const deleteTheaterImageApi = handleError(async (theaterId: string) => {
     return result
 
 })
+
+// Api for updating movie image
+export const updateMovieImageApi = handleError(async (type: "poster" | "banner", movieId: string, file: File) => {
+
+    const formData = new FormData()
+    formData.append("file", file)
+
+    const result = await mediaAxiosInstance.patch(`/movie/update-image/${type}/${movieId}`, formData, {
+        headers: {
+            Authorization: `Bearer ${authToken}`
+        }
+    })
+    return result.data
+
+})

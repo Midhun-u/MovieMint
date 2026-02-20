@@ -26,3 +26,6 @@ movieRouter.get("/get-movie/:movieId", getMovieController)
 
 // Route for updating movie
 movieRouter.patch("/update-movie/:movieId", updateMovieController)
+
+// Route for adding banner
+movieRouter.post("/add-banner", )

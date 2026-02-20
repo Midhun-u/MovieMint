@@ -36,16 +36,7 @@ const MovieCard = ({ poster, title, certificate, language, categories, status }:
                 </p>
                 {/* Movie categories */}
                 <p className={style['movie-category']}>
-                    {
-                        sortedCategories.map((category, index) => (
-                            <React.Fragment
-                                key={index}
-                            >
-
-                                {category + (index < categories.length - 1 ? ", " : "")}
-                            </React.Fragment>
-                        ))
-                    }
+                    {sortedCategories.join(", ")}
                 </p>
                 {
                     status

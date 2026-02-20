@@ -1,9 +1,9 @@
 import fs from 'fs/promises'
 
 // Function for reading file
-export const readFileFromDisk = (filePath: string) => {
+export const readFileFromDisk = async (filePath: string) => {
 
-    return fs.readFile(filePath)
+    return await fs.readFile(filePath)
 
 }
 

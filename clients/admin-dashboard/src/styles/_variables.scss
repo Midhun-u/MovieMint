@@ -12,8 +12,12 @@
     background-color: $background-color;
     padding-block: 7px;
     padding-inline: 20px;
-    border-radius: 10px;
+    border-radius: 6px;
     font-weight: 500;
+}
+
+@mixin disableBackgroundColor($opacity){
+    background-color: rgb(from var(--disable-color) r g b / $opacity);
 }
 
 
