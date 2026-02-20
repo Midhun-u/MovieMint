@@ -5,6 +5,11 @@ import { deleteMovieController } from "../controllers/deleteMovie.controller"
 import { getMoviesController } from "../controllers/getMovies.controller"
 import { getMovieController } from "../controllers/getMovie.controller"
 import { updateMovieController } from "../controllers/updateMovie.controller"
+import { addBannerController } from "../controllers/addBanner.controller"
+import { getBannerController } from "../controllers/getBanner.controller"
+import { removeBannerController } from "../controllers/removeBanner.controller"
+import { getTotalBannerCountController } from "../controllers/getTotalBannerCount.controller"
+import { getAllBannersController } from "../controllers/getAllBanners.controller"
 
 // Movie router
 export const movieRouter = new Hono()
@@ -28,4 +33,16 @@ movieRouter.get("/get-movie/:movieId", getMovieController)
 movieRouter.patch("/update-movie/:movieId", updateMovieController)
 
 // Route for adding banner
-movieRouter.post("/add-banner", )
+movieRouter.post("/add-banner", addBannerController)
+
+// Route for getting banner
+movieRouter.get("/get-banner/:movieId", getBannerController)
+
+// Route for getting all banners
+movieRouter.get("/get-all-banners", getAllBannersController)
+
+// Route for removing banner
+movieRouter.delete("/remove-banner/:id", removeBannerController)
+
+// Route for getting total banner count
+movieRouter.get("/get-banner-count", getTotalBannerCountController)

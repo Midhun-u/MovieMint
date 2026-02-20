@@ -3,13 +3,15 @@ import { authReducer } from "./authSlice";
 import { themeReducer } from "./themeSlice";
 import { movieReducer } from "./movieSlice";
 import { theaterRequestReducer } from "./theatersRequestSlice";
+import { bannerReducer } from "./bannerSlice";
 
 export const store = configureStore({
     reducer: {
         auth: authReducer,
         theme: themeReducer,
         movie: movieReducer,
-        theaterRequestReducer: theaterRequestReducer
+        theaterRequest: theaterRequestReducer,
+        banner: bannerReducer
     }
 })
 

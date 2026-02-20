@@ -109,3 +109,45 @@ export const updateMovieApi = handleError(async (movieId: string, data: object) 
     return result.data
 
 })
+
+// Api for getting banner
+export const getBannerApi = handleError(async (movieId: string) => {
+
+    const result = (await movieAxiosInstance.get(`/get-banner/${movieId}`)).data
+    return result
+
+})
+
+// Api for adding banner
+export const addBannerApi = handleError(async (data: {movieId: string}) => {
+
+    const result = await movieAxiosInstance.post("/add-banner", data, {
+        headers: {
+            Authorization: `Bearer ${authToken}`
+        }
+    })
+
+    return result.data
+
+})
+
+// Api for removing banner
+export const removeBannerApi = handleError(async (id: string) => {
+
+    const result = await movieAxiosInstance.delete(`/remove-banner/${id}`, {
+        headers: {
+            Authorization: `Bearer ${authToken}`
+        }
+    })
+
+    return result.data
+
+})
+
+// Api for getting total banner count
+export const getTotalBannerCountApi = handleError(async () => {
+
+    const result = await movieAxiosInstance.get("/get-banner-count")
+    return result.data
+
+})

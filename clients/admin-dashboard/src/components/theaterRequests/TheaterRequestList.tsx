@@ -30,7 +30,7 @@ const TheaterRequestList = () => {
         limit: 10,
     })
     const [hasMore, setHasMore] = useState<boolean>(false)
-    const { loading, theatersRequests } = useAppSelector(state => state.theaterRequestReducer)
+    const { loading, theatersRequests } = useAppSelector(state => state.theaterRequest)
     const { theme } = useAppSelector(state => state.theme)
     const dispatch = useAppDispatch()
     const { ref, isIntersecting } = useObserver<HTMLDivElement>({ threshold: 0.5 })
