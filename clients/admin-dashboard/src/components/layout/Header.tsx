@@ -9,7 +9,7 @@ import {
     Sun as WhiteThemeIcon
 } from 'lucide-react'
 import NullProfilePic from '../ui/NullProfilePic'
-import { Activity, useEffect, useState } from 'react'
+import { Activity, useCallback, useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router'
 import { envVariables } from '../../utils/envVariables'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
@@ -27,7 +27,7 @@ const Header = () => {
     const pathname = useLocation().pathname
 
     // Function for switching theme
-    const handleSwitchTheme = () => {
+    const handleSwitchTheme = useCallback( () => {
 
         const root = document.documentElement
 
@@ -37,11 +37,11 @@ const Header = () => {
             root.classList.remove("dark-theme")
         }
 
-    }
+    }, [theme])
 
     useEffect(() => {
         handleSwitchTheme()
-    }, [theme])
+    }, [handleSwitchTheme])
 
     return (
 

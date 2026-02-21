@@ -1,3 +1,4 @@
+import { useAppSelector } from '../../store/hooks'
 import style from '../../styles/dashboard/dashboardLogs.module.scss'
 import DashboardLogCard from './DashboardLogCard'
 import {
@@ -9,6 +10,8 @@ import {
 } from 'lucide-react'
 
 const DashboardLogs = () => {
+  
+  const {pendingMovies, todayBookings, pendingTheaters, totalBookings, totalTheaters} = useAppSelector(state => state.dashboard)
 
     return (
 
@@ -16,27 +19,27 @@ const DashboardLogs = () => {
             <DashboardLogCard
                 title="Today's Bookings"
                 Icon={TicketIcon}
-                data={0}
+                data={todayBookings}
             />
              <DashboardLogCard
                 title="Upcoming Movies"
                 Icon={DateIcon}
-                data={0}
+                data={pendingMovies}
             />
              <DashboardLogCard
                 title="Total Bookings"
                 Icon={BookingsIcon}
-                data={0}
+                data={totalBookings}
             />
              <DashboardLogCard
                 title="Total Theaters"
                 Icon={TheaterIcon}
-                data={0}
+                data={totalTheaters}
             />
              <DashboardLogCard
                 title="Total Theater Requests"
                 Icon={TheaterRequestsIcon}
-                data={0}
+                data={pendingTheaters}
             />
         </div>
 

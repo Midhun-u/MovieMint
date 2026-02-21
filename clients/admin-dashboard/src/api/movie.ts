@@ -155,7 +155,20 @@ export const getTotalBannerCountApi = handleError(async () => {
 // Api for getting all banners
 export const getAllBannersApi = handleError(async () => {
   
-  const result = (await movieAxiosInstance.get(`/get-all-banners/`)).data
+  const result = (await movieAxiosInstance.get(`/get-all-banners`)).data
   return result
+  
+})
+
+// Api for getting dashboard logs
+export const getMovieDashboardLogsApi = handleError(async () => {
+  
+  const result = await movieAxiosInstance.get("/get-dashboard-logs", {
+    headers: {
+      Authorization: `Bearer ${authToken}`
+    }
+  })
+  
+  return result.data
   
 })

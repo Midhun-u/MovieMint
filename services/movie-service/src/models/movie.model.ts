@@ -55,9 +55,16 @@ export const MovieModel = {
         const movies = await Movie.find(condition, {...projection})
             .skip((page - 1) * limit)
             .limit(limit)
-            .sort({release_date: 1}).lean()
+            .sort({release_date: -1}).lean()
 
         return movies
+
+    },
+
+    getPendingMoviesCount: async () => {
+
+        const pendingMoviesCount = await Movie.countDocuments({ status: "PENDING"})
+        return pendingMoviesCount
 
     }
 

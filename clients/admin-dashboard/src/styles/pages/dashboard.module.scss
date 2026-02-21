@@ -48,5 +48,9 @@
         .delete-icon{
             color: var(--error-foreground-color);
         }
+        
+        .disable-delete-icon{
+            color: var(--disable-color);
+        }
     }
 }

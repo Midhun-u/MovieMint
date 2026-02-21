@@ -38,3 +38,16 @@ export const getTheaterDetailsApi = handleError(async (theaterId: string) => {
     return result
 
 })
+
+// Api for getting dashboard logs
+export const getTheaterDashboardLogs = handleError(async () => {
+  
+  const result = await theaterAxiosInstance.get("/get-dashboard-logs", {
+    headers: {
+      Authorization: `Bearer ${authToken}`
+    }
+  }) 
+  
+  return result.data
+  
+})

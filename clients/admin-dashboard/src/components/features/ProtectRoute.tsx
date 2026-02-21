@@ -1,66 +1,58 @@
-import { useEffect, useState, type ReactNode } from "react"
-import { useNavigate, useSearchParams } from "react-router"
-import { envVariables } from "../../utils/envVariables"
-import { getAdminProfile } from "../../api/auth"
-import { useDispatch } from "react-redux"
-import { authFailed, authRequest, authSuccess } from "../../store/authSlice"
+import { useCallback, useEffect, useState, type ReactNode } from "react";
+import { useNavigate, useSearchParams } from "react-router";
+import { envVariables } from "../../utils/envVariables";
+import { getAdminProfile } from "../../api/auth";
+import { useDispatch } from "react-redux";
+import { authFailed, authRequest, authSuccess } from "../../store/authSlice";
 
-const ProtectRoute = ({
-    children
-}: {
-    children: ReactNode
-}) => {
+const ProtectRoute = ({ children }: { children: ReactNode }) => {
+  const [authenticated, setAuthenticated] = useState<boolean>(false);
+  const [param] = useSearchParams();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-    const [authenticated, setAuthenticated] = useState<boolean>(false)
-    const [param] = useSearchParams()
-    const navigate = useNavigate()
-    const dispatch = useDispatch()
-    
-    // Function for checking admin authenticated
-    const handleCheckAuth = async () => {
-        
-        const authToken = param.get("authToken")
-        const storedAuthToken = localStorage.getItem("authToken")
+  // Function for checking admin authenticated
+  const handleCheckAuth = useCallback(async () => {
+    const authToken = param.get("authToken");
+    const storedAuthToken = localStorage.getItem("authToken");
 
-        if (!storedAuthToken && !authToken) {
-            navigate(envVariables.APP_URL + "/login")
-            return
-        }
-
-        dispatch(authRequest())
-        const result = await getAdminProfile(storedAuthToken ? storedAuthToken : authToken as string)
-
-        if (result.success && result?.user?.role === "ADMIN") {
-            dispatch(authSuccess({ admin: result.user }))
-
-            localStorage.setItem("authToken", storedAuthToken? storedAuthToken: authToken as string)
-            setAuthenticated(true)
-
-            return
-
-        } else {
-
-            dispatch(authFailed({ errorMessage: result.error }))
-
-            navigate(envVariables.APP_URL + "/login")
-            return
-
-        }
-
+    if (!storedAuthToken && !authToken) {
+      navigate(envVariables.APP_URL + "/login");
+      return;
     }
 
-    useEffect(() => {
-        handleCheckAuth()
-    }, [])
+    dispatch(authRequest());
+    const result = await getAdminProfile(
+      storedAuthToken ? storedAuthToken : (authToken as string),
+    );
 
-    if (!authenticated) return null
+    if (result.success && result?.user?.role === "ADMIN") {
+      dispatch(authSuccess({ admin: result.user }));
 
-    return (
-        <>
-            {children}
-        </>
-    )
+      localStorage.setItem(
+        "authToken",
+        storedAuthToken ? storedAuthToken : (authToken as string),
+      );
+      setAuthenticated(true);
 
-}
+      return;
+    } else {
+      dispatch(authFailed({ errorMessage: result.error }));
 
-export default ProtectRoute
+      navigate(envVariables.APP_URL + "/login");
+      return;
+    }
+  }, [dispatch, navigate, param]);
+
+  useEffect(() => {
+    (() => {
+      handleCheckAuth();
+    })();
+  }, [handleCheckAuth]);
+
+  if (!authenticated) return null;
+
+  return <>{children}</>;
+};
+
+export default ProtectRoute;

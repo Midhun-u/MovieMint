@@ -92,5 +92,33 @@ export const TheaterModel = {
 
         return updatedCount
 
+    },
+
+    getPendingTheatersCount: async () => {
+
+        const theatersCount = await Theater.count({
+            where: {
+                status: {
+                    [Op.eq]: "PENDING"
+                }
+            }
+        })
+
+        return theatersCount
+
+    },
+
+    getAvailableTheaterCount: async () => {
+
+        const theatersCount = await Theater.count({
+            where: {
+                status: {
+                    [Op.eq]: "AVAILABLE"
+                }
+            }
+        })
+
+        return theatersCount
+
     }
 }

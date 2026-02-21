@@ -81,11 +81,12 @@ const TheaterRequestList = () => {
       pagination.limit,
     );
     if (result.success) {
-      const theaterRequestList =
-        pagination.page === 1 || theatersRequests.length <= 0
-          ? [...result.theaters]
-          : [...theatersRequests, ...result.theaters];
-      dispatch(theaterSuccess({ theatersRequests: theaterRequestList }));
+      dispatch(
+        theaterSuccess({
+          theatersRequests: result.theaters,
+          page: pagination.page,
+        }),
+      );
 
       if (result.theaters?.length < pagination.limit) {
         setHasMore(false);
@@ -118,7 +119,9 @@ const TheaterRequestList = () => {
         const filteredTheater = theatersRequests.filter(
           (theater) => theater.id !== theaterId,
         );
-        dispatch(theaterSuccess({ theatersRequests: filteredTheater }));
+        dispatch(
+          theaterSuccess({ theatersRequests: filteredTheater, filter: true }),
+        );
       });
 
       toastContext?.triggerToastMessage("Theater is approved", "SUCCESS");
@@ -156,7 +159,9 @@ const TheaterRequestList = () => {
           const filteredTheater = theatersRequests.filter(
             (theater) => theater.id !== theaterId,
           );
-          dispatch(theaterSuccess({ theatersRequests: filteredTheater }));
+          dispatch(
+            theaterSuccess({ theatersRequests: filteredTheater, filter: true }),
+          );
         });
 
         toastContext?.triggerToastMessage(
@@ -186,7 +191,11 @@ const TheaterRequestList = () => {
     (() => {
       handleGetTheaterRequests();
     })();
-  }, [pagination.page, handleGetTheaterRequests]);
+
+    return () => {
+      dispatch(theaterSuccess({ theatersRequests: [] }));
+    };
+  }, [pagination.page, handleGetTheaterRequests, dispatch]);
 
   useEffect(() => {
     if (!isIntersecting || loading || !hasMore) return;

@@ -3,5 +3,6 @@ export const protectedRoutes = [
     "/delete-movie",
     "/update-movie",
     "/add-banner",
-    "/remove-banner"
+    "/remove-banner",
+    "/get-dashboard-logs",
 ]

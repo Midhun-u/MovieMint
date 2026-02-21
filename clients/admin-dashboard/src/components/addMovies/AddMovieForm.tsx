@@ -218,6 +218,7 @@ const AddMovieForm = () => {
                 }
 
             }) || [])
+            console.log(actorResult, movieResult, posterResult, bannerResult)
 
             // Checking if all actors images are uploaded
             const isNotActorImageUploaded = actorResult.some((result) => {
