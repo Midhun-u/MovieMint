@@ -1,8 +1,8 @@
 import { movieLanguages } from '../../utils/movieLanguages'
 import style from '../../styles/movies/screen.module.scss'
 import { useContext, useEffect, useState } from 'react'
-import { FilterProvider } from './MovieFilter'
 import Radio from '../ui/Radio'
+import { FilterProvider } from '../context/providers/FilterContext'
 
 const MovieLanguage = () => {
 

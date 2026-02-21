@@ -1,4 +1,3 @@
-import React from 'react'
 import style from '../../styles/movies/movieCard.module.scss'
 
 interface MovieCardProps {

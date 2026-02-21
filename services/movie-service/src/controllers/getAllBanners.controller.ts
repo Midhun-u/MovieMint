@@ -1,6 +1,7 @@
 import { Context } from "hono";
 import { sendErrorResponse } from "../utils/sendErrorResponse";
 import { BannerModel } from "../models/banner.model";
+import { getMovieImage } from "../services/getMovieImage";
 
 // Controller for getting all banners
 export const getAllBannersController = sendErrorResponse(async (context: Context) => {
@@ -13,15 +14,23 @@ export const getAllBannersController = sendErrorResponse(async (context: Context
         status: 1,
         formats: 1
     })
-    
-    const bannerDetaiils = banners.map((banner) => {
+
+    const bannersDetaiils = await Promise.all(banners.map(async (banner) => {
+
+        // Fetching movie image
+        const imageResult = await getMovieImage("poster", banner.movie_id._id.toString())
+
         return {
             _id: banner._id,
-            movie: banner.movie_id,
+            movie: {
+                ...banner.movie_id,
+                poster: imageResult.success? imageResult.data: {}
+            },
             createdAt: banner.createdAt
         }
-    })
 
-    return context.json({ success: true, banners: bannerDetaiils, statusCode: 200 })
+    }) || [])
+
+    return context.json({ success: true, banners: bannersDetaiils.length? bannersDetaiils: banners, statusCode: 200 })
 
 }, "getAllBannersController error")

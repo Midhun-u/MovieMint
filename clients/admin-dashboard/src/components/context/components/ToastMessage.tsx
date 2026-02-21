@@ -1,20 +1,11 @@
-'use client'
-
-import { Activity, createContext, type ReactNode, useEffect, useRef, useState } from 'react'
+import { Activity, type ReactNode, useEffect, useRef, useState } from 'react'
 import {
   CircleCheck as SuccessIcon,
   OctagonAlert as ErrorIcon
 } from 'lucide-react'
-import type { LucideReactIconType } from '@/types/lucideReactType'
-import style from '../../styles/context/toastMessage.module.scss'
-
-
-type ToastType = "SUCCESS" | "ERROR"
-type ContextType = {
-  triggerToastMessage: (message: string, type: ToastType) => void
-} | null
-
-export const ToastProvider = createContext<ContextType>(null)
+import type { LucideReactIconType } from '../../../types/lucideReactType'
+import style from '../../../styles/context/toastMessage.module.scss'
+import { type ToastType, ToastProvider } from '../providers/ToastProvider'
 
 const ToastMessage = ({ children }: { children: ReactNode }) => {
 

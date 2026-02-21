@@ -20,7 +20,7 @@ import ShowTrailer from '../addMovies/ShowTrailer'
 import Button from '../ui/Button'
 import Radio from '../ui/Radio'
 import { updateMovieImageApi } from '../../api/media'
-import { ToastProvider } from '../context/ToastMessage'
+import { ToastProvider } from '../context/providers/ToastProvider'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { movieFailed, movieRequest } from '../../store/movieSlice'
 

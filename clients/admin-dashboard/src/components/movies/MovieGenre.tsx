@@ -1,8 +1,8 @@
 import { movieCategories } from "../../utils/movieCategories"
 import style from '../../styles/movies/screen.module.scss'
 import { useContext, useEffect, useState } from "react"
-import { FilterProvider } from "./MovieFilter"
 import CheckBoxList from "../ui/CheckBoxList"
+import { FilterProvider } from "../context/providers/FilterContext"
 
 const MovieGenre = () => {
 

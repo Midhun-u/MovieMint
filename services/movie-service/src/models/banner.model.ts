@@ -48,7 +48,9 @@ export const BannerModel = {
         .populate({
             path: "movie_id",
             select: projection
-        }).lean()
+        })
+        .sort({createdAt: -1})
+        .lean()
 
         return banners
 

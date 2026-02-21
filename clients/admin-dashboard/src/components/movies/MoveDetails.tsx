@@ -15,7 +15,7 @@ import {
   bannerRequest,
   bannerSuccess,
 } from "../../store/bannerSlice";
-import { ToastProvider } from "../context/ToastMessage";
+import { ToastProvider } from "../context/providers/ToastProvider";
 
 interface MovieDetails {
   movieId: string;
@@ -34,10 +34,10 @@ const MovieDetails = ({ movieId, onClickOnClose }: MovieDetails) => {
     if (result.success) {
       setMovieDetails(result.movie);
     }
-  }, [movieId])
+  }, [movieId]);
 
   // Function for fetching banner
-  const handleFetchBanner = async () => {
+  const handleFetchBanner = useCallback(async () => {
     dispatch(bannerRequest());
     const result = await getBannerApi(movieId);
 
@@ -46,7 +46,7 @@ const MovieDetails = ({ movieId, onClickOnClose }: MovieDetails) => {
     } else {
       dispatch(bannerFailed({ errorMessage: result.errorMessage }));
     }
-  };
+  }, [movieId, dispatch]);
 
   // Functio for adding banner
   const handleAddBanner = async () => {
@@ -93,15 +93,17 @@ const MovieDetails = ({ movieId, onClickOnClose }: MovieDetails) => {
 
   useEffect(() => {
     if (movieId) {
-      handleFetchMovieDetails();
-      handleFetchBanner();
+      const fetchData = async () => {
+        await Promise.all([handleFetchMovieDetails(), handleFetchBanner()]);
+      }
+      fetchData()
     }
 
     return () => {
       setMovieDetails(null);
       dispatch(bannerSuccess({ banner: null }));
     };
-  }, [movieId]);
+  }, [movieId, handleFetchBanner, handleFetchMovieDetails, dispatch]);
 
   return movieDetails ? (
     <div className={style.container}>

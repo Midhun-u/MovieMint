@@ -151,3 +151,11 @@ export const getTotalBannerCountApi = handleError(async () => {
     return result.data
 
 })
+
+// Api for getting all banners
+export const getAllBannersApi = handleError(async () => {
+  
+  const result = (await movieAxiosInstance.get(`/get-all-banners/`)).data
+  return result
+  
+})
