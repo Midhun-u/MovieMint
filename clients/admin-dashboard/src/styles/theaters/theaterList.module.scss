@@ -1,0 +1,134 @@
+@use "../variables" as variables;
+
+.container {
+    width: 700px;
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    gap: 10px;
+}
+
+.card {
+    width: 100%;
+    padding: 20px;
+    background-color: var(--foreground-color);
+    @include variables.disableBorderColor(0.3);
+    border-radius: 10px;
+    padding-top: 25px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .status {
+        position: absolute;
+        top: 7px;
+        right: 7px;
+        font-size: 0.6rem;
+        font-weight: 500;
+        background-color: var(--warn-background-color);
+        color: var(--warn-foreground-color);
+        padding-block: 5px;
+        padding-inline: 10px;
+        border-radius: 7px;
+    }
+
+    .available-status {
+        @extend .status;
+        background-color: var(--success-background-color);
+        color: var(--success-foreground-color);
+    }
+
+    .not-available-status {
+        @extend .status;
+        background-color: var(--error-background-color);
+        color: var(--error-foreground-color);
+    }
+
+    .image {
+        width: 70px;
+        aspect-ratio: 1 / 1;
+        border-radius: 10px;
+        margin-top: 15px;
+    }
+
+    h1 {
+        font-size: 0.9rem;
+        max-height: 23px;
+        overflow: hidden;
+    }
+
+    .theater-details-container {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+
+
+        .theater-details {
+            margin-top: 7px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+
+            p {
+                font-size: 0.8rem;
+                max-height: 36px;
+                color: var(--disable-color);
+                overflow: hidden;
+                font-weight: 500;
+            }
+
+            .icon {
+                flex-shrink: 0;
+                color: var(--disable-color);
+            }
+        }
+
+        .theater-owner-details {
+            display: flex;
+            gap: 6px;
+            margin-top: 15px;
+            align-items: center;
+
+            img {
+                height: 35px;
+                aspect-ratio: 1 / 1;
+                border-radius: 50%;
+                min-height: 30px;
+            }
+            
+            .details{
+                display: flex;
+                flex-direction: column;
+            }
+
+            p {
+                max-height: 21px;
+                overflow: hidden;
+                font-size: 0.82rem;
+                font-weight: 500;
+                word-break: break-all;
+
+                &:last-child {
+                    color: var(--disable-color);
+                }
+            }
+        }
+        
+        .details-button{
+            @extend %primary-button-style;
+            margin-top: 10px;
+        }
+    }
+}
+
+@media (max-width: 1050px) {
+    .container {
+        width: 100%;
+    }
+}
+
+@media (max-width: 700px) {
+    .container {
+        grid-template-columns: auto;
+    }
+}

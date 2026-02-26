@@ -18,7 +18,7 @@ export const connectDatabase = async () => {
 
         await sequelize.authenticate()
         await sequelize.sync({alter: true})
-        console.log(`Database is connected`) 
+        console.log(`Database is connected`)
         
     } catch (error) {
         console.log(`Database is not connected due to: ${error}`)

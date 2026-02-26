@@ -120,5 +120,36 @@ export const TheaterModel = {
 
         return theatersCount
 
-    }
+    },
+
+    getTheaters: async (page: number, limit: number, status: string = "", theaterName: string = "") => {
+
+        const statusConditon = status ? {
+            status: {
+                [Op.eq]: status,
+            }
+        } : {}
+
+        const theaterNameCondition = theaterName? {
+            theater_name: {
+                [Op.iLike]: `${theaterName}%`
+            }
+        }: {}
+
+        const theaters = await Theater.findAll({
+            where: {
+                ...statusConditon,
+                ...theaterNameCondition,
+                status: {
+                    [Op.ne]: "PENDING"
+                }
+            },
+            offset: (page - 1) * limit,
+            limit: limit,
+            order: [["createdAt", "DESC"]]
+        })
+
+        return theaters
+
+    },
 }

@@ -1,4 +1,4 @@
-@use '../variables' as variables;
+@use "../variables" as variables;
 
 %disable-color {
     color: rgb(from var(--foreground-theme-color) r g b / 0.5);
@@ -21,12 +21,28 @@
         top: 10px;
         right: 10px;
         font-size: 0.7rem;
-        background-color: var(--warn-background-color);
-        color: var(--warn-foreground-color);
         padding-block: 4px;
         padding-inline: 10px;
         font-weight: 500;
         border-radius: 7px;
+    }
+
+    .available-status {
+        @extend .status;
+        background-color: var(--success-background-color);
+        color: var(--success-foreground-color);
+    }
+
+    .not-show-status {
+        @extend .status;
+        background-color: var(--error-background-color);
+        color: var(--error-foreground-color);
+    }
+
+    .pending-status {
+        @extend .status;
+        background-color: var(--warn-background-color);
+        color: var(--warn-foreground-color);
     }
 
     .image-container {
@@ -65,12 +81,42 @@
         font-weight: 500;
         @extend %disable-color;
     }
+
+    .theater-owner-details {
+        margin-top: 15px;
+        display: flex;
+        gap: 6px;
+
+        img {
+            height: 35px;
+            aspect-ratio: 1 / 1;
+            min-height: 30px;
+            border-radius: 50%;
+        }
+
+        .details {
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            gap: 0px;
+
+            p {
+                max-height: 21px;
+                overflow: hidden;
+                font-size: 0.82rem;
+                font-weight: 500;
+                word-break: break-all;
+
+                &:last-child {
+                    color: var(--disable-color);
+                }
+            }
+        }
+    }
 }
 
-@media(max-width: 700px){
-
-    .container{
+@media (max-width: 700px) {
+    .container {
         width: 100%;
     }
-
 }

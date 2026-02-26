@@ -9,7 +9,7 @@ export type Theater = {
     rows_number: number
     seats_number: number
     owner_id: string
-    status: "PENDING" | "AVAILABLE"
+    status: "PENDING" | "AVAILABLE" | "NOT_AVAILABLE"
     theater_owner: {
         id: string
         firstname: string

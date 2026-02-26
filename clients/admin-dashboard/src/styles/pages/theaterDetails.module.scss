@@ -19,14 +19,14 @@
         gap: 10px;
     }
 
-    .approve-button{
+    .primary-button{
        @extend %primary-button-style;
        border: 1.5px solid var(--primary-color);
        width: 400px;
     }
 
-    .refuse-button{
-        @extend .approve-button;
+    .secondary-button{
+        @extend .primary-button;
         background-color: var(--foreground-color);
         color: var(--foreground-theme-color);
         @include variables.disableBorderColor(0.3);

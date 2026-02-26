@@ -7,6 +7,7 @@ import {
   approveTheaterApi,
   deleteTheaterApi,
   getTheaterDetailsApi,
+  updateTheaterApi,
 } from "../../api/theater";
 import { useNavigate, useParams } from "react-router";
 import Spinner from "../ui/Spinner";
@@ -32,7 +33,7 @@ const TheaterDetails = () => {
     if (result.success) {
       setTheaterDetails(result.theater);
     }
-  }, [theaterId])
+  }, [theaterId]);
 
   const handleApproveTheaterRequest = async () => {
     if (!theaterDetails) return;
@@ -81,6 +82,28 @@ const TheaterDetails = () => {
     setDeleteLoading(false);
   };
 
+  // Function for blocking and unblocking theater
+  const handleUpdateTheater = async (status: "AVAILABLE" | "NOT_AVAILABLE") => {
+    if (!theaterId) return;
+
+    setApproveLoading(true);
+    const result = await updateTheaterApi(theaterId, { status: status });
+    if (result.success) {
+      toastContext?.triggerToastMessage(
+        status !== "AVAILABLE" ? "Theater is blocked" : "Cancelled block",
+        "SUCCESS",
+      );
+      setTheaterDetails((pre) => {
+        return { ...pre, status: status } as Theater | null;
+      });
+      
+    } else {
+      toastContext?.triggerToastMessage("Theater couldn't update", "ERROR");
+    }
+
+    setApproveLoading(false);
+  };
+
   useEffect(() => {
     (() => {
       if (!theaterId) return;
@@ -96,7 +119,6 @@ const TheaterDetails = () => {
           title="Theater Details"
           about="This section allows to see the theater details which provided by theater owner"
           backButton
-          navigationUrl="/admin/theater-requests"
         />
       </div>
       {/* Details */}
@@ -118,34 +140,61 @@ const TheaterDetails = () => {
             </div>
           </Suspense>
           <div className={style["button-container"]}>
-            <Button
-              className={style["approve-button"]}
-              disabled={deleteLoading || approveLoading ? true : false}
-              onClick={() => handleApproveTheaterRequest()}
-            >
-              {approveLoading ? (
-                <Spinner
-                  color={theme === "dark" ? "white" : "black"}
-                  size={18}
-                />
-              ) : (
-                <>Approve</>
-              )}
-            </Button>
-            <Button
-              className={style["refuse-button"]}
-              disabled={deleteLoading || approveLoading ? true : false}
-              onClick={() => handleDeleteTheaterRequest()}
-            >
-              {deleteLoading ? (
-                <Spinner
-                  color={theme === "dark" ? "white" : "black"}
-                  size={18}
-                />
-              ) : (
-                <>Refuse</>
-              )}
-            </Button>
+            {theaterDetails.status === "PENDING" ? (
+              <>
+                <Button
+                  className={style["primary-button"]}
+                  disabled={deleteLoading || approveLoading ? true : false}
+                  onClick={() => handleApproveTheaterRequest()}
+                >
+                  {approveLoading ? (
+                    <Spinner
+                      color={theme === "dark" ? "white" : "black"}
+                      size={18}
+                    />
+                  ) : (
+                    <>Approve</>
+                  )}
+                </Button>
+                <Button
+                  className={style["secondary-button"]}
+                  disabled={deleteLoading || approveLoading ? true : false}
+                  onClick={() => handleDeleteTheaterRequest()}
+                >
+                  {deleteLoading ? (
+                    <Spinner
+                      color={theme === "dark" ? "white" : "black"}
+                      size={18}
+                    />
+                  ) : (
+                    <>Refuse</>
+                  )}
+                </Button>
+              </>
+            ) : null}
+            {theaterDetails.status !== "PENDING" ? (
+              <Button
+                onClick={() =>
+                  handleUpdateTheater(
+                    theaterDetails.status === "AVAILABLE"
+                      ? "NOT_AVAILABLE"
+                      : "AVAILABLE",
+                  )
+                }
+                title={
+                  theaterDetails.status === "AVAILABLE"
+                    ? "Block Theater"
+                    : "Cancel Block"
+                }
+                className={
+                  theaterDetails.status === "AVAILABLE"
+                    ? style["primary-button"]
+                    : style["secondary-button"]
+                }
+                loading={approveLoading}
+                spinnerSize={16}
+              />
+            ) : null}
           </div>
         </>
       ) : (

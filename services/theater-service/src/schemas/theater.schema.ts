@@ -66,7 +66,7 @@ export const Theater = sequelize.define("theater", {
         defaultValue: false
     },
     status: {
-        type: DataTypes.ENUM("PENDING", "AVAILABLE"),
+        type: DataTypes.ENUM("PENDING", "AVAILABLE", "NOT_AVAILABLE"),
         allowNull: false,
         defaultValue: "PENDING"
     }

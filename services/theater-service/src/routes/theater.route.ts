@@ -7,6 +7,8 @@ import { getTheaterRequestsController } from "../controllers/getTheaterRequests.
 import { approveTheaterController } from "../controllers/approveTheater.controller";
 import { getTheaterDetailsController } from "../controllers/getTheaterDetails.controller";
 import { getDashboardLogsController } from "../controllers/getDashboardLogs.controller";
+import { getTheatersController } from "../controllers/getTheaters.controller";
+import { updateTheaterController } from "../controllers/updateTheater.controller";
 
 // Theater router
 export const theaterRouter = new Hono()
@@ -34,3 +36,9 @@ theaterRouter.patch("/approve-theater/:theaterId", approveTheaterController)
 
 // Route for getting dashboard logs
 theaterRouter.get("/get-dashboard-logs", getDashboardLogsController)
+
+// Route for getting theaters
+theaterRouter.get("/get-theaters", getTheatersController)
+
+// Route for updating theater details
+theaterRouter.patch("/update-theater/:theaterId", updateTheaterController)

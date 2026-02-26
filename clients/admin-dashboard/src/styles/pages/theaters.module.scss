@@ -1,0 +1,24 @@
+@use "../variables" as variables;
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+
+    .search-bar-container {
+        width: 450px;
+    }
+
+    .list-container {
+        margin-top: 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    .container {
+        .search-bar-container {
+            width: 100%;
+        }
+    }
+}

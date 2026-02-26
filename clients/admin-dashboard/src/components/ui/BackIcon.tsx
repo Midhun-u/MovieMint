@@ -4,17 +4,13 @@ import {
 import { useNavigate } from 'react-router'
 import style from '../../styles/ui/backIconUi.module.scss'
 
-interface BackIconUIProps {
-    navigationUrl: string
-}
-
-const BackIconUI = ({ navigationUrl }: BackIconUIProps) => {
+const BackIconUI = () => {
 
     const navigate = useNavigate()
 
     return (
         <div
-            onClick={() => navigate(navigationUrl)}
+            onClick={() => navigate(-1)}
             className={style.container}
         >
             <BackIcon

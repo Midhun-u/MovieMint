@@ -1,16 +1,12 @@
-import {
-  Activity,
-  useCallback,
-  useEffect,
-  useState,
-  type ChangeEvent,
-} from "react";
+import { Activity, useEffect, useState, type ChangeEvent } from "react";
 import style from "../../styles/movies/movieList.module.scss";
 import { getMoviesApi } from "../../api/movie";
 import SearchBarInput from "../ui/SearchBar";
 import MovieFilter from "./MovieFilter";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
+  clearState,
+  incrementPage,
   movieFailed,
   movieRequest,
   movieSuccess,
@@ -21,18 +17,12 @@ import useObserver from "../hooks/useObserver";
 import NoResult from "../ui/NoResult";
 import { SquarePen as EditIcon } from "lucide-react";
 import { useNavigate } from "react-router";
-
 import MovieDetails from "./MoveDetails";
 
 const MovieList = () => {
-  const { loading, movies } = useAppSelector((state) => state.movie);
-  const [pagination, setPagination] = useState<{
-    page: number;
-    limit: number;
-  }>({
-    page: 1,
-    limit: 10,
-  });
+  const { loading, movies, pagination } = useAppSelector(
+    (state) => state.movie,
+  );
   const dispatch = useAppDispatch();
   const { isIntersecting, ref } = useObserver<HTMLDivElement>({
     threshold: 0.5,
@@ -51,53 +41,42 @@ const MovieList = () => {
     movieId: "",
   });
   const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   // Function for fetching movies
-  const handleFetchMovies = useCallback(
-    async (searchQuery: string = "") => {
-      dispatch(movieRequest());
-      const result = await getMoviesApi(
-        pagination.page,
-        pagination.limit,
-        searchQuery,
-        selectedCategories,
-        selectedFormats,
-        selectedLanguage,
-      );
-
-      if (result.success) {
-        dispatch(movieSuccess({ movies: result.movies, page: pagination.page }));
-
-        if (result.movies?.length < pagination.limit) {
-          setHasMore(false);
-        } else {
-          setHasMore(true);
-        }
-      } else {
-        dispatch(movieFailed({ errorMessage: result.errorMessage }));
-      }
-    },
-    [
-      dispatch,
-      pagination.limit,
+  const handleFetchMovies = async (searchQuery: string = "") => {
+    dispatch(movieRequest());
+    const result = await getMoviesApi(
       pagination.page,
+      pagination.limit,
+      searchQuery,
       selectedCategories,
       selectedFormats,
       selectedLanguage,
-    ],
-  );
+    );
+
+    if (result.success) {
+      dispatch(movieSuccess({ movies: result.movies, page: pagination.page }));
+
+      if (result.movies?.length < pagination.limit) {
+        setHasMore(false);
+      } else {
+        setHasMore(true);
+      }
+    } else {
+      dispatch(movieFailed({ errorMessage: result.errorMessage }));
+    }
+  };
 
   // Function for searching movies which has debouncing feature
-  const debounceSearch = useCallback(
-    (searchQuery: string) => {
-      setTimeout(() => {
-        handleFetchMovies(searchQuery);
-      }, 500);
-    },
-    [handleFetchMovies],
-  );
+  const debounceSearch = (searchQuery: string) => {
+    setTimeout(() => {
+      handleFetchMovies(searchQuery);
+    }, 500);
+  };
 
   const handleChangeEvent = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
     debounceSearch(event.target.value);
   };
 
@@ -105,9 +84,7 @@ const MovieList = () => {
     if (!isIntersecting || loading || !hasMore) return;
 
     (() => {
-      setPagination((pre) => {
-        return { ...pre, page: pre.page + 1 };
-      });
+      dispatch(incrementPage());
     })();
   }, [isIntersecting, hasMore, loading]);
 
@@ -115,12 +92,17 @@ const MovieList = () => {
     (() => {
       handleFetchMovies();
     })();
-    
+
     return () => {
-      dispatch(movieSuccess({movies: []}))
-    }
-    
-  }, [handleFetchMovies, dispatch]);
+      dispatch(movieSuccess({ movies: [] }));
+    };
+  }, [pagination.page]);
+
+  useEffect(() => {
+    (() => {
+      dispatch(clearState());
+    })();
+  }, [searchQuery, selectedCategories, selectedFormats, selectedLanguage]);
 
   return (
     <div className={style.container}>

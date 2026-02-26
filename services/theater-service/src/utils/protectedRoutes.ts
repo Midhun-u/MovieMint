@@ -2,5 +2,6 @@ export const protectedRoutes = [
     "/add-theater-registration",
     "/delete-theater-registration",
     "/get-theater-registration",
-    "/get-dashboard-logs"
+    "/get-dashboard-logs",
+    "/update-theater"
 ]

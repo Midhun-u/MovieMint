@@ -25,10 +25,11 @@ import { useNavigate } from "react-router";
 import { ToastProvider } from "../context/providers/ToastProvider";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
+  clearState,
   theaterFailed,
   theaterRequest,
   theaterSuccess,
-} from "../../store/theatersRequestSlice";
+} from "../../store/theaterSlice";
 import TheaterRequestSkeleton from "./TheaterRequestSkeleton";
 import { deleteTheaterImageApi } from "../../api/media";
 import NoResult from "../ui/NoResult";
@@ -39,12 +40,10 @@ const TheaterRequestList = () => {
     limit: number;
   }>({
     page: 1,
-    limit: 10,
+    limit: 1,
   });
   const [hasMore, setHasMore] = useState<boolean>(false);
-  const { loading, theatersRequests } = useAppSelector(
-    (state) => state.theaterRequest,
-  );
+  const { loading, theaters } = useAppSelector((state) => state.theater);
   const { theme } = useAppSelector((state) => state.theme);
   const dispatch = useAppDispatch();
   const { ref, isIntersecting } = useObserver<HTMLDivElement>({
@@ -53,7 +52,7 @@ const TheaterRequestList = () => {
   const navigate = useNavigate();
   const toastContext = useContext(ToastProvider);
   const [optimisticTheatersRequests, setOptimisticTheaterRequests] =
-    useOptimistic(theatersRequests, (state, id: string) => {
+    useOptimistic(theaters, (state, id: string) => {
       return state.filter((theater) => theater.id !== id);
     });
   const startTransition = useTransition()[1];
@@ -83,8 +82,9 @@ const TheaterRequestList = () => {
     if (result.success) {
       dispatch(
         theaterSuccess({
-          theatersRequests: result.theaters,
+          theaters: result.theaters,
           page: pagination.page,
+          filter: false,
         }),
       );
 
@@ -116,12 +116,10 @@ const TheaterRequestList = () => {
       startTransition(() => {
         setOptimisticTheaterRequests(theaterId);
 
-        const filteredTheater = theatersRequests.filter(
+        const filteredTheater = theaters.filter(
           (theater) => theater.id !== theaterId,
         );
-        dispatch(
-          theaterSuccess({ theatersRequests: filteredTheater, filter: true }),
-        );
+        dispatch(theaterSuccess({ theaters: filteredTheater, filter: true }));
       });
 
       toastContext?.triggerToastMessage("Theater is approved", "SUCCESS");
@@ -156,12 +154,10 @@ const TheaterRequestList = () => {
         startTransition(() => {
           setOptimisticTheaterRequests(theaterId);
 
-          const filteredTheater = theatersRequests.filter(
+          const filteredTheater = theaters.filter(
             (theater) => theater.id !== theaterId,
           );
-          dispatch(
-            theaterSuccess({ theatersRequests: filteredTheater, filter: true }),
-          );
+          dispatch(theaterSuccess({ theaters: filteredTheater, filter: true }));
         });
 
         toastContext?.triggerToastMessage(
@@ -193,7 +189,7 @@ const TheaterRequestList = () => {
     })();
 
     return () => {
-      dispatch(theaterSuccess({ theatersRequests: [] }));
+      dispatch(theaterSuccess({ theaters: [] }));
     };
   }, [pagination.page, handleGetTheaterRequests, dispatch]);
 
@@ -206,6 +202,15 @@ const TheaterRequestList = () => {
       });
     })();
   }, [isIntersecting, loading, hasMore]);
+  
+  useEffect(() => {
+    return () => {
+      dispatch(clearState())
+      setPagination(pre => {
+        return {...pre, page: 1}
+      })
+    }
+  }, [dispatch])
 
   return optimisticTheatersRequests.length ? (
     <div className={style.container}>

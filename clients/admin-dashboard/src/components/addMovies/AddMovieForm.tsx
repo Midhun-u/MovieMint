@@ -1,552 +1,554 @@
-import { Activity, useContext, useId, useState, type ChangeEvent } from 'react'
-import style from '../../styles/addMovies/addMovieForm.module.scss'
-import FormInput from '../form/FormInput'
+import { Activity, useContext, useId, useState, type ChangeEvent } from "react";
+import style from "../../styles/addMovies/addMovieForm.module.scss";
+import FormInput from "../form/FormInput";
 import {
-    Film as MovieIcon,
-    TextQuote as SubheadingIcon,
-    TextAlignStart as SynopsisIcon,
-    LanguagesIcon as LanguageIcon,
-    Grid3x2 as CertificateIcon,
-    Link2 as URLIcon,
-    Clock as TimerIcon,
-    Plus as AddIcon,
-    EditIcon
-} from 'lucide-react'
-import ImagePicker from './ImagePicker'
-import ListItems from './ListItems'
-import { movieCertificates } from '../../utils/movieCertificates'
-import FormLabel from '../form/FormLabel'
-import { movieCategories } from '../../utils/movieCategories'
-import CheckBoxList from '../ui/CheckBoxList'
-import DateShowBar from '../ui/DateShowBar'
-import DatePicker from '../ui/DatePicker'
-import Input from '../ui/Input'
-import Radio from '../ui/Radio'
-import { useForm, type SubmitHandler } from 'react-hook-form'
-import Button from '../ui/Button'
-import AddCrewForm from './AddCrewForm'
-import { ToastProvider } from '../context/providers/ToastProvider'
-import ShowTrailer from './ShowTrailer'
-import { youtubeEmbedUrlRegex } from '../../utils/youtubeEmbedUrlRegex'
-import { addMovieApi, deleteMovieApi } from '../../api/movie'
-import { convertToNumber } from '../../utils/convertToNumber'
-import { deleteActorImageApi, deleteMovieImageApi, uploadActorImageApi, uploadMovieImageApi } from '../../api/media'
-import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { movieFailed, movieRequest, movieSuccess } from '../../store/movieSlice'
-import { movieFormats } from '../../utils/movieFormats'
-import { movieLanguages } from '../../utils/movieLanguages'
+  Film as MovieIcon,
+  TextQuote as SubheadingIcon,
+  TextAlignStart as SynopsisIcon,
+  LanguagesIcon as LanguageIcon,
+  Grid3x2 as CertificateIcon,
+  Link2 as URLIcon,
+  Clock as TimerIcon,
+  Plus as AddIcon,
+  EditIcon,
+} from "lucide-react";
+import ImagePicker from "./ImagePicker";
+import ListItems from "./ListItems";
+import { movieCertificates } from "../../utils/movieCertificates";
+import FormLabel from "../form/FormLabel";
+import { movieCategories } from "../../utils/movieCategories";
+import CheckBoxList from "../ui/CheckBoxList";
+import DateShowBar from "../ui/DateShowBar";
+import DatePicker from "../ui/DatePicker";
+import Input from "../ui/Input";
+import Radio from "../ui/Radio";
+import { useForm, type SubmitHandler } from "react-hook-form";
+import Button from "../ui/Button";
+import AddCrewForm from "./AddCrewForm";
+import { ToastProvider } from "../context/providers/ToastProvider";
+import ShowTrailer from "./ShowTrailer";
+import { youtubeEmbedUrlRegex } from "../../utils/youtubeEmbedUrlRegex";
+import { addMovieApi, deleteMovieApi } from "../../api/movie";
+import { convertToNumber } from "../../utils/convertToNumber";
+import {
+  deleteActorImageApi,
+  deleteMovieImageApi,
+  uploadActorImageApi,
+  uploadMovieImageApi,
+} from "../../api/media";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import {
+  movieFailed,
+  movieRequest,
+  movieSuccess,
+} from "../../store/movieSlice";
+import { movieFormats } from "../../utils/movieFormats";
+import { movieLanguages } from "../../utils/movieLanguages";
 
 type Inputs = {
-    title: string
-    subheading: string
-    synopsis: string
-    trailerUrl: string
-    durationHour: number
-    durationMinutes: number
-    durationSeconds: number
-}
+  title: string;
+  subheading: string;
+  synopsis: string;
+  trailerUrl: string;
+  durationHour: number;
+  durationMinutes: number;
+  durationSeconds: number;
+};
 
 type ReleaseDate = {
-    year: number
-    month: number
-    day: number
-    hour: number
-    minute: number
-}
+  year: number;
+  month: number;
+  day: number;
+  hour: number;
+  minute: number;
+};
 
 type Crews = Array<{
-    name: string
-    image: File
-    preview: string
-    id: string
-}>
+  name: string;
+  image: File;
+  preview: string;
+  id: string;
+}>;
 
 type CrewDetails = {
-    name: string
-    image: File
-    preview: string
-    id: string
-}
+  name: string;
+  image: File;
+  preview: string;
+  id: string;
+};
 
 const AddMovieForm = () => {
+  const titleId = useId();
+  const subheadingId = useId();
+  const synopsisId = useId();
+  const movieTrailer = useId();
+  const [poster, setPoster] = useState<File | null>(null);
+  const [banner, setBanner] = useState<File | null>(null);
+  const [language, setLanguage] = useState<string>("");
+  const [certificate, setCertificate] = useState<string>("");
+  const [categories, setCategories] = useState<Array<string>>([]);
+  const [releaseDate, setReleaseDate] = useState<ReleaseDate>({
+    year: new Date().getFullYear(),
+    month: new Date().getMonth(),
+    day: new Date().getDate(),
+    hour: 0,
+    minute: 0,
+  });
+  const [movieType, setMovieType] = useState<"LIVE_ACTION" | "ANIMATED">(
+    "LIVE_ACTION",
+  );
+  const [movieTrailerUrl, setMovieTrailerUrl] = useState<string>("");
+  const [crews, setCrews] = useState<Crews>([]);
+  const [formats, setFormats] = useState<Array<string>>([]);
+  const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
+  const [showCrewScreen, setShowCrewScreen] = useState<boolean>(false);
+  const [selectedCrew, setSelectedCrew] = useState<{
+    name: string;
+    image: File;
+    preview: string;
+    id: string;
+  } | null>(null);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors: formErrors },
+  } = useForm<Inputs>();
+  const toastContext = useContext(ToastProvider);
+  const { loading } = useAppSelector((state) => state.movie);
+  const dispatch = useAppDispatch();
 
-    const titleId = useId()
-    const subheadingId = useId()
-    const synopsisId = useId()
-    const movieTrailer = useId()
-    const [poster, setPoster] = useState<File | null>(null)
-    const [banner, setBanner] = useState<File | null>(null)
-    const [language, setLanguage] = useState<string>('')
-    const [certificate, setCertificate] = useState<string>('')
-    const [categories, setCategories] = useState<Array<string>>([])
-    const [releaseDate, setReleaseDate] = useState<ReleaseDate>({
-        year: new Date().getFullYear(),
-        month: new Date().getMonth(),
-        day: new Date().getDate(),
-        hour: 0,
-        minute: 0
-    })
-    const [movieType, setMovieType] = useState<"LIVE_ACTION" | "ANIMATED">("LIVE_ACTION")
-    const [movieTrailerUrl, setMovieTrailerUrl] = useState<string>('')
-    const [crews, setCrews] = useState<Crews>([])
-    const [formats, setFormats] = useState<Array<string>>([])
-    const [showDatePicker, setShowDatePicker] = useState<boolean>(false)
-    const [showCrewScreen, setShowCrewScreen] = useState<boolean>(false)
-    const [selectedCrew, setSelectedCrew] = useState<{
-        name: string
-        image: File
-        preview: string
-        id: string
-    } | null>(null)
-    const { register, handleSubmit, formState: { errors: formErrors } } = useForm<Inputs>()
-    const toastContext = useContext(ToastProvider)
-    const { loading } = useAppSelector(state => state.movie)
-    const dispatch = useAppDispatch()
+  // Function for editing crew details
+  const handleEditCrewDetails = (editedDetails: CrewDetails) => {
+    const editedCrewDetails = crews.map((crew) => {
+      if (crew.id === editedDetails.id) {
+        return {
+          name: editedDetails.name,
+          image: editedDetails.image,
+          preview: editedDetails.preview,
+          id: editedDetails.id,
+        };
+      } else {
+        return crew;
+      }
+    });
 
-    // Function for editing crew details
-    const handleEditCrewDetails = (editedDetails: CrewDetails) => {
+    setCrews(editedCrewDetails);
+    setSelectedCrew(null);
+  };
 
-        const editedCrewDetails = crews.map((crew) => {
-            if (crew.id === editedDetails.id) {
-                return {
-                    name: editedDetails.name,
-                    image: editedDetails.image,
-                    preview: editedDetails.preview,
-                    id: editedDetails.id
-                }
-            } else {
-                return crew
-            }
-        })
+  // Function for removing crew details
+  const handleRemoveCrewDetails = (removedCrewDetails: CrewDetails) => {
+    if (!removedCrewDetails) return;
 
-        setCrews(editedCrewDetails)
-        setSelectedCrew(null)
+    const filteredCrews = crews.filter(
+      (crew) => crew.id !== removedCrewDetails.id,
+    );
+    setCrews(filteredCrews);
+  };
 
+  // Function for submitting form
+  const handleSubmitForm: SubmitHandler<Inputs> = async (data) => {
+    if (
+      !poster ||
+      !banner ||
+      !language ||
+      !certificate ||
+      !categories.length ||
+      !movieType ||
+      !formats.length
+    ) {
+      toastContext?.triggerToastMessage("All fields are required", "ERROR");
+      return;
     }
 
-    // Function for removing crew details
-    const handleRemoveCrewDetails = (removedCrewDetails: CrewDetails) => {
-
-        if (!removedCrewDetails) return
-
-        const filteredCrews = crews.filter((crew) => crew.id !== removedCrewDetails.id)
-        setCrews(filteredCrews)
-
+    if (categories.length > 5 || !youtubeEmbedUrlRegex.test(data.trailerUrl)) {
+      toastContext?.triggerToastMessage("Invalid fields", "ERROR");
+      return;
     }
 
-    // Function for submitting form
-    const handleSubmitForm: SubmitHandler<Inputs> = async (data) => {
+    if (movieType === "LIVE_ACTION") {
+      if (crews.length < 1)
+        return toastContext?.triggerToastMessage("Invalid fields", "ERROR");
+    }
 
-        if (
-            !poster ||
-            !banner ||
-            !language ||
-            !certificate ||
-            !categories.length ||
-            !movieType ||
-            !formats.length
-        ) {
-            toastContext?.triggerToastMessage("All fields are required", "ERROR")
-            return
-        }
+    // If release date is today then checking if the time is correct
+    if (
+      releaseDate.month === new Date().getMonth() &&
+      releaseDate.year === new Date().getFullYear() &&
+      releaseDate.day === new Date().getDate()
+    ) {
+      if (
+        releaseDate.hour <= new Date().getHours() &&
+        releaseDate.minute <= new Date().getMinutes()
+      ) {
+        toastContext?.triggerToastMessage("Invalid release time", "ERROR");
+        return;
+      }
+    }
 
-        if (
-            categories.length > 5 ||
-            !youtubeEmbedUrlRegex.test(data.trailerUrl)
+    dispatch(movieRequest());
+    const movieResult = await addMovieApi({
+      title: data.title,
+      subheading: data.subheading,
+      synopsis: data.synopsis,
+      categories: categories,
+      formats: formats,
+      certificate: certificate,
+      duration: {
+        hour: convertToNumber(data.durationHour),
+        minutes: convertToNumber(data.durationMinutes),
+        seconds: convertToNumber(data.durationSeconds),
+      },
+      language: language,
+      releaseDate: new Date(
+        releaseDate.year,
+        releaseDate.month,
+        releaseDate.day,
+        releaseDate.hour,
+        releaseDate.minute,
+      ),
+      trailer: movieTrailerUrl,
+      type: movieType,
+      actors: movieType === "LIVE_ACTION" ? crews : [],
+    });
 
-        ) {
-            toastContext?.triggerToastMessage("Invalid fields", "ERROR")
-            return
-        }
+    if (movieResult.success && movieResult.movie) {
+      const [posterResult, bannerResult] = await Promise.all([
+        uploadMovieImageApi(poster, movieResult.movie._id, "poster"),
+        uploadMovieImageApi(banner, movieResult.movie._id, "banner"),
+      ]);
 
-        if (movieType === "LIVE_ACTION") {
-            if (crews.length < 1) return toastContext?.triggerToastMessage("Invalid fields", "ERROR")
-        }
+      // Uploading actors image
+      const actorResult = await Promise.all(
+        crews.map(async (crew) => {
+          const actorImageResult = await uploadActorImageApi({
+            actorId: crew.id,
+            actorImage: crew.image,
+            movieId: movieResult.movie._id,
+          });
 
-        // If release date is today then checking if the time is correct
-        if (
-            releaseDate.month === new Date().getMonth() &&
-            releaseDate.year === new Date().getFullYear() &&
-            releaseDate.day === new Date().getDate()
-        ) {
-            if (releaseDate.hour <= new Date().getHours() && releaseDate.minute <= new Date().getMinutes()) {
-                toastContext?.triggerToastMessage("Invalid release time", "ERROR")
-                return
-            }
-        }
+          if (actorImageResult.success) {
+            return { success: true };
+          } else {
+            return { success: false };
+          }
+        }) || [],
+      );
 
-        dispatch(movieRequest())
-        const movieResult = await addMovieApi({
-            title: data.title,
-            subheading: data.subheading,
-            synopsis: data.synopsis,
-            categories: categories,
-            formats: formats,
-            certificate: certificate,
-            duration: {
-                hour: convertToNumber(data.durationHour),
-                minutes: convertToNumber(data.durationMinutes),
-                seconds: convertToNumber(data.durationSeconds)
-            },
-            language: language,
-            releaseDate: new Date(releaseDate.year, releaseDate.month, releaseDate.day, releaseDate.hour, releaseDate.minute),
-            trailer: movieTrailerUrl,
-            type: movieType,
-            actors: movieType === "LIVE_ACTION" ? crews : []
-        })
+      // Checking if all actors images are uploaded
+      const isNotActorImageUploaded = actorResult.some((result) => {
+        if (!result.success) return true;
+      });
 
-        if (movieResult.success && movieResult.movie) {
+      if (
+        !posterResult.success ||
+        !bannerResult.success ||
+        isNotActorImageUploaded
+      ) {
+        // Deleting all images of this movie because some images didn't upload
+        await Promise.all([
+          deleteMovieImageApi(movieResult.movie._id, "poster"),
+          deleteMovieImageApi(movieResult.movie._id, "banner"),
+          deleteActorImageApi(movieResult.movie._id),
+        ]);
 
-            const [posterResult, bannerResult] = await Promise.all([
-                uploadMovieImageApi(poster, movieResult.movie._id, "poster"),
-                uploadMovieImageApi(banner, movieResult.movie._id, "banner"),
-            ])
+        // Deleting movie because some failed response from images
+        await deleteMovieApi(movieResult.movie._id);
 
-            // Uploading actors image
-            const actorResult = await Promise.all(crews.map(async (crew) => {
+        toastContext?.triggerToastMessage("Movie couldn't upload", "ERROR");
+        dispatch(movieFailed({ errorMessage: "Images are not uploaded" }));
+      } else {
+        toastContext?.triggerToastMessage("Movie is uploaded", "SUCCESS");
+        dispatch(movieSuccess({ movie: movieResult.movie }));
+      }
+    } else {
+      toastContext?.triggerToastMessage("Movie couldn't upload", "ERROR");
+      dispatch(movieFailed({ errorMessage: movieResult.errorMessage }));
+      return;
+    }
+  };
 
-                const actorImageResult = await uploadActorImageApi({
-                    actorId: crew.id,
-                    actorImage: crew.image,
-                    movieId: movieResult.movie._id
+  return (
+    <form onSubmit={handleSubmit(handleSubmitForm)} className={style.container}>
+      {/* Movie title */}
+      <div className={style["form-field"]}>
+        <FormInput
+          labelTitle="Movie Title"
+          id={titleId}
+          inputPlaceholder="Enter movie title"
+          Icon={MovieIcon}
+          inputType="input"
+          register={register}
+          inputFieldName="title"
+          minLength={3}
+          maxLength={50}
+          aria-invalid={formErrors.title ? "true" : "false"}
+        />
+      </div>
+      {/* Movie subheading */}
+      <div className={style["form-field"]}>
+        <FormInput
+          labelTitle="Movie Subheading"
+          id={subheadingId}
+          inputPlaceholder="Enter movie subheading"
+          Icon={SubheadingIcon}
+          inputType="textarea"
+          register={register}
+          inputFieldName="subheading"
+          minLength={5}
+          maxLength={100}
+        />
+      </div>
+      {/* Movie synopsis */}
+      <div className={style["form-field"]}>
+        <FormInput
+          labelTitle="Movie Synopsis"
+          id={synopsisId}
+          inputPlaceholder="Enter movie synopsis"
+          Icon={SynopsisIcon}
+          inputType="textarea"
+          register={register}
+          inputFieldName="synopsis"
+          minLength={10}
+          maxLength={350}
+        />
+      </div>
+      {/* Movie poster */}
+      <ImagePicker
+        labelTitle="Movie Poster"
+        title="Upload Movie Poster"
+        mode="portrait"
+        setFile={setPoster}
+      />
+      {/* Movie Banner */}
+      <ImagePicker
+        labelTitle="Movie Banner"
+        title="Upload Movie Banner"
+        mode="landscape"
+        setFile={setBanner}
+      />
+      {/* Movie language */}
+      <ListItems
+        labelTitle="Movie Language"
+        Icon={LanguageIcon}
+        values={movieLanguages}
+        value={language}
+        setValue={setLanguage}
+      />
+      {/* Movie certificate */}
+      <ListItems
+        labelTitle="Movie Certificate"
+        Icon={CertificateIcon}
+        values={movieCertificates}
+        value={certificate}
+        setValue={setCertificate}
+      />
+      {/* Movie category */}
+      <div className={style["category-container"]}>
+        <FormLabel title="Movie Category" />
+        <CheckBoxList
+          values={movieCategories}
+          setValues={setCategories}
+          checkedValues={categories}
+          selectedLimit={4}
+          className={style["category"]}
+        />
+      </div>
+      {/* Movie format */}
+      <div className={style["format-container"]}>
+        <FormLabel title="Movie Formats" />
+        <CheckBoxList
+          values={movieFormats}
+          setValues={setFormats}
+          checkedValues={formats}
+          selectedLimit={null}
+          className={style["formats"]}
+        />
+      </div>
+      {/* Movie Release date */}
+      <div className={style["release-date-container"]}>
+        <FormLabel title="Movie Release Date" />
+        <DateShowBar
+          year={releaseDate.year}
+          month={releaseDate.month}
+          day={releaseDate.day}
+          setShowDatePicker={setShowDatePicker}
+          hour={releaseDate.hour}
+          minute={releaseDate.minute}
+        />
+        <Activity mode={showDatePicker ? "visible" : "hidden"}>
+          <div className={style["date-picker"]}>
+            <DatePicker
+              showTimePicker
+              clickOnDay={(dateDetails) =>
+                setReleaseDate({
+                  ...releaseDate,
+                  day: dateDetails.day,
+                  month: dateDetails.month,
+                  year: dateDetails.year,
                 })
-
-                if (actorImageResult.success) {
-                    return { success: true }
-                } else {
-                    return { success: false }
-                }
-
-            }) || [])
-            console.log(actorResult, movieResult, posterResult, bannerResult)
-
-            // Checking if all actors images are uploaded
-            const isNotActorImageUploaded = actorResult.some((result) => {
-                if (!result.success) return true
-            })
-
-            if (!posterResult.success || !bannerResult.success || isNotActorImageUploaded) {
-
-                // Deleting all images of this movie because some images didn't upload
-                await Promise.all([
-                    deleteMovieImageApi(movieResult.movie._id, "poster"),
-                    deleteMovieImageApi(movieResult.movie._id, "banner"),
-                    deleteActorImageApi(movieResult.movie._id)
-                ])
-
-                // Deleting movie because some failed response from images
-                await deleteMovieApi(movieResult.movie._id)
-
-                toastContext?.triggerToastMessage("Movie couldn't upload", "ERROR")
-                dispatch(movieFailed({ errorMessage: "Images are not uploaded" }))
-
-            } else {
-
-                toastContext?.triggerToastMessage("Movie is uploaded", "SUCCESS")
-                dispatch(movieSuccess({ movie: movieResult.movie }))
+              }
+              clickOnTime={(timeDetails) =>
+                setReleaseDate({
+                  ...releaseDate,
+                  hour: timeDetails.hour,
+                  minute: timeDetails.minute,
+                })
+              }
+              selectedDate={
+                new Date(releaseDate.year, releaseDate.month, releaseDate.day)
+              }
+            />
+          </div>
+        </Activity>
+      </div>
+      {/* Movie trailer */}
+      <div className={style["form-field"]}>
+        <FormInput
+          labelTitle="Movie Trailer"
+          inputType="input"
+          id={movieTrailer}
+          inputPlaceholder="Enter URL"
+          Icon={URLIcon}
+          register={register}
+          inputFieldName="trailerUrl"
+          minLength={5}
+          maxLength={500}
+          onChange={(event: ChangeEvent<HTMLInputElement>) =>
+            setMovieTrailerUrl(event.target.value)
+          }
+        />
+        <ShowTrailer trailerUrl={movieTrailerUrl} />
+      </div>
+      {/* Movie duration */}
+      <div className={style["duration-container"]}>
+        <FormLabel title="Movie Duration" />
+        <div className={style["input-section-container"]}>
+          <div className={style["input-section"]}>
+            <TimerIcon size={22} strokeWidth={1.5} className={style.icon} />
+            <Input
+              className={style["input"]}
+              placeholder="Enter movie duration hour"
+              type="number"
+              {...register("durationHour", {
+                required: true,
+              })}
+            />
+          </div>
+          <div className={style["input-section"]}>
+            <TimerIcon size={22} strokeWidth={1.5} className={style.icon} />
+            <Input
+              className={style["input"]}
+              placeholder="Enter movie duration minutes"
+              type="number"
+              {...register("durationMinutes", {
+                required: true,
+              })}
+            />
+          </div>
+          <div className={style["input-section"]}>
+            <TimerIcon size={22} strokeWidth={1.5} className={style.icon} />
+            <Input
+              className={style["input"]}
+              placeholder="Enter movie duration seconds"
+              type="number"
+              {...register("durationSeconds", {
+                required: true,
+              })}
+            />
+          </div>
+        </div>
+      </div>
+      {/* Movie type */}
+      <div className={style["type-container"]}>
+        <FormLabel title="Movie Type" />
+        <div>
+          <Radio
+            className={style["checkbox-container"]}
+            values={[
+              {
+                title: "Live Action",
+                value: "LIVE_ACTION",
+              },
+              {
+                title: "Animated",
+                value: "ANIMATED",
+              },
+            ]}
+            selectedValue={movieType}
+            onClick={(value) =>
+              setMovieType(value.value as "LIVE_ACTION" | "ANIMATED")
             }
-
-        } else {
-            toastContext?.triggerToastMessage("Movie couldn't upload", "ERROR")
-            dispatch(movieFailed({ errorMessage: movieResult.errorMessage }))
-            return
-        }
-
-    }
-    
-    return (
-
-        <form onSubmit={handleSubmit(handleSubmitForm)} className={style.container}>
-            {/* Movie title */}
-            <div className={style['form-field']}>
-                <FormInput
-                    labelTitle='Movie Title'
-                    id={titleId}
-                    inputPlaceholder='Enter movie title'
-                    Icon={MovieIcon}
-                    inputType='input'
-                    register={register}
-                    inputFieldName='title'
-                    minLength={3}
-                    maxLength={50}
-                    aria-invalid={formErrors.title ? "true" : "false"}
-
-                />
-            </div>
-            {/* Movie subheading */}
-            <div className={style['form-field']}>
-                <FormInput
-                    labelTitle='Movie Subheading'
-                    id={subheadingId}
-                    inputPlaceholder='Enter movie subheading'
-                    Icon={SubheadingIcon}
-                    inputType='textarea'
-                    register={register}
-                    inputFieldName='subheading'
-                    minLength={5}
-                    maxLength={100}
-                />
-            </div>
-            {/* Movie synopsis */}
-            <div className={style['form-field']}>
-                <FormInput
-                    labelTitle='Movie Synopsis'
-                    id={synopsisId}
-                    inputPlaceholder='Enter movie synopsis'
-                    Icon={SynopsisIcon}
-                    inputType='textarea'
-                    register={register}
-                    inputFieldName='synopsis'
-                    minLength={10}
-                    maxLength={350}
-                />
-            </div>
-            {/* Movie poster */}
-            <ImagePicker
-                labelTitle='Movie Poster'
-                title='Upload Movie Poster'
-                mode='portrait'
-                setFile={setPoster}
-            />
-            {/* Movie Banner */}
-            <ImagePicker
-                labelTitle='Movie Banner'
-                title='Upload Movie Banner'
-                mode='landscape'
-                setFile={setBanner}
-            />
-            {/* Movie language */}
-            <ListItems
-                labelTitle='Movie Language'
-                Icon={LanguageIcon}
-                values={movieLanguages}
-                value={language}
-                setValue={setLanguage}
-            />
-            {/* Movie certificate */}
-            <ListItems
-                labelTitle='Movie Certificate'
-                Icon={CertificateIcon}
-                values={movieCertificates}
-                value={certificate}
-                setValue={setCertificate}
-            />
-            {/* Movie category */}
-            <div className={style['category-container']}>
-                <FormLabel
-                    title='Movie Category'
-                />
-                <CheckBoxList
-                    values={movieCategories}
-                    setValues={setCategories}
-                    checkedValues={categories}
-                    selectedLimit={4}
-                    className={style['category']}
-                />
-            </div>
-            {/* Movie format */}
-            <div className={style['format-container']}>
-                <FormLabel
-                    title='Movie Formats'
-                />
-                <CheckBoxList
-                    values={movieFormats}
-                    setValues={setFormats}
-                    checkedValues={formats}
-                    selectedLimit={null}
-                    className={style['formats']}
-                />
-            </div>
-            {/* Movie Release date */}
-            <div className={style['release-date-container']}>
-                <FormLabel
-                    title='Movie Release Date'
-                />
-                <DateShowBar
-                    year={releaseDate.year}
-                    month={releaseDate.month}
-                    day={releaseDate.day}
-                    setShowDatePicker={setShowDatePicker}
-                    hour={releaseDate.hour}
-                    minute={releaseDate.minute}
-                />
-                <Activity mode={showDatePicker ? "visible" : "hidden"}>
-                    <div className={style['date-picker']}>
-                        <DatePicker
-                            showTimePicker
-                            clickOnDay={(dateDetails) =>
-                                setReleaseDate({ ...releaseDate, day: dateDetails.day, month: dateDetails.month, year: dateDetails.year })
-                            }
-                            clickOnTime={(timeDetails) =>
-                                setReleaseDate({ ...releaseDate, hour: timeDetails.hour, minute: timeDetails.minute })
-                            }
-                            selectedDate={new Date(releaseDate.year, releaseDate.month, releaseDate.day)}
-                        />
-                    </div>
-                </Activity>
-            </div>
-            {/* Movie trailer */}
-            <div className={style['form-field']}>
-                <FormInput
-                    labelTitle='Movie Trailer'
-                    inputType='input'
-                    id={movieTrailer}
-                    inputPlaceholder='Enter URL'
-                    Icon={URLIcon}
-                    register={register}
-                    inputFieldName='trailerUrl'
-                    minLength={5}
-                    maxLength={500}
-                    onChange={(event: ChangeEvent<HTMLInputElement>) => setMovieTrailerUrl(event.target.value)}
-
-                />
-                <ShowTrailer
-                    trailerUrl={movieTrailerUrl}
-                />
-            </div>
-            {/* Movie duration */}
-            <div className={style['duration-container']}>
-                <FormLabel
-                    title='Movie Duration'
-                />
-                <div className={style['input-section-container']}>
-                    <div className={style['input-section']}>
-                        <TimerIcon
-                            size={22}
-                            strokeWidth={1.5}
-                            className={style.icon}
-                        />
-                        <Input
-                            className={style['input']}
-                            placeholder='Enter movie duration hour'
-                            type='number'
-                            {...register("durationHour", {
-                                required: true
-                            })}
-                        />
-                    </div>
-                    <div className={style['input-section']}>
-                        <TimerIcon
-                            size={22}
-                            strokeWidth={1.5}
-                            className={style.icon}
-                        />
-                        <Input
-                            className={style['input']}
-                            placeholder='Enter movie duration minutes'
-                            type='number'
-                            {...register("durationMinutes", {
-                                required: true
-                            })}
-                        />
-                    </div>
-                    <div className={style['input-section']}>
-                        <TimerIcon
-                            size={22}
-                            strokeWidth={1.5}
-                            className={style.icon}
-                        />
-                        <Input
-                            className={style['input']}
-                            placeholder='Enter movie duration seconds'
-                            type='number'
-                            {...register("durationSeconds", {
-                                required: true
-                            })}
-                        />
-                    </div>
+          />
+        </div>
+      </div>
+      {/* Movie casts and crew */}
+      <Activity mode={movieType === "LIVE_ACTION" ? "visible" : "hidden"}>
+        <div className={style["crew-container"]}>
+          <FormLabel title="Movie Casts & Crew" />
+          <div className={style["list"]}>
+            {crews.map((crewDetails, index) => (
+              <div
+                onClick={() => {
+                  setSelectedCrew({ ...crewDetails, id: crewDetails.id });
+                  setShowCrewScreen(true);
+                }}
+                className={style["crew-details"]}
+                key={index}
+              >
+                <div className={style["image-container"]}>
+                  <EditIcon
+                    size={20}
+                    className={style.icon}
+                    strokeWidth={1.5}
+                  />
+                  <img src={crewDetails.preview} />
                 </div>
-            </div>
-            {/* Movie type */}
-            <div className={style['type-container']}>
-                <FormLabel
-                    title='Movie Type'
-                />
-                <div>
-                    <Radio
-                        className={style['checkbox-container']}
-                        values={[
-                            {
-                                title: "Live Action",
-                                value: "LIVE_ACTION"
-                            },
-                            {
-                                title: "Animated",
-                                value: "ANIMATED"
-                            },
-                        ]}
-                        selectedValue={movieType}
-                        onClick={(value) => setMovieType(value.value as "LIVE_ACTION" | "ANIMATED")}
-                    />
-                </div>
-            </div>
-            {/* Movie casts and crew */}
-            <Activity mode={movieType === "LIVE_ACTION" ? "visible" : "hidden"}>
-                <div className={style['crew-container']}>
-                    <FormLabel
-                        title='Movie Casts & Crew'
-                    />
-                    <div className={style['list']}>
-                        {
-                            crews.map((crewDetails, index) => (
-
-                                <div onClick={() => {
-                                    setSelectedCrew({ ...crewDetails, id: crewDetails.id })
-                                    setShowCrewScreen(true)
-                                }}
-                                    className={style['crew-details']}
-                                    key={index}
-                                >
-                                    <div className={style['image-container']}>
-                                        <EditIcon
-                                            size={20}
-                                            className={style.icon}
-                                            strokeWidth={1.5}
-                                        />
-                                        <img
-                                            src={crewDetails.preview}
-                                        />
-                                    </div>
-                                    <span>{crewDetails.name}</span>
-                                </div>
-
-                            ))
-                        }
-                        <Activity mode={crews.length <= 4 ? "visible" : "hidden"}>
-                            <div onClick={() => setShowCrewScreen(true)} className={style['add-cast-container']}>
-                                <AddIcon
-                                    size={23}
-                                    strokeWidth={1.5}
-                                />
-                            </div>
-                        </Activity>
-                    </div>
-                    <Activity mode={showCrewScreen ? "visible" : "hidden"}>
-                        <AddCrewForm
-                            setShowCrewForm={setShowCrewScreen}
-                            submit={(actorName, actorImage, preview) => {
-                                return setCrews((pre) => [...pre, { name: actorName, image: actorImage, preview: preview, id: crypto.randomUUID() }])
-                            }}
-                            selectedValue={selectedCrew}
-                            setSelectedValue={setSelectedCrew}
-                            onEdit={handleEditCrewDetails}
-                            onRemove={handleRemoveCrewDetails}
-                        />
-                    </Activity>
-                </div>
+                <span>{crewDetails.name}</span>
+              </div>
+            ))}
+            <Activity mode={crews.length <= 4 ? "visible" : "hidden"}>
+              <div
+                onClick={() => setShowCrewScreen(true)}
+                className={style["add-cast-container"]}
+              >
+                <AddIcon size={23} strokeWidth={1.5} />
+              </div>
             </Activity>
-            {/* Submit button */}
-            <Button
-                title='Add Movie'
-                type='submit'
-                className={style['submit-button']}
-                loading={loading}
-                loadingSpinnerColor='black'
+          </div>
+          <Activity mode={showCrewScreen ? "visible" : "hidden"}>
+            <AddCrewForm
+              setShowCrewForm={setShowCrewScreen}
+              submit={(actorName, actorImage, preview) => {
+                return setCrews((pre) => [
+                  ...pre,
+                  {
+                    name: actorName,
+                    image: actorImage,
+                    preview: preview,
+                    id: crypto.randomUUID(),
+                  },
+                ]);
+              }}
+              selectedValue={selectedCrew}
+              setSelectedValue={setSelectedCrew}
+              onEdit={handleEditCrewDetails}
+              onRemove={handleRemoveCrewDetails}
             />
-        </form>
+          </Activity>
+        </div>
+      </Activity>
+      {/* Submit button */}
+      <Button
+        title="Add Movie"
+        type="submit"
+        className={style["submit-button"]}
+        loading={loading}
+        loadingSpinnerColor="black"
+        spinnerSize={17}
+      />
+    </form>
+  );
+};
 
-    )
-
-}
-
-export default AddMovieForm
+export default AddMovieForm;

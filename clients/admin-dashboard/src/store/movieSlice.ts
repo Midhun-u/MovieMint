@@ -16,6 +16,10 @@ type InitialState = {
       image_url: string;
     };
   }>;
+  pagination: {
+    page: number;
+    limit: number;
+  };
 };
 
 const initialState: InitialState = {
@@ -23,6 +27,10 @@ const initialState: InitialState = {
   movie: {},
   errorMessage: "",
   movies: [],
+  pagination: {
+    page: 1,
+    limit: 1,
+  },
 };
 
 const movieSlice = createSlice({
@@ -37,13 +45,11 @@ const movieSlice = createSlice({
 
     movieSuccess: (state, action) => {
       state.loading = false;
-      state.movie = action.payload.movie ? action.payload.movie: {};
-      if (state.movies.length <= 0 && action.payload?.page === 1) {
-        state.movies = [...action.payload.movies ]
-      } else if (action.payload.movies.length) {
-        state.movies = [...state.movies, ...action.payload.movies]
+      state.movie = action.payload?.movie ? action.payload.movie : {};
+      if (state.movies.length <= 0 || action.payload?.page === 1) {
+        state.movies = action.payload.movies;
       } else {
-        state.movies = action.payload.movies || []
+        state.movies = [...state.movies, ...action.payload.movies];
       }
       state.errorMessage = "";
     },
@@ -53,8 +59,26 @@ const movieSlice = createSlice({
       state.movie = {};
       state.errorMessage = action.payload.errorMessage;
     },
+
+    incrementPage: (state) => {
+      state.pagination.page = state.pagination.page + 1;
+    },
+
+    clearState: (state) => {
+      state.loading = false;
+      state.movie = {};
+      state.movies = [];
+      state.pagination = { page: 1, limit: state.pagination.limit }
+      console.log(state.pagination)
+    },
   },
 });
 
 export const movieReducer = movieSlice.reducer;
-export const { movieFailed, movieRequest, movieSuccess } = movieSlice.actions;
+export const {
+  movieFailed,
+  movieRequest,
+  movieSuccess,
+  clearState,
+  incrementPage,
+} = movieSlice.actions;

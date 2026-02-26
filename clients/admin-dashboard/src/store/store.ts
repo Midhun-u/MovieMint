@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { authReducer } from "./authSlice";
 import { themeReducer } from "./themeSlice";
 import { movieReducer } from "./movieSlice";
-import { theaterRequestReducer } from "./theatersRequestSlice";
+import { theaterReducer } from "./theaterSlice";
 import { bannerReducer } from "./bannerSlice";
 import { dashboardReducer } from "./dashboardSlice";
 
@@ -11,7 +11,7 @@ export const store = configureStore({
     auth: authReducer,
     theme: themeReducer,
     movie: movieReducer,
-    theaterRequest: theaterRequestReducer,
+    theater: theaterReducer,
     banner: bannerReducer,
     dashboard: dashboardReducer,
   },
