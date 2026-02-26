@@ -5,12 +5,20 @@ type InitialState = {
   loading: boolean;
   errorMessage: string;
   theaters: Array<Theater>;
+  pagination: {
+    page: number
+    limit: number
+  }
 };
 
 const initialState: InitialState = {
   loading: false,
   theaters: [],
   errorMessage: "",
+  pagination: {
+    page: 1,
+    limit: 1
+  }
 };
 
 const theaterSlice = createSlice({
@@ -40,6 +48,10 @@ const theaterSlice = createSlice({
     theaterFailed: (state, action) => {
       state.loading = false;
       state.errorMessage = action.payload.errorMessage;
+    },
+    
+    incrementPage: (state) => {
+      state.pagination.page = state.pagination.page + 1
     },
     
     clearState: (state) => {

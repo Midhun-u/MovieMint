@@ -69,7 +69,6 @@ const movieSlice = createSlice({
       state.movie = {};
       state.movies = [];
       state.pagination = { page: 1, limit: state.pagination.limit }
-      console.log(state.pagination)
     },
   },
 });

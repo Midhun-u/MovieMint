@@ -1,4 +1,10 @@
-import { Activity, useEffect, useState, type ChangeEvent } from "react";
+import {
+  Activity,
+  useCallback,
+  useEffect,
+  useState,
+  type ChangeEvent,
+} from "react";
 import style from "../../styles/movies/movieList.module.scss";
 import { getMoviesApi } from "../../api/movie";
 import SearchBarInput from "../ui/SearchBar";
@@ -44,7 +50,7 @@ const MovieList = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   // Function for fetching movies
-  const handleFetchMovies = async (searchQuery: string = "") => {
+  const handleFetchMovies = useCallback(async () => {
     dispatch(movieRequest());
     const result = await getMoviesApi(
       pagination.page,
@@ -66,19 +72,35 @@ const MovieList = () => {
     } else {
       dispatch(movieFailed({ errorMessage: result.errorMessage }));
     }
-  };
+  }, [
+    dispatch,
+    pagination.limit,
+    pagination.page,
+    searchQuery,
+    selectedCategories,
+    selectedFormats,
+    selectedLanguage,
+  ]);
 
-  // Function for searching movies which has debouncing feature
-  const debounceSearch = (searchQuery: string) => {
-    setTimeout(() => {
-      handleFetchMovies(searchQuery);
-    }, 500);
-  };
+  // Function for storing search query with debouncing feature
+  function debounce<Type extends (event: ChangeEvent<HTMLInputElement>) => void>(
+    fn: Type,
+    delay: number,
+  ) {
+    return function (event: ChangeEvent<HTMLInputElement>) {
+      let timer: ReturnType<typeof setTimeout> | null = null;
+      if (timer) {
+        clearTimeout(timer);
+      }
+      timer = setTimeout(() => {
+        fn(event);
+      }, delay);
+    };
+  }
 
-  const handleChangeEvent = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeEvent = debounce((event: ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
-    debounceSearch(event.target.value);
-  };
+  }, 500);
 
   useEffect(() => {
     if (!isIntersecting || loading || !hasMore) return;
@@ -86,7 +108,7 @@ const MovieList = () => {
     (() => {
       dispatch(incrementPage());
     })();
-  }, [isIntersecting, hasMore, loading]);
+  }, [isIntersecting, hasMore, loading, dispatch]);
 
   useEffect(() => {
     (() => {
@@ -96,13 +118,19 @@ const MovieList = () => {
     return () => {
       dispatch(movieSuccess({ movies: [] }));
     };
-  }, [pagination.page]);
+  }, [pagination.page, dispatch, handleFetchMovies]);
 
   useEffect(() => {
     (() => {
       dispatch(clearState());
     })();
-  }, [searchQuery, selectedCategories, selectedFormats, selectedLanguage]);
+  }, [
+    searchQuery,
+    selectedCategories,
+    selectedFormats,
+    selectedLanguage,
+    dispatch,
+  ]);
 
   return (
     <div className={style.container}>
