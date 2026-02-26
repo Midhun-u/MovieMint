@@ -117,7 +117,7 @@ const MovieDetails = ({ movieId, onClickOnClose }: MovieDetails) => {
       {/* Buttons */}
       <div className={style["button-container"]}>
         <Button title="Close" onClick={onClickOnClose} disabled={loading} />
-        {banner && banner.movie_id === movieId ? (
+        {banner && banner._id === movieId ? (
           <Button
             title="Remove Banner"
             onClick={() => handleRemoveBanner()}

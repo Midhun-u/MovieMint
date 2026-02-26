@@ -140,9 +140,6 @@ export const TheaterModel = {
             where: {
                 ...statusConditon,
                 ...theaterNameCondition,
-                status: {
-                    [Op.ne]: "PENDING"
-                }
             },
             offset: (page - 1) * limit,
             limit: limit,

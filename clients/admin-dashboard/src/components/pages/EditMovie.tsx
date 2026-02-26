@@ -12,7 +12,6 @@ const EditMovie = () => {
                 title='Edit Movie'
                 about='Update core information, adjust visibility settings, and modify media assets for this entry.'
                 backButton
-                navigationUrl='/admin/movies'
             />
             {/* Movie edit form */}
             <EditMovieForm

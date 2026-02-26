@@ -13,7 +13,9 @@ import { getTheatersApi } from "../../api/theater";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
   clearState,
+  incrementPage,
   theaterFailed,
+  theaterRequest,
   theaterSuccess,
 } from "../../store/theaterSlice";
 import TheaterList from "../theaters/TheaterList";
@@ -21,34 +23,29 @@ import useObserver from "../hooks/useObserver";
 
 const Theaters = () => {
   const [status, setStatus] = useState<string>("");
-  const [pagination, setPagination] = useState<{
-    page: number;
-    limit: number;
-  }>({
-    page: 1,
-    limit: 1,
-  });
   const dispatch = useAppDispatch();
-  const { loading } = useAppSelector((state) => state.theater);
+  const { loading, pagination } = useAppSelector((state) => state.theater);
   const [hasMore, setHasMore] = useState<boolean>(false);
   const { isIntersecting, ref } = useObserver<HTMLDivElement>({
     threshold: 0.5,
   });
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   // Function fetching theaters
   const handleFetchTheaters = useCallback(
-    async (theaterName: string = "") => {
+    async () => {
+      dispatch(theaterRequest());
       const result = await getTheatersApi(
         pagination.page,
         pagination.limit,
-        theaterName,
+        searchQuery,
+        status,
       );
       if (result.success) {
         dispatch(
           theaterSuccess({
             theaters: result.theaters,
             page: pagination.page,
-            filter: false,
           }),
         );
 
@@ -61,22 +58,26 @@ const Theaters = () => {
         dispatch(theaterFailed({ errorMessage: result.errorMessage }));
       }
     },
-    [pagination.page, pagination.limit, dispatch],
+    [pagination.page, pagination.limit, dispatch, searchQuery, status],
   );
 
-  // Function for searching theater
-  const debounceSearch = useCallback(
-    (searchQuery: string) => {  
-      setTimeout(() => {
-        handleFetchTheaters(searchQuery);
-      }, 500);
-    },
-    [handleFetchTheaters],
-  );
-
-  const handleChangeEvent = (event: ChangeEvent<HTMLInputElement>) => {
-    debounceSearch(event.target.value);
-  };
+  // Function for storing search query with debouncing feature
+  function debounce<
+    Type extends (event: ChangeEvent<HTMLInputElement>) => void,
+  >(fn: Type, delay: number) {
+    return function (event: ChangeEvent<HTMLInputElement>) {
+      let timer: ReturnType<typeof setTimeout> | null = null;
+      if (timer) {
+        clearTimeout(timer);
+      }
+      timer = setTimeout(() => {
+        fn(event);
+      }, delay);
+    };
+  }
+  const handleChangeEvent = debounce((event) => {
+    setSearchQuery(event.target.value);
+  }, 500);
 
   useEffect(() => {
     (() => {
@@ -88,17 +89,18 @@ const Theaters = () => {
     if (!isIntersecting || loading || !hasMore) return;
 
     (() => {
-      setPagination((pre) => {
-        return { ...pre, page: pre.page + 1 };
-      });
+      dispatch(incrementPage());
     })();
-  }, [isIntersecting, loading, hasMore]);
+  }, [isIntersecting, loading, hasMore, dispatch]);
 
   useEffect(() => {
+    (() => {
+      dispatch(clearState());
+    })();
     return () => {
       dispatch(clearState());
     };
-  }, [dispatch]);
+  }, [dispatch, searchQuery, status]);
 
   return (
     <div className={style.container}>
@@ -135,7 +137,7 @@ const Theaters = () => {
       <div className={style["list-container"]}>
         <TheaterList />
       </div>
-      <Activity mode={hasMore ? "visible" : "hidden"}>
+      <Activity mode={hasMore || !loading ? "visible" : "hidden"}>
         <div ref={ref}></div>
       </Activity>
     </div>

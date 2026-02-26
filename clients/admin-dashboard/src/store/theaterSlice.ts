@@ -32,7 +32,7 @@ const theaterSlice = createSlice({
 
     theaterSuccess: (state, action) => {
       state.loading = false;
-      if (state.theaters.length <= 0 && action.payload.page === 1) {
+      if (state.theaters.length <= 0 || action.payload.page === 1) {
         state.theaters = action.payload.theaters
       } else if (action.payload.theaters.length && !action.payload?.filter) {
         state.theaters = [
@@ -58,10 +58,11 @@ const theaterSlice = createSlice({
       state.errorMessage = ""
       state.loading = false
       state.theaters = []
+      state.pagination = {page: 1, limit: state.pagination.limit}
     }
   },
 });
 
 export const theaterReducer = theaterSlice.reducer;
-export const { theaterSuccess, theaterFailed, theaterRequest , clearState} =
+export const { theaterSuccess, theaterFailed, theaterRequest , clearState, incrementPage} =
   theaterSlice.actions;

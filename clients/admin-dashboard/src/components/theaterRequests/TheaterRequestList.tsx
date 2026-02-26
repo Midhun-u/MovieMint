@@ -26,24 +26,20 @@ import { ToastProvider } from "../context/providers/ToastProvider";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
   clearState,
+  incrementPage,
   theaterFailed,
   theaterRequest,
   theaterSuccess,
 } from "../../store/theaterSlice";
-import TheaterRequestSkeleton from "./TheaterRequestSkeleton";
+import TheaterSkeleton from "./TheaterSkeleton";
 import { deleteTheaterImageApi } from "../../api/media";
 import NoResult from "../ui/NoResult";
 
 const TheaterRequestList = () => {
-  const [pagination, setPagination] = useState<{
-    page: number;
-    limit: number;
-  }>({
-    page: 1,
-    limit: 1,
-  });
   const [hasMore, setHasMore] = useState<boolean>(false);
-  const { loading, theaters } = useAppSelector((state) => state.theater);
+  const { loading, theaters, pagination } = useAppSelector(
+    (state) => state.theater,
+  );
   const { theme } = useAppSelector((state) => state.theme);
   const dispatch = useAppDispatch();
   const { ref, isIntersecting } = useObserver<HTMLDivElement>({
@@ -80,13 +76,13 @@ const TheaterRequestList = () => {
       pagination.limit,
     );
     if (result.success) {
-      dispatch(
-        theaterSuccess({
-          theaters: result.theaters,
-          page: pagination.page,
-          filter: false,
-        }),
-      );
+        dispatch(
+          theaterSuccess({
+            theaters: result.theaters,
+            page: pagination.page,
+            filter: false,
+          }),
+        );
 
       if (result.theaters?.length < pagination.limit) {
         setHasMore(false);
@@ -197,20 +193,15 @@ const TheaterRequestList = () => {
     if (!isIntersecting || loading || !hasMore) return;
 
     (() => {
-      setPagination((pre) => {
-        return { ...pre, page: pre.page + 1 };
-      });
+      dispatch(incrementPage());
     })();
-  }, [isIntersecting, loading, hasMore]);
-  
+  }, [isIntersecting, loading, hasMore, dispatch]);
+
   useEffect(() => {
     return () => {
-      dispatch(clearState())
-      setPagination(pre => {
-        return {...pre, page: 1}
-      })
-    }
-  }, [dispatch])
+      dispatch(clearState());
+    };
+  }, [dispatch]);
 
   return optimisticTheatersRequests.length ? (
     <div className={style.container}>
@@ -298,10 +289,10 @@ const TheaterRequestList = () => {
             </div>
           </div>
         ))}
+        <Activity mode={loading ? "visible" : "hidden"}>
+          <TheaterSkeleton />
+        </Activity>
       </div>
-      <Activity mode={loading ? "visible" : "hidden"}>
-        <TheaterRequestSkeleton />
-      </Activity>
       <Activity mode={hasMore ? "visible" : "hidden"}>
         <div ref={ref}></div>
       </Activity>

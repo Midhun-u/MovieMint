@@ -21,7 +21,7 @@ interface FormInputProps extends InputHTMLAttributes<HTMLElement> {
 const FormInput = forwardRef<HTMLInputElement, FormInputProps>(({ labelTitle, id, inputPlaceholder, inputType, Icon, register, inputFieldName, maxLength, minLength, ...props }, ref) => {
 
     return (
-        <div className={style.container}>
+        <div ref={ref} className={style.container}>
             <FormLabel
                 title={labelTitle}
                 id={id}

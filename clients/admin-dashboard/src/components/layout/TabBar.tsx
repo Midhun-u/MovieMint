@@ -1,4 +1,3 @@
-import { useSearchParams } from "react-router";
 import style from "../../styles/layout/tabBar.module.scss";
 import type React from "react";
 import type { SetStateAction } from "react";
@@ -10,7 +9,6 @@ interface TabBarValues {
 }
 
 const TabBar = ({ values, activeValue = "", setValue }: TabBarValues) => {
-  const setSearchParams = useSearchParams()[1];
 
   return (
     <div className={style.container}>
@@ -18,7 +16,6 @@ const TabBar = ({ values, activeValue = "", setValue }: TabBarValues) => {
         <p
           onClick={() => {
             setValue(value.value);
-            setSearchParams({ status: value.value });
           }}
           key={index}
           className={activeValue === value.value? style['active']: ""}

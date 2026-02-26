@@ -17,6 +17,10 @@ export const getTheatersController = sendErrorResponse(async (context: Context) 
     const pageNumber = convertStringToNumber(page)
     const limitNumber = convertStringToNumber(limit)
 
+    if(status === "PENDING"){
+        context.status(400)
+        return context.json({success: false, error: "Invalid status", statusCode: 400})
+    }
     const theaters = await TheaterModel.getTheaters(pageNumber, limitNumber, status, theaterName)
 
     // Fetching theater image
