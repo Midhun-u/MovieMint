@@ -6,7 +6,6 @@ import {
   useCallback,
   useEffect,
   useState,
-  type ChangeEvent,
 } from "react";
 import TabBar from "../layout/TabBar";
 import { getTheatersApi } from "../../api/theater";
@@ -20,6 +19,7 @@ import {
 } from "../../store/theaterSlice";
 import TheaterList from "../theaters/TheaterList";
 import useObserver from "../hooks/useObserver";
+import { debounce } from "../../utils/debounce";
 
 const Theaters = () => {
   const [status, setStatus] = useState<string>("");
@@ -61,20 +61,6 @@ const Theaters = () => {
     [pagination.page, pagination.limit, dispatch, searchQuery, status],
   );
 
-  // Function for storing search query with debouncing feature
-  function debounce<
-    Type extends (event: ChangeEvent<HTMLInputElement>) => void,
-  >(fn: Type, delay: number) {
-    return function (event: ChangeEvent<HTMLInputElement>) {
-      let timer: ReturnType<typeof setTimeout> | null = null;
-      if (timer) {
-        clearTimeout(timer);
-      }
-      timer = setTimeout(() => {
-        fn(event);
-      }, delay);
-    };
-  }
   const handleChangeEvent = debounce((event) => {
     setSearchQuery(event.target.value);
   }, 500);

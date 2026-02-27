@@ -1,0 +1,36 @@
+@use '../variables' as variables;
+
+.container{
+    display: flex;
+    gap: 7px;
+    align-items: center;
+
+    span{
+        font-size: 0.85rem;
+        font-weight: 500;
+        cursor: pointer;
+    }
+
+    .checkbox{
+        flex-shrink: 0;
+        width: 15px;
+        height: 15px;
+        background-color: var(--foreground-color);
+        border-radius: 4px;
+        cursor: pointer;
+        border: 2px solid rgb(from var(--foreground-theme-color) r g b / 0.5);
+
+        .icon{
+            color: var(--dark-foreground-color);
+        }
+    }
+
+    .checkbox-checked{
+        @extend .checkbox;
+        @extend %container-center-style;
+        border: none;
+        background-color: var(--primary-color);
+        color: var(--dark-foreground-color);
+    }
+
+}

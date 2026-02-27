@@ -1,0 +1,90 @@
+@use "../variables" as variables;
+
+.container {
+    z-index: 1;
+    width: 500px;
+    min-height: 400px;
+    max-height: 600px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background-color: var(--foreground-color);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    @include variables.disableBorderColor(0.3);
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    .banner {
+        position: relative;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+    }
+
+    .details {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+
+        h1 {
+            font-size: 1rem;
+        }
+
+        p {
+            font-size: 0.85rem;
+            color: rgb(from var(--foreground-theme-color) r g b / 0.6);
+            font-weight: 500;
+        }
+
+        .other-details-container {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .other-details {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            color: var(--disable-color);
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+    }
+
+    .button-container {
+        width: 100%;
+        padding-inline: 20px;
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+
+        button {
+            padding-block: 5px;
+            font-weight: 500;
+            @include variables.buttonBasicStyle(
+                var(--foreground-theme-color),
+                var(--foreground-color)
+            );
+            @include variables.disableBorderColor(0.3);
+
+            &:hover {
+                background-color: var(--background-color);
+            }
+        }
+    }
+}
+
+@media (max-width: 600px) {
+    .container {
+        width: 96%;
+    }
+}

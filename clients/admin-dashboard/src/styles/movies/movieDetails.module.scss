@@ -1,4 +1,4 @@
-@use '../variables' as variables;
+@use "../variables" as variables;
 
 .container {
     z-index: 1;
@@ -41,7 +41,22 @@
             color: rgb(from var(--foreground-theme-color) r g b / 0.6);
             font-weight: 500;
         }
+    }
 
+    .other-details-container {
+        margin-top: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+    }
+
+    .other-details {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        color: var(--disable-color);
+        font-size: 0.8rem;
+        font-weight: 500;
     }
 
     .button-container {
@@ -52,27 +67,28 @@
         flex-direction: column;
         gap: 7px;
 
-        button{
+        button {
             padding-block: 5px;
             font-weight: 500;
-            @include variables.buttonBasicStyle(var(--foreground-theme-color), var(--foreground-color));
+            @include variables.buttonBasicStyle(
+                var(--foreground-theme-color),
+                var(--foreground-color)
+            );
             @include variables.disableBorderColor(0.3);
 
-            &:hover{
+            &:hover {
                 background-color: var(--background-color);
             }
 
-            &:last-child{
+            &:last-child {
                 @extend %primary-button-style;
             }
         }
     }
 }
 
-@media(max-width: 600px) {
-
+@media (max-width: 600px) {
     .container {
         width: 96%;
     }
-
 }

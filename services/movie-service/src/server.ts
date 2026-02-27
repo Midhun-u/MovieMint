@@ -15,7 +15,8 @@ const port = Number(envVariables.PORT) || 5080
 app.use(logger())
 app.use(cors({
   origin: [
-    envVariables.ADMIN_DASHBOARD_URL
+    envVariables.ADMIN_DASHBOARD_URL,
+    envVariables.THEATER_DASHBOARD_URL
   ],
   allowMethods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
   credentials: true

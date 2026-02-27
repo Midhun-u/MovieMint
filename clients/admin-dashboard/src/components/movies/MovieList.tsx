@@ -24,6 +24,7 @@ import NoResult from "../ui/NoResult";
 import { SquarePen as EditIcon } from "lucide-react";
 import { useNavigate } from "react-router";
 import MovieDetails from "./MoveDetails";
+import { debounce } from "../../utils/debounce";
 
 const MovieList = () => {
   const { loading, movies, pagination } = useAppSelector(
@@ -81,22 +82,6 @@ const MovieList = () => {
     selectedFormats,
     selectedLanguage,
   ]);
-
-  // Function for storing search query with debouncing feature
-  function debounce<Type extends (event: ChangeEvent<HTMLInputElement>) => void>(
-    fn: Type,
-    delay: number,
-  ) {
-    return function (event: ChangeEvent<HTMLInputElement>) {
-      let timer: ReturnType<typeof setTimeout> | null = null;
-      if (timer) {
-        clearTimeout(timer);
-      }
-      timer = setTimeout(() => {
-        fn(event);
-      }, delay);
-    };
-  }
 
   const handleChangeEvent = debounce((event: ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);

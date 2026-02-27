@@ -16,6 +16,10 @@ import {
   bannerSuccess,
 } from "../../store/bannerSlice";
 import { ToastProvider } from "../context/providers/ToastProvider";
+import {
+  Tv as FormatsIcon,
+  Drama as CategoryIcon
+} from 'lucide-react'
 
 interface MovieDetails {
   movieId: string;
@@ -48,7 +52,7 @@ const MovieDetails = ({ movieId, onClickOnClose }: MovieDetails) => {
     }
   }, [movieId, dispatch]);
 
-  // Functio for adding banner
+  // Function for adding banner
   const handleAddBanner = async () => {
     dispatch(bannerRequest());
 
@@ -95,8 +99,8 @@ const MovieDetails = ({ movieId, onClickOnClose }: MovieDetails) => {
     if (movieId) {
       const fetchData = async () => {
         await Promise.all([handleFetchMovieDetails(), handleFetchBanner()]);
-      }
-      fetchData()
+      };
+      fetchData();
     }
 
     return () => {
@@ -113,6 +117,16 @@ const MovieDetails = ({ movieId, onClickOnClose }: MovieDetails) => {
       <div className={style.details}>
         <h1>{movieDetails.title}</h1>
         <p>{movieDetails.synopsis}</p>
+        <div className={style["other-details-container"]}>
+          <div className={style["other-details"]}>
+            <CategoryIcon size={20} />
+            {movieDetails.categories.join(", ")}
+          </div>
+          <div className={style["other-details"]}>
+            <FormatsIcon size={20} />
+            {movieDetails.formats.join(", ")}
+          </div>
+        </div>
       </div>
       {/* Buttons */}
       <div className={style["button-container"]}>

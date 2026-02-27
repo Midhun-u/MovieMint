@@ -1,0 +1,43 @@
+@use '../variables' as variables;
+
+.container {
+    position: fixed;
+    top: -10px;
+    width: 100%;
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    transition: all 200ms linear;
+    z-index: 10;
+    color: var(--foreground-theme-color);
+}
+
+.toast-message {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    border-radius: 7px;
+    padding-inline: 10px;
+    padding-block: 7px;
+    border: 1.5px solid rgb(from var(--primary-color) r g b / 0.5);
+    background-color: var(--foreground-color);
+
+    .icon {
+        stroke: var(--primary-color);
+    }
+}
+
+.error-toast-message{
+    @extend .toast-message;
+    border-color: var(--error-foreground-color);
+
+    .icon{
+        stroke: var(--error-foreground-color);
+    }
+}
+
+.text {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--foreground-theme-color);
+}
