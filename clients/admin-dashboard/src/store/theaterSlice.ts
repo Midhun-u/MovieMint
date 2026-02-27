@@ -17,7 +17,7 @@ const initialState: InitialState = {
   errorMessage: "",
   pagination: {
     page: 1,
-    limit: 1
+    limit: 10
   }
 };
 
