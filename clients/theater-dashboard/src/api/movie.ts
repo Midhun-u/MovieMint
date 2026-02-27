@@ -21,7 +21,7 @@ export const getMoviesApi = handleError(async (
         params.append("formats", format)
     })
 
-  const result = (await movieAxiosInstance.get(`/get-movies/?page=${page}&limit=${limit}&title=${searchQuery || ""}&${params.toString()}&language=${language}`)).data
+  const result = (await movieAxiosInstance.get(`/get-movies/?page=${page}&limit=${limit}&status=SHOWING&&title=${searchQuery || ""}&${params.toString()}&language=${language}`)).data
     return result
 
 })

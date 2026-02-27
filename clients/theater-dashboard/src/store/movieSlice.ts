@@ -1,21 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+type Movie = {
+  _id: string;
+  title: string;
+  language: string;
+  certificate: string;
+  categories: Array<string>;
+  status: "SHOWING" | "NOT_SHOWING" | "PENDING";
+  poster: {
+    id: string;
+    image_url: string;
+  };
+}
+
 type InitialState = {
   loading: boolean;
-  movie: object;
+  movie: Movie | null
   errorMessage: string;
-  movies: Array<{
-    _id: string;
-    title: string;
-    language: string;
-    certificate: string;
-    categories: Array<string>;
-    status: "SHOWING" | "NOT_SHOWING" | "PENDING";
-    poster: {
-      id: string;
-      image_url: string;
-    };
-  }>;
+  movies: Movie[]
   pagination: {
     page: number;
     limit: number;
@@ -24,7 +26,7 @@ type InitialState = {
 
 const initialState: InitialState = {
   loading: false,
-  movie: {},
+  movie: null,
   errorMessage: "",
   movies: [],
   pagination: {
@@ -39,13 +41,13 @@ const movieSlice = createSlice({
   reducers: {
     movieRequest: (state) => {
       state.loading = true;
-      state.movie = {};
+      state.movie = null;
       state.errorMessage = "";
     },
 
     movieSuccess: (state, action) => {
       state.loading = false;
-      state.movie = action.payload?.movie ? action.payload.movie : {};
+      state.movie = action.payload?.movie ? action.payload.movie : null;
       if (state.movies.length <= 0 || action.payload?.page === 1) {
         state.movies = action.payload.movies;
       } else {
@@ -56,7 +58,7 @@ const movieSlice = createSlice({
 
     movieFailed: (state, action) => {
       state.loading = false;
-      state.movie = {};
+      state.movie = null;
       state.errorMessage = action.payload.errorMessage;
     },
 
@@ -66,7 +68,7 @@ const movieSlice = createSlice({
 
     clearState: (state) => {
       state.loading = false;
-      state.movie = {};
+      state.movie = null;
       state.movies = [];
       state.pagination = { page: 1, limit: state.pagination.limit }
     },

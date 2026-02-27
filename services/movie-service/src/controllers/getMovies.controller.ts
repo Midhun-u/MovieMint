@@ -12,6 +12,7 @@ export const getMoviesController = sendErrorResponse(async (context: Context) =>
         limit = 10,
         title = "",
         language = "",
+        status = ""
     } = context.req.query()
 
     const {
@@ -35,11 +36,15 @@ export const getMoviesController = sendErrorResponse(async (context: Context) =>
         categories: { $in: categories }
     } : {}
 
+    // Adding status to the condition
+    const statusCondition = status? {status: status}: {}
+
     const movies = await MovieModel.getMovies({
         title: { $regex: `^${title}`, $options: "i" },
         ...languageCondtion,
         ...formatsConditon,
-        ...categoriesCondtion
+        ...categoriesCondtion,
+        ...statusCondition
     }, pageNumber, limitNumber, {
         title: 1,
         certificate: 1,
