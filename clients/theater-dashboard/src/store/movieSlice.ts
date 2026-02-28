@@ -11,6 +11,7 @@ type Movie = {
     id: string;
     image_url: string;
   };
+  formats: Array<string>
 }
 
 type InitialState = {
@@ -31,7 +32,7 @@ const initialState: InitialState = {
   movies: [],
   pagination: {
     page: 1,
-    limit: 1,
+    limit: 10,
   },
 };
 

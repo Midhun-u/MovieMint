@@ -1,4 +1,11 @@
-import { Activity, useContext, useId, useState, type ChangeEvent } from "react";
+import {
+  Activity,
+  useCallback,
+  useContext,
+  useId,
+  useState,
+  type ChangeEvent,
+} from "react";
 import style from "../../styles/addMovies/addMovieForm.module.scss";
 import FormInput from "../form/FormInput";
 import {
@@ -145,6 +152,20 @@ const AddMovieForm = () => {
     );
     setCrews(filteredCrews);
   };
+
+  // Function for clicking on time
+  const handleClickOnTime = useCallback(
+    (timeDetails: { hour: number; minute: number }) => {
+      setReleaseDate((pre) => {
+        return {
+          ...pre,
+          hour: timeDetails.hour,
+          minute: timeDetails.minute,
+        };
+      });
+    },
+    [],
+  );
 
   // Function for submitting form
   const handleSubmitForm: SubmitHandler<Inputs> = async (data) => {
@@ -388,13 +409,7 @@ const AddMovieForm = () => {
                   year: dateDetails.year,
                 })
               }
-              clickOnTime={(timeDetails) =>
-                setReleaseDate({
-                  ...releaseDate,
-                  hour: timeDetails.hour,
-                  minute: timeDetails.minute,
-                })
-              }
+              clickOnTime={handleClickOnTime}
               selectedDate={
                 new Date(releaseDate.year, releaseDate.month, releaseDate.day)
               }

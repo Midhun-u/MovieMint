@@ -1,5 +1,73 @@
+@use "../variables" as variables;
+
 .container {
     margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .date-container {
+        margin-top: 10px;
+        display: flex;
+        gap: 15px;
+        width: 100%;
+        overflow-x: scroll;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        .dates {
+            display: flex;
+            gap: 10px;
+        }
+
+        .month {
+            width: max-content;
+            height: 80px;
+            background-color: var(--foreground-color);
+            color: var(--disable-color);
+            font-size: 1rem;
+            font-weight: 500;
+            @include variables.disableBorderColor(0.3);
+            border-radius: 5px;
+            @extend %container-center-style;
+
+            p {
+                rotate: -90deg;
+            }
+        }
+
+        .day {
+            padding-inline: 20px;
+            @extend %container-center-style;
+            flex-direction: column;
+            background-color: var(--foreground-color);
+            @include variables.disableBorderColor(0.3);
+            cursor: pointer;
+            border-radius: 5px;
+            flex-shrink: 0;
+
+            p {
+                font-size: 1rem;
+
+                &:last-child {
+                    font-size: 0.8rem;
+                }
+            }
+        }
+
+        .active-day {
+            @extend .day;
+            background-color: var(--primary-color);
+            color: var(--dark-foreground-color);
+            border-color: var(--primary-color);
+        }
+    }
+    
+    .time-container {
+        
+    }
 }
 
 .spinner-container {

@@ -1,0 +1,87 @@
+@use "../variables" as variables;
+
+.container {
+    width: max-content;
+    min-width: 500px;
+    padding: 20px;
+    background-color: var(--foreground-color);
+    border-radius: 5px;
+    @include variables.disableBorderColor(0.3);
+    display: flex;
+    gap: 20px;
+    position: relative;
+
+    .poster {
+        width: 150px;
+        aspect-ratio: 2 / 3;
+    }
+
+    .movie-details {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .title {
+        font-size: 1rem;
+    }
+
+    .details-container {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .details {
+        display: flex;
+        gap: 5px;
+        color: var(--disable-color);
+        font-weight: 500;
+        font-size: 0.8rem;
+        align-items: center;
+
+        p {
+            overflow: hidden;
+            max-height: 35px;
+        }
+    
+    }
+
+    .icon {
+        flex-shrink: 0;
+    }
+
+    .status {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        font-size: 0.7rem;
+        font-weight: 500;
+        padding: 2px 6px;
+        border-radius: 4px;
+        background-color: var(--success-background-color);
+        color: var(--success-foreground-color);
+    }
+}
+
+@media (max-width: 700px) {
+    .container {
+        width: 100%;
+        min-width: 100%;
+    }
+}
+
+@media (max-width: 600px) {
+    .container {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 400px) {
+    .container {
+        .poster {
+            width: 100%;
+        }
+    }
+}
