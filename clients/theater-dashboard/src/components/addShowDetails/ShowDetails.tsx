@@ -29,10 +29,10 @@ const ShowDetails = () => {
       hour: number;
       minutes: number;
     };
-  } | null>(null);
-  const [availableTimes, setAvailableTimes] = useState<Array<{ hour: number }>>(
-    [],
-  );
+  }>({ day: date.getDate() + 1, time: { hour: 8, minutes: 0 } });
+  const [availableTimes, setAvailableTimes] = useState<
+    Array<{ hour: number; minutes: number }>
+  >([]);
 
   // Function for fetching movie details
   const handleGetMovieDetails = useCallback(async () => {
@@ -47,30 +47,22 @@ const ShowDetails = () => {
 
   // Function for getting available times
   const handleGetAvailableTime = useCallback(() => {
-    const currentDate = new Date();
-    const currentDay = currentDate.getDate();
     const availableTimes = [];
+    if (movie) {
+      const roundedMovieDuration = Math.ceil(
+        parseFloat(`${movie.duration.hour}.${movie.duration.minutes}`),
+      );
+      console.log("Total movie duration: ", roundedMovieDuration)
 
-    if (selectedDateDetails?.day === currentDay) {
-      const currentHour = currentDate.getHours(); // For storing current hour before setting to constant
-      currentDate.setHours(22); // Setting hour to constant 8:00PM
-
-      for (
-        let i = currentHour < 8 ? 8 : currentHour;
-        i <= currentDate.getHours();
-        i++
-      ) {
-        availableTimes.push({ hour: i });
-      }
-    } else {
-      for (let i = 8; i <= 22; i++) {
-        // Pushing 8:00 AM to 10:00 PM times
-        for (let i = 8; i <= 22; i++) {
-          availableTimes.push({ hour: i, minute: 0 });
-        }
+      // Pushing 8:00 AM to 10:00 PM times
+      for (let i = 1; i <= Math.ceil(22 / roundedMovieDuration); i++){
+        // 
       }
     }
-  }, [selectedDateDetails?.day]);
+    
+
+    setAvailableTimes(availableTimes);
+  }, [movie]);
 
   useEffect(() => {
     if (movieId) {
@@ -80,18 +72,8 @@ const ShowDetails = () => {
 
   useEffect(() => {
     (() => {
-      setSelectedDateDetails({
-        day: date.getDate(),
-        time: {
-          hour: 0,
-          minutes: 0,
-        },
-      });
+      handleGetAvailableTime();
     })();
-  }, [date]);
-
-  useEffect(() => {
-    handleGetAvailableTime();
   }, [handleGetAvailableTime]);
 
   return movie ? (
@@ -105,21 +87,30 @@ const ShowDetails = () => {
           {Array(5)
             .fill("")
             .map((_, index) =>
-              date.getDate() + index <= totalDaysInCurrentMonth ? (
+              date.getDate() + index + 1 <= totalDaysInCurrentMonth ? (
                 <div
                   className={
-                    selectedDateDetails?.day === date.getDate() + index
+                    selectedDateDetails?.day === date.getDate() + index + 1
                       ? style["active-day"]
                       : style["day"]
                   }
+                  onClick={() => {
+                    setSelectedDateDetails((pre) => {
+                      if (pre) {
+                        return { ...pre, day: date.getDate() + index + 1 };
+                      } else {
+                        return null;
+                      }
+                    });
+                  }}
                   key={index}
                 >
-                  <p>{date.getDate() + index}</p>
+                  <p>{date.getDate() + index + 1}</p>
                   <p>
                     {new Date(
                       date.getFullYear(),
                       date.getMonth(),
-                      date.getDate() + index,
+                      date.getDate() + index + 1,
                     ).toLocaleString("en-US", { weekday: "short" })}
                   </p>
                 </div>
@@ -127,7 +118,25 @@ const ShowDetails = () => {
             )}
         </div>
       </div>
-      <div className={style["time-container"]}></div>
+      <div className={style["time-container"]}>
+        {availableTimes.map((time, index) => (
+          <div
+            key={index}
+            className={
+              selectedDateDetails?.time?.hour === time.hour &&
+              selectedDateDetails.time?.minutes === time.minutes
+                ? style["active-time"]
+                : style.time
+            }
+          >
+            <span>
+              {time.hour > 12 ? time.hour - 12 : time.hour}:
+              {time.minutes.toString().padStart(2, "0")}
+            </span>
+            {time.hour >= 12 ? <span> PM</span> : <span> AM</span>}
+          </div>
+        ))}
+      </div>
     </div>
   ) : loading ? (
     <div className={style["spinner-container"]}>

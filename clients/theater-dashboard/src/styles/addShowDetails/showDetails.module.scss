@@ -39,6 +39,7 @@
         }
 
         .day {
+            width: 60px;
             padding-inline: 20px;
             @extend %container-center-style;
             flex-direction: column;
@@ -64,9 +65,32 @@
             border-color: var(--primary-color);
         }
     }
-    
+
     .time-container {
-        
+        display: flex;
+        overflow: scroll;
+        gap: 10px;
+        width: 700px;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        .time {
+            flex-shrink: 0;
+            padding: 10px 20px;
+            background-color: var(--foreground-color);
+            cursor: pointer;
+            @include variables.disableBorderColor(0.3);
+            border-radius: 5px;
+        }
+
+        .active-time {
+            @extend .time;
+            background-color: var(--primary-color);
+            color: var(--dark-foreground-color);
+            border-color: var(--primary-color);
+        }
     }
 }
 
@@ -75,4 +99,12 @@
     margin-top: 20px;
     display: flex;
     justify-content: center;
+}
+
+@media (max-width: 800px) {
+    .container {
+        .time-container {
+            width: 100%;
+        }
+    }
 }

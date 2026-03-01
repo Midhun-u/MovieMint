@@ -12,6 +12,11 @@ type Movie = {
     image_url: string;
   };
   formats: Array<string>
+  duration: {
+    hour: number
+    minutes: number
+    seconds: number
+  }
 }
 
 type InitialState = {
