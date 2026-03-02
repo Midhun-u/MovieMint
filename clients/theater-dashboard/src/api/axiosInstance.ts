@@ -5,7 +5,8 @@ import { envVariables } from "../utils/envVariables"
 const AUTH_BASE_URL = envVariables.AUTH_URL
 const MOVIE_BASE_URL = envVariables.MOVIE_URL
 const MEDIA_BASE_URL = envVariables.MEDIA_URL
-const THEATER_BASE_URL = envVariables.THEATER_URL
+const THEATER_BASE_URL = envVariables.THEATER_URL 
+const THEATER_SHOW_BASE_URL = envVariables.THEATER_SHOW_URL
 
 // Auth instance
 export const authAxiosInstance = axios.create({
@@ -29,4 +30,10 @@ export const mediaAxiosInstance = axios.create({
 export const theaterAxiosInstance  = axios.create({
     baseURL: THEATER_BASE_URL,
     withCredentials: true
+})
+
+// Theater show instance
+export const theaterShowAxiosInstance = axios.create({
+  baseURL: THEATER_SHOW_BASE_URL,
+  withCredentials: true
 })

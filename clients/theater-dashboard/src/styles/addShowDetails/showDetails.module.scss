@@ -8,13 +8,17 @@
 
     .date-container {
         margin-top: 10px;
-        display: flex;
-        gap: 15px;
-        width: 100%;
-        overflow-x: scroll;
 
-        &::-webkit-scrollbar {
-            display: none;
+        .date-details {
+            margin-top: 10px;
+            display: flex;
+            gap: 15px;
+            width: 100%;
+            overflow-x: scroll;
+
+            &::-webkit-scrollbar {
+                display: none;
+            }
         }
 
         .dates {
@@ -68,12 +72,19 @@
 
     .time-container {
         display: flex;
-        overflow: scroll;
+        flex-direction: column;
         gap: 10px;
         width: 700px;
 
-        &::-webkit-scrollbar {
-            display: none;
+        .times {
+            display: flex;
+            overflow: scroll;
+            gap: 10px;
+            width: 100%;
+
+            &::-webkit-scrollbar {
+                display: none;
+            }
         }
 
         .time {
@@ -116,6 +127,14 @@
 @media (max-width: 800px) {
     .container {
         .time-container {
+            width: 100%;
+        }
+    }
+}
+
+@media (max-width: 600px) {
+    .container {
+        .form {
             width: 100%;
         }
     }

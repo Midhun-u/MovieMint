@@ -3,6 +3,7 @@ import { authReducer } from "./authSlice";
 import { themeReducer } from "./themeSlice";
 import { theaterReducer } from "./theaterSlice";
 import { movieReducer } from "./movieSlice";
+import { showReducer } from "./showSlice";
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     theme: themeReducer,
     theater: theaterReducer,
     movie: movieReducer,
+    show: showReducer
   },
 });
 

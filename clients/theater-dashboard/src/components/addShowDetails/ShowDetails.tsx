@@ -1,7 +1,14 @@
-import { useCallback, useEffect, useState, useMemo, useId } from "react";
+import {
+  useCallback,
+  useEffect,
+  useState,
+  useMemo,
+  useId,
+  useContext,
+} from "react";
 import style from "../../styles/addShowDetails/showDetails.module.scss";
 import { getMovieApi } from "../../api/movie";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
   movieFailed,
@@ -15,30 +22,37 @@ import FormInput from "../form/FormInput";
 import { Banknote as PriceIcon } from "lucide-react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import Button from "../ui/Button";
+import { ToastProvider } from "../context/providers/ToastProvider";
+import { createShowApi } from "../../api/show";
+import FormLabel from "../form/FormLabel";
+import { showFailed, showRequest, showSuccess } from "../../store/showSlice";
 
 const ShowDetails = () => {
   const { movieId } = useParams();
   const dispatch = useAppDispatch();
-  const { movie, loading } = useAppSelector((state) => state.movie);
+  const { movie, loading: movieLoading } = useAppSelector(
+    (state) => state.movie,
+  );
+  const {loading: showLoading} = useAppSelector(state => state.show)
   const { theme } = useAppSelector((state) => state.theme);
+  const { theater } = useAppSelector((state) => state.theater);
   const date = useMemo(() => new Date(), []);
   const totalDaysInCurrentMonth = new Date(
     date.getFullYear(),
     date.getMonth() + 1,
     0,
   ).getDate();
-  const [selectedDateDetails, setSelectedDateDetails] = useState<{
-    day: number;
-    time: {
-      hour: number;
-      minutes: number;
-    };
-  }>({ day: date.getDate() + 1, time: { hour: 4, minutes: 0 } });
+  const [selectedDay, setSelectedDay] = useState<number>(date.getDate() + 1);
+  const [selectedTimes, setSelectedTime] = useState<
+    Array<{ hour: number, minutes: number }>
+  >([{ hour: 4, minutes: 0 }]);
   const [availableTimes, setAvailableTimes] = useState<
-    Array<{ hour: number; minutes: number }>
+    Array<{ hour: number, minutes: number }>
   >([]);
   const priceId = useId();
-  const {register, handleSubmit} = useForm<{price: number}>()
+  const { register, handleSubmit } = useForm<{ price: string }>();
+  const toastContext = useContext(ToastProvider);
+  const navigate = useNavigate()
 
   // Function for fetching movie details
   const handleGetMovieDetails = useCallback(async () => {
@@ -87,11 +101,82 @@ const ShowDetails = () => {
 
     setAvailableTimes(availableTimes);
   }, [movie]);
-  
-  // Function for submitting form 
-  const handleSubmitForm: SubmitHandler<{price: number}> = (data) => {
-    console.log(data)
-  }
+
+  // Function for storing times
+  const handleStoreTimes = (time: { hour: number; minutes: number }) => {
+    const isTimeSelected = selectedTimes.some(
+      (selectedTime) =>
+        selectedTime.hour === time.hour &&
+        selectedTime.minutes === time.minutes,
+    );
+
+    if (isTimeSelected) {
+      const filteredSelectedTimes = selectedTimes.filter(
+        (selectedTime) =>
+          selectedTime.hour !== time.hour &&
+          selectedTime.minutes !== time.minutes,
+      );
+      setSelectedTime(filteredSelectedTimes);
+    } else {
+      setSelectedTime((pre) => [...pre, time]);
+    }
+  };
+
+  // Function for submitting form
+  const handleSubmitForm: SubmitHandler<{ price: string }> = async (data) => {
+    const priceNumber = parseInt(data.price || "0");
+
+    if (!movie) {
+      return;
+    }
+
+    if (!priceNumber) {
+      return toastContext?.triggerToastMessage(
+        "Enter the proper show price",
+        "ERROR",
+      );
+    }
+
+    if (!selectedDay || !selectedTimes.length) {
+      toastContext?.triggerToastMessage("Select proper day and time", "ERROR");
+      return;
+    }
+
+    dispatch(showRequest())
+    const showsResult = await Promise.all(
+      selectedTimes.map(async (selectedTime) => {
+
+        const result = await createShowApi({
+          theaterId: theater.id,
+          movieId: movie._id as string,
+          price: priceNumber,
+          hour: selectedTime.hour,
+          minutes: selectedTime.minutes,
+          startDay: selectedDay,
+        });
+
+        if(result.success){
+          return {success: true, show: result.show}
+        }else{
+          return {success: false, show: {}, errorMessage: result.errorMessage}
+        }
+        
+      }) || [],
+    );
+
+    // Checking if any result failed
+    if(showsResult.some((result) => !result.success)){
+      dispatch(showFailed({errorMessage: showsResult.find((result) => result.errorMessage)}))
+      toastContext?.triggerToastMessage("Couldn't create shows", "ERROR")
+    }else{
+
+      dispatch(showSuccess({shows: showsResult.map((result) => result.show)}))
+      toastContext?.triggerToastMessage("Shows is created", "SUCCESS")
+
+      navigate(-1)
+    }
+
+  };
 
   useEffect(() => {
     if (movieId) {
@@ -109,58 +194,68 @@ const ShowDetails = () => {
     <div className={style.container}>
       <SelectedMovieDetails />
       <div className={style["date-container"]}>
-        <div className={style.month}>
-          <p>{date.toLocaleString("en-US", { month: "short" })}</p>
+        <div className={style["section-title"]}>
+          <FormLabel title="Starting Day" />
         </div>
-        <div className={style.dates}>
-          {Array(5)
-            .fill("")
-            .map((_, index) =>
-              date.getDate() + index + 1 <= totalDaysInCurrentMonth ? (
-                <div
-                  className={
-                    selectedDateDetails?.day === date.getDate() + index + 1
-                      ? style["active-day"]
-                      : style["day"]
-                  }
-                  onClick={() => {
-                    setSelectedDateDetails((pre) => {
-                      return { ...pre, day: date.getDate() + index + 1 };
-                    });
-                  }}
-                  key={index}
-                >
-                  <p>{date.getDate() + index + 1}</p>
-                  <p>
-                    {new Date(
-                      date.getFullYear(),
-                      date.getMonth(),
-                      date.getDate() + index + 1,
-                    ).toLocaleString("en-US", { weekday: "short" })}
-                  </p>
-                </div>
-              ) : null,
-            )}
+        <div className={style["date-details"]}>
+          <div className={style.month}>
+            <p>{date.toLocaleString("en-US", { month: "short" })}</p>
+          </div>
+          <div className={style.dates}>
+            {Array(5)
+              .fill("")
+              .map((_, index) =>
+                date.getDate() + index + 1 <= totalDaysInCurrentMonth ? (
+                  <div
+                    className={
+                      selectedDay === date.getDate() + index + 1
+                        ? style["active-day"]
+                        : style["day"]
+                    }
+                    onClick={() => setSelectedDay(date.getDate() + index + 1)}
+                    key={index}
+                  >
+                    <p>{date.getDate() + index + 1}</p>
+                    <p>
+                      {new Date(
+                        date.getFullYear(),
+                        date.getMonth(),
+                        date.getDate() + index + 1,
+                      ).toLocaleString("en-US", { weekday: "short" })}
+                    </p>
+                  </div>
+                ) : null,
+              )}
+          </div>
         </div>
       </div>
       <div className={style["time-container"]}>
-        {availableTimes.map((time, index) => (
-          <div
-            key={index}
-            className={
-              selectedDateDetails?.time?.hour === time.hour &&
-              selectedDateDetails.time?.minutes === time.minutes
-                ? style["active-time"]
-                : style.time
-            }
-          >
-            <span>
-              {time.hour > 12 ? time.hour - 12 : time.hour}:
-              {time.minutes.toString().padStart(2, "0")}
-            </span>
-            {time.hour >= 12 ? <span> PM</span> : <span> AM</span>}
-          </div>
-        ))}
+        <div className={style["section-title"]}>
+          <FormLabel title="Available Times" />
+        </div>
+        <div className={style.times}>
+          {availableTimes.map((time, index) => (
+            <div
+              key={index}
+              className={
+                selectedTimes.some(
+                  (selectedTime) =>
+                    selectedTime.hour === time.hour &&
+                    selectedTime.minutes === time.minutes,
+                )
+                  ? style["active-time"]
+                  : style.time
+              }
+              onClick={() => handleStoreTimes(time)}
+            >
+              <span>
+                {time.hour > 12 ? time.hour - 12 : time.hour}:
+                {time.minutes.toString().padStart(2, "0")}
+              </span>
+              {time.hour >= 12 ? <span> PM</span> : <span> AM</span>}
+            </div>
+          ))}
+        </div>
       </div>
       <form onSubmit={handleSubmit(handleSubmitForm)} className={style.form}>
         <FormInput
@@ -170,19 +265,21 @@ const ShowDetails = () => {
           labelTitle="Price"
           id={priceId}
           minLength={1}
-          maxLength={3}
+          maxLength={4}
           register={register}
           type="number"
           placeholder="Enter show price"
         />
         <Button
           title="Submit"
-          className={style['submit-button']}
+          className={style["submit-button"]}
           type="submit"
+          loading={showLoading}
+          disabled={showLoading}
         />
       </form>
     </div>
-  ) : loading ? (
+  ) : movieLoading ? (
     <div className={style["spinner-container"]}>
       <Spinner size={25} color={theme === "dark" ? "white" : "black"} />
     </div>

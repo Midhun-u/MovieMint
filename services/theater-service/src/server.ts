@@ -6,6 +6,7 @@ import {cors} from 'hono/cors'
 import { errorHandler } from './utils/errorHandler'
 import { theaterRouter } from './routes/theater.route'
 import { connectDatabase } from './utils/db'
+import { showRouter } from './routes/show.route'
 
 // App instance
 const app = new Hono({strict: false})
@@ -24,6 +25,7 @@ app.use(cors({
 app.notFound(notFound)
 app.onError(errorHandler)
 app.route("/api/v1/theater", theaterRouter)
+app.route("/api/v1/show", showRouter)
 
 // Connecting databases
 connectDatabase()

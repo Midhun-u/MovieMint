@@ -23,9 +23,9 @@ export const authMiddleware = async (context: Context, next: Next) => {
 
     // Fetching current user
     const result = await getAuthProfile(authToken)
-    const isPermittedAccess = permittedRoles.some((role) => result.user.role.includes(role))
+    const isPermittedAccess = permittedRoles.some((role) => result?.user?.role.includes(role))
 
-    if (!result.success || !result.user || !isPermittedAccess) {
+    if (!result?.success || !result?.user || !isPermittedAccess) {
         context.status(403)
         return context.json({ success: false, error: "Only permitted role have the access for processing", statusCode: 403 })
     }
