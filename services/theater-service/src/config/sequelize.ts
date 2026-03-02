@@ -3,25 +3,25 @@ import { envVariables } from "../utils/envVariables";
 
 export const sequelize = new Sequelize({
     dialect: "postgres",
-    database: envVariables.DB_DATABASE_NAME,
-    username: envVariables.DB_USERNAME,
-    password: envVariables.DB_PASSWORD,
-    port: envVariables.DB_PORT,
-    host: envVariables.DB_HOST,
+    database: envVariables.POSTGRES_DATABASE_NAME,
+    username: envVariables.POSTGRES_USERNAME,
+    password: envVariables.POSTGRES_PASSWORD,
+    port: envVariables.POSTGRES_PORT,
+    host: envVariables.POSTGRES_HOST,
     logging: false
 })
 
 // Function for connecting database
-export const connectDatabase = async () => {
+export const connectToPostgresDatabase = async () => {
 
     try {
 
         await sequelize.authenticate()
         await sequelize.sync({alter: true})
-        console.log(`Database is connected`)
+        console.log(`Postgres is connected`)
         
     } catch (error) {
-        console.log(`Database is not connected due to: ${error}`)
+        console.log(`Postgres is not connected due to: ${error}`)
     }
 
 }

@@ -1,16 +1,17 @@
 // Env variables
 export const envVariables = {
     PORT: Number(Bun.env.PORT),
-    DB_DATABASE_NAME: Bun.env.DB_DATABASE_NAME as string,
-    DB_USERNAME: Bun.env.DB_USERNAME as string,
-    DB_HOST: Bun.env.DB_HOST as string,
-    DB_PORT: Number(Bun.env.DB_PORT),
-    DB_PASSWORD: Bun.env.DB_PASSWORD as string,
+    POSTGRES_DATABASE_NAME: Bun.env.POSTGRES_DATABASE_NAME as string,
+    POSTGRES_USERNAME: Bun.env.POSTGRES_USERNAME as string,
+    POSTGRES_HOST: Bun.env.POSTGRES_HOST as string,
+    POSTGRES_PORT: Number(Bun.env.POSTGRES_PORT),
+    POSTGRES_PASSWORD: Bun.env.POSTGRES_PASSWORD as string,
+    MONGODB_URL: Bun.env.MONGODB_URL as string,
     APP_URL: Bun.env.APP_URL as string,
     THEATER_DASHBOARD_URL: Bun.env.THEATER_DASHBOARD_URL as string,
     ADMIN_DASHBOARD_URL: Bun.env.ADMIN_DASHBOARD_URL as string,
     AUTH_SERVICE_URL: Bun.env.AUTH_SERVICE_URL as string,
     MEDIA_SERVICE_URL: Bun.env.MEDIA_SERVICE_URL as string,
     NODEMAILER_GMAIL_APP_PASSWORD: Bun.env.NODEMAILER_GMAIL_APP_PASSWORD as string,
-    NODEMAILER_GMAIL_USER_EMAIL: Bun.env.NODEMAILER_GMAIL_USER_EMAIL as string
+    NODEMAILER_GMAIL_USER_EMAIL: Bun.env.NODEMAILER_GMAIL_USER_EMAIL as string,
 }

@@ -92,6 +92,18 @@
             border-color: var(--primary-color);
         }
     }
+
+    .form {
+        margin-top: 20px;
+        width: 450px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .submit-button {
+        @extend %primary-button-style;
+    }
 }
 
 .spinner-container {

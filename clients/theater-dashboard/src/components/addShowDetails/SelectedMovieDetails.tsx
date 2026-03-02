@@ -5,6 +5,7 @@ import {
   Grid3x2 as CertificateIcon,
   Languages as LanguageIcon,
   Tv as FormatIcon,
+  Clock as DurationIcon
 } from "lucide-react";
 
 const SelectedMovieDetails = () => {
@@ -39,6 +40,14 @@ const SelectedMovieDetails = () => {
           <div className={style.details}>
             <FormatIcon size={19} className={style.icon} />
             <p>{movie?.formats.join(", ")}</p>
+          </div>
+          {/* Movie duration */}
+          <div className={style.details}>
+            <DurationIcon
+              size={19}
+              className={style.icon}
+            />
+            <p>{movie?.duration.hour}H { movie?.duration.minutes }M</p>
           </div>
           <p className={style.status}>
             Available

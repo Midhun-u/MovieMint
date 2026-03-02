@@ -4,8 +4,8 @@ import { notFound } from './utils/notFound'
 import {logger} from 'hono/logger'
 import {cors} from 'hono/cors'
 import { errorHandler } from './utils/errorHandler'
-import { connectDatabase } from './config/sequelize'
 import { theaterRouter } from './routes/theater.route'
+import { connectDatabase } from './utils/db'
 
 // App instance
 const app = new Hono({strict: false})
@@ -25,7 +25,7 @@ app.notFound(notFound)
 app.onError(errorHandler)
 app.route("/api/v1/theater", theaterRouter)
 
-// Connecting database
+// Connecting databases
 connectDatabase()
 
 export {
