@@ -51,6 +51,6 @@ const showSchema = new Schema({
         default: "AVAILABLE",
         required: true
     }
-})
+}, {timestamps: true})
 
 export const Show = model("Show", showSchema)

@@ -15,6 +15,20 @@ export const addShowController = sendErrorResponse(async (context: Context) => {
         return context.json({success: false, error: "Invalid fields", statusCode: 400})
     }
 
+    // Checking if show already exists
+    const show = await ShowModel.getShowsByMovieIdAndTheaterIdWithTime(
+        validateBody.fields.movieId,
+        validateBody.fields.theaterId, 
+        validateBody.fields.startDay,
+        validateBody.fields.hour,
+        validateBody.fields.minutes
+    )
+    
+    if(show){
+        context.status(409)
+        return context.json({success: false, error: "Show is already exists", statusCode: 409})
+    }
+
     const newShow = await ShowModel.addShow(validateBody.fields)
     if(!newShow){
         context.status(400)

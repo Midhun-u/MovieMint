@@ -109,6 +109,9 @@ const MovieList = () => {
     (() => {
       dispatch(clearState());
     })();
+    return () => {
+      dispatch(clearState())
+    }
   }, [
     searchQuery,
     selectedCategories,

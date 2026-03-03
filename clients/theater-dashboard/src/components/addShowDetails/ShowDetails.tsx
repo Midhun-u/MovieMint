@@ -25,7 +25,7 @@ import Button from "../ui/Button";
 import { ToastProvider } from "../context/providers/ToastProvider";
 import { createShowApi } from "../../api/show";
 import FormLabel from "../form/FormLabel";
-import { showFailed, showRequest, showSuccess } from "../../store/showSlice";
+import { clearState, showFailed, showRequest, showSuccess } from "../../store/showSlice";
 
 const ShowDetails = () => {
   const { movieId } = useParams();
@@ -141,6 +141,15 @@ const ShowDetails = () => {
       toastContext?.triggerToastMessage("Select proper day and time", "ERROR");
       return;
     }
+   
+    // Checking if any movie format supports in theater
+    const theaterFormats = new Set(theater.formats as Array<string>)
+    const isSupportFormat = movie.formats.some((format) => theaterFormats.has(format))
+    
+    if(!isSupportFormat){
+      toastContext?.triggerToastMessage("Movie is not support in theater", "ERROR")
+      return
+    }
 
     dispatch(showRequest())
     const showsResult = await Promise.all(
@@ -188,7 +197,10 @@ const ShowDetails = () => {
     (() => {
       handleGetAvailableTime();
     })();
-  }, [handleGetAvailableTime]);
+    return () => {
+      dispatch(clearState())
+    }
+  }, [handleGetAvailableTime, dispatch]);
 
   return movie ? (
     <div className={style.container}>

@@ -1,0 +1,39 @@
+@use "../variables" as variables;
+
+.container {
+    background-color: var(--foreground-color);
+    display: flex;
+    width: max-content;
+    padding: 5px;
+    border-radius: 20px;
+    gap: 20px;
+    @include variables.disableBorderColor(0.3);
+    overflow-x: scroll;
+    
+    &::-webkit-scrollbar{
+        display: none;
+    }
+
+    p {
+        font-size: 0.82rem;
+        font-weight: 500;
+        cursor: pointer;
+        @extend %container-center-style;
+        border-radius: 20px;
+        padding: 3px 20px;
+        flex-shrink: 0;
+    }
+    
+    .active{
+        background-color: var(--primary-color);
+    }
+}
+
+@media(max-width: 400px){
+    
+    .container{
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+}

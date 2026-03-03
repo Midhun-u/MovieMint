@@ -1,5 +1,10 @@
 @use '../variables' as variables;
 
+.loading-spinner-container{
+    width: 100%;
+    @extend %container-center-style;
+}
+
 .container{
     width: 100%;
     height: 100%;
