@@ -171,7 +171,7 @@ const ShowDetails = () => {
     }else{
 
       dispatch(showSuccess({shows: showsResult.map((result) => result.show)}))
-      toastContext?.triggerToastMessage("Shows is created", "SUCCESS")
+      toastContext?.triggerToastMessage("Shows are created", "SUCCESS")
 
       navigate(-1)
     }
