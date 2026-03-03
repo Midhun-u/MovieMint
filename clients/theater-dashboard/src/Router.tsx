@@ -5,6 +5,7 @@ import PageNotFound from "./components/pages/PageNotFound";
 import CheckTheaterAvailability from "./components/features/CheckTheaterAvailability";
 import AddShows from "./components/pages/AddShows";
 import AddShowDetails from "./components/pages/AddShowDetails";
+import CurrentShows from "./components/pages/CurrentShows";
 
 const Router = () => {
   return (
@@ -40,6 +41,19 @@ const Router = () => {
           <ProtectRoute>
             <CheckTheaterAvailability>
               <AddShowDetails
+              />
+            </CheckTheaterAvailability>
+          </ProtectRoute>
+        }
+      />
+
+      {/* Current show route */}
+      <Route
+        path="/theater/current-shows"
+        element={
+          <ProtectRoute>
+            <CheckTheaterAvailability>
+              <CurrentShows
               />
             </CheckTheaterAvailability>
           </ProtectRoute>

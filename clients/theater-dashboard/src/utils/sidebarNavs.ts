@@ -31,7 +31,7 @@ export const sidebarNavs: SidebarNavs = [
     },
     {
         title: "Current Shows",
-        route: "/theater/shows",
+        route: "/theater/current-shows",
         Icon: CurrentShowsIcon
     },
     {
