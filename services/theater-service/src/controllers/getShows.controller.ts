@@ -23,7 +23,6 @@ export const getShowsController = sendErrorResponse(async (context: Context) => 
     const showsDetails = await Promise.all(shows.map(async (show) => {
         const result = await getMovie(show.movie_id)
         if(result.success){
-            console.log(result.movie)
             return {
                 ...show,
                 movie: {

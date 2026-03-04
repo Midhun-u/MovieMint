@@ -27,7 +27,7 @@ import { createShowApi } from "../../api/show";
 import FormLabel from "../form/FormLabel";
 import { clearState, showFailed, showRequest, showSuccess } from "../../store/showSlice";
 
-const ShowDetails = () => {
+const AddShow = () => {
   const { movieId } = useParams();
   const dispatch = useAppDispatch();
   const { movie, loading: movieLoading } = useAppSelector(
@@ -300,4 +300,4 @@ const ShowDetails = () => {
   );
 };
 
-export default ShowDetails;
+export default AddShow;

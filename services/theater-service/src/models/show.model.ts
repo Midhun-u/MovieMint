@@ -21,7 +21,7 @@ export const ShowModel = {
                 minutes: data.minutes,
                 start_day: data.startDay
             },
-            status: "AVAILABLE"
+            status: "SHOWING"
         })
 
         return newShow
@@ -59,5 +59,12 @@ export const ShowModel = {
         return show
 
     },
+
+    getShowById: async (id: string) => {
+
+        const show = await Show.findById(id).lean()
+        return show
+
+    }
 
 }

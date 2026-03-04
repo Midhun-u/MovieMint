@@ -1,0 +1,88 @@
+@use '../variables' as variables;
+
+.container {
+    padding: 20px;
+    background-color: var(--foreground-color);
+    @include variables.disableBorderColor(0.3);
+    border-radius: 5px;
+    display: flex;
+    gap: 15px;
+    cursor: pointer;
+    position: relative;
+
+    img {
+        width: 120px;
+        aspect-ratio: 2 / 3;
+    }
+
+    .details-container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+        margin-bottom: 10px;
+    }
+
+    .details {
+        display: flex;
+        gap: 10px;
+        color: var(--disable-color);
+        font-weight: 500;
+        font-size: 0.8rem;
+        align-items: center;
+
+        p {
+            overflow: hidden;
+            max-height: 35px;
+        }
+
+        &:nth-child(2) {
+            margin-top: 10px;
+        }
+
+        .icon {
+            flex-shrink: 0;
+        }
+    }
+
+    .title {
+        font-size: 0.9rem;
+        max-height: 20px;
+        overflow: hidden;
+    }
+
+    .status {
+        width: max-content;
+        font-size: 0.7rem;
+        padding-inline: 5px;
+        padding-block: 2px;
+        border-radius: 3px;
+        position: absolute;
+        bottom: 8px;
+        right: 8px;
+        background-color: var(--success-background-color);
+        color: var(--success-foreground-color);
+        font-weight: 500;
+    }
+
+    .option-menu-container{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: red;
+        top: 0px;
+        left: 0px;
+    }
+}
+
+@media(max-width: 400px){
+
+    .container{
+        flex-direction: column;
+
+        img{
+            width: 100%;
+        }
+    }
+
+}

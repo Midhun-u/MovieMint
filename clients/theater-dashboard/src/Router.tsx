@@ -6,6 +6,7 @@ import CheckTheaterAvailability from "./components/features/CheckTheaterAvailabi
 import AddShows from "./components/pages/AddShows";
 import AddShowDetails from "./components/pages/AddShowDetails";
 import CurrentShows from "./components/pages/CurrentShows";
+import EditShow from "./components/pages/EditShow";
 
 const Router = () => {
   return (
@@ -54,6 +55,19 @@ const Router = () => {
           <ProtectRoute>
             <CheckTheaterAvailability>
               <CurrentShows
+              />
+            </CheckTheaterAvailability>
+          </ProtectRoute>
+        }
+      />
+
+      {/* Edit show route */}
+      <Route
+        path="/theater/current-shows/edit/:showId/:movieId"
+        element={
+          <ProtectRoute>
+            <CheckTheaterAvailability>
+              <EditShow
               />
             </CheckTheaterAvailability>
           </ProtectRoute>

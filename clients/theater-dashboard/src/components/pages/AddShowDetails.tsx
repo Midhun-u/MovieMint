@@ -1,5 +1,5 @@
 import style from '../../styles/pages/addShowDetails.module.scss'
-import ShowDetails from '../addShowDetails/ShowDetails'
+import AddShow from '../addShowDetails/AddShow'
 import PageDetails from '../ui/PageDetails'
 
 const AddShowDetails = () => {
@@ -13,8 +13,8 @@ const AddShowDetails = () => {
         about='You can add shows, so users can book the show'
         backButton
       />
-      {/* Show details */}
-      <ShowDetails
+      {/* Add Show screen */}
+      <AddShow
       />
     </div>
     

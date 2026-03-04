@@ -12,13 +12,29 @@ export const createShowApi = handleError(async (data: {
   minutes: number,
   startDay: number
 }) => {
-  
+
   const result = await theaterShowAxiosInstance.post("/add-show", data, {
     headers: {
       Authorization: `Bearer ${authToken}`
     }
   })
-  
+
   return result.data
-  
+
+})
+
+// Api for getting shows
+export const getShowsApi = handleError(async (theaterId: string, page: number, limit: number, status: string = "") => {
+
+  const result = await theaterShowAxiosInstance.get(`/get-shows/${theaterId}/?page=${page}&limit=${limit}&status=${status}`)
+  return result.data
+
+})
+
+// Api for getting specific show
+export const getShowApi = handleError(async (showId: string) => {
+
+  const result = await theaterShowAxiosInstance.get(`/get-show/${showId}`)
+  return result.data
+
 })

@@ -2,10 +2,12 @@ import { Activity, useCallback, useEffect, useState } from 'react'
 import style from '../../styles/currentShows/currentShowList.module.scss'
 import TabBar from '../layout/TabBar'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { getShowsApi } from '../../api/theater'
+import { getShowsApi } from '../../api/show'
 import useObserver from '../hooks/useObserver'
 import { clearState, incrementPage, showFailed, showRequest, showSuccess } from '../../store/showSlice'
+import ShowCard from './ShowCard'
 import NoResult from '../ui/NoResult'
+import ShowSkeleton from './ShowSkeleton'
 
 const CurrentShowList = () => {
 
@@ -20,7 +22,7 @@ const CurrentShowList = () => {
     const handleGetShows = useCallback(async () => {
 
         dispatch(showRequest())
-        const result = await getShowsApi(theater.id, pagination.page, pagination.limit)
+        const result = await getShowsApi(theater.id, pagination.page, pagination.limit, status)
 
         if (result.success) {
 
@@ -37,7 +39,7 @@ const CurrentShowList = () => {
         }
 
 
-    }, [pagination.page, pagination.limit, theater.id, dispatch])
+    }, [pagination.page, pagination.limit, theater.id, dispatch, status])
 
     useEffect(() => {
         (() => {
@@ -59,45 +61,67 @@ const CurrentShowList = () => {
         }
     }, [dispatch])
 
+    useEffect(() => {
+        dispatch(clearState())
+    }, [status, dispatch])
+
     return (
-        shows.length
-        ?
-        <div
-            className={style.container}
-        >
-            <TabBar
-                values={[
+        <>
+            <div
+                className={style.container}
+            >
+                <TabBar
+                    values={[
+                        {
+                            title: "All",
+                            value: ""
+                        },
+                        {
+                            title: "Showing",
+                            value: "SHOWING"
+                        },
+                        {
+                            title: "Not Showing",
+                            value: "NOT_SHOWING"
+                        }
+                    ]}
+                    setValue={setStatus}
+                    activeValue={status}
+                />
+                <div className={style.list}>
                     {
-                        title: "All",
-                        value: ""
-                    },
-                    {
-                        title: "Showing",
-                        value: "SHOWING"
-                    },
-                    {
-                        title: "Not Showing",
-                        value: "NOT_SHOWING"
+                        shows.map((show) => (
+                            <ShowCard
+                                key={show._id}
+                                id={show._id}
+                                moviePoster={show.movie.poster.image_url}
+                                movieTitle={show.movie.title}
+                                movieCategories={show.movie.categories}
+                                createdAt={show.createdAt}
+                                showTime={{ ...show.show_time, startDay: show.show_time.start_day }}
+                                status={show.status}
+                                movieId={show.movie_id}
+                            />
+                        ))
                     }
-                ]}
-                setValue={setStatus}
-                activeValue={status}
-            />
-            <div className={style.list}>
-                {
-                    shows.map((show) => (
-                        <div key={show._id}>
-                        </div>
-                    ))
-                }
+                    <Activity mode={loading ? "visible" : "hidden"}>
+                        <ShowSkeleton
+                        />
+                    </Activity>
+                </div>
+                <Activity mode={hasMore ? "visible" : "hidden"}>
+                    <div ref={ref}></div>
+                </Activity>
             </div>
-            <Activity mode={hasMore ? "visible" : "hidden"}>
-                <div ref={ref}></div>
-            </Activity>
-        </div>
-        :
-        <NoResult
-        />
+            {
+                !shows.length
+                    ?
+                    <NoResult
+                    />
+                    :
+                    null
+            }
+        </>
     )
 }
 

@@ -12,6 +12,8 @@ const SelectedMovieDetails = () => {
   const { movie } = useAppSelector((state) => state.movie);
 
   return (
+    movie
+    ?
     <div className={style.container}>
       {/* Movie poster */}
       <img className={style.poster} src={movie?.poster.image_url} />
@@ -55,6 +57,8 @@ const SelectedMovieDetails = () => {
         </div>
       </div>
     </div>
+    :
+    null
   );
 };
 

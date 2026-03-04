@@ -47,7 +47,7 @@ const showSchema = new Schema({
     },
     status: {
         type: Schema.Types.String,
-        enum: ["AVAILABLE", "NOT_AVAILABLE"],
+        enum: ["SHOWING", "NOT_SHOWING"],
         default: "AVAILABLE",
         required: true
     }
