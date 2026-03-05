@@ -19,7 +19,7 @@ app.use(express.json({limit: "20mb"}))
 app.use(express.urlencoded({extended: true}))
 app.use(morgan("dev"))
 app.use(cors({
-    origin: [envVariables.ADMIN_DASHBOARD_URL],
+    origin: [envVariables.ADMIN_DASHBOARD_URL, envVariables.THEATER_DASHBOARD_URL],
     credentials: true,
     methods: ['GET', 'PUT', 'PATCH', 'POST', 'DELETE']
 }))

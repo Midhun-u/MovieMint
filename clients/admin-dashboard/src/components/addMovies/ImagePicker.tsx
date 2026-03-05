@@ -43,11 +43,7 @@ const ImagePicker = ({ labelTitle, title, mode, setFile }: ImagePicker) => {
         );
 
       // Making preview of the image
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-      fileReader.onload = async () => {
-        setPreviewImage(fileReader.result);
-      };
+      setPreviewImage(URL.createObjectURL(file))
 
       setFile(file);
     }

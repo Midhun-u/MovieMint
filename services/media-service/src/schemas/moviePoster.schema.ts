@@ -11,7 +11,7 @@ export const Poster = sequelize.define("poster", {
     },
     movie_id: {
         type: DataTypes.TEXT,
-        unique: true,
+        unique: "posters_movie_id_key",
         allowNull: false
     },
     image_url: {

@@ -11,7 +11,7 @@ export const UserImage = sequelize.define("user_image", {
     },
     user_id: {
         type: DataTypes.TEXT,
-        unique: true,
+        unique: "users_email_key",
         allowNull: false
     },
     image_url: {

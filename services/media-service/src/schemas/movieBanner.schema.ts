@@ -11,7 +11,7 @@ export const Banner = sequelize.define("banner", {
     },
     movie_id: {
         type: DataTypes.TEXT,
-        unique: true,
+        unique: "banners_movie_id_key",
         allowNull: false
     },
     image_url: {

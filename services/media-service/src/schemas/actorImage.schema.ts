@@ -15,7 +15,7 @@ export const Actor = sequelize.define("actor", {
     },
     actor_id: {
         type: DataTypes.TEXT,
-        unique: true,
+        unique: "actors_actor_id_key",
         allowNull: false
     },
     image_url: {

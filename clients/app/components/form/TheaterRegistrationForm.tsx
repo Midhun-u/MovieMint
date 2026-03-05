@@ -81,12 +81,11 @@ const TheaterRegistrationForm = () => {
         if (!file.type.includes("image")) return toastContext?.triggerToastMessage("Invalid file", "ERROR")
 
         if (file.size > fileSize) return toastContext?.triggerToastMessage("File size is exceeded the limit", "ERROR")
-        // Reading file as base64 for showing preview
-        const fileReader = new FileReader()
-        fileReader.readAsDataURL(file)
-        fileReader.onload = async () => {
-            await setTheaterLogo({ file: file, preview: fileReader.result as string })
-        }
+        // Making preview
+        setTheaterLogo({
+            file: file,
+            preview: URL.createObjectURL(file)
+        })
 
     }
 

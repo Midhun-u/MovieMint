@@ -11,7 +11,7 @@ export const TheaterImage = sequelize.define("theater_image", {
     },
     theater_id: {
         type: DataTypes.TEXT,
-        unique: true,
+        unique: "theater_images_theater_id_key",
         allowNull: false
     },
     image_url: {
