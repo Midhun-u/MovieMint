@@ -58,6 +58,8 @@ const movieSlice = createSlice({
         state.movies = action.payload.movies;
       } else if(action.payload.movies?.length){
         state.movies = [...state.movies, ...action.payload.movies];
+      }else{
+        state.movies = []
       }
       state.errorMessage = "";
     },

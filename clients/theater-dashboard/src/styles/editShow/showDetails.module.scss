@@ -7,7 +7,9 @@
 }
 
 .field-container{
-    margin-top: 10px;
+    margin-top: 15px;
+    width: 450px;
+    
 
     .radio-container{
         display: flex;
@@ -25,6 +27,10 @@
 }
 
 @media(max-width: 600px){
+
+    .field-container{
+        width: 100%;
+    }
     .update-button{
         width: 100%;
     }

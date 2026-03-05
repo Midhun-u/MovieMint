@@ -69,7 +69,7 @@ const ShowCard = ({ moviePoster, movieId, movieTitle, movieCategories, createdAt
                         <p>{showTime.hour >= 12 ? (showTime.hour - 12).toString().padStart(2, "0") : showTime.hour.toString().padStart(2, "0")}:{showTime.minutes.toString().padStart(2, "0")} {showTime.hour >= 12 ? "PM" : "AM"}</p>
                     </div>
                 </div>
-                <p className={style.status}>
+                <p className={status === "SHOWING"? style['showing-status']: style['not-showing-status']}>
                     {
                         status === "SHOWING"
                             ?

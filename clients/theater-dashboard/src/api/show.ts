@@ -38,3 +38,16 @@ export const getShowApi = handleError(async (showId: string) => {
   return result.data
 
 })
+
+// Api for updating show
+export const updateShowApi = handleError(async (showId: string, updatedBody: object = {}) => {
+
+    const result = await theaterShowAxiosInstance.patch(`/update-show/${showId}`, updatedBody, {
+      headers: {
+        Authorization: `Bearer ${authToken}`
+      }
+    })
+
+    return result.data
+
+})

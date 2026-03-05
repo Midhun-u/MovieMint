@@ -7,6 +7,7 @@ import AddShows from "./components/pages/AddShows";
 import AddShowDetails from "./components/pages/AddShowDetails";
 import CurrentShows from "./components/pages/CurrentShows";
 import EditShow from "./components/pages/EditShow";
+import Settings from "./components/pages/Settings";
 
 const Router = () => {
   return (
@@ -68,6 +69,19 @@ const Router = () => {
           <ProtectRoute>
             <CheckTheaterAvailability>
               <EditShow
+              />
+            </CheckTheaterAvailability>
+          </ProtectRoute>
+        }
+      />
+
+      {/* Settings route */}
+      <Route
+        path="/theater/settings"
+        element={
+          <ProtectRoute>
+            <CheckTheaterAvailability>
+              <Settings
               />
             </CheckTheaterAvailability>
           </ProtectRoute>

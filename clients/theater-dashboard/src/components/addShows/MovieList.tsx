@@ -130,7 +130,7 @@ const MovieList = () => {
           setSelectedLanguage={setSelectedLanguage}
         />
       </div>
-      {movies.length ? (
+      {movies?.length ? (
         <>
           {/* List of movies */}
           <div className={style["list"]}>

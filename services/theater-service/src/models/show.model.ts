@@ -65,6 +65,13 @@ export const ShowModel = {
         const show = await Show.findById(id).lean()
         return show
 
+    },
+
+    updateShowById: async (id: string, updatedBody: object = {}) => {
+
+        const updatedShow = await Show.findByIdAndUpdate(id, updatedBody, {returnDocument: "after"})
+        return updatedShow
+
     }
 
 }
