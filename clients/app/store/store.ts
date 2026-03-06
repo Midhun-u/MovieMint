@@ -3,6 +3,8 @@ import { authReducer } from './authSlice'
 import { otpReducer } from './otpSlice'
 import { themeReducer } from './themeSlice'
 import { theaterReducer } from './theaterSlice'
+import { movieReducer } from './movieSlice'
+import { bannerReducer } from './bannerSlice'
 
 export const store = () => {
 
@@ -11,7 +13,9 @@ export const store = () => {
             auth: authReducer,
             otp: otpReducer,
             theme: themeReducer,
-            theater: theaterReducer
+            theater: theaterReducer,
+            movie: movieReducer,
+            banner: bannerReducer
         }
     })
 

@@ -18,13 +18,17 @@ export const getAllBannersController = sendErrorResponse(async (context: Context
     const bannersDetaiils = await Promise.all(banners.map(async (banner) => {
 
         // Fetching movie image
-        const imageResult = await getMovieImage("poster", banner.movie_id._id.toString())
+        const [posterResult, bannerResult] = await Promise.all([
+            getMovieImage("poster", banner.movie_id._id.toString()),
+            getMovieImage("banner", banner.movie_id._id.toString())
+        ])
 
         return {
             _id: banner._id,
             movie: {
                 ...banner.movie_id,
-                poster: imageResult.success? imageResult.data: {}
+                poster: posterResult.success? posterResult.data: {},
+                banner: bannerResult.success? bannerResult.data: {}
             },
             createdAt: banner.createdAt
         }

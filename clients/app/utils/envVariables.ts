@@ -10,5 +10,6 @@ export const envVariables = {
     ADMIN_DASHBOARD_URL: process.env.NEXT_PUBLIC_ADMIN_DASHBOARD_URL as string,
     THEATER_DASHBAORD_URL: process.env.NEXT_PUBLIC_THEATER_DASHBOARD_URL as string,
     THEATER_URL: process.env.THEATER_URL as string,
-    MEDIA_URL: process.env.MEDIA_URL as string
+    MEDIA_URL: process.env.MEDIA_URL as string,
+    MOVIE_URL: process.env.MOVIE_URL as string,
 }

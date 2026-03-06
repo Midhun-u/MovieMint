@@ -16,7 +16,8 @@ app.use(logger())
 app.use(cors({
   origin: [
     envVariables.ADMIN_DASHBOARD_URL,
-    envVariables.THEATER_DASHBOARD_URL
+    envVariables.THEATER_DASHBOARD_URL,
+    envVariables.APP_URL
   ],
   allowMethods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
   credentials: true
