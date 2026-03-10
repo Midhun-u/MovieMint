@@ -6,14 +6,11 @@ import {
   OctagonAlert as ErrorIcon
 } from 'lucide-react'
 import { LucidReactIconType } from '@/types/lucidReact'
+import { ToastProvider } from '../providers/ToastProvider'
 
-type ToastType = "SUCCESS" | "ERROR"
+export type ToastType = "SUCCESS" | "ERROR"
 type ToastStrokeColor = "stroke-primary-color" | "stroke-error-foreground-color"
-type ContextType = {
-  triggerToastMessage: (message: string, type: ToastType) => void
-} | null
 
-export const ToastProvider = createContext<ContextType>(null)
 
 const ToastMessage = ({ children }: { children: ReactNode }) => {
 

@@ -41,9 +41,16 @@ const bannerSlice = createSlice({
       state.loading = false;
       state.errorMessage = action.payload.errorMessage;
     },
+
+    clearState: (state) => {
+      state.loading = false
+      state.banner = null
+      state.banners = []
+      state.errorMessage = ""
+    }
   },
 });
 
-export const { bannerSuccess, bannerFailed, bannerRequest } =
+export const { bannerSuccess, bannerFailed, bannerRequest, clearState } =
   bannerSlice.actions;
 export const bannerReducer = bannerSlice.reducer;

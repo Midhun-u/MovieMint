@@ -20,7 +20,7 @@ import CustomCheckBox from "../ui/CustomCheckBox"
 import { Button } from "../ui/button"
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Input } from "../ui/input"
-import { ToastProvider } from "../context/ToastMessage"
+import { ToastProvider } from "../context/providers/ToastProvider"
 import Image from "next/image"
 import { convertStringToNumber } from "@/utils/convertStringToNumber"
 import { deleteTheaterRegistrationApi, registerTheaterApi } from "@/api/theater"

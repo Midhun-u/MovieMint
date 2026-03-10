@@ -3,7 +3,7 @@ import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import Footer from "@/components/layout/Footer";
 import StoreProvider from "@/components/features/StoreProvider";
-import ToastMessage from "@/components/context/ToastMessage";
+import ToastMessage from "@/components/context/components/ToastMessage";
 import Theme from "@/components/features/Theme";
 
 export const spaceGrotesk = Space_Grotesk({

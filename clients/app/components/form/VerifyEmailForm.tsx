@@ -9,7 +9,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { sendOtpApi } from '@/api/auth'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { authFailed, authRequest, authSuccess } from '@/store/authSlice'
-import { ToastProvider } from '../context/ToastMessage'
+import { ToastProvider } from '../context/providers/ToastProvider'
 import AccountRecoveryForm from './AccountRecoveryForm'
 
 type Inputs = {

@@ -8,7 +8,7 @@ import { theaterRequest, theaterSuccess } from "@/store/theaterSlice"
 import Spinner from "@/components/ui/Spinner"
 import { deleteTheaterImageApi } from "@/api/media"
 import { Dispatch, SetStateAction, useContext } from "react"
-import { ToastProvider } from "@/components/context/ToastMessage"
+import { ToastProvider } from "@/components/context/providers/ToastProvider"
 
 interface TheaterRegistrationDetailsProps {
     theaterDetails: TheaterDetails

@@ -4,7 +4,7 @@ import { getProfileApi } from "@/api/auth"
 import { authFailed, authRequest, authSuccess } from "@/store/authSlice"
 import { useAppDispatch } from "@/store/hooks"
 import { useRouter } from "next/navigation"
-import { ReactNode, useEffect, useState } from "react"
+import { ReactNode, useCallback, useEffect, useState } from "react"
 
 const Authentication = ({
     children,
@@ -20,48 +20,49 @@ const Authentication = ({
 
 
     // Function for checking authenticated
-    const handleCheckAuth = async () => {
-        
+    const handleCheckAuth = useCallback(async () => {
+
         const authToken = localStorage.getItem("authToken")
-        
-        if(!authToken){
-            
+
+        if (!authToken) {
+
             setAuthenticated(false)
-            if(redirectToAuthPage){
+            if (redirectToAuthPage) {
                 router.push("/login")
             }
-            
+
             return
-            
+
         }
-        
+
         dispatch(authRequest())
         const result = await getProfileApi(authToken)
 
-        if(result.success && result.user){
+        if (result.success && result.user) {
 
             setAuthenticated(true)
-            dispatch(authSuccess({user: result.user}))
+            dispatch(authSuccess({ user: result.user }))
 
-        }else{
+        } else {
 
             setAuthenticated(false)
-            if(redirectToAuthPage){
+            if (redirectToAuthPage) {
                 router.push("/login")
             }
-            dispatch(authFailed({errorMessage: result.error}))
+            dispatch(authFailed({ errorMessage: result.error }))
 
         }
 
-    }
+    }, [dispatch, redirectToAuthPage, router])
 
     useEffect(() => {
+        (() => {
+            handleCheckAuth()
+        })()
 
-        handleCheckAuth()
+    }, [handleCheckAuth])
 
-    }, [])
-
-    if(redirectToAuthPage && !authenticated) return
+    if (redirectToAuthPage && !authenticated) return
 
     return (
 

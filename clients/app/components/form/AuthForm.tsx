@@ -25,7 +25,7 @@ import { googleLoginApi, googleSignApi, loginApi, signApi } from "@/api/auth"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { authFailed, authRequest, authSuccess } from "@/store/authSlice"
 import SubmitButton from "./SubmitButton"
-import { ToastProvider } from "../context/ToastMessage"
+import { ToastProvider } from '../context/providers/ToastProvider'
 import { useRouter } from 'next/navigation'
 import { signInWithPopup } from 'firebase/auth'
 import { firebaseAuth, googleProvider } from "@/lib/firebase"
@@ -454,7 +454,7 @@ const AuthForm = ({ formType }: FormProps) => {
                             </>
                             :
                             <>
-                                Don't have an account?
+                                {"Don't have an account?"}
                             </>
                     }
                     <Link href={formType === "SIGN" ? "/login" : "/sign"} className="text-primary-accent-color">

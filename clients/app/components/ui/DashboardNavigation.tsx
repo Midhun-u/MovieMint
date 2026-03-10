@@ -1,5 +1,4 @@
 import { useAppSelector } from '@/store/hooks'
-import { envVariables } from '@/utils/envVariables'
 import {
     LayoutGrid as DashboardIcon,
     HousePlus as TheaterRegistrationIcon,
@@ -14,14 +13,14 @@ interface DashboardNavigationUIProps{
     adminDashboardNavLink: string
 }
 
-const DashboardNavigationUI = ({authToken, handleLogout, theaterDashboardNavLink, adminDashboardNavLink}: DashboardNavigationUIProps) => {
+const DashboardNavigationUI = ({ handleLogout, theaterDashboardNavLink, adminDashboardNavLink}: DashboardNavigationUIProps) => {
 
     const { user } = useAppSelector(state => state.auth)
 
     return (
         <div className="absolute flex flex-col gap-4 w-max top-13 right-0 border border-disable-color/40 h-auto p-3 bg-foreground-color rounded-sm text-sm font-medium">
             {
-                user.role === "THEATER_OWNER"
+                user?.role === "THEATER_OWNER"
                     ?
                     <>
                         <Link
@@ -47,7 +46,7 @@ const DashboardNavigationUI = ({authToken, handleLogout, theaterDashboardNavLink
                     </>
                     :
                     (
-                        user.role === "ADMIN"
+                        user?.role === "ADMIN"
                             ?
                             <Link
                                 href={adminDashboardNavLink}

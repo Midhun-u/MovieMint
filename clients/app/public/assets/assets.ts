@@ -6,6 +6,7 @@ import otpVector from './otp-vector.svg'
 import passwordVector from './password-vector.svg'
 import logo from './logo.svg'
 import theaterScreen from './theater-screen.svg'
+import homeVector from './home-vector.svg'
 
 export const assets = {
 
@@ -16,6 +17,7 @@ export const assets = {
     otpVector,
     passwordVector,
     logo,
-    theaterScreen
+    theaterScreen,
+    homeVector
 
 }

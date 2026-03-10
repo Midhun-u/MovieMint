@@ -6,7 +6,7 @@ import { useContext, useId } from "react"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { useRouter } from "next/navigation"
 import { resetPasswordApi } from "@/api/auth"
-import { ToastProvider } from "../context/ToastMessage"
+import { ToastProvider } from "../context/providers/ToastProvider"
 import { authFailed, authRequest, authSuccess } from "@/store/authSlice"
 
 type Inputs = {
@@ -25,7 +25,7 @@ const ResetPasswordForm = () => {
     // Function for resetting user password
     const handleResetPassword: SubmitHandler<Inputs> = async (data) => {
        
-        if(user.id){
+        if(user?.id){
 
             dispatch(authRequest())
             const result = await resetPasswordApi({newPassword: data.newPassword, userId: user.id})

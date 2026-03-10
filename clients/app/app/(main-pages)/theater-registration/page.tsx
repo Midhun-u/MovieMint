@@ -24,7 +24,9 @@ const TheaterRegistrationPage = () => {
     }
 
     useEffect(() => {
-        handleGetTheater()
+        (() => {
+            handleGetTheater()
+        })()
     }, [])
 
     return (

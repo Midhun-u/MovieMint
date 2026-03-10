@@ -1,4 +1,4 @@
-import { forwardRef, InputHTMLAttributes, useState } from "react"
+import { forwardRef, InputHTMLAttributes, Ref, useState } from "react"
 import FormInput from "./FormInput"
 import {
     Lock as PasswordIcon,
@@ -10,10 +10,10 @@ interface PasswordInputProps extends InputHTMLAttributes<HTMLInputElement>{
     passwordId?: string
 }
 
-const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(({
+const PasswordInput = ({
     passwordId,
     ...props
-}, ref) => {
+}: PasswordInputProps, ref: Ref<HTMLInputElement>) => {
 
     const [showPassword, setShowPassword] = useState<boolean>(false)
     const iconClassName = "absolute right-4 stroke-primary-accent-color cursor-pointer"
@@ -49,6 +49,6 @@ const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(({
     </div>
 
   )
-})
+}
 
-export default PasswordInput
+export default forwardRef<HTMLInputElement, PasswordInputProps>(PasswordInput)

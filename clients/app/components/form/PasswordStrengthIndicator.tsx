@@ -1,4 +1,4 @@
-import { Activity, useEffect, useState } from 'react'
+import { Activity, useCallback, useEffect, useState } from 'react'
 import { Progress } from '../ui/progress'
 
 interface PasswordStrengthIndicatorProps {
@@ -17,7 +17,7 @@ const PasswordStrengthIndicator = ({ password }: PasswordStrengthIndicatorProps)
     }>()
 
     //Function setting progress details
-    const handleSetProgressDetails = () => {
+    const handleSetProgressDetails = useCallback(() => {
 
         if (password.length <= 0) {
             setProgressDetails({
@@ -56,13 +56,15 @@ const PasswordStrengthIndicator = ({ password }: PasswordStrengthIndicatorProps)
             })
         }
 
-    }
+    }, [hasLower, hasNumber, hasSpecialCharacters, hasUpper, password.length])
 
     useEffect(() => {
 
-        handleSetProgressDetails()
+        (() => {
+            handleSetProgressDetails()
+        })()
 
-    }, [password])
+    }, [password, handleSetProgressDetails])
 
     return (
 

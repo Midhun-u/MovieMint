@@ -4,8 +4,8 @@ export function debounce<Type extends (event: ChangeEvent<HTMLInputElement>) => 
   fn: Type,
   delay: number,
 ) {
+  let timer: ReturnType<typeof setTimeout> | null = null;
   return function (event: ChangeEvent<HTMLInputElement>) {
-    let timer: ReturnType<typeof setTimeout> | null = null;
     if (timer) {
       clearTimeout(timer);
     }

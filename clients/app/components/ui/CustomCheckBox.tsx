@@ -5,7 +5,7 @@ interface CustomCheckBoxProps {
     value: string
     onMarkChecked?: (value: string) => void
     onUnmarkChecked?: (value: string) => void
-    defaultChecked: boolean
+    defaultChecked?: boolean
 }
 
 const CustomCheckBox = ({ value, onMarkChecked, onUnmarkChecked, defaultChecked }: CustomCheckBoxProps) => {
@@ -28,10 +28,8 @@ const CustomCheckBox = ({ value, onMarkChecked, onUnmarkChecked, defaultChecked 
     return (
         <div className="flex gap-2 items-center text-sm font-medium">
             <div
-                className={`flex items-center justify-center w-3.75 h-3.75 bg-foreground-color border rounded-xs cursor-pointer `}
+                className={`flex items-center justify-center w-3.75 h-3.75 bg-foreground-color border rounded-xs cursor-pointer`}
             >
-
-
                 <Checkbox
                     className='cursor-pointer'
                     onClick={onClick}

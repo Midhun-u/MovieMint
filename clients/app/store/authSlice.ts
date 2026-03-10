@@ -1,22 +1,30 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+type User = {
+    id: string,
+    firstname: string,
+    lastname: string,
+    email: string,
+    role: string,
+    auth_type: string,
+    profile_image: {
+        image_url: string,
+        id: string,
+        user_id: string
+    }
+}
+
+type InitialState = {
+    loading: boolean
+    errorMessage: string
+    user: User | null
+}
+
+const initialState: InitialState = {
 
     loading: false,
     errorMessage: "",
-    user: {
-        id: "",
-        firstname: "",
-        lastname: "",
-        email: "",
-        role: "",
-        auth_type: "",
-        profile_image: {
-            image_url: "",
-            id: "",
-            user_id: ""
-        }
-    }
+    user: null
 
 }
 
@@ -26,24 +34,24 @@ const authSlice = createSlice({
     reducers: {
 
         authRequest: (state) => {
-            
+
             state.loading = true
             state.errorMessage = ""
             state.user = initialState.user
 
         },
         authSuccess: (state, action) => {
-            
+
             state.loading = false
             state.errorMessage = ""
-            
-            if(action.payload.user){
+
+            if (action.payload.user) {
                 state.user = action.payload.user
-            }else{
+            } else {
                 state.user = initialState.user
             }
 
-            if(action.payload.authToken){
+            if (action.payload.authToken) {
                 localStorage.setItem("authToken", action.payload.authToken)
             }
 
@@ -60,5 +68,5 @@ const authSlice = createSlice({
     }
 })
 
-export const {authSuccess, authRequest, authFailed} = authSlice.actions
+export const { authSuccess, authRequest, authFailed } = authSlice.actions
 export const authReducer = authSlice.reducer

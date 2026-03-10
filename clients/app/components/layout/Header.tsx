@@ -15,7 +15,7 @@ import {
 import { Button } from "../ui/button"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { switchTheme } from "@/store/themeSlice"
-import { Activity, useEffect, useState } from "react"
+import { Activity, useCallback, useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import Authentication from "../features/Authentication"
 import DashboardNavigationUI from "../ui/DashboardNavigation"
@@ -45,7 +45,7 @@ const Header = () => {
     }
 
     // Function for switching theme
-    const handleSwitchTheme = () => {
+    const handleSwitchTheme = useCallback(() => {
 
         const root = document.documentElement
 
@@ -55,15 +55,17 @@ const Header = () => {
             root?.classList.remove("switch-theme")
         }
 
-    }
-
-    useEffect(() => {
-        handleSwitchTheme()
     }, [theme])
 
     useEffect(() => {
-        const token = localStorage.getItem("authToken")
-        setAuthToken(token)
+        handleSwitchTheme()
+    }, [theme, handleSwitchTheme])
+
+    useEffect(() => {
+        (() => {
+            const token = localStorage.getItem("authToken")
+            setAuthToken(token)
+        })()
     }, [])
 
     return (
@@ -72,7 +74,7 @@ const Header = () => {
             redirectToAuthPage={false}
         >
             <header
-                className="z-50 w-full h-15 flex justify-between bg-foreground-color sm:grid justify-items-center sm:grid-cols-[100px_1fr_auto] px-3 sm:px-5 gap-3"
+                className="z-50 w-full fixed top-0 h-15 flex justify-between bg-foreground-color sm:grid justify-items-center sm:grid-cols-[100px_1fr_auto] px-3 sm:px-5 gap-3"
             >
                 {/* Logo section */}
                 <div className="flex justify-start items-center w-full">
@@ -93,12 +95,12 @@ const Header = () => {
                                 href={navbarLink.route}
                                 title={navbarLink.title}
                                 key={index}
-                                className={`h-full relative flex items-center justify-center px-[0.8px] ${pathname === navbarLink.route ? "before:w-full before:h-[2.5px] before:bg-primary-color before:absolute before:bottom-2" : ""}`}
+                                className={`h-full relative flex items-center justify-center px-[0.8px] ${pathname.includes(navbarLink.route) ? "before:w-full before:h-[2.5px] before:bg-primary-color before:absolute before:bottom-2" : ""}`}
                             >
                                 <navbarLink.Icon
                                     size={23}
                                     strokeWidth={1.8}
-                                    className={`${pathname === navbarLink.route ? "stroke-primary-color" : ""} stroke-foreground-theme-color`}
+                                    className={`${pathname.includes(navbarLink.route) ? "stroke-primary-color" : ""} stroke-foreground-theme-color`}
                                 />
                             </Link>
 
@@ -147,7 +149,7 @@ const Header = () => {
                     }
                     {/* Sign button or user profile */}
                     {
-                        user.id && user?.profile_image
+                        user?.id && user?.profile_image
                             ?
                             <div
                                 className="hidden w-auto sm:flex items-center gap-1 cursor-pointer relative"
@@ -207,7 +209,7 @@ const Header = () => {
                                 </Link>
                         }
                         {
-                            user.role === "ADMIN"
+                            user?.role === "ADMIN"
                                 ?
                                 <Link
                                     href={adminDashboardNavLink}
@@ -219,7 +221,7 @@ const Header = () => {
                                 null
                         }
                         {
-                            user.role === "THEATER_OWNER"
+                            user?.role === "THEATER_OWNER"
                                 ?
                                 <>
                                     <Link
@@ -238,12 +240,18 @@ const Header = () => {
                                 :
                                 null
                         }
-                        <li
-                            onClick={handleLogout}
-                            className={linkClass}
-                        >
-                            Logout
-                        </li>
+                        {
+                            user
+                                ?
+                                <li
+                                    onClick={handleLogout}
+                                    className={linkClass}
+                                >
+                                    Logout
+                                </li>
+                                :
+                                null
+                        }
                     </aside>
 
                 </nav>

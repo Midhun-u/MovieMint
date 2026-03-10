@@ -1,34 +1,34 @@
-import React, { InputHTMLAttributes } from "react"
+import { forwardRef, InputHTMLAttributes, Ref } from "react"
 import { Input } from "../ui/input"
 import { LucidReactIconType } from "@/types/lucidReact"
 
-interface FormInputProps extends InputHTMLAttributes<HTMLInputElement>{
+interface FormInputProps extends InputHTMLAttributes<HTMLInputElement> {
     Icon?: LucidReactIconType
     className?: string
     type: "text" | "password" | "email" | "number"
 }
 
 
-const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(({
-    Icon,  
-    className, 
+const FormInput = ({
+    Icon,
+    className,
     type,
     ...props
-}, ref) => {
+}: FormInputProps, ref: Ref<HTMLInputElement>) => {
 
     return (
 
         <div className="w-full relative flex items-center">
             {
                 Icon
-                ?
-                <Icon
-                    size={21}
-                    strokeWidth={1.5}
-                    className="stroke-foreground-theme-color/50 absolute left-2 "
-                />
-                :
-                null
+                    ?
+                    <Icon
+                        size={21}
+                        strokeWidth={1.5}
+                        className="stroke-foreground-theme-color/50 absolute left-2 "
+                    />
+                    :
+                    null
             }
             <Input
                 ref={ref}
@@ -39,6 +39,6 @@ const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(({
         </div>
 
     )
-})
+}
 
-export default FormInput
+export default forwardRef<HTMLInputElement, FormInputProps>(FormInput)

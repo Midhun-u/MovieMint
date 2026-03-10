@@ -8,8 +8,8 @@ import {
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { useRouter } from "next/navigation"
 import { verifyOtpApi } from "@/api/auth"
-import { authFailed, authRequest, authSuccess } from "@/store/authSlice"
-import { ToastProvider } from "../context/ToastMessage"
+import {authSuccess } from "@/store/authSlice"
+import { ToastProvider } from "../context/providers/ToastProvider"
 import AccountRecoveryForm from "./AccountRecoveryForm"
 import { otpFailed, otpRequest, otpSuccess } from "@/store/otpSlice"
 
@@ -30,7 +30,7 @@ const OtpForm = () => {
     // Function for submitting form
     const submitOtpForm: SubmitHandler<Inputs> = async (data) => {
 
-        if (user.email) {
+        if (user?.email) {
 
             dispatch(otpRequest())
             const result = await verifyOtpApi({ otp: parseInt(data.otp), email: user.email })
@@ -58,14 +58,14 @@ const OtpForm = () => {
 
     useEffect(() => {
 
-        if (!user.email) {
+        if (!user?.email) {
 
             router.push('/verify-email')
             return
 
         }
 
-    }, [])
+    }, [router, user?.email])
 
     return (
 

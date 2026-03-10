@@ -1,7 +1,6 @@
 export type MovieData = {
   _id: string;
   title: string;
-  subheading: string;
   synopsis: string;
   language: string;
   certificate: string;

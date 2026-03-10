@@ -1,7 +1,7 @@
 export type MovieData = {
   _id: string;
   title: string;
-  subheading: string;
+  sub_heading: string;
   synopsis: string;
   language: string;
   certificate: string;
@@ -16,7 +16,6 @@ export type MovieData = {
     id: string;
     image_url: string;
   };
-  sub_heading: string;
   release_date: string;
   status: "SHOWING" | "NOT_SHOWING" | "PENDING";
   duration: {

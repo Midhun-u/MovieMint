@@ -3,20 +3,21 @@ import CustomCheckBox from './CustomCheckBox'
 
 interface CheckBoxListProps {
     values: Array<string>
-    setValues: Dispatch<SetStateAction<Array<string>>>
+    setValues: Dispatch<SetStateAction<Array<string>>> | null
     checkedValues: Array<string>
     selectedLimit: number | null
+    className?: string
 }
 
-const CheckBoxList = ({ values, setValues, checkedValues, selectedLimit }: CheckBoxListProps) => {
+const CheckBoxList = ({ values, setValues, checkedValues, selectedLimit, className }: CheckBoxListProps) => {
 
     // Function for adding unchecked value to array
     const handlAddCategories = (unCheckedValue: string) => {
 
-        if(selectedLimit && checkedValues.length <= selectedLimit - 1){
+        if(selectedLimit && checkedValues.length <= selectedLimit - 1 && setValues){
             setValues((prevValues) => [...prevValues, unCheckedValue])
 
-        }else{
+        }else if(setValues){
             // Removing category for maintaining length of categories
             const filteredValues = checkedValues.filter((_, index) => selectedLimit? index <= selectedLimit - 1: true)
             setValues([...filteredValues, unCheckedValue])
@@ -28,13 +29,15 @@ const CheckBoxList = ({ values, setValues, checkedValues, selectedLimit }: Check
     // Function for removing checked value from array
     const handleRemoveCategories = (checkedValue: string) => {
 
+        if(!setValues) return
+
         const filteredList = checkedValues.filter((value) => value !== checkedValue)
         setValues(filteredList)
 
     }
 
     return (
-        <div className='flex flex-wrap gap-3 mt-2'>
+        <div className={`flex flex-wrap mt-2 ${className}`}>
             {
                 values?.map((value, index) => (
                     <CustomCheckBox

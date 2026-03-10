@@ -12,7 +12,9 @@ export const getAllBannersController = sendErrorResponse(async (context: Context
         categories: 1,
         language: 1,
         status: 1,
-        formats: 1
+        formats: 1,
+        sub_heading: 1,
+        duration: 1
     })
 
     const bannersDetaiils = await Promise.all(banners.map(async (banner) => {

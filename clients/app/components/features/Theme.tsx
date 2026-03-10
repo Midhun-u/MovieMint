@@ -2,14 +2,14 @@
 
 import { useAppDispatch } from "@/store/hooks"
 import { switchTheme } from "@/store/themeSlice"
-import { useEffect } from "react"
+import { useCallback, useEffect } from "react"
 
 const Theme = () => {
     
     const dispatch = useAppDispatch()
 
     // Function for setting theme
-    const handleSettingTheme = () => {
+    const handleSettingTheme = useCallback(() => {
 
         const storedTheme = localStorage.getItem("theme")
         
@@ -19,11 +19,11 @@ const Theme = () => {
 
         }
 
-    }
+    }, [dispatch])
 
     useEffect(() => {
         handleSettingTheme()
-    }, [])
+    }, [handleSettingTheme])
 
     return (
 

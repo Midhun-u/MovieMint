@@ -13,3 +13,16 @@ export const getBannersApi = handleError(async () => {
     return result
 
 })
+
+// Api for getting movies
+export const getMoviesApi = handleError(async (page: number = 1, limit: number = 10, searchQuery: string = "", categories: Array<string> = [], formats: Array<string> = []) => {
+
+    const param = new URLSearchParams()
+
+    categories.map((category) => param.append("categories", category))
+    formats.map(format => param.append("formats", format))
+    const query = param.toString()
+
+    const result = await fetchInstance(MOVIE_BASE_URL, `/get-movies/?page=${page}&limit=${limit}&title=${searchQuery}&${query}`, "GET", {}, "json")
+    return result
+})
