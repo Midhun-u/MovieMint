@@ -21,7 +21,6 @@ const MovieCard = ({
     const sortedCategories = [...categories].sort();
     const movieDetailsClass = "text-[0.8rem] max-h-4.75 overflow-hidden w-full text-foreground-theme-color/45 font-semibold"
 
-
     return (
         <div className="sm:w-47.5 w-40 h-full sm:min-h-80 bg-foreground-color flex flex-col p-2.5 border border-foreground-theme-color/15 rounded-[3px] cursor-pointer shrink-0 relative">
             {/* Movie poster section */}
@@ -44,23 +43,15 @@ const MovieCard = ({
                 </p>
                 {/* Movie categories */}
                 <p className={`${movieDetailsClass}`}>{sortedCategories.join(", ")}</p>
-                {status ? (
+                {status && status === "PENDING" ? (
                     <p
-                        className={
-                           status === "PENDING"
-                           ?
-                           "w-max text-[0.7rem] px-1.25"
-                           :
-                           ""
-                        }
+                        className="text-[0.7rem] absolute top-0.5 right-0.5 bg-success-background-color text-success-foreground-color px-1.25 rounded-[3px]"
                     >
-                        {status === "SHOWING" ? (
-                            <>Showing</>
-                        ) : status === "NOT_SHOWING" ? (
-                            <>Not Showing</>
-                        ) : (
-                            <>Pending</>
-                        )}
+                        {
+                            <>
+                                Coming Soon
+                            </>
+                        }
                     </p>
                 ) : null}
             </div>

@@ -46,7 +46,7 @@ const movieSlice = createSlice({
     movieSuccess: (state, action) => {
       state.loading = false;
       state.movie = action.payload?.movie ? action.payload.movie : {};
-      if (state.movies.length <= 0 || state.pagination.page === 1) {
+      if (state.movies?.length <= 0 || state.pagination.page === 1) {
         state.movies = action.payload.movies;
       } else {
         state.movies = [...state.movies, ...action.payload.movies];

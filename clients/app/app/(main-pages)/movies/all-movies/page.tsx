@@ -3,6 +3,7 @@
 import { FilterProvider } from "@/components/context/providers/FilterContext"
 import MovieList from "@/components/pages/movies/MovieList"
 import NoResult from "@/components/ui/NoResult"
+import PageDetails from "@/components/ui/PageDetails"
 import { useAppSelector } from "@/store/hooks"
 import { Activity, useState } from "react"
 
@@ -16,17 +17,21 @@ const AllMoviesPage = () => {
     return (
         <FilterProvider
             value={{
-                categories: categories,
                 setCategories: setCategories,
-                formats: formats,
                 setFormats: setFormats,
+                setLanguage: setLanguage,
+                categories: categories,
+                formats: formats,
                 language: language,
-                setLanguage: setLanguage
             }}
         >
             <div className="mt-13 w-full flex flex-col gap-2.5">
                 {/* Search bar and filter section */}
-                <h1 className="font-semibold text-md">All Movies</h1>
+                <PageDetails
+                    title="All Movies"
+                    backButton={false}
+                    about=""
+                />
                 {/* List */}
                 <div className="flex flex-col gap-5">
                     <MovieList

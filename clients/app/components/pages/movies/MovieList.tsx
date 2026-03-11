@@ -11,7 +11,11 @@ import SearchBar from "@/components/ui/SearchBar"
 import MovieFilter from "./MovieFilter"
 import { debounce } from "@/utils/debounce"
 
-const MovieList = () => {
+interface MovieListProps{
+    movieStatus?: "SHOWING" | "PENDING" | "NOT_SHOWING"
+}
+
+const MovieList = ({movieStatus}: MovieListProps) => {
 
     const { movies, loading, pagination } = useAppSelector(state => state.movie)
     const { isIntersecting, ref } = useObserver<HTMLDivElement>({ threshold: 0.5 })
@@ -31,7 +35,15 @@ const MovieList = () => {
     // Function for fetching movies
     const handleFetchMovies = useCallback(async () => {
         dispatch(movieRequest())
-        const result = await getMoviesApi(pagination.page, pagination.limit, searchQuery, categories, formats, language)
+        const result = await getMoviesApi(
+            pagination.page, 
+            pagination.limit, 
+            searchQuery, 
+            categories, 
+            formats, 
+            language,
+            movieStatus? movieStatus: ""
+        )
         if (result.success) {
 
             if (result.movies.length < pagination.limit) {
@@ -44,7 +56,7 @@ const MovieList = () => {
         } else {
             dispatch(movieFailed({ errorMessage: result.errorMessage }))
         }
-    }, [dispatch, pagination.page, pagination.limit, categories, formats, language, searchQuery])
+    }, [dispatch, pagination.page, pagination.limit, categories, formats, language, searchQuery, movieStatus])
 
     const handleOnChange = debounce((event: ChangeEvent<HTMLInputElement>) => {
         setSearchQuery(event.target.value)
@@ -100,6 +112,7 @@ const MovieList = () => {
                             certificate={movie?.certificate}
                             language={movie?.language}
                             poster={movie?.poster.image_url}
+                            status={movie.status}
                         />
                     ))
                 }

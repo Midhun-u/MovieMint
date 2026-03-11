@@ -166,11 +166,18 @@ const Banners = () => {
                                     <h1 className="text-white z-10 text-md sm:text-xl font-bold">{banner.movie.title}</h1>
                                     <p className="hidden min-[400px]:block text-white/85 max-h-10 sm:max-h-15 sm:h-auto overflow-hidden z-10 text-xs max-w-120 sm:text-sm font-medium">{banner.movie.sub_heading}</p>
                                     <span className="text-white/85 z-10 text-xs max-h-4 sm:max-h-10 sm:text-sm font-semibold max-w-120 overflow-hidden">{banner.movie.categories.join(", ")} - {banner.movie.duration.hour + "h"} {banner.movie.duration.minutes + "m"}</span>
-                                    <Button
-                                        className="hidden min-[400px]:block w-20 sm:max-w-30 z-10"
-                                    >
-                                        <>Book</>
-                                    </Button>
+                                    {
+                                        banner.movie.status === "PENDING"
+                                            ?
+                                            <p className="p-[0.5px] px-2 bg-success-background-color text-success-foreground-color w-max text-[0.7rem] font-medium rounded-[3px]">Coming Soon</p>
+                                            :
+                                            <Button
+                                                className="hidden min-[400px]:block w-20 sm:max-w-30 z-10"
+                                            >
+                                                <>Book</>
+                                            </Button>
+
+                                    }
                                 </div>
                             </div>
                         </div>
