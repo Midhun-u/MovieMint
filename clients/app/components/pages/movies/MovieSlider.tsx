@@ -57,12 +57,12 @@ const MovieSlider = ({ movieCategory }: MovieSliderProps) => {
                 {
                     movies.map(movie => (
                         <MovieCard
-                            key={movie._id}
-                            title={movie.title}
-                            categories={movie.categories}
-                            certificate={movie.certificate}
-                            language={movie.language}
-                            poster={movie.poster.image_url}
+                            key={movie?._id}
+                            title={movie?.title}
+                            categories={movie?.categories}
+                            certificate={movie?.certificate}
+                            language={movie?.language}
+                            poster={movie?.poster.image_url}
                         />
                     ))
                 }

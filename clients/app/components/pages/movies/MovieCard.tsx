@@ -23,7 +23,7 @@ const MovieCard = ({
 
 
     return (
-        <div className="sm:w-47.5 w-40 min-h-57.5 sm:min-h-80 bg-foreground-color flex flex-col p-2.5 border border-foreground-theme-color/15 rounded-[3px] cursor-pointer shrink-0 relative">
+        <div className="sm:w-47.5 w-40 h-full sm:min-h-80 bg-foreground-color flex flex-col p-2.5 border border-foreground-theme-color/15 rounded-[3px] cursor-pointer shrink-0 relative">
             {/* Movie poster section */}
             <div className="w-full">
                 <Image

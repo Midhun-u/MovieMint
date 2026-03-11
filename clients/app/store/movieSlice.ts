@@ -61,14 +61,14 @@ const movieSlice = createSlice({
     },
 
     incrementPage: (state) => {
-      state.pagination.page = state.pagination.page + 1;
+      state.pagination = { ...state.pagination, page: state.pagination.page + 1 }
     },
 
     clearState: (state) => {
       state.loading = false;
       state.movie = {};
       state.movies = [];
-      state.pagination = { page: 1, limit: state.pagination.limit }
+      state.pagination = { ...state.pagination, page: 1 }
     },
   },
 });

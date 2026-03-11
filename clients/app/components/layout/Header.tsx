@@ -266,12 +266,12 @@ const Header = () => {
                                 <Link
                                     href={navbarLink.route}
                                     key={index}
-                                    className={`relative ${pathname === navbarLink.route ? "before:absolute before:w-full before:h-0.5 before:bg-primary-color before:-bottom-2" : ""}`}
+                                    className={`relative ${pathname.includes(navbarLink.route) ? "before:absolute before:w-full before:h-0.5 before:bg-primary-color before:-bottom-2" : ""}`}
                                 >
                                     <navbarLink.Icon
                                         size={23}
                                         strokeWidth={1.8}
-                                        className={`${pathname === navbarLink.route ? "stroke-primary-color" : ""} stroke-foreground-theme-color`}
+                                        className={`${pathname.includes(navbarLink.route) ? "stroke-primary-color" : ""} stroke-foreground-theme-color`}
                                     />
                                 </Link>
 

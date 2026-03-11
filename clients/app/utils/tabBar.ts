@@ -18,7 +18,7 @@ export const tabBarNavs: TabBarNavs = [
     },
     {
         title: "Coming Soon",
-        route: "/movies/coming-soon"
+        route: "/movies/pending"
     },
     {
         title: "Most Rated",
