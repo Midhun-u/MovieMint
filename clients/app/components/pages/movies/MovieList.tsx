@@ -10,12 +10,14 @@ import { FilterProvider } from "@/components/context/providers/FilterContext"
 import SearchBar from "@/components/ui/SearchBar"
 import MovieFilter from "./MovieFilter"
 import { debounce } from "@/utils/debounce"
+import { useSearchParams } from "next/navigation"
 
 interface MovieListProps{
     movieStatus?: "SHOWING" | "PENDING" | "NOT_SHOWING"
+    movieType?: "LIVE_ACTION" | "ANIMATED"
 }
 
-const MovieList = ({movieStatus}: MovieListProps) => {
+const MovieList = ({movieStatus, movieType}: MovieListProps) => {
 
     const { movies, loading, pagination } = useAppSelector(state => state.movie)
     const { isIntersecting, ref } = useObserver<HTMLDivElement>({ threshold: 0.5 })
@@ -31,6 +33,7 @@ const MovieList = ({movieStatus}: MovieListProps) => {
     const language = filterContext?.language || ""
     const dispatch = useAppDispatch()
     const [isRender, setIsRender] = useState<boolean>(false)
+    const category = useSearchParams().get("category")
 
     // Function for fetching movies
     const handleFetchMovies = useCallback(async () => {
@@ -39,10 +42,11 @@ const MovieList = ({movieStatus}: MovieListProps) => {
             pagination.page, 
             pagination.limit, 
             searchQuery, 
-            categories, 
+            category? [...categories, category]: categories, 
             formats, 
             language,
-            movieStatus? movieStatus: ""
+            movieStatus? movieStatus: "",
+            movieType
         )
         if (result.success) {
 
@@ -56,7 +60,7 @@ const MovieList = ({movieStatus}: MovieListProps) => {
         } else {
             dispatch(movieFailed({ errorMessage: result.errorMessage }))
         }
-    }, [dispatch, pagination.page, pagination.limit, categories, formats, language, searchQuery, movieStatus])
+    }, [dispatch, pagination.page, pagination.limit, categories, category, formats, language, searchQuery, movieStatus, movieType])
 
     const handleOnChange = debounce((event: ChangeEvent<HTMLInputElement>) => {
         setSearchQuery(event.target.value)

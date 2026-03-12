@@ -45,7 +45,7 @@ const MovieCard = ({
                 <p className={`${movieDetailsClass}`}>{sortedCategories.join(", ")}</p>
                 {status && status === "PENDING" ? (
                     <p
-                        className="text-[0.7rem] absolute top-0.5 right-0.5 bg-success-background-color text-success-foreground-color px-1.25 rounded-[3px]"
+                        className="text-[0.7rem] absolute top-2.5 right-2.5 bg-success-background-color text-success-foreground-color px-1.25 rounded-[1px]"
                     >
                         {
                             <>

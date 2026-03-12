@@ -4,13 +4,14 @@ import { tabBarNavs } from "@/utils/tabBar"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
+
 const TabBar = () => {
 
     const pathname = usePathname()
 
     return (
 
-        <nav className="w-full sm:w-auto bg-foreground-color rounded-2xl px-1 py-1 flex items-center overflow-x-scroll border border-foreground-theme-color/20">
+        <nav className="w-full bg-foreground-color z-6 smabsolute:w-auto rounded-2xl px-1 py-1 flex items-center overflow-x-scroll border border-foreground-theme-color/20">
             {
                 tabBarNavs.map((tabBarNav, index) => (
 

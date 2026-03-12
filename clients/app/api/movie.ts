@@ -22,7 +22,8 @@ export const getMoviesApi = handleError(async (
     categories: Array<string> = [], 
     formats: Array<string> = [], 
     language: string = "",
-    status: string = ""
+    status: string = "",
+    movieType?: "LIVE_ACTION" | "ANIMATED"
 ) => {
 
     const param = new URLSearchParams()
@@ -31,6 +32,6 @@ export const getMoviesApi = handleError(async (
     formats.map(format => param.append("formats", format))
     const query = param.toString()
 
-    const result = await fetchInstance(MOVIE_BASE_URL, `/get-movies/?page=${page}&limit=${limit}&title=${searchQuery}&${query}&language=${language}&status=${status}`, "GET", {}, "json")
+    const result = await fetchInstance(MOVIE_BASE_URL, `/get-movies/?page=${page}&limit=${limit}&title=${searchQuery}&${query}&language=${language}&status=${status}&movieType=${movieType? movieType: ""}`, "GET", {}, "json")
     return result
 })

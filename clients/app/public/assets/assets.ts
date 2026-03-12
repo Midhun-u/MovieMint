@@ -8,6 +8,7 @@ import logo from './logo.svg'
 import theaterScreen from './theater-screen.svg'
 import homeVector from './home-vector.svg'
 import noResult from './no-result.svg'
+import notFound from './not-found-vector.svg'
 
 export const assets = {
 
@@ -20,6 +21,7 @@ export const assets = {
     logo,
     theaterScreen,
     homeVector,
-    noResult
+    noResult,
+    notFound
 
 }

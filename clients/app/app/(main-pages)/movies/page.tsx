@@ -16,26 +16,28 @@ const MoviesPage = () => {
         />
       </div>
       {/* Main content */}
-      <div className="mt-5 w-full gap-8 flex flex-col">
+      <div className="w-full px-3 sm:w-[95%] sm:px-0 md:w-[70%] mt-10 gap-8 flex flex-col">
         <div className="w-full">
           <SearchMoviesList
           />
         </div>
-        <MovieSlider
-          movieCategory="Action"
-        />
-        <MovieSlider
-          movieCategory="Adventure"
-        />
-        <MovieSlider
-          movieCategory="Animation"
-        />
-        <MovieSlider
-          movieCategory="Drama"
-        />
-        <MovieSlider
-          movieCategory="Thriller"
-        />
+        <div className="flex flex-col gap-8 h-full ">
+          <MovieSlider
+            movieCategory="Action"
+          />
+          <MovieSlider
+            movieCategory="Adventure"
+          />
+          <MovieSlider
+            movieCategory="Animation"
+          />
+          <MovieSlider
+            movieCategory="Drama"
+          />
+          <MovieSlider
+            movieCategory="Thriller"
+          />
+        </div>
       </div>
       {/* Last section */}
       <div className="mt-10 w-full flex flex-col items-center gap-10">

@@ -25,10 +25,6 @@ export const tabBarNavs: TabBarNavs = [
         route: "/movies/most-rated"
     },
     {
-        title: "Latest",
-        route: "/movies/latest"
-    },
-    {
         title: "Animated Movies",
         route: "/movies/animated-movies"
     }

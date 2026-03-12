@@ -2,20 +2,22 @@ import TabBar from "@/components/layout/TabBar"
 import { ReactNode } from "react"
 
 const MovieLayout = (
-    {children}
-    :
-    {children: ReactNode}
+    { children }
+        :
+        { children: ReactNode }
 ) => {
 
     return (
 
-        <div className="w-full flex overflow-hidden flex-col items-center mt-22">
+        <section className="w-full flex overflow-hidden flex-col items-center mt-13">
             {/* Tab bar section */}
-            <div className="w-full sm:w-auto">
+            <section className="w-full absolute mt-8 z-6 sm:w-auto px-3">
                 <TabBar />
-            </div>
-            {children}
-        </div>
+            </section>
+            <section className="w-full flex flex-col items-center">
+                {children}
+            </section>
+        </section>
     )
 
 }

@@ -26,7 +26,7 @@ const PendingMoviesPage = () => {
                 setLanguage: setLanguage
             }}
         >
-            <div className="mt-13 w-full flex flex-col gap-2.5">
+            <div className="mt-26 px-3 sm:w-[95%] sm:px-0 md:w-[70%] w-full flex flex-col gap-2.5">
                 <div>
                     <PageDetails
                         title="Coming Soon Movies"
@@ -34,9 +34,11 @@ const PendingMoviesPage = () => {
                         backButton={false}
                     />
                 </div>
-                <MovieList
-                    movieStatus="PENDING"
-                />
+                <div className="flex flex-col gap-5">
+                    <MovieList
+                        movieStatus="PENDING"
+                    />
+                </div>
             </div>
             <Activity mode={movies.length ? "hidden" : "visible"}>
                 <NoResult

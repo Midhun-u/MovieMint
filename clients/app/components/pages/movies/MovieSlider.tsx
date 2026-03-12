@@ -45,25 +45,32 @@ const MovieSlider = ({ movieCategory }: MovieSliderProps) => {
             {/* Title section */}
             <div className="w-full flex items-center justify-between gap-2.5">
                 <h1 className="font-semibold">{movieCategory}</h1>
-                <Link
-                    href={""}
-                    className="text-sm text-primary-accent-color font-medium"
-                >
-                    See All
-                </Link>
+                {
+                    movies.length >= 20
+                        ?
+                        <Link
+                            href={`/movies/all-movies/?category=${movieCategory}`}
+                            className="text-sm text-primary-accent-color font-medium"
+                        >
+                            See All
+                        </Link>
+                        :
+                        null
+                }
             </div>
             {/* Slider */}
             <div className="flex gap-1 overflow-scroll">
                 {
                     movies.map(movie => (
-                        <MovieCard
-                            key={movie?._id}
-                            title={movie?.title}
-                            categories={movie?.categories}
-                            certificate={movie?.certificate}
-                            language={movie?.language}
-                            poster={movie?.poster.image_url}
-                        />
+                        <div key={movie._id}>
+                            <MovieCard
+                                title={movie?.title}
+                                categories={movie?.categories}
+                                certificate={movie?.certificate}
+                                language={movie?.language}
+                                poster={movie?.poster.image_url}
+                            />
+                        </div>
                     ))
                 }
                 <Activity mode={loading ? "visible" : "hidden"}>

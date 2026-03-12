@@ -6,78 +6,96 @@ import {
   useEffect,
   useState,
   type JSX,
-} from "react";
+} from "react"
 import {
   Settings2 as FilterIcon,
   ChevronDown as DownArrowIcon,
   X as CloseIcon,
   ChevronLeft as BackIcon,
-} from "lucide-react";
-import MovieGenre from "./MovieGenre";
-import MovieFormats from "./MovieFormats";
-import MovieLanguage from "./MovieLanguage";
-import { Button } from "../../ui/button";
-import { FilterProvider } from "../../context/providers/FilterContext";
+} from "lucide-react"
+import MovieGenre from "./MovieGenre"
+import MovieFormats from "./MovieFormats"
+import MovieLanguage from "./MovieLanguage"
+import { Button } from "../../ui/button"
+import { FilterProvider } from "../../context/providers/FilterContext"
+import { useRouter, useSearchParams } from "next/navigation"
 
 const MovieFilter = () => {
-  const [showFilterScreen, setShowFilterScreen] = useState<boolean>(false);
+  const [showFilterScreen, setShowFilterScreen] = useState<boolean>(false)
   const [ScreenDetails, setScreenDetails] = useState<{
-    title: string;
-    Screen: () => JSX.Element | null;
+    title: string
+    Screen: () => JSX.Element | null
   }>({
     title: "",
     Screen: () => null,
-  });
-  const [showScreen, setShowScreen] = useState<boolean>(false);
-  const [language, setLanguage] = useState<string>("");
-  const [categories, setCategories] = useState<Array<string>>([]);
-  const [formats, setFormats] = useState<Array<string>>([]);
+  })
+  const [showScreen, setShowScreen] = useState<boolean>(false)
+  const [language, setLanguage] = useState<string>("")
+  const [categories, setCategories] = useState<Array<string>>([])
+  const [formats, setFormats] = useState<Array<string>>([])
   const filterContext = useContext(FilterProvider)
   const listClassName = `py-1.25 px-5 text-[0.9rem] cursor-pointer w-full hover:bg-foreground-theme-color/5 active:bg-foreground-theme-color/5`
   const buttonClassName = `max-[350px]:w-full text-foreground-theme-color bg-foreground-color flex items-center hover:bg-background-color border border-foreground-theme-color/15 text-[0.8rem]`
+  const searchParam = useSearchParams()
+  const category = searchParam.get("category")
+  const router = useRouter()
 
   // Function for setting screen
   const handleSetScreen = (title: string, screen: () => JSX.Element) => {
-    setScreenDetails({ title: title, Screen: screen });
-    setShowScreen(true);
-  };
+    setScreenDetails({ title: title, Screen: screen })
+    setShowScreen(true)
+  }
 
   // Function for clearing all filteres
   const handleClearAllFilteres = () => {
-    filterContext?.setCategories([]);
-    setCategories([]);
-    filterContext?.setLanguage("");
-    setLanguage("");
-    filterContext?.setFormats([]);
-    setFormats([]);
-    setShowFilterScreen(false);
-  };
+
+    filterContext?.setCategories([])
+    setCategories([])
+    filterContext?.setLanguage("")
+    setLanguage("")
+    filterContext?.setFormats([])
+    setFormats([])
+    setShowFilterScreen(false)
+
+    const urlSearchParams = new URLSearchParams(searchParam.toString())
+    urlSearchParams.delete("category")
+    
+    router.push(`?${urlSearchParams.toString()}`)
+
+  }
 
   // Function for applying filters
   const handleApplyFilters = () => {
-    filterContext?.setCategories(categories);
-    filterContext?.setFormats(formats);
-    filterContext?.setLanguage(language);
+    filterContext?.setCategories(categories)
+    filterContext?.setFormats(formats)
+    filterContext?.setLanguage(language)
 
-    setShowFilterScreen(false);
-  };
-
-  useEffect(() => {
-    (() => {
-      handleSetScreen("genre", MovieGenre);
-    })();
-  }, []);
+    setShowFilterScreen(false)
+  }
 
   useEffect(() => {
     (() => {
-      setShowScreen(false)
+      handleSetScreen("genre", MovieGenre)
     })()
   }, [])
+
+  useEffect(() => {
+    (() => {
+      if(category){
+
+        setCategories(pre => {
+          return [...pre, category]
+        })
+
+      }
+      setShowScreen(false)
+    })()
+  }, [category])
 
   return (
     <>
       <Activity mode={showFilterScreen ? "visible" : "hidden"}>
-        <div className="absolute z-5 top-0 left-0 w-full h-full bg-foreground-color opacity-[0.5]"></div>
+        <div className="absolute z-7 top-0 left-0 w-full h-full bg-foreground-color opacity-[0.5]"></div>
       </Activity>
       <div
         onClick={() => setShowFilterScreen(true)}
@@ -88,8 +106,8 @@ const MovieFilter = () => {
         <DownArrowIcon className={"absolute right-2.5"} size={15} />
       </div>
       <Activity mode={showFilterScreen ? "visible" : "hidden"}>
-        <div className="absolute w-full top-25 h-[calc(100% - 60px)] left-0 flex justify-center items-center p-2.5">
-          <div className="w-150 max-[350px]:pl-5 h-100 bg-foreground-color z-6 rounded-[10px] flex flex-col gap-1.25 border border-foreground-theme-color/15 pb-5 pr-5">
+        <div className="absolute z-8 w-full top-25 h-[calc(100% - 60px)] left-0 flex justify-center items-center p-2.5">
+          <div className="w-150 max-[350px]:pl-5 h-100 bg-foreground-color z-7 rounded-[10px] flex flex-col gap-1.25 border border-foreground-theme-color/15 pb-5 pr-5">
             <div className={`flex justify-between items-center pt-2.5 pb-2.5 pl-5 `}>
               <span className="text-[0.9rem] font-medium">Filter By</span>
               <div
@@ -170,7 +188,7 @@ const MovieFilter = () => {
         </div>
       </Activity>
     </>
-  );
-};
+  )
+}
 
-export default MovieFilter;
+export default MovieFilter

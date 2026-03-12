@@ -137,10 +137,10 @@ const Banners = () => {
     }, [banners.length, selectedBannerIndex])
 
     return (
-
-        <div className="w-full min-w-75 mt-5 relative flex items-center justify-center">
+ 
+        <div className="w-full bottom-100 z-5 min-w-75 flex items-center justify-center">
             <BackIcon
-                className="z-10 size-6 sm:size-9 self-center rounded-full flex items-center justify-center hover:bg-white/20 stroke-white absolute left-2 sm:left-5 cursor-pointer"
+                className="z-4 size-6 sm:size-9 self-center rounded-full flex items-center justify-center hover:bg-white/20 stroke-white absolute left-2 sm:left-5 cursor-pointer"
                 onClick={handleBackwardBanner}
             />
             <div

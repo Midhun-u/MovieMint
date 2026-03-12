@@ -7,7 +7,7 @@ import PageDetails from "@/components/ui/PageDetails"
 import { useAppSelector } from "@/store/hooks"
 import { Activity, useState } from "react"
 
-const AllMoviesPage = () => {
+const AnimatedMoviesPage = () => {
 
     const [categories, setCategories] = useState<Array<string>>([])
     const [formats, setFormats] = useState<Array<string>>([])
@@ -17,24 +17,25 @@ const AllMoviesPage = () => {
     return (
         <FilterProvider
             value={{
-                setCategories: setCategories,
-                setFormats: setFormats,
-                setLanguage: setLanguage,
                 categories: categories,
+                setCategories: setCategories,
                 formats: formats,
+                setFormats: setFormats,
                 language: language,
+                setLanguage: setLanguage
             }}
         >
             <div className="mt-26 px-3 sm:w-[95%] sm:px-0 md:w-[70%] w-full flex flex-col gap-2.5">
-                {/* Search bar and filter section */}
-                <PageDetails
-                    title="All Movies"
-                    backButton={false}
-                    about=""
-                />
-                {/* List */}
+                <div>
+                    <PageDetails
+                        title="Animated Movies"
+                        about=""
+                        backButton={false}
+                    />
+                </div>
                 <div className="flex flex-col gap-5">
                     <MovieList
+                        movieType="ANIMATED"
                     />
                 </div>
             </div>
@@ -44,7 +45,6 @@ const AllMoviesPage = () => {
             </Activity>
         </FilterProvider>
     )
-
 }
 
-export default AllMoviesPage
+export default AnimatedMoviesPage
