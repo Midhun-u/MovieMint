@@ -27,3 +27,11 @@ export const deleteTheaterImageApi = handleError(async (theaterId: string, authT
     return result
 
 })
+
+// Api for getting actors images
+export const getActorsImagesApi = handleError(async (movieId: string) => {
+
+    const result = await fetchInstance(MEDIA_BASE_URL, `/movie/get-actors-images/${movieId}`, "GET", {}, "json")
+    return result
+
+})

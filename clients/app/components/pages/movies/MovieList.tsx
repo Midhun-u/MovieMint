@@ -117,6 +117,7 @@ const MovieList = ({movieStatus, movieType}: MovieListProps) => {
                             language={movie?.language}
                             poster={movie?.poster.image_url}
                             status={movie.status}
+                            id={movie._id}
                         />
                     ))
                 }

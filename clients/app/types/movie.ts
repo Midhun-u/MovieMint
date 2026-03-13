@@ -26,5 +26,7 @@ export type MovieData = {
   type: "LIVE_ACTION" | "ANIMATED";
   actors?: Array<{
     name: string;
+    id: string
   }>;
+  createdAt: string
 };

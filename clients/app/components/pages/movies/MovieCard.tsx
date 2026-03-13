@@ -1,6 +1,8 @@
 import Image from "next/image";
+import {useRouter} from 'next/navigation'
 
 interface MovieCardProps {
+    id: string
     poster: string;
     title: string;
     certificate: string;
@@ -10,6 +12,7 @@ interface MovieCardProps {
 }
 
 const MovieCard = ({
+    id,
     poster,
     title,
     certificate,
@@ -20,9 +23,10 @@ const MovieCard = ({
 
     const sortedCategories = [...categories].sort();
     const movieDetailsClass = "text-[0.8rem] max-h-4.75 overflow-hidden w-full text-foreground-theme-color/45 font-semibold"
+    const router = useRouter()
 
     return (
-        <div className="sm:w-47.5 w-40 h-full sm:min-h-80 bg-foreground-color flex flex-col p-2.5 border border-foreground-theme-color/15 rounded-[3px] cursor-pointer shrink-0 relative">
+        <div onClick={() => router.push(`/movies/details/${id}`)} className="sm:w-47.5 w-40 h-full sm:min-h-80 bg-foreground-color flex flex-col p-2.5 border border-foreground-theme-color/15 rounded-[3px] cursor-pointer shrink-0 relative">
             {/* Movie poster section */}
             <div className="w-full">
                 <Image

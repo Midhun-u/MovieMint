@@ -5,6 +5,7 @@ import { deleteMovieImageController } from '../controllers/deleteMovieImage.cont
 import { adminAuthMiddleware } from '../middlewares/adminAuth.js'
 import { getMovieImageController } from '../controllers/getMovieImage.controller.js'
 import { updateMovieImageController } from '../controllers/updateMovieImage.controller.js'
+import { getActorsImagesController } from '../controllers/getActorsImages.controller.js'
 
 // Movie image router
 export const movieRouter = express()
@@ -20,3 +21,6 @@ movieRouter.get("/get-image/:type/:movieId", getMovieImageController)
 
 // Route for updating movie image
 movieRouter.patch("/update-image/:type/:movieId", adminAuthMiddleware, upload.single("file"), updateMovieImageController)
+
+// Route for getting movie actors images
+movieRouter.get("/get-actors-images/:movieId", getActorsImagesController)

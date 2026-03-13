@@ -35,3 +35,9 @@ export const getMoviesApi = handleError(async (
     const result = await fetchInstance(MOVIE_BASE_URL, `/get-movies/?page=${page}&limit=${limit}&title=${searchQuery}&${query}&language=${language}&status=${status}&movieType=${movieType? movieType: ""}`, "GET", {}, "json")
     return result
 })
+
+// Api for getting specific movie
+export const getMovieApi = handleError(async (movieId: string) => {
+    const result = await fetchInstance(MOVIE_BASE_URL, `/get-movie/${movieId}`, "GET", {}, "json")
+    return result
+})

@@ -69,6 +69,7 @@ const MovieSlider = ({ movieCategory }: MovieSliderProps) => {
                                 certificate={movie?.certificate}
                                 language={movie?.language}
                                 poster={movie?.poster.image_url}
+                                id={movie._id}
                             />
                         </div>
                     ))

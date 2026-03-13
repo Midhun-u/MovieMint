@@ -107,6 +107,11 @@ const AddCrewForm = ({
   const handleRemoveDetails = () => {
     if (!onRemove || !selectedValue) return;
 
+    // Removing all values
+    setActorName("");
+    setFile(null);
+    setPreview("");
+
     onRemove(selectedValue);
     setShowCrewForm(false);
   };
