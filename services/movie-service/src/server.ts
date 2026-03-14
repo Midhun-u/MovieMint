@@ -4,7 +4,7 @@ import {cors} from 'hono/cors'
 import { envVariables } from './utils/envVariables'
 import { errorHandler } from './utils/errorHandler'
 import { notFound } from './utils/notFound'
-import { movieRouter } from './routes/routes'
+import { movieRouter } from './routes/movie.route'
 import { connectDatabase } from './config/db'
 
 // App instance

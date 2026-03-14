@@ -1,5 +1,5 @@
 import Image from "next/image";
-import {useRouter} from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
 interface MovieCardProps {
     id: string
@@ -26,16 +26,22 @@ const MovieCard = ({
     const router = useRouter()
 
     return (
-        <div onClick={() => router.push(`/movies/details/${id}`)} className="sm:w-47.5 w-40 h-full sm:min-h-80 bg-foreground-color flex flex-col p-2.5 border border-foreground-theme-color/15 rounded-[3px] cursor-pointer shrink-0 relative">
+        <div onClick={() => router.push(`/movies/details/${id}`)} className="w-47.5 h-full sm:min-h-80 bg-foreground-color flex flex-col p-2.5 border border-foreground-theme-color/15 rounded-[3px] cursor-pointer shrink-0 relative">
             {/* Movie poster section */}
             <div className="w-full">
-                <Image
-                    alt={`${title} poster`}
-                    src={poster} 
-                    className="w-full aspect-2/3"
-                    width={500}
-                    height={1000}
-                />
+                {
+                    poster
+                        ?
+                        <Image
+                            alt={`${title} poster`}
+                            src={poster}
+                            className="w-full aspect-2/3"
+                            width={500}
+                            height={1000}
+                        />
+                        :
+                        null
+                }
             </div>
             {/* Movie details section */}
             <div className="flex flex-col w-full h-full mt-2 gap-0.5">

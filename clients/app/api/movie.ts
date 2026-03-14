@@ -41,3 +41,11 @@ export const getMovieApi = handleError(async (movieId: string) => {
     const result = await fetchInstance(MOVIE_BASE_URL, `/get-movie/${movieId}`, "GET", {}, "json")
     return result
 })
+
+// Api for gettig recommended movies
+export const getRecommendedMovies = handleError(async (movieId: string) => {
+
+    const result = await fetchInstance(MOVIE_BASE_URL, `/get-recommended-movies/${movieId}`, "GET", {}, "json")
+    return result
+
+})

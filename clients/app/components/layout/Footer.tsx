@@ -10,7 +10,7 @@ const Footer = () => {
     return (
 
         <footer
-            className="box-border bg-foreground-color w-screen h-auto pt-10 pb-20 mt-[50dvh] px-4 sm:px-7 flex md:justify-center flex-wrap gap-10 text-foreground-theme-color"
+            className="box-border bg-foreground-color w-screen h-auto pt-10 pb-20 mt-20 px-4 sm:px-7 flex md:justify-center flex-wrap gap-10 text-foreground-theme-color"
         >
             {/* About section */}
             <div className="w-100">

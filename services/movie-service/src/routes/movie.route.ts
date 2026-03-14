@@ -11,6 +11,7 @@ import { removeBannerController } from "../controllers/removeBanner.controller"
 import { getTotalBannerCountController } from "../controllers/getTotalBannerCount.controller"
 import { getAllBannersController } from "../controllers/getAllBanners.controller"
 import { getDashboardLogsController } from "../controllers/getDashboardLogs.controller"
+import { getRecommendedMoviesController } from "../controllers/getRecommendedMovies.controller"
 
 // Movie router
 export const movieRouter = new Hono()
@@ -50,3 +51,6 @@ movieRouter.get("/get-banner-count", getTotalBannerCountController)
 
 // Route for getting bashboard logs
 movieRouter.get("/get-dashboard-logs", getDashboardLogsController)
+
+// Route for getting recommended movies
+movieRouter.get("/get-recommended-movies/:movieId", getRecommendedMoviesController)
