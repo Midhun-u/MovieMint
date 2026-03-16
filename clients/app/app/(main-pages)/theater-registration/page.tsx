@@ -4,47 +4,53 @@ import { getTheaterApi } from "@/api/theater"
 import Authentication from "@/components/features/Authentication"
 import TheaterRegistrationForm from "@/components/form/TheaterRegistrationForm"
 import TheaterRegistrationDetails from "@/components/pages/theaterRegistration/TheaterRegistrationDetails"
-import { TheaterDetails } from "@/types/theater"
-import { useEffect, useState } from "react"
+import { useAppSelector } from "@/store/hooks"
+import { theaterFailed, theaterRequest, theaterSuccess } from "@/store/theaterSlice"
+import { useCallback, useEffect } from "react"
+import { useDispatch } from "react-redux"
 
 const TheaterRegistrationPage = () => {
 
-    const [theater, setTheater] = useState<TheaterDetails | null>(null)
+    const dispatch = useDispatch()
+    const { theater } = useAppSelector(state => state.theater)
 
     // Function for getting theater
-    const handleGetTheater = async () => {
+    const handleGetTheater = useCallback(async () => {
 
         const authToken = localStorage.getItem('authToken') || ""
 
+        dispatch(theaterRequest())
         const result = await getTheaterApi(authToken)
         if (result.success) {
-            setTheater(result.theater)
+            dispatch(theaterSuccess({ theater: result.theater }))
+        } else {
+            dispatch(theaterFailed({ errorMessage: result.error }))
         }
 
-    }
+    }, [dispatch])
 
     useEffect(() => {
         (() => {
             handleGetTheater()
         })()
-    }, [])
+    }, [handleGetTheater])
 
     return (
         <Authentication
             redirectToAuthPage
         >
-            <section className="pt-15">
-                {
-                    theater
-                        ?
-                        <TheaterRegistrationDetails
-                            theaterDetails={theater}
-                            setTheater={setTheater}
-                        />
-                        :
-                        <TheaterRegistrationForm
-                        />
-                }
+            <section className="flex justify-center">
+                <div className="mt-26 px-3 sm:w-[95%] sm:px-0 md:w-[70%] w-full">
+                    {
+                        theater
+                            ?
+                            <TheaterRegistrationDetails
+                            />
+                            :
+                            <TheaterRegistrationForm
+                            />
+                    }
+                </div>
             </section>
         </Authentication>
     )

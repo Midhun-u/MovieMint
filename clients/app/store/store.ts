@@ -5,6 +5,7 @@ import { themeReducer } from './themeSlice'
 import { theaterReducer } from './theaterSlice'
 import { movieReducer } from './movieSlice'
 import { bannerReducer } from './bannerSlice'
+import { savedListReducer } from './savedListSlice'
 
 export const store = () => {
 
@@ -15,7 +16,8 @@ export const store = () => {
             theme: themeReducer,
             theater: theaterReducer,
             movie: movieReducer,
-            banner: bannerReducer
+            banner: bannerReducer,
+            savedList: savedListReducer
         }
     })
 

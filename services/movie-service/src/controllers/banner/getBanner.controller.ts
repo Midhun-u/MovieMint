@@ -1,6 +1,6 @@
 import { Context } from "hono";
-import { sendErrorResponse } from "../utils/sendErrorResponse";
-import { BannerModel } from "../models/banner.model";
+import { sendErrorResponse } from "../../utils/sendErrorResponse";
+import { BannerModel } from "../../models/banner.model";
 
 // Controller for getting banner
 export const getBannerController = sendErrorResponse(async (context: Context) => {

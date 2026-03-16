@@ -1,6 +1,6 @@
 import { Context } from "hono";
-import { sendErrorResponse } from "../utils/sendErrorResponse";
-import { MovieModel } from "../models/movie.model";
+import { sendErrorResponse } from "../../utils/sendErrorResponse";
+import { MovieModel } from "../../models/movie.model";
 
 // Controller for deleting movie
 export const deleteMovieController = sendErrorResponse(async (context: Context) => {

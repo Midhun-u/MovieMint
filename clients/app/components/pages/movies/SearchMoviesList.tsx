@@ -23,7 +23,7 @@ const SearchMoviesList = () => {
         if (result.success) {
             dispatch(movieSuccess({ movies: result.movies }))
         } else {
-            dispatch(movieFailed({ errorMessage: result.errorMessage }))
+            dispatch(movieFailed({ errorMessage: result.error }))
         }
 
     }, [searchQuery, dispatch])

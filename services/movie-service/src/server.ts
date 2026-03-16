@@ -6,6 +6,7 @@ import { errorHandler } from './utils/errorHandler'
 import { notFound } from './utils/notFound'
 import { movieRouter } from './routes/movie.route'
 import { connectDatabase } from './config/db'
+import { savedListRouter } from './routes/savedList.route'
 
 // App instance
 const app = new Hono({strict: false})
@@ -27,6 +28,7 @@ app.use(cors({
 app.onError(errorHandler)
 app.notFound(notFound)
 app.route("/api/v1/movie", movieRouter)
+app.route("/api/v1/saved-list", savedListRouter)
 
 // Connecting database
 connectDatabase()

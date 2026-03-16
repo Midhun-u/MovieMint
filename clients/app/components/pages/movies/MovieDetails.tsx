@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { movieFailed, movieRequest, movieSuccess } from "@/store/movieSlice"
 import Image from "next/image"
 import { useParams, useRouter } from "next/navigation"
-import { Activity, useCallback, useEffect, useState } from "react"
+import { Activity, useCallback, useContext, useEffect, useState } from "react"
 import {
     ArrowLeft as BackIcon,
     Star as RatingsIcon,
@@ -27,6 +27,9 @@ import { getActorsImagesApi } from "@/api/media"
 import { MovieData } from "@/types/movie"
 import MovieCard from "./MovieCard"
 import MovieSkeleton from "./MovieSkeleton"
+import { addMovieToSavedListApi, deleteSavedItemApi, getSavedItemApi } from "@/api/savedList"
+import { ToastProvider } from "@/components/context/providers/ToastProvider"
+import { savedListFailed, savedListRequest, savedListSuccess } from "@/store/savedListSlice"
 
 const detailsContainerClassName = "flex items-center gap-1.5"
 const detailsTextClassName = "font-medium max-h-12"
@@ -43,6 +46,8 @@ const MovieDetails = () => {
     const [recommendedMovies, setRecommendedMovies] = useState<Array<MovieData>>([])
     const [loading, setLoading] = useState<boolean>(false)
     const [showTrailerScreen, setShowTrailerScreen] = useState<boolean>(false)
+    const { loading: savedListLoading, savedItem } = useAppSelector(state => state.savedList)
+    const toastContext = useContext(ToastProvider)
 
     // Function for fetching movie details
     const handleFetchMovieDetails = useCallback(async () => {
@@ -82,10 +87,67 @@ const MovieDetails = () => {
 
     }, [movieId])
 
+    // Function for adding movie to saved list
+    const handleAddMovieToSavedList = async () => {
+
+        const authToken = localStorage.getItem("authToken")
+        if (!authToken) return
+
+        dispatch(savedListRequest())
+        const result = await addMovieToSavedListApi(movieId as string, authToken)
+        if (result.success) {
+            dispatch(savedListSuccess({ savedItem: result?.newSavedItem }))
+            toastContext?.triggerToastMessage("Movie added to saved list", "SUCCESS")
+        } else {
+            dispatch(savedListFailed({ errorMessage: result.error }))
+            toastContext?.triggerToastMessage(result.error, "ERROR")
+        }
+
+    }
+
+    // Function for fetching movie from saved list
+    const handleFetchSavedItem = useCallback(async () => {
+
+        const authToken = localStorage.getItem("authToken")
+        if (!authToken) return
+
+        dispatch(savedListRequest())
+        const result = await getSavedItemApi(movieId as string, authToken)
+
+        if (result.success) {
+            dispatch(savedListSuccess({ savedItem: result.savedItem }))
+        } else {
+            dispatch(savedListFailed({ errorMessage: result.error }))
+        }
+
+    }, [movieId, dispatch])
+
+    // Function for removing movie from saved list
+    const handleRemoveSavedItem = async () => {
+
+        if(!savedItem) return
+
+        const authToken = localStorage.getItem("authToken") 
+        if(!authToken) return
+
+        dispatch(savedListRequest())
+        const result = await deleteSavedItemApi(savedItem?._id, authToken)
+        if(result.success){
+            dispatch(savedListSuccess({savedItem: null}))
+            toastContext?.triggerToastMessage("Movie is removed from saved list", "SUCCESS")
+        }else{
+            dispatch(savedListFailed({errorMessage: result.error}))
+            toastContext?.triggerToastMessage(result.error, "ERROR")
+        }
+
+
+    }
+
     useEffect(() => {
         (() => {
             if (movieId) {
                 handleFetchMovieDetails()
+                handleFetchSavedItem()
                 handleFetchActorsImages()
                 handleFetchRecommendedMovies()
             }
@@ -94,6 +156,7 @@ const MovieDetails = () => {
         movieId,
         handleFetchMovieDetails,
         handleFetchActorsImages,
+        handleFetchSavedItem,
         handleFetchRecommendedMovies
     ])
 
@@ -210,11 +273,31 @@ const MovieDetails = () => {
                                                     />
                                                     <span className={buttonTextClassName}>Watch Trailer</span>
                                                 </Button>
-                                                <Button className={buttonClassName}>
-                                                    <SaveIcon
-                                                    />
-                                                    <span className={buttonTextClassName}>Save</span>
-                                                </Button>
+                                                {
+                                                    savedItem
+                                                        ?
+                                                        <Button
+                                                            className={buttonClassName}
+                                                            disabled={savedListLoading}
+                                                            onClick={handleRemoveSavedItem}
+                                                        >
+                                                            <SaveIcon
+                                                                className="fill-foreground-theme-color stroke-foreground-theme-color"
+                                                            />
+                                                            <span>Saved</span>
+                                                        </Button>
+                                                        :
+                                                        <Button
+                                                            className={buttonClassName}
+                                                            onClick={handleAddMovieToSavedList}
+                                                            disabled={savedListLoading}
+                                                        >
+                                                            <SaveIcon
+                                                            />
+                                                            <span className={buttonTextClassName}>Save</span>
+                                                        </Button>
+
+                                                }
                                                 <Button className={buttonClassName}>
                                                     <RatingsIcon
                                                     />

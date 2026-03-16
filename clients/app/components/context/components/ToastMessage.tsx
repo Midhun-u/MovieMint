@@ -71,7 +71,7 @@ const ToastMessage = ({ children }: { children: ReactNode }) => {
       <Activity mode={showToastMessage ? "visible" : "hidden"}>
         <div
           ref={toastRef}
-          className='fixed transition-all duration-200 -top-15 w-full h-auto p-2 flex justify-center'
+          className='fixed transition-all duration-200 -top-15 w-full h-auto p-2 flex justify-center z-50'
         >
           <div
             className={`px-5 py-3 bg-foreground-color flex gap-2 items-center rounded-lg border ${messageDetails.type === "SUCCESS" ? 'border-primary-color/40' : 'border-error-foreground-color/40'}`}

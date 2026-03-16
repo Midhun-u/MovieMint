@@ -1,7 +1,7 @@
 import { Context } from "hono";
-import { sendErrorResponse } from "../utils/sendErrorResponse";
-import { BannerModel } from "../models/banner.model";
-import { getMovieImage } from "../services/getMovieImage";
+import { sendErrorResponse } from "../../utils/sendErrorResponse";
+import { BannerModel } from "../../models/banner.model";
+import { getMovieImage } from "../../services/getMovieImage";
 
 // Controller for getting all banners
 export const getAllBannersController = sendErrorResponse(async (context: Context) => {

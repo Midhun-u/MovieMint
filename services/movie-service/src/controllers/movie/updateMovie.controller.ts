@@ -1,6 +1,6 @@
 import { Context } from "hono";
-import { sendErrorResponse } from "../utils/sendErrorResponse";
-import { MovieModel } from "../models/movie.model";
+import { sendErrorResponse } from "../../utils/sendErrorResponse";
+import { MovieModel } from "../../models/movie.model";
 
 // Controller for updating movie
 export const updateMovieController = sendErrorResponse(async (context: Context) => {

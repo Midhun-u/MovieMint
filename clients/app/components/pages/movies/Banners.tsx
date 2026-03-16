@@ -138,7 +138,7 @@ const Banners = () => {
 
     return (
  
-        <div className="w-full bottom-100 z-5 min-w-75 flex items-center justify-center">
+        <div className="w-full relative top-0 h-auto bottom-100 z-5 min-w-75 flex items-center justify-center">
             <BackIcon
                 className="z-4 size-6 sm:size-9 self-center rounded-full flex items-center justify-center hover:bg-white/20 stroke-white absolute left-2 sm:left-5 cursor-pointer"
                 onClick={handleBackwardBanner}
@@ -185,7 +185,7 @@ const Banners = () => {
                 }
             </div>
             {/* Banner notation */}
-            <div className="absolute gap-1 bottom-5 z-10 flex self-center">
+            <div className="absolute bottom-5 gap-1 z-10 flex self-center">
                 {
                     Array(banners.length).fill("").map((_, index) => (
                         <div

@@ -37,7 +37,7 @@ const CheckBoxList = ({ values, setValues, checkedValues, selectedLimit, classNa
     }
 
     return (
-        <div className={`flex flex-wrap mt-2 ${className}`}>
+        <div className={`flex flex-wrap mt-2 gap-2 ${className}`}>
             {
                 values?.map((value, index) => (
                     <CustomCheckBox

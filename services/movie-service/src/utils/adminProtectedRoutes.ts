@@ -1,4 +1,4 @@
-export const protectedRoutes = [
+export const adminProtectedRoutes = [
     "/add-movie",
     "/delete-movie",
     "/update-movie",

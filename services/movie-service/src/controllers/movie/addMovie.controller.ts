@@ -1,9 +1,9 @@
 import { Context } from "hono";
-import { sendErrorResponse } from "../utils/sendErrorResponse";
-import { MovieType } from "../types/movieType";
-import { movieValidator } from "../validator/movieValidator";
-import { MovieModel } from "../models/movie.model";
-import { movieQueue } from "../queues/movieQueue";
+import { sendErrorResponse } from "../../utils/sendErrorResponse";
+import { MovieType } from "../../types/movieType";
+import { movieValidator } from "../../validator/movieValidator";
+import { MovieModel } from "../../models/movie.model";
+import { movieQueue } from "../../queues/movieQueue";
 
 // Controller adding movie
 export const addMovieController = sendErrorResponse(async (context: Context) => {

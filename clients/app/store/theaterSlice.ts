@@ -1,8 +1,15 @@
+import { TheaterDetails } from "@/types/theater"
 import { createSlice } from "@reduxjs/toolkit"
 
-const initialState = {
+type InitialState = {
+    loading: boolean
+    theater: TheaterDetails | null
+    errorMessage: string
+}
+
+const initialState: InitialState = {
     loading: false,
-    theater: {},
+    theater: null,
     errorMessage: ""
 }
 
@@ -13,7 +20,7 @@ const theaterSlice = createSlice({
         
         theaterRequest: (state) => {
             state.loading = true
-            state.theater = {}
+            state.theater = null
             state.errorMessage = ""
         },
         theaterSuccess: (state, action) => {
@@ -23,7 +30,7 @@ const theaterSlice = createSlice({
         },
         theaterFailed: (state, action) => {
             state.loading = false
-            state.theater = {}
+            state.theater = null
             state.errorMessage = action.payload.errorMessage
         }
 

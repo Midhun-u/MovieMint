@@ -58,7 +58,7 @@ const MovieList = ({movieStatus, movieType}: MovieListProps) => {
 
             dispatch(movieSuccess({ movies: result.movies }))
         } else {
-            dispatch(movieFailed({ errorMessage: result.errorMessage }))
+            dispatch(movieFailed({ errorMessage: result.error }))
         }
     }, [dispatch, pagination.page, pagination.limit, categories, category, formats, language, searchQuery, movieStatus, movieType])
 

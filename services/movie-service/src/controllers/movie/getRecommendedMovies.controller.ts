@@ -1,7 +1,7 @@
 import { Context } from "hono";
-import { sendErrorResponse } from "../utils/sendErrorResponse";
-import { MovieModel } from "../models/movie.model";
-import { getMovieImage } from "../services/getMovieImage";
+import { sendErrorResponse } from "../../utils/sendErrorResponse";
+import { MovieModel } from "../../models/movie.model";
+import { getMovieImage } from "../../services/getMovieImage";
 
 // Controller for getting recommended movies
 export const getRecommendedMoviesController = sendErrorResponse(async (context: Context) => {
