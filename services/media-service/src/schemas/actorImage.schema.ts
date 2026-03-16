@@ -35,4 +35,14 @@ export const Actor = sequelize.define("actor", {
         type: DataTypes.ENUM({ values: ["image/jpg", "image/jpeg", "image/png", "image/webp"] }),
         allowNull: false,
     }
+}, {
+    indexes: [
+        {
+            unique: true,
+            fields: ["actor_id"]
+        },
+        {
+            fields: ["movie_id"]
+        }
+    ]
 })

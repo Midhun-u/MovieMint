@@ -14,7 +14,7 @@ export const Theater = sequelize.define("theater", {
     owner_id: {
         type: DataTypes.TEXT,
         allowNull: false,
-        unique: true,
+        unique: "theaters_owner_id_key",
     },
     theater_name: {
         type: DataTypes.STRING(25),
@@ -71,4 +71,11 @@ export const Theater = sequelize.define("theater", {
         defaultValue: "PENDING"
     }
 
+}, {
+    indexes: [
+        {
+            unique: true,
+            fields: ["owner_id"]
+        }
+    ]
 })

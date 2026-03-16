@@ -31,4 +31,11 @@ export const TheaterImage = sequelize.define("theater_image", {
         type: DataTypes.ENUM({ values: ["image/jpg", "image/jpeg", "image/png", "image/webp"] }),
         allowNull: false,
     }
+}, {
+    indexes: [
+        {
+            unique: true,
+            fields: ["theater_id"]
+        }
+    ]
 })

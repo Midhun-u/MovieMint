@@ -1,6 +1,6 @@
 // Function for converting string to number
-export const convertStringToNumber = (value: string | number) => {
+export const convertStringToNumber = (value: string | number, integer: boolean) => {
 
-    return typeof value === "string"? parseInt(value): value
+    return typeof value === "string"? (integer? parseInt(value): parseFloat(value)) : value
 
 }

@@ -1,7 +1,7 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
-import { handleError } from "../utils/handleError.js";
-import { UserModel } from "../models/user.model.js";
-import { getUserProfileImage } from "../service/image/getImage.js";
+import { handleError } from "../../utils/handleError.js";
+import { UserModel } from "../../models/user.model.js";
+import { getUserProfileImage } from "../../service/image/getImage.js";
 
 // Controller for getting a specific user
 export const getUserController = handleError(async (request: FastifyRequest, reply: FastifyReply) => {

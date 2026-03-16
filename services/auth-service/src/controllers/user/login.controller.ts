@@ -1,12 +1,12 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
-import { handleError } from "../utils/handleError.js";
-import type { LoginBody } from "../types/body.js";
-import { validateBody } from "../validator/validateBody.js";
-import { UserModel } from "../models/user.model.js";
-import { checkPassword } from "../utils/password.js";
-import { envVariables } from "../utils/envVariables.js";
-import { generateToken } from "../utils/generateToken.js";
-import { excludePassword } from "../utils/excludePassword.js";
+import { handleError } from "../../utils/handleError.js";
+import type { LoginBody } from "../../types/body.js";
+import { validateBody } from "../../validator/validateBody.js";
+import { UserModel } from "../../models/user.model.js";
+import { checkPassword } from "../../utils/password.js";
+import { envVariables } from "../../utils/envVariables.js";
+import { generateToken } from "../../utils/generateToken.js";
+import { excludePassword } from "../../utils/excludePassword.js";
 
 // Login Controller
 export const loginController = handleError(async (request: FastifyRequest, reply: FastifyReply) => {

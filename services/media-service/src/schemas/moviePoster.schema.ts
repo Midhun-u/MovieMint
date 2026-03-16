@@ -31,4 +31,11 @@ export const Poster = sequelize.define("poster", {
         type: DataTypes.ENUM({ values: ["image/jpg", "image/jpeg", "image/png", "image/webp"] }),
         allowNull: false,
     }
+},{
+    indexes: [
+        {
+            unique: true,
+            fields: ["movie_id"]
+        }
+    ]
 })

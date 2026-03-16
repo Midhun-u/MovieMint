@@ -1,14 +1,14 @@
 import { type FastifyInstance } from "fastify";
-import { signController } from "../controllers/sign.controller.js";
-import { googleSignController } from "../controllers/googleSign.controller.js";
-import { loginController } from "../controllers/login.controller.js";
-import { googleLoginController } from "../controllers/googleLogin.controller.js";
-import { sendOtpController } from "../controllers/sendOtp.controller.js";
-import { verifyOtpController } from "../controllers/verifyOtp.controller.js";
-import { resetPasswordController } from "../controllers/resetPassword.controller.js";
-import { getAuthProfileController } from "../controllers/getAuthProfile.controller.js";
+import { signController } from "../controllers/user/sign.controller.js";
+import { googleSignController } from "../controllers/user/googleSign.controller.js";
+import { loginController } from "../controllers/user/login.controller.js";
+import { googleLoginController } from "../controllers/user/googleLogin.controller.js";
+import { sendOtpController } from "../controllers/user/sendOtp.controller.js";
+import { verifyOtpController } from "../controllers/user/verifyOtp.controller.js";
+import { resetPasswordController } from "../controllers/user/resetPassword.controller.js";
+import { getAuthProfileController } from "../controllers/user/getAuthProfile.controller.js";
 import { authenticationHook } from "../hooks/auth.hook.js";
-import { getUserController } from "../controllers/getUser.controller.js";
+import { getUserController } from "../controllers/user/getUser.controller.js";
 
 // Auth routes
 export const authRoutes = (fastify: FastifyInstance) => {

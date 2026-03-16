@@ -1,7 +1,7 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
-import { handleError } from "../utils/handleError.js";
-import { UserModel } from "../models/user.model.js";
-import { hashPassword } from "../utils/password.js";
+import { handleError } from "../../utils/handleError.js";
+import { UserModel } from "../../models/user.model.js";
+import { hashPassword } from "../../utils/password.js";
 
 // Controller for resetting password
 export const resetPasswordController = handleError(async (request: FastifyRequest, reply: FastifyReply) => {

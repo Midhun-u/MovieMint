@@ -1,15 +1,15 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
-import { handleError } from "../utils/handleError.js";
-import { UserModel } from "../models/user.model.js";
-import { redisClient } from "../config/redis.js";
-import { convertStringToNumber } from "../utils/convertStringToNumber.js";
-import { excludePassword } from "../utils/excludePassword.js";
+import { handleError } from "../../utils/handleError.js";
+import { UserModel } from "../../models/user.model.js";
+import { redisClient } from "../../config/redis.js";
+import { convertStringToNumber } from "../../utils/convertStringToNumber.js";
+import { excludePassword } from "../../utils/excludePassword.js";
 
 // Controller for verifying OTP
 export const verifyOtpController = handleError(async (request: FastifyRequest, reply: FastifyReply) => {
 
     const {email, otp} = request.body as {email: string, otp: number | string} || {}
-    const otpNumber = convertStringToNumber(otp)
+    const otpNumber = convertStringToNumber(otp, true)
 
     if(!email || !otp){
 
@@ -39,7 +39,7 @@ export const verifyOtpController = handleError(async (request: FastifyRequest, r
     }
 
     // Comparing OTP
-    if(otpNumber === convertStringToNumber(userOtp)){
+    if(otpNumber === convertStringToNumber(userOtp, true)){
 
         // Deleting otp
         await redisClient.del(email)

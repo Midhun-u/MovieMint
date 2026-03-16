@@ -1,10 +1,10 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
-import { handleError } from "../utils/handleError.js";
-import { validateBody } from "../validator/validateBody.js";
-import { UserModel } from "../models/user.model.js";
-import { generateToken } from "../utils/generateToken.js";
-import { excludePassword } from "../utils/excludePassword.js";
-import type { Role } from "../types/role.js";
+import { handleError } from "../../utils/handleError.js";
+import { validateBody } from "../../validator/validateBody.js";
+import { UserModel } from "../../models/user.model.js";
+import { generateToken } from "../../utils/generateToken.js";
+import { excludePassword } from "../../utils/excludePassword.js";
+import type { Role } from "../../types/role.js";
 
 // Google login controller
 export const googleLoginController = handleError(async (request: FastifyRequest, reply: FastifyReply) => {

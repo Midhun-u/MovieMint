@@ -1,9 +1,9 @@
 import { type FastifyReply, type FastifyRequest } from "fastify";
-import { handleError } from "../utils/handleError.js";
-import { UserModel } from "../models/user.model.js";
-import { generateOtp } from "../utils/generateOtp.js";
-import { sendOtp } from "../utils/sendOtp.js";
-import { redisClient } from "../config/redis.js";
+import { handleError } from "../../utils/handleError.js";
+import { UserModel } from "../../models/user.model.js";
+import { generateOtp } from "../../utils/generateOtp.js";
+import { sendOtp } from "../../utils/sendOtp.js";
+import { redisClient } from "../../config/redis.js";
 
 // Controller for sending OTP
 export const sendOtpController = handleError(async (request: FastifyRequest, reply: FastifyReply) => {

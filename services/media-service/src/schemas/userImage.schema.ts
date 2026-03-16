@@ -31,4 +31,11 @@ export const UserImage = sequelize.define("user_image", {
         type: DataTypes.ENUM({ values: ["image/jpg", "image/jpeg", "image/png", "image/webp"] }),
         allowNull: false,
     }
+},{
+    indexes: [
+        {
+            unique: true,
+            fields: ["user_id"]
+        }
+    ]
 })

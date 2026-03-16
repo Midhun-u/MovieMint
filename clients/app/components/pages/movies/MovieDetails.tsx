@@ -3,38 +3,18 @@
 import { getMovieApi, getRecommendedMovies } from "@/api/movie"
 import NoResult from "@/components/ui/NoResult"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
-import { movieFailed, movieRequest, movieSuccess } from "@/store/movieSlice"
+import { clearState, movieFailed, movieRequest, movieSuccess } from "@/store/movieSlice"
 import Image from "next/image"
 import { useParams, useRouter } from "next/navigation"
 import { Activity, useCallback, useContext, useEffect, useState } from "react"
 import {
-    ArrowLeft as BackIcon,
-    Star as RatingsIcon,
-    Clock as DurationIcon,
-    Calendar as DateIcon,
-    Grid3x2 as CertificateIcon,
-    LanguagesIcon,
-    Drama as CategoriesIcon,
-    TicketIcon,
-    PlayIcon,
-    Bookmark as SaveIcon,
-    BellRing as NotifyIcon,
     X as CloseIcon
 } from 'lucide-react'
-import { convertIsoDateToNormalFormat } from "@/utils/convertIsoDateToNoramlFormat"
-import { Button } from "@/components/ui/button"
 import { getActorsImagesApi } from "@/api/media"
 import { MovieData } from "@/types/movie"
 import MovieCard from "./MovieCard"
 import MovieSkeleton from "./MovieSkeleton"
-import { addMovieToSavedListApi, deleteSavedItemApi, getSavedItemApi } from "@/api/savedList"
-import { ToastProvider } from "@/components/context/providers/ToastProvider"
-import { savedListFailed, savedListRequest, savedListSuccess } from "@/store/savedListSlice"
-
-const detailsContainerClassName = "flex items-center gap-1.5"
-const detailsTextClassName = "font-medium max-h-12"
-const buttonClassName = "bg-foreground-color border border-disable-color text-foreground-theme-color hover:bg-background-color"
-const buttonTextClassName = "text-xs font-medium"
+import MovieDetailsBanner from "./MovieDetailsBanner"
 
 const MovieDetails = () => {
 
@@ -42,12 +22,9 @@ const MovieDetails = () => {
     const dispatch = useAppDispatch()
     const { movie } = useAppSelector(state => state.movie)
     const [actorsImages, setActorsImages] = useState<Array<{ id: string, image_url: string, actor_id: string, name: string }>>([])
-    const router = useRouter()
     const [recommendedMovies, setRecommendedMovies] = useState<Array<MovieData>>([])
     const [loading, setLoading] = useState<boolean>(false)
     const [showTrailerScreen, setShowTrailerScreen] = useState<boolean>(false)
-    const { loading: savedListLoading, savedItem } = useAppSelector(state => state.savedList)
-    const toastContext = useContext(ToastProvider)
 
     // Function for fetching movie details
     const handleFetchMovieDetails = useCallback(async () => {
@@ -87,77 +64,24 @@ const MovieDetails = () => {
 
     }, [movieId])
 
-    // Function for adding movie to saved list
-    const handleAddMovieToSavedList = async () => {
-
-        const authToken = localStorage.getItem("authToken")
-        if (!authToken) return
-
-        dispatch(savedListRequest())
-        const result = await addMovieToSavedListApi(movieId as string, authToken)
-        if (result.success) {
-            dispatch(savedListSuccess({ savedItem: result?.newSavedItem }))
-            toastContext?.triggerToastMessage("Movie added to saved list", "SUCCESS")
-        } else {
-            dispatch(savedListFailed({ errorMessage: result.error }))
-            toastContext?.triggerToastMessage(result.error, "ERROR")
-        }
-
-    }
-
-    // Function for fetching movie from saved list
-    const handleFetchSavedItem = useCallback(async () => {
-
-        const authToken = localStorage.getItem("authToken")
-        if (!authToken) return
-
-        dispatch(savedListRequest())
-        const result = await getSavedItemApi(movieId as string, authToken)
-
-        if (result.success) {
-            dispatch(savedListSuccess({ savedItem: result.savedItem }))
-        } else {
-            dispatch(savedListFailed({ errorMessage: result.error }))
-        }
-
-    }, [movieId, dispatch])
-
-    // Function for removing movie from saved list
-    const handleRemoveSavedItem = async () => {
-
-        if(!savedItem) return
-
-        const authToken = localStorage.getItem("authToken") 
-        if(!authToken) return
-
-        dispatch(savedListRequest())
-        const result = await deleteSavedItemApi(savedItem?._id, authToken)
-        if(result.success){
-            dispatch(savedListSuccess({savedItem: null}))
-            toastContext?.triggerToastMessage("Movie is removed from saved list", "SUCCESS")
-        }else{
-            dispatch(savedListFailed({errorMessage: result.error}))
-            toastContext?.triggerToastMessage(result.error, "ERROR")
-        }
-
-
-    }
-
     useEffect(() => {
         (() => {
             if (movieId) {
                 handleFetchMovieDetails()
-                handleFetchSavedItem()
                 handleFetchActorsImages()
                 handleFetchRecommendedMovies()
             }
         })()
+
+        return () => {
+            dispatch(clearState())
+        }
     }, [
         movieId,
         handleFetchMovieDetails,
         handleFetchActorsImages,
-        handleFetchSavedItem,
-        handleFetchRecommendedMovies
+        handleFetchRecommendedMovies,
+        dispatch
     ])
 
     return (
@@ -166,166 +90,10 @@ const MovieDetails = () => {
             ?
             <>
                 <div className={`w-full overflow-scroll`}>
-                    <div className="absolute top-20 left-5 z-1 cursor-pointer hover:bg-white/20 rounded-full">
-                        <BackIcon
-                            className="stroke-disable-color"
-                            size={25}
-                            onClick={() => router.back()}
-                        />
-                    </div>
-                    {/* Movie details */}
-                    <div className="w-full px-1 h-150 overflow-hidden relative">
-                        {
-                            movie?.banner.image_url
-                                ?
-                                // Banner image
-                                <div className="w-full h-full absolute left-0 top-0 -z-1">
-                                    <Image
-                                        src={movie.banner.image_url}
-                                        alt={`${movie.title} poster image`}
-                                        width={1000}
-                                        height={1000}
-                                        className="w-full h-full object-cover aspect-4/2 object-center"
-                                    />
-                                    {/* Background */}
-                                    <div className="w-full h-full absolute top-0 left-0 bg-black z-0 opacity-[0.5]"></div>
-                                </div>
-                                :
-                                null
-                        }
-                        <div className="max-[600px]:w-full z-2 w-[80%] h-full justify-self-center flex items-center">
-                            <div className="max-[700px]:w-[80%] max-[600px]:w-full items-start flex gap-2.5">
-                                {/* Movie poster */}
-                                <Image
-                                    src={movie.poster.image_url}
-                                    alt={`${movie.title} poster image`}
-                                    width={1000}
-                                    height={1000}
-                                    className="max-[800px]:hidden h-110 w-auto"
-                                    loading="eager"
-                                />
-                                {/* Movie details */}
-                                <div className="max-[500px]:w-full max-[600px]:w-[80%] w-full max-[600px]:pt-3 px-5 flex flex-col h-full text-white/70 gap-2.5">
-                                    {/* Movie title */}
-                                    <h1 className="text-white text-xl font-bold max-h-15 overflow-hidden wrap-break-word">{movie.title}</h1>
-                                    {/* Movie ratings */}
-                                    <div className={detailsContainerClassName}>
-                                        <RatingsIcon
-                                            size={19}
-                                            className="shrink-0"
-                                        />
-                                        <p className={detailsTextClassName}>8.5/10 15.3K Ratings</p>
-                                    </div>
-                                    {/* Movie duration */}
-                                    <div className={detailsContainerClassName}>
-                                        <DurationIcon
-                                            size={19}
-                                            className="shrink-0"
-                                        />
-                                        <p className={detailsTextClassName}>{movie.duration.hour}H {movie.duration.minutes}M</p>
-                                    </div>
-                                    {/* Movie release date */}
-                                    <div className={detailsContainerClassName}>
-                                        <DateIcon
-                                            size={19}
-                                            className="shrink-0"
-                                        />
-                                        <p className={detailsTextClassName}>{convertIsoDateToNormalFormat(movie.createdAt)}</p>
-                                    </div>
-                                    {/* Movie certificate */}
-                                    <div className={detailsContainerClassName}>
-                                        <CertificateIcon
-                                            size={19}
-                                            className="shrink-0"
-                                        />
-                                        <p className={detailsTextClassName}>{movie.certificate}</p>
-                                    </div>
-                                    {/* Movie language */}
-                                    <div className={detailsContainerClassName}>
-                                        <LanguagesIcon
-                                            size={19}
-                                            className="shrink-0"
-                                        />
-                                        <p className={detailsTextClassName}>{movie.language}</p>
-                                    </div>
-                                    {/* Movie categories */}
-                                    <div className={detailsContainerClassName}>
-                                        <CategoriesIcon
-                                            size={19}
-                                            className="shrink-0"
-                                        />
-                                        <p className={detailsTextClassName}>{movie.categories.join(", ")}</p>
-                                    </div>
-                                    {
-                                        movie.status === "SHOWING"
-                                            ?
-                                            <div className="flex flex-col gap-2">
-                                                <Button className="mt-2.5">
-                                                    <TicketIcon
-                                                    />
-                                                    <span className={buttonTextClassName}>Book Tickets</span>
-                                                </Button>
-                                                <Button
-                                                    className={buttonClassName}
-                                                    onClick={() => setShowTrailerScreen(true)}
-                                                >
-                                                    <PlayIcon
-                                                    />
-                                                    <span className={buttonTextClassName}>Watch Trailer</span>
-                                                </Button>
-                                                {
-                                                    savedItem
-                                                        ?
-                                                        <Button
-                                                            className={buttonClassName}
-                                                            disabled={savedListLoading}
-                                                            onClick={handleRemoveSavedItem}
-                                                        >
-                                                            <SaveIcon
-                                                                className="fill-foreground-theme-color stroke-foreground-theme-color"
-                                                            />
-                                                            <span>Saved</span>
-                                                        </Button>
-                                                        :
-                                                        <Button
-                                                            className={buttonClassName}
-                                                            onClick={handleAddMovieToSavedList}
-                                                            disabled={savedListLoading}
-                                                        >
-                                                            <SaveIcon
-                                                            />
-                                                            <span className={buttonTextClassName}>Save</span>
-                                                        </Button>
-
-                                                }
-                                                <Button className={buttonClassName}>
-                                                    <RatingsIcon
-                                                    />
-                                                    <span className={buttonTextClassName}>Rate</span>
-                                                </Button>
-                                            </div>
-                                            :
-                                            <div className="w-full flex flex-col gap-2">
-                                                <Button
-                                                >
-                                                    <NotifyIcon
-                                                    />
-                                                    <span className={buttonTextClassName}>Notify</span>
-                                                </Button>
-                                                <Button
-                                                    className={buttonClassName}
-                                                    onClick={() => setShowTrailerScreen(true)}
-                                                >
-                                                    <PlayIcon
-                                                    />
-                                                    <span className={buttonTextClassName}>Watch Trailer</span>
-                                                </Button>
-                                            </div>
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <MovieDetailsBanner
+                        movieId={movieId as string}
+                        showRateButton
+                    />
                     <div className="w-full flex justify-center mt-10">
                         <div className="max-[800px]:w-full px-3 w-[80%] flex flex-col gap-10">
                             {/* Movie synopsis */}

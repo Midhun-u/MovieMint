@@ -1,11 +1,11 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
-import { handleError } from "../utils/handleError.js";
-import type { GoogleSignBody } from "../types/body.js";
-import { validateBody } from "../validator/validateBody.js";
-import { UserModel } from "../models/user.model.js";
-import { generateToken } from "../utils/generateToken.js";
-import {  uploadUserProfileImage } from "../service/image/uploadImage.js";
-import { excludePassword } from "../utils/excludePassword.js";
+import { handleError } from "../../utils/handleError.js";
+import type { GoogleSignBody } from "../../types/body.js";
+import { validateBody } from "../../validator/validateBody.js";
+import { UserModel } from "../../models/user.model.js";
+import { generateToken } from "../../utils/generateToken.js";
+import {  uploadUserProfileImage } from "../../service/image/uploadImage.js";
+import { excludePassword } from "../../utils/excludePassword.js";
 
 // Controller for google signing
 export const googleSignController = handleError(async (request: FastifyRequest, reply: FastifyReply) => {

@@ -1,5 +1,5 @@
 import { Op } from "sequelize"
-import { User } from "../schemas/user.schema.js"
+import { User } from "../schemas/index.js"
 import type { Role } from "../types/role.js"
 
 type AuthType = "EMAIL" | "GOOGLE"
@@ -13,6 +13,7 @@ type UserData = {
 
 }
 
+// User model
 export const UserModel = {
 
     getUserByEmail: async (email: string) => {
