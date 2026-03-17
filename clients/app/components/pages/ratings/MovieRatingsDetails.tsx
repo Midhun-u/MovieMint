@@ -1,3 +1,5 @@
+import { useAppSelector } from '@/store/hooks'
+import { movieRatingsConvertor } from '@/utils/movieRatingsConvertor'
 import {
     Star as RatingsIcon,
     Users as PeopleIcon
@@ -5,12 +7,14 @@ import {
 
 const MovieRatingsDetails = () => {
 
+    const {movie} = useAppSelector(state => state.movie)
+
     return (
         <div className='w-full flex max-[350px]:justify-center'>
             <div className="bg-foreground-color border border-foreground-theme-color/15 p-2.5 px-3 rounded-sm w-max flex gap-2.5 items-center">
                 {/* Rounded ratings */}
                 <div className="flex gap-1.25 items-center w-max">
-                    <span className="max-[300px]:text-3xl font-semibold text-4xl">8.5</span>
+                    <span className="max-[300px]:text-3xl font-semibold text-4xl">{movie?.ratingsDetails.averageRatings || 0}</span>
                     <div className='flex flex-col'>
                         <RatingsIcon
                             size={13}
@@ -28,7 +32,7 @@ const MovieRatingsDetails = () => {
                         className='text-disable-color max-[300px]:size-7'
                     />
                     <div className='flex flex-col'>
-                        <span className='text-sm font-semibold'>1.5K</span>
+                        <span className='text-sm font-semibold'>{movieRatingsConvertor(movie?.ratingsDetails.totalRatings || 0)}</span>
                         <span className='text-[11px] font-medium text-disable-color'>Total Ratings</span>
                     </div>
                 </div>

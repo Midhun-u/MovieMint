@@ -16,6 +16,10 @@ export type MovieData = {
     id: string;
     image_url: string;
   };
+  ratingsDetails: {
+    totalRatings: number,
+    averageRatings: number
+  }
   release_date: string;
   status: "SHOWING" | "NOT_SHOWING" | "PENDING";
   duration: {

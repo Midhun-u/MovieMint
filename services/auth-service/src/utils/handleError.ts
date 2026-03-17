@@ -1,7 +1,7 @@
 import type { FastifyReply, FastifyRequest } from "fastify"
 
 // Function for handling error
-export const handleError = (fn: Function, errorMessage: string) => {
+export const handleError = (fn: Function, errorName: string) => {
 
     return async (request: FastifyRequest, reply: FastifyReply) => {
 
@@ -10,7 +10,7 @@ export const handleError = (fn: Function, errorMessage: string) => {
             return await fn(request, reply)
             
         } catch (error) {
-            console.log(`${errorMessage}: ${error}`)
+            console.log(`${errorName}: ${error}`)
 
             reply.status(500)
             return {success: false, error: "Server error", statusCode: 500}

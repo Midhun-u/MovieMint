@@ -24,6 +24,7 @@ import { savedListFailed, savedListRequest, savedListSuccess } from "@/store/sav
 import { addMovieToSavedListApi, deleteSavedItemApi, getSavedItemApi } from "@/api/savedList"
 import { ToastProvider } from "@/components/context/providers/ToastProvider"
 import { clearState } from "@/store/bannerSlice"
+import { movieRatingsConvertor } from "@/utils/movieRatingsConvertor"
 
 const detailsContainerClassName = "flex items-center gap-1.5"
 const detailsTextClassName = "font-medium max-h-12"
@@ -128,7 +129,7 @@ const MovieDetailsBanner = ({ movieId, showRateButton }: MovieDetailsBannerProps
                     />
                 </div>
                 {/* Movie details */}
-                <div className="w-full px-1 h-150 overflow-hidden relative">
+                <div className="w-full flex justify-center px-1 h-150 overflow-hidden relative">
                     {
                         movie?.banner.image_url
                             ?
@@ -147,7 +148,7 @@ const MovieDetailsBanner = ({ movieId, showRateButton }: MovieDetailsBannerProps
                             :
                             null
                     }
-                    <div className="max-[600px]:w-full z-2 w-[80%] h-full justify-self-center flex items-center">
+                    <div className="max-[600px]:w-full z-2 w-[80%] h-full  flex items-center">
                         <div className="max-[700px]:w-[80%] max-[600px]:w-full items-start flex gap-2.5">
                             {/* Movie poster */}
                             {
@@ -169,13 +170,26 @@ const MovieDetailsBanner = ({ movieId, showRateButton }: MovieDetailsBannerProps
                                 {/* Movie title */}
                                 <h1 className="text-white text-xl font-bold max-h-15 overflow-hidden wrap-break-word">{movie.title}</h1>
                                 {/* Movie ratings */}
-                                <div className={detailsContainerClassName}>
-                                    <RatingsIcon
-                                        size={19}
-                                        className="shrink-0"
-                                    />
-                                    <p className={detailsTextClassName}>8.5/10 15.3K Ratings</p>
-                                </div>
+                                {
+                                    movie.status === "SHOWING"
+                                        ?
+                                        <div className={detailsContainerClassName}>
+                                            <RatingsIcon
+                                                size={19}
+                                                className="shrink-0"
+                                            />
+                                            <p className={detailsTextClassName}>
+                                                {movie.ratingsDetails?.averageRatings || 0}
+                                                /10
+                                                &nbsp;
+                                                {
+                                                    movieRatingsConvertor(movie.ratingsDetails.totalRatings)
+                                                } Ratings
+                                            </p>
+                                        </div>
+                                        :
+                                        null
+                                }
                                 {/* Movie duration */}
                                 <div className={detailsContainerClassName}>
                                     <DurationIcon

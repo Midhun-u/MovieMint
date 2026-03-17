@@ -2,6 +2,7 @@ import { Context } from "hono";
 import { sendErrorResponse } from "../../utils/sendErrorResponse";
 import { MovieModel } from "../../models/movie.model";
 import { getMovieImage } from "../../services/getMovieImage";
+import { getRatings } from "../../services/getRatings";
 
 // Controller for getting specific movie
 export const getMovieController = sendErrorResponse(async (context: Context) => {
@@ -19,16 +20,20 @@ export const getMovieController = sendErrorResponse(async (context: Context) => 
         return context.json({ success: false, error: "Movie is not found", statusCode: 404 })
     }
 
-    // Fetching movie images
-    const [posterResult, bannerResult] = await Promise.all([
+    // Fetching movie images and ratings
+    const [posterResult, bannerResult, rateResult] = await Promise.all([
         getMovieImage("poster", movieId),
-        getMovieImage("banner", movieId)
+        getMovieImage("banner", movieId),
+        getRatings(movie._id.toString())
     ])
 
     const movieDetails = {
         ...movie,
         poster: {...posterResult?.data},
-        banner: {...bannerResult?.data}
+        banner: {...bannerResult?.data},
+        ratingsDetails: {
+            ...rateResult?.ratingsDetails
+        }
     }
 
     return context.json({ success: true, movie: movieDetails, statusCode: 200 })

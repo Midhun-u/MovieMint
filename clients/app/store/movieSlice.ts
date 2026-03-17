@@ -1,11 +1,13 @@
 import { MovieData } from "@/types/movie";
 import { createSlice } from "@reduxjs/toolkit";
 
+type MovieList = Array<Pick<MovieData, "_id" | "poster" | "title" | "categories" | "language" | "certificate" | "status">>
+
 type InitialState = {
   loading: boolean;
   movie: MovieData | null;
   errorMessage: string;
-  movies: Array<MovieData>;
+  movies: MovieList;
   pagination: {
     page: number;
     limit: number;

@@ -16,6 +16,9 @@ export const getRateController = handleError(async (request: FastifyRequest, rep
     }
 
     const rate = await RateModel.getRateByMovieIdAndUserId(movieId, user.id)
+    if(!rate){
+        return {success: true, rate: rate, statusCode: 200}
+    }
 
     // Fetching user image
     const imageResult = await getUserProfileImage(user.id)
