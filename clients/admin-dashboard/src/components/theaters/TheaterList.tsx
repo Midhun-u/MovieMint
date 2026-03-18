@@ -11,6 +11,7 @@ import Button from "../ui/Button";
 import { useNavigate } from "react-router";
 import TheaterSkeleton from "../theaterRequests/TheaterSkeleton";
 import { Activity } from "react";
+import NullProfilePic from "../ui/NullProfilePic";
 
 const TheaterList = () => {
   const { theaters, loading } = useAppSelector((state) => state.theater);
@@ -69,10 +70,17 @@ const TheaterList = () => {
               {/* Theater owner details */}
               <div className={style["theater-owner-details"]}>
                 {/* Theater owner image */}
-                <img
-                  loading="lazy"
-                  src={theater.theater_owner.profile_image.image_url}
-                />
+                {
+                  theater.theater_owner?.profile_image?.image_url
+                  ?
+                  <img
+                    loading="lazy"
+                    src={theater.theater_owner.profile_image.image_url}
+                  />
+                  :
+                  <NullProfilePic
+                  />
+                }
                 <div className={style["details"]}>
                   <p>
                     {theater.theater_owner.firstname +

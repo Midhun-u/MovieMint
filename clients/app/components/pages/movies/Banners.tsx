@@ -10,6 +10,7 @@ import {
     ChevronLeft as BackIcon,
     ChevronRight as ForwardIcon
 } from 'lucide-react'
+import { useRouter } from "next/navigation"
 
 const Banners = () => {
 
@@ -18,6 +19,7 @@ const Banners = () => {
     const [selectedBannerIndex, setSelectedBannerIndex] = useState<number>(0)
     const scrollRef = useRef<HTMLDivElement | null>(null)
     const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
+    const router = useRouter()
 
     // Function for fetching banners
     const handleFetchBanners = useCallback(async () => {
@@ -137,8 +139,10 @@ const Banners = () => {
     }, [banners.length, selectedBannerIndex])
 
     return (
- 
-        <div className="w-full relative top-0 h-auto bottom-100 z-5 min-w-75 flex items-center justify-center">
+
+        <div
+            className="w-full relative top-0 h-auto bottom-100 z-5 min-w-75 flex items-center justify-center"
+        >
             <BackIcon
                 className="z-4 size-6 sm:size-9 self-center rounded-full flex items-center justify-center hover:bg-white/20 stroke-white absolute left-2 sm:left-5 cursor-pointer"
                 onClick={handleBackwardBanner}
@@ -149,7 +153,17 @@ const Banners = () => {
             >
                 {
                     banners.map((banner) => (
-                        <div className="shrink-0 w-full relative" key={banner._id}>
+                        <div
+                            onClick={() => {
+                                router.push(`/movies/details/${banner.movie._id}`)
+                                window.scrollTo({
+                                    top: 0,
+                                    behavior: "smooth"
+                                })
+                            }}
+                            className="shrink-0 w-full cursor-pointer relative"
+                            key={banner._id}
+                        >
                             <Image
                                 src={banner?.movie?.banner?.image_url}
                                 alt="Movie banner image"

@@ -25,6 +25,7 @@ import { addMovieToSavedListApi, deleteSavedItemApi, getSavedItemApi } from "@/a
 import { ToastProvider } from "@/components/context/providers/ToastProvider"
 import { clearState } from "@/store/bannerSlice"
 import { movieRatingsConvertor } from "@/utils/movieRatingsConvertor"
+import { ratingsTimer } from "@/utils/ratingsTrimer"
 
 const detailsContainerClassName = "flex items-center gap-1.5"
 const detailsTextClassName = "font-medium max-h-12"
@@ -159,14 +160,14 @@ const MovieDetailsBanner = ({ movieId, showRateButton }: MovieDetailsBannerProps
                                         alt={`${movie.title} poster image`}
                                         width={1000}
                                         height={1000}
-                                        className="max-[800px]:hidden h-110 w-auto"
+                                        className="max-[800px]:hidden h-110 w-auto z-1"
                                         loading="eager"
                                     />
                                     :
                                     null
                             }
                             {/* Movie details */}
-                            <div className="max-[500px]:w-full max-[600px]:w-[80%] w-full max-[600px]:pt-3 px-5 flex flex-col h-full text-white/70 gap-2.5">
+                            <div className="max-[500px]:w-full max-[600px]:w-[80%] w-full max-[600px]:pt-3 px-5 flex flex-col h-full text-white/70 gap-2.5 z-1">
                                 {/* Movie title */}
                                 <h1 className="text-white text-xl font-bold max-h-15 overflow-hidden wrap-break-word">{movie.title}</h1>
                                 {/* Movie ratings */}
@@ -179,7 +180,7 @@ const MovieDetailsBanner = ({ movieId, showRateButton }: MovieDetailsBannerProps
                                                 className="shrink-0"
                                             />
                                             <p className={detailsTextClassName}>
-                                                {movie.ratingsDetails?.averageRatings || 0}
+                                                {ratingsTimer(movie.ratingsDetails?.averageRatings || 0)}
                                                 /10
                                                 &nbsp;
                                                 {

@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { convertIsoDateToNormalFormat } from "../../utils/convertIsoDateToNoramlFormat";
 import style from "../../styles/theaterDetails/theaterDetailsCard.module.scss";
+import NullProfilePic from "../ui/NullProfilePic";
 
 interface TheaterDetailsCardProps {
   theaterDetails: Theater;
@@ -101,7 +102,14 @@ const TheaterDetailsCard = ({ theaterDetails }: TheaterDetailsCardProps) => {
         </div>
         {/* Theater owner details */}
         <div className={style["theater-owner-details"]}>
-          <img src={theaterDetails.theater_owner.profile_image.image_url} />
+          {
+            theaterDetails.theater_owner?.profile_image?.image_url
+            ?
+            <img src={theaterDetails.theater_owner.profile_image.image_url} />
+            :
+            <NullProfilePic
+            />
+          }
           <div className={style.details}>
             <p>{theaterDetails.theater_owner.firstname + " " + theaterDetails.theater_owner.lastname}</p>
             <p>{ theaterDetails.theater_owner.email }</p>

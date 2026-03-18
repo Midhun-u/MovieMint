@@ -1,5 +1,6 @@
 import { useAppSelector } from '@/store/hooks'
 import { movieRatingsConvertor } from '@/utils/movieRatingsConvertor'
+import { ratingsTimer } from '@/utils/ratingsTrimer'
 import {
     Star as RatingsIcon,
     Users as PeopleIcon
@@ -14,7 +15,7 @@ const MovieRatingsDetails = () => {
             <div className="bg-foreground-color border border-foreground-theme-color/15 p-2.5 px-3 rounded-sm w-max flex gap-2.5 items-center">
                 {/* Rounded ratings */}
                 <div className="flex gap-1.25 items-center w-max">
-                    <span className="max-[300px]:text-3xl font-semibold text-4xl">{movie?.ratingsDetails.averageRatings || 0}</span>
+                    <span className="max-[300px]:text-3xl font-semibold text-4xl">{ratingsTimer(movie?.ratingsDetails.averageRatings || 0)}</span>
                     <div className='flex flex-col'>
                         <RatingsIcon
                             size={13}

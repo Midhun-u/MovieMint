@@ -6,7 +6,15 @@ type Rate = {
     user_id: string
     movie_id: string
     comment: string,
-    createdAt: string
+    createdAt: string,
+    user: {
+        firstname: string
+        lastname: string
+    }
+    profile_image: {
+        id: string
+        image_url: string
+    }
 }
 
 type InitialState = {
@@ -27,7 +35,7 @@ const initialState: InitialState = {
     ratings: [],
     pagination: {
         page: 1,
-        limit: 1
+        limit: 10
     }
 }
 
@@ -39,23 +47,23 @@ const rateSlice = createSlice({
         rateRequst: (state) => {
             state.loading = true
             state.errorMessage = ""
-            state.rate = null
         },
 
         rateSuccess: (state, action) => {
             state.loading = false
             state.errorMessage = ""
-            state.rate = action.payload?.rate? action.payload.rate: null
-
-            if(state.ratings.length || state.pagination.page === 1){
-                state.ratings = action.payload?.ratings?.length? action.payload.ratings.length: []
-            }else if(action.payload?.ratings?.length){
+            if (action.payload?.rate) {
+                state.rate = action.payload.rate
+            }
+            if (state.ratings.length <= 0 || state.pagination.page === 1) {
+                state.ratings = action.payload.ratings?.length ? action.payload.ratings : []
+            } else if (action.payload.ratings?.length) {
                 state.ratings = [...state.ratings, ...action.payload.ratings]
             }
         },
 
-        increment: (state) => {
-            state.pagination.page = state.pagination.page + 1
+        incrementPage: (state) => {
+            state.pagination = { ...state.pagination, page: state.pagination.page + 1 }
         },
 
         rateFailed: (state, action) => {
@@ -67,12 +75,12 @@ const rateSlice = createSlice({
         clearState: (state) => {
             state.ratings = []
             state.rate = null
-            state.pagination = {...state.pagination, page: 1}
+            state.pagination = { ...state.pagination, page: 1 }
             state.errorMessage = ""
         }
 
     }
 })
 
-export const {rateFailed, rateRequst, rateSuccess, increment, clearState} = rateSlice.actions
+export const { rateFailed, rateRequst, rateSuccess, incrementPage, clearState } = rateSlice.actions
 export const rateReducer = rateSlice.reducer

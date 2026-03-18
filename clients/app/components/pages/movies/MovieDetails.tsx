@@ -5,8 +5,8 @@ import NoResult from "@/components/ui/NoResult"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { clearState, movieFailed, movieRequest, movieSuccess } from "@/store/movieSlice"
 import Image from "next/image"
-import { useParams, useRouter } from "next/navigation"
-import { Activity, useCallback, useContext, useEffect, useState } from "react"
+import { useParams } from "next/navigation"
+import { Activity, useCallback, useEffect, useState } from "react"
 import {
     X as CloseIcon
 } from 'lucide-react'
@@ -15,12 +15,17 @@ import { MovieData } from "@/types/movie"
 import MovieCard from "./MovieCard"
 import MovieSkeleton from "./MovieSkeleton"
 import MovieDetailsBanner from "./MovieDetailsBanner"
+import { rateFailed, rateRequst, rateSuccess } from "@/store/rateSlice"
+import { getRatingsApi } from "@/api/rate"
+import RateCard from "../ratings/RateCard"
+import Link from "next/link"
 
 const MovieDetails = () => {
 
     const { movieId } = useParams()
     const dispatch = useAppDispatch()
     const { movie } = useAppSelector(state => state.movie)
+    const { ratings, pagination } = useAppSelector(state => state.rate)
     const [actorsImages, setActorsImages] = useState<Array<{ id: string, image_url: string, actor_id: string, name: string }>>([])
     const [recommendedMovies, setRecommendedMovies] = useState<Array<MovieData>>([])
     const [loading, setLoading] = useState<boolean>(false)
@@ -64,14 +69,36 @@ const MovieDetails = () => {
 
     }, [movieId])
 
+    // Function for fetching ratings
+    const handleFetchRatings = useCallback(async () => {
+
+        const authToken = localStorage.getItem('authToken')
+
+        if (!authToken) return
+        dispatch(rateRequst())
+
+        const result = await getRatingsApi(movieId as string, 1, pagination.limit, authToken)
+        if (result.success) {
+            dispatch(rateSuccess({ ratings: result.ratings }))
+        } else {
+            dispatch(rateFailed({ errorMessage: result.error }))
+        }
+
+    }, [dispatch, movieId, pagination.limit])
+
     useEffect(() => {
-        (() => {
-            if (movieId) {
-                handleFetchMovieDetails()
-                handleFetchActorsImages()
+
+        const fetchDatas = async () => {
+            await Promise.all([
+                handleFetchMovieDetails(),
+                handleFetchActorsImages(),
+                handleFetchRatings(),
                 handleFetchRecommendedMovies()
-            }
-        })()
+            ])
+        }
+        if (movieId) {
+            fetchDatas()
+        }
 
         return () => {
             dispatch(clearState())
@@ -81,7 +108,8 @@ const MovieDetails = () => {
         handleFetchMovieDetails,
         handleFetchActorsImages,
         handleFetchRecommendedMovies,
-        dispatch
+        dispatch,
+        handleFetchRatings
     ])
 
     return (
@@ -135,9 +163,47 @@ const MovieDetails = () => {
                                     null
                             }
                             {/* Movie ratings and reviews */}
-                            <div className="flex flex-col gap-1.25">
-                                <h1 className="text-md font-semibold">Reviews & Ratings</h1>
-                            </div>
+                            {
+                                movie.status === "SHOWING"
+                                    ?
+                                    <div className="flex flex-col gap-1.25">
+                                        <div className="flex justify-between gap-2.5">
+                                            <h1 className="text-md font-semibold">Reviews & Ratings</h1>
+                                            {
+                                                ratings.length >= 10
+                                                    ?
+                                                    <Link
+                                                        href={`/movies/ratings/${movieId}`}
+                                                        className="text-sm font-semibold text-primary-accent-color"
+                                                    >
+                                                        See All
+                                                    </Link>
+                                                    :
+                                                    null
+                                            }
+                                        </div>
+                                        <div className="flex gap-2.5 overflow-x-scroll">
+                                            {
+                                                ratings.map((rate) => (
+                                                    <div
+                                                        key={rate.id}
+                                                        className="shrink-0 w-90 h-30"
+                                                    >
+                                                        <RateCard
+                                                            userRate={rate.rate}
+                                                            userImage={rate.profile_image.image_url}
+                                                            userName={rate.user.firstname + " " + rate.user.lastname}
+                                                            userComment={rate.comment}
+                                                            createdAt={rate.createdAt}
+                                                        />
+                                                    </div>
+                                                ))
+                                            }
+                                        </div>
+                                    </div>
+                                    :
+                                    null
+                            }
                             {/* Recommended movies */}
                             {
                                 recommendedMovies.length || loading

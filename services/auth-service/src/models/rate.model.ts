@@ -103,12 +103,15 @@ export const RateModel = {
                 movie_id: {
                     [Op.eq]: movieId
                 },
-                
+                user_id: {
+                    [Op.ne]: userId
+                }
             },
             include: {
                 model: User,
                 attributes: ["firstname", "lastname", "email"]
             },
+            order: [['createdAt', 'DESC']],
             raw: true,
             nest: true,
             offset: (page - 1) * limit,
