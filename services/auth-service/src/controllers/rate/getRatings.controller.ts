@@ -42,4 +42,4 @@ export const getRatingsController = handleError(async (request: FastifyRequest, 
         ratings: ratingsWithUsersImages.length ? ratingsWithUsersImages : ratings,
         statusCode: 200
     }
-}, "getRatesController error")
+}, "getRatingsController error")

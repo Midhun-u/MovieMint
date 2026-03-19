@@ -164,7 +164,7 @@ const MovieDetails = () => {
                             }
                             {/* Movie ratings and reviews */}
                             {
-                                movie.status === "SHOWING"
+                                movie.status === "SHOWING" && ratings.length
                                     ?
                                     <div className="flex flex-col gap-1.25">
                                         <div className="flex justify-between gap-2.5">
@@ -242,37 +242,6 @@ const MovieDetails = () => {
                         </div>
                     </div>
                 </div>
-                {
-                    showTrailerScreen
-                        ?
-                        <div className="w-full px-3 flex justify-center h-full z-5 absolute">
-                            {/* Background */}
-                            <div className="w-full h-full absolute bg-foreground-color opacity-[0.6]"></div>
-                            {/* Movie trailer screen */}
-                            <div className="max-[800px]:w-full max-[500px]:top-30 w-170 border border-foreground-theme-color/15 flex flex-col gap-3 h-min relative rounded-md top-25 p-5 pt-3 bg-foreground-color">
-                                <div className="flex relative justify-between h-min items-center gap-5">
-                                    <span className="max-[800px]:w-[80%] font-medium text-md max-h-6 overflow-hidden break-all w-[50%]">{movie.title}</span>
-                                    <div onClick={() => setShowTrailerScreen(false)} className="p-1 rounded-full hover:bg-foreground-theme-color/10 cursor-pointer">
-                                        <CloseIcon
-                                            size={22}
-                                            strokeWidth={1.8}
-                                        />
-                                    </div>
-                                </div>
-                                <div className="w-full h-full">
-                                    <iframe
-                                        src={movie.movie_trailer}
-                                        className="w-full aspect-video"
-                                        title={`${movie.title} trailer`}
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
-                                        allowFullScreen
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        :
-                        null
-                }
             </>
             :
             <div className="px-3">

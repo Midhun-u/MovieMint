@@ -91,7 +91,7 @@ const RateCard = ({ userImage, userName, userRate, userComment, createdAt }: Rat
             {
                 showComment
                     ?
-                    <div className="w-full flex justify-center h-full absolute top-15 left-0 z-5">
+                    <div className="w-full border-2 border-red-500 overflow-scroll flex justify-center h-full absolute top-15 left-0 z-5">
                         <div className="w-full h-full bg-foreground-color opacity-[0.5]"></div>
                         <div className="fixed max-[600px]:w-[95%] w-125 p-5 rounded-sm top-40 bg-foreground-color border border-foreground-theme-color/15 flex flex-col gap-5 pt-12">
                             <div
@@ -109,14 +109,8 @@ const RateCard = ({ userImage, userName, userRate, userComment, createdAt }: Rat
                                 userName={userName}
                                 userRate={userRate}
                             />
-                            <p className="text-[0.9rem] h-70 overflow-scroll">
+                            <p className="text-[0.9rem] max-h-70 overflow-scroll">
                                 {userComment}
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit ut perferendis veniam, provident ea quasi consequuntur inventore excepturi sapiente fugit vel beatae modi perspiciatis ratione, accusamus quam laborum minus voluptatem.
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus pariatur, labore omnis autem molestiae accusantium excepturi esse iusto qui quam optio nisi dolore distinctio ipsum dolores consequuntur? Fugiat, quasi saepe.
-                                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cumque molestiae fugiat iusto unde alias accusamus aperiam ratione in quo cupiditate obcaecati dolorum numquam distinctio rerum animi aliquam, provident error facere!
-                                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eius illo numquam consequuntur alias, deleniti iusto maxime laborum repellat id atque accusantium totam placeat consectetur magnam? Facere iusto impedit libero quaerat!
-                                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Rerum nesciunt, nisi inventore cum, exercitationem iure reiciendis ratione dignissimos maxime ad impedit magni omnis, ipsam unde minus sit ipsum suscipit deserunt.
-                                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Odit tenetur libero iure iusto dolorum in ut minus quae provident magnam explicabo dolor architecto eaque ab rem, ipsum pariatur exercitationem quas!
                             </p>
                         </div>
                     </div>

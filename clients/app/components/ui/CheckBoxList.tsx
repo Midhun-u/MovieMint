@@ -5,30 +5,34 @@ interface CheckBoxListProps {
     values: Array<string>
     setValues: Dispatch<SetStateAction<Array<string>>> | null
     checkedValues: Array<string>
-    selectedLimit: number | null
+    maxlength: number | null
     className?: string
 }
 
-const CheckBoxList = ({ values, setValues, checkedValues, selectedLimit, className }: CheckBoxListProps) => {
+const CheckBoxList = ({ values, setValues, checkedValues, maxlength, className }: CheckBoxListProps) => {
 
     // Function for adding unchecked value to array
-    const handlAddCategories = (unCheckedValue: string) => {
+    const handleAddValue = (unCheckedValue: string) => {
 
-        if(selectedLimit && checkedValues.length <= selectedLimit - 1 && setValues){
-            setValues((prevValues) => [...prevValues, unCheckedValue])
+        if(maxlength && checkedValues.length <= maxlength - 1 && setValues){
+            setValues((prevValues) => {
+                if(prevValues.includes(unCheckedValue)){
+                    return prevValues
+                }else{
+                    return [...prevValues, unCheckedValue]
+                }
+            })
 
         }else if(setValues){
-            // Removing category for maintaining length of categories
-            const filteredValues = checkedValues.filter((_, index) => selectedLimit? index <= selectedLimit - 1: true)
+            // Removing category for maintaining max length
+            const filteredValues = checkedValues.filter((_, index) => maxlength? index <= maxlength - 1: true)
             setValues([...filteredValues, unCheckedValue])
         }
-       
 
     }
 
     // Function for removing checked value from array
-    const handleRemoveCategories = (checkedValue: string) => {
-
+    const handleRemoveValue = (checkedValue: string) => {
         if(!setValues) return
 
         const filteredList = checkedValues.filter((value) => value !== checkedValue)
@@ -43,9 +47,10 @@ const CheckBoxList = ({ values, setValues, checkedValues, selectedLimit, classNa
                     <CustomCheckBox
                         value={value}
                         key={index}
-                        onMarkChecked={(unCheckedValue) => handlAddCategories(unCheckedValue)}
-                        onUnmarkChecked={(checkedValue) => handleRemoveCategories(checkedValue)}
+                        onMarkChecked={(unCheckedValue) => handleAddValue(unCheckedValue)}
+                        onUnmarkChecked={(checkedValue) => handleRemoveValue(checkedValue)}
                         defaultChecked={checkedValues.includes(value)? true: false}
+                        checked={checkedValues.includes(value)}
                     />
                 ))
             }

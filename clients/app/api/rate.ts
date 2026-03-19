@@ -59,3 +59,11 @@ export const updateRateApi = handleError(async (id: string, updatedBody: object,
     return result
 
 })
+
+// Api for fetching most ratings
+export const getMostRatingsApi = handleError(async () => {
+
+    const result = await fetchInstance(RATE_BASE_URL, "/get-most-ratings", "GET", {}, "json")
+    return result
+
+})

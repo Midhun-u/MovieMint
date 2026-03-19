@@ -70,6 +70,7 @@ const MovieSlider = ({ movieCategory }: MovieSliderProps) => {
                                 language={movie?.language}
                                 poster={movie?.poster.image_url}
                                 id={movie._id}
+                                status={movie.status === "PENDING"? "PENDING": undefined}
                             />
                         </div>
                     ))

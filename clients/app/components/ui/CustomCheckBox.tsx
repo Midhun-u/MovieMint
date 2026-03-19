@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { Checkbox } from '../ui/checkbox'
 
 interface CustomCheckBoxProps {
@@ -6,16 +5,13 @@ interface CustomCheckBoxProps {
     onMarkChecked?: (value: string) => void
     onUnmarkChecked?: (value: string) => void
     defaultChecked?: boolean
+    checked: boolean
 }
 
-const CustomCheckBox = ({ value, onMarkChecked, onUnmarkChecked, defaultChecked }: CustomCheckBoxProps) => {
-
-    const [checked, setChecked] = useState<boolean>(false)
+const CustomCheckBox = ({ value, onMarkChecked, onUnmarkChecked, defaultChecked, checked }: CustomCheckBoxProps) => {
 
     // Function for marking checked or unmarking
     const onClick = () => {
-
-        setChecked(!checked)
 
         if (onMarkChecked && !checked) {
             onMarkChecked(value)
@@ -23,7 +19,6 @@ const CustomCheckBox = ({ value, onMarkChecked, onUnmarkChecked, defaultChecked 
             onUnmarkChecked(value)
         }
     }
-
 
     return (
         <div className="flex gap-2 items-center text-sm font-medium">

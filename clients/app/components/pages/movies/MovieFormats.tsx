@@ -20,7 +20,7 @@ const MovieFormats = () => {
     <CheckBoxList
       checkedValues={checkedValues}
       values={movieFormats}
-      selectedLimit={null}
+      maxlength={null}
       setValues={filterContext?.setFormats ? filterContext.setFormats : null}
       className="flex-col p-5 gap-1.25"
     />

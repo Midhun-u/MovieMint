@@ -342,7 +342,7 @@ const MovieDetailsBanner = ({ movieId, showRateButton }: MovieDetailsBannerProps
                             {/* Background */}
                             <div className="w-full h-full absolute bg-foreground-color opacity-[0.6]"></div>
                             {/* Movie trailer screen */}
-                            <div className="max-[800px]:w-full max-[600px]:top-40 top-30 w-170 border border-foreground-theme-color/15 flex flex-col gap-3 h-min relative rounded-md p-5 pt-3 bg-foreground-color">
+                            <div className="max-[800px]:w-[calc(100%-12px)] top-45 w-170 border border-foreground-theme-color/15 flex flex-col gap-3 h-min fixed rounded-md p-5 pt-3 bg-foreground-color">
                                 <div className="flex relative justify-between h-min items-center gap-5">
                                     <span className="max-[800px]:w-[80%] font-medium text-md max-h-6 overflow-hidden break-all w-[50%]">{movie.title}</span>
                                     <div onClick={() => setShowTrailerScreen(false)} className="p-1 rounded-full hover:bg-foreground-theme-color/10 cursor-pointer">

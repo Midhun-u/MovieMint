@@ -19,7 +19,7 @@ const MovieGenre = () => {
     <CheckBoxList
       checkedValues={filterContext?.categories ? filterContext.categories : []}
       values={movieCategories}
-      selectedLimit={4}
+      maxlength={4}
       setValues={
         filterContext?.setCategories ? filterContext.setCategories : null
       }

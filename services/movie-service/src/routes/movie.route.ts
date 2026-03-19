@@ -12,6 +12,7 @@ import { getTotalBannerCountController } from "../controllers/banner/getTotalBan
 import { getAllBannersController } from "../controllers/banner/getAllBanners.controller"
 import { getDashboardLogsController } from "../controllers/movie/getDashboardLogs.controller"
 import { getRecommendedMoviesController } from "../controllers/movie/getRecommendedMovies.controller"
+import { getMovieDetailsBatch } from "../controllers/movie/getMovieDetailsBatch.controller"
 
 // Movie router
 export const movieRouter = new Hono()
@@ -27,6 +28,9 @@ movieRouter.delete("/delete-movie/:movieId", deleteMovieController)
 
 // Route for getting movies
 movieRouter.get("/get-movies", getMoviesController)
+
+// Route for getting movie details for batch request
+movieRouter.post("/get-movie-details-batch", getMovieDetailsBatch)
 
 // Route for getting specific movie
 movieRouter.get("/get-movie/:movieId", getMovieController)

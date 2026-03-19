@@ -22,7 +22,7 @@ export const tabBarNavs: TabBarNavs = [
     },
     {
         title: "Most Rated",
-        route: "/movies/most-rated"
+        route: "/movies/most-ratings"
     },
     {
         title: "Animated Movies",

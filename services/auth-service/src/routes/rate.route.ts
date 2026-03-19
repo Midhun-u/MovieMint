@@ -6,6 +6,7 @@ import { deleteRateController } from "../controllers/rate/deleteRate.controller.
 import { getRatingsDetailsController } from "../controllers/rate/getRatingsDetails.controller.js";
 import { updateRateController } from "../controllers/rate/updateRate.controller.js";
 import { getRatingsController } from "../controllers/rate/getRatings.controller.js";
+import { getMostRatingsController } from "../controllers/rate/getMostRatings.controller.js";
 
 // Rate Routes
 export const rateRoutes = (fastify: FastifyInstance) => {
@@ -27,5 +28,8 @@ export const rateRoutes = (fastify: FastifyInstance) => {
 
     // Route for getting rates
     fastify.get("/get-ratings/:movieId", {onRequest: authenticationHook}, getRatingsController)
+
+    // Route for getting most rate
+    fastify.get("/get-most-ratings", getMostRatingsController)
 
 }

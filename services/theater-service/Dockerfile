@@ -1,5 +1,6 @@
 ARG bun_version=oven/bun:latest
 
+# Build layer
 FROM ${bun_version}
 
 WORKDIR /app

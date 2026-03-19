@@ -1,4 +1,4 @@
-import { Op, Sequelize } from 'sequelize'
+import { col, fn, literal, Op, Sequelize } from 'sequelize'
 import {
     Ratings,
     User
@@ -120,6 +120,24 @@ export const RateModel = {
 
         return rates
 
-    }
+    },
+
+    getMostRated: async (limit: number) => {
+
+        const mostRatings = await Ratings.findAll({
+            attributes: [
+                'movie_id',
+                [fn('COUNT', col('movie_id')), 'total_ratings']
+            ],
+            group: ['movie_id'],
+            order: [[literal('total_ratings'), 'DESC']],
+            limit: limit,
+            raw: true,
+            nest: true
+        })
+
+        return mostRatings
+
+    },
 
 }

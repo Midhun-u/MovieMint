@@ -26,9 +26,9 @@ export const MovieModel = {
 
     },
 
-    getMovieById: async (id: string) => {
+    getMovieById: async (id: string, projection: object = {}) => {
 
-        const movie = await Movie.findById(id).lean()
+        const movie = await Movie.findById(id, projection).lean()
         return movie
 
     },

@@ -24,7 +24,7 @@ export const getMovieController = sendErrorResponse(async (context: Context) => 
     const [posterResult, bannerResult, rateResult] = await Promise.all([
         getMovieImage("poster", movieId),
         getMovieImage("banner", movieId),
-        getRatings(movie._id.toString())
+        getRatings(movieId)
     ])
 
     const movieDetails = {

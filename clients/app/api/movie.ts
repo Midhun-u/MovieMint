@@ -49,3 +49,11 @@ export const getRecommendedMovies = handleError(async (movieId: string) => {
     return result
 
 })
+
+// Api for getting batch movie details
+export const getMovieDetailsBatch = handleError(async (movieIds: Array<string>) => {
+
+    const result = await fetchInstance(MOVIE_BASE_URL, "/get-movie-details-batch", "POST", {movieIds: movieIds}, "json")
+    return result
+
+})
