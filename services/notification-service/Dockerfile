@@ -1,24 +1,15 @@
 ARG bun_version=oven/bun:latest
 
-# Base layer
-FROM ${bun_version} AS builder
+FROM ${bun_version}
 
 WORKDIR /app
 
-COPY ./ ./
+COPY ./package.json ./
 
 RUN bun install
 
-RUN bun run build
-
-# Final layer
-FROM ${bun_version} AS runner
-
-WORKDIR /app
-
-COPY --from=builder /app/bundle.js ./
-COPY --from=builder /app/.env ./.env
+COPY ./ ./
 
 EXPOSE 8000
 
-CMD [ "bun", "./bundle.js" ]
+CMD [ "bun", "run", "start" ]

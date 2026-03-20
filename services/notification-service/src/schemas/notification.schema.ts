@@ -15,6 +15,11 @@ export const Notification = sequelize.define("notification", {
     },
     success: {
         type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true
+    },
+    type: {
+        type: DataTypes.ENUM("movie", "payment"),
         allowNull: false
     },
     title: {
@@ -25,7 +30,7 @@ export const Notification = sequelize.define("notification", {
         type: DataTypes.STRING(255),
         allowNull: false
     },
-    metaData: {
+    metadata: {
         type: DataTypes.JSONB,
         allowNull: false,
     },
@@ -33,5 +38,16 @@ export const Notification = sequelize.define("notification", {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: false
+    },
+    status: {
+        type: DataTypes.ENUM("PENDING", "AVAILABLE"),
+        defaultValue: "PENDING",
+        allowNull: false
     }
+}, {
+    indexes: [
+        {
+            fields: ["user_id"],
+        }
+    ]
 })
