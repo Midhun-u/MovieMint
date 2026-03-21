@@ -3,6 +3,7 @@ import { notificationQueueName } from "../queues/notificationQueue";
 import { redisConnection } from "../config/ioredis";
 import { connectDatabase } from "../config/sequelize";
 import { NotificationModel } from "../models/notification.model";
+import { listerQueue } from "../queues/listenerQueue";
 
 const notificationWorker = new Worker(notificationQueueName, async (job) => {
 
@@ -17,9 +18,11 @@ const notificationWorker = new Worker(notificationQueueName, async (job) => {
         await connectDatabase()
 
         // Updating notification
-        await NotificationModel.updateNotificationById(notificationId, {
+        const { updatedDocuments } = await NotificationModel.updateNotificationById(notificationId, {
             status: "AVAILABLE"
         })
+
+        return updatedDocuments[0]
 
     } catch (error: any) {
         console.log(`Couldn't update the movie: ${error.message}`)
@@ -27,8 +30,12 @@ const notificationWorker = new Worker(notificationQueueName, async (job) => {
 
 }, { connection: redisConnection, concurrency: 2 })
 
-notificationWorker.on("completed", (job) => {
+notificationWorker.on("completed", async (job, result) => {
+
     console.log(`Job is completed: ${job.id}`)
+
+    // Adding job for informing that job is completed
+    await listerQueue.add(`job-${job.id}`, result)
 })
 
 notificationWorker.on("failed", (job, error) => {

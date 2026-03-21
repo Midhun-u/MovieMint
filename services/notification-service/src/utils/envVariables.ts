@@ -8,5 +8,6 @@ export const envVariables = {
     DB_HOST: Bun.env.DB_HOST as string,
     REDIS_HOST: Bun.env.REDIS_HOST as string,
     REDIS_PORT: Bun.env.REDIS_PORT as string,
-    AUTH_SERVICE_URL: Bun.env.AUTH_SERVICE_URL as string
+    AUTH_SERVICE_URL: Bun.env.AUTH_SERVICE_URL as string,
+    REDIS_URL: Bun.env.REDIS_URL as string
 }

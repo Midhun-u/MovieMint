@@ -24,15 +24,16 @@ export const NotificationModel = {
 
     updateNotificationById: async (id: string, updateData: object) => {
 
-        const [updatedCount] = await Notification.update(updateData, {
+        const [updatedCount, updatedDocuments] = await Notification.update(updateData, {
             where: {
                 id: {
                     [Op.eq]: id
                 }
-            }
+            },
+            returning: true
         })
 
-        return updatedCount
+        return {updatedCount, updatedDocuments}
 
     },
 
