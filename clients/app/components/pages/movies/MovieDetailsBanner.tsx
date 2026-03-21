@@ -26,6 +26,8 @@ import { ToastProvider } from "@/components/context/providers/ToastProvider"
 import { clearState } from "@/store/bannerSlice"
 import { movieRatingsConvertor } from "@/utils/movieRatingsConvertor"
 import { ratingsTimer } from "@/utils/ratingsTrimer"
+import { addNotificationApi, deleteNotificationApi, getMovieNotificationApi } from "@/api/notification"
+import { clearNotificationState, notificationFailed, notificationRequest, notificationSuccess } from "@/store/notificationSlice"
 
 const detailsContainerClassName = "flex items-center gap-1.5"
 const detailsTextClassName = "font-medium max-h-12"
@@ -41,6 +43,8 @@ const MovieDetailsBanner = ({ movieId, showRateButton }: MovieDetailsBannerProps
 
     const router = useRouter()
     const { movie } = useAppSelector(state => state.movie)
+    const { user } = useAppSelector(state => state.auth)
+    const { loading: notificationLoading, notification } = useAppSelector(state => state.notification)
     const { savedItem, loading: savedListLoading } = useAppSelector(state => state.savedList)
     const [showTrailerScreen, setShowTrailerScreen] = useState<boolean>(false)
     const dispatch = useAppDispatch()
@@ -102,19 +106,84 @@ const MovieDetailsBanner = ({ movieId, showRateButton }: MovieDetailsBannerProps
 
     }
 
+    // Function for adding notification
+    const handleAddNotification = async () => {
+
+        if (!user || !movie) return
+
+        dispatch(notificationRequest())
+        const result = await addNotificationApi({
+            userId: user.id,
+            success: true,
+            title: `${movie.title} movie is released`,
+            message: "Get the best seats in the house! Tap to check showtimes and book your tickets now.",
+            metadata: {
+                action: "check_movie",
+                movie_id: movie._id
+            },
+            type: "movie",
+            availableDate: movie.release_date
+        })
+        if (result.success) {
+            toastContext?.triggerToastMessage("Successfully notified", "SUCCESS")
+            dispatch(notificationSuccess({ notification: result.notification }))
+        } else {
+            dispatch(notificationFailed({ errorMessage: result.error }))
+            toastContext?.triggerToastMessage("Something went wrong", "ERROR")
+        }
+    }
+
+    // Function for fetching user notification
+    const handleFetchNotification = useCallback(async () => {
+
+        const authToken = localStorage.getItem('authToken')
+        if (!authToken) return
+
+        dispatch(notificationRequest())
+
+        const result = await getMovieNotificationApi(movieId, authToken)
+        if (result.success) {
+            dispatch(notificationSuccess({ notification: result.notification }))
+        } else {
+            dispatch(notificationFailed({ errorMessage: result.error }))
+        }
+
+    }, [dispatch, movieId])
+
+    // Function for deleting notification
+    const handleDeleteNotification = async () => {
+
+        const authToken = localStorage.getItem("authToken")
+        if (!authToken || !notification) return
+
+        dispatch(notificationRequest())
+        const result = await deleteNotificationApi(notification.id, authToken)
+        if (result.success) {
+            dispatch(notificationSuccess({ notification: null }))
+            toastContext?.triggerToastMessage("Removed the notification", "SUCCESS")
+        } else {
+            dispatch(notificationFailed({ errorMessage: result.error }))
+            toastContext?.triggerToastMessage("Something went wrong", "ERROR")
+        }
+
+    }
+
     useEffect(() => {
         (() => {
             if (movieId) {
                 handleFetchSavedItem()
+                handleFetchNotification()
             }
         })()
 
         return () => {
             dispatch(clearState())
+            dispatch(clearNotificationState())
         }
     }, [
         movieId,
         handleFetchSavedItem,
+        handleFetchNotification,
         dispatch
     ])
 
@@ -290,12 +359,27 @@ const MovieDetailsBanner = ({ movieId, showRateButton }: MovieDetailsBannerProps
                                         </div>
                                         :
                                         <div className="w-full flex flex-col gap-2">
-                                            <Button
-                                            >
-                                                <NotifyIcon
-                                                />
-                                                <span className={buttonTextClassName}>Notify</span>
-                                            </Button>
+                                            {
+                                                notification
+                                                    ?
+                                                    <Button
+                                                        onClick={handleDeleteNotification}
+                                                    >
+                                                        <NotifyIcon
+                                                            className="fill-dark-foreground-color"
+                                                        />
+                                                        <span className={buttonTextClassName}>Notified</span>
+                                                    </Button>
+                                                    :
+                                                    <Button
+                                                        onClick={handleAddNotification}
+                                                        disabled={notificationLoading}
+                                                    >
+                                                        <NotifyIcon
+                                                        />
+                                                        <span className={buttonTextClassName}>Notify</span>
+                                                    </Button>
+                                            }
                                             <Button
                                                 className={buttonClassName}
                                                 onClick={() => setShowTrailerScreen(true)}

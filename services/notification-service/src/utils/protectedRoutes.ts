@@ -1,4 +1,5 @@
 export const protectedRoutes = [
     "/get-notifications",
-    "delete-notification"
+    "/delete-notification",
+    "/get-movie-notification"
 ]

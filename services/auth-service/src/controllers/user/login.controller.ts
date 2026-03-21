@@ -47,7 +47,7 @@ export const loginController = handleError(async (request: FastifyRequest, reply
 
     if(!isCorrect){
         reply.status(400)
-        return {success: false, error: "Password is incorrect", statusCode: 400}
+        return {success: false, error: "Email or password is incorrect", statusCode: 400}
     }
 
     if(role === "ADMIN"){

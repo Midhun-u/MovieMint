@@ -32,10 +32,11 @@ const notificationWorker = new Worker(notificationQueueName, async (job) => {
 
 notificationWorker.on("completed", async (job, result) => {
 
-    console.log(`Job is completed: ${job.id}`)
+    console.log(`Job is completed id: `, job.id)
 
     // Adding job for informing that job is completed
     await listerQueue.add(`job-${job.id}`, result)
+
 })
 
 notificationWorker.on("failed", (job, error) => {

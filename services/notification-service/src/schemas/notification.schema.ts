@@ -48,6 +48,10 @@ export const Notification = sequelize.define("notification", {
     indexes: [
         {
             fields: ["user_id"],
+        },
+        {
+            using: "GIN",
+            fields: ["metadata"]
         }
     ]
 })

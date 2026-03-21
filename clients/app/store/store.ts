@@ -7,6 +7,7 @@ import { movieReducer } from './movieSlice'
 import { bannerReducer } from './bannerSlice'
 import { savedListReducer } from './savedListSlice'
 import { rateReducer } from './rateSlice'
+import { notificationReducer } from './notificationSlice'
 
 export const store = () => {
 
@@ -19,7 +20,8 @@ export const store = () => {
             movie: movieReducer,
             banner: bannerReducer,
             savedList: savedListReducer,
-            rate: rateReducer
+            rate: rateReducer,
+            notification: notificationReducer
         }
     })
 

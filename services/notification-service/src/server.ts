@@ -6,13 +6,14 @@ import { logger } from 'hono/logger'
 import { connectDatabase } from './config/sequelize'
 import { notificationRouter } from './routes/route'
 import { wsHandler } from './websocket'
+import { envVariables } from './utils/envVariables'
 
 // App instance
 export const app = new Hono({ strict: false })
 
 // Middlewares
 app.use(cors({
-    origin: [],
+    origin: [envVariables.APP_URL],
     allowMethods: ["GET", "POST", "DELETE", "PATCH", "PUT"],
     credentials: true
 }))

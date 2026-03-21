@@ -79,6 +79,25 @@ export const NotificationModel = {
 
         return deletedCount
 
+    },
+
+    getNotificationByMovieIdAndUserId: async (movieId: string, userId: string) => {
+
+        const notification = await Notification.findOne({
+            where: {
+                metadata: {
+                    [Op.contains]: {movie_id: movieId}
+                },
+                user_id: {
+                    [Op.eq]: userId
+                }
+            },
+            raw: true,
+            nest: true
+        })
+
+        return notification
+
     }
 
 }

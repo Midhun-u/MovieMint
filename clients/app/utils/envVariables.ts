@@ -13,5 +13,6 @@ export const envVariables = {
     MEDIA_URL: process.env.MEDIA_URL as string,
     MOVIE_URL: process.env.MOVIE_URL as string,
     SAVED_LIST_URL: process.env.SAVED_LIST_URL as string,
-    RATE_URL: process.env.RATE_URL as string
+    RATE_URL: process.env.RATE_URL as string,
+    NOTIFICATION_URL: process.env.NOTIFICATION_URL as string
 }

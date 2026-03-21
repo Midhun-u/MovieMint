@@ -30,8 +30,8 @@ export const navbarLinks: NavbarLinks = [
         Icon: SavedListIcon
     },
     {
-        title: "Notification",
-        route: "/notification",
+        title: "Notifications",
+        route: "/notifications",
         Icon: NotificationIcon
     },
     {

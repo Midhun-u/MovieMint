@@ -37,7 +37,8 @@ export const addNotificationController = sendErrorResponse(async (context: Conte
                     notificationId: newNotification.id
                 },
                 {
-                    delay: delayedTime
+                    delay: delayedTime,
+                    jobId: newNotification.id
                 }
             )
 
