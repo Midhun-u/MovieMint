@@ -70,3 +70,11 @@ export const getAllNotificationsApi = handleError(async (page: number = 1, limit
     return result
 
 })
+
+// Api for updating notification
+export const updateNotificationApi = handleError(async (id: string, body: object, authToken: string) => {
+
+    const result = await fetchInstance(NOTIFICATION_BASE_URL, `/update-notification/${id}`, "PATCH", body, "json", authToken)
+    return result
+
+})

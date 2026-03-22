@@ -20,5 +20,5 @@ export const generateOtp = (digitsLength: number) => {
 
     }
 
-    return convertStringToNumber(otp)
+    return convertStringToNumber(otp, true)
 }

@@ -1,15 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-
-type Notification = {
-    id: string
-    user_id: string
-    title: string
-    message: string
-    success: boolean
-    type: "movie" | "payment"
-    metadata: object
-    isRead: boolean
-}
+import { Notification } from '../types/notification'
 
 type InitialState = {
     loading: boolean
@@ -29,7 +19,7 @@ const initialState: InitialState = {
     notifications: [],
     pagination: {
         page: 1,
-        limit: 1
+        limit: 10
     }
 }
 
@@ -37,7 +27,7 @@ const notificationSlice = createSlice({
     name: "notification",
     initialState: initialState,
     reducers: {
-        
+
         notificationRequest: (state) => {
             state.loading = true
             state.errorMessage = ""
@@ -45,10 +35,10 @@ const notificationSlice = createSlice({
 
         notificationSuccess: (state, action) => {
             state.loading = false
-            state.notification = action.payload?.notification? action.payload.notification: null
-            if(state.notifications.length <= 0 || state.pagination.page === 1){
-                state.notifications = action.payload.notifications?.length? action.payload.notifications: []
-            }else if(action.payload.notifications?.length){
+            state.notification = action.payload?.notification ? action.payload.notification : null
+            if (state.notifications.length <= 0 || state.pagination.page === 1) {
+                state.notifications = action.payload.notifications?.length ? action.payload.notifications : []
+            } else if (action.payload.notifications?.length) {
                 state.notifications = [...state.notifications, ...action.payload.notifications]
             }
         },
@@ -58,16 +48,26 @@ const notificationSlice = createSlice({
             state.errorMessage = action.payload?.errorMessage || ""
         },
 
+        incrementPage: (state) => {
+            state.pagination.page = state.pagination.page + 1
+        },
+
         clearNotificationState: (state) => {
             state.loading = false
             state.errorMessage = ""
             state.notification = null
             state.notifications = []
-            state.pagination = {page: 1, limit: state.pagination.limit}
+            state.pagination = { ...state.pagination, page: 1 }
         }
 
     }
 })
 
 export const notificationReducer = notificationSlice.reducer
-export const {notificationFailed, notificationRequest, notificationSuccess, clearNotificationState} = notificationSlice.actions
+export const {
+    notificationFailed,
+    notificationRequest,
+    notificationSuccess,
+    clearNotificationState,
+    incrementPage,
+} = notificationSlice.actions

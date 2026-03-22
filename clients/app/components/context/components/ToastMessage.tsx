@@ -1,8 +1,8 @@
 'use client'
 
-import { Activity, createContext, ReactNode, useEffect, useRef, useState } from 'react'
+import { Activity, ReactNode, useEffect, useRef, useState } from 'react'
 import {
-  BadgeCheck as SuccessIcon,
+  CircleCheckBig as SuccessIcon,
   OctagonAlert as ErrorIcon
 } from 'lucide-react'
 import { LucidReactIconType } from '@/types/lucidReact'

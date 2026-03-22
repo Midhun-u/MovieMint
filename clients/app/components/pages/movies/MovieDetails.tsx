@@ -7,9 +7,6 @@ import { clearState, movieFailed, movieRequest, movieSuccess } from "@/store/mov
 import Image from "next/image"
 import { useParams } from "next/navigation"
 import { Activity, useCallback, useEffect, useState } from "react"
-import {
-    X as CloseIcon
-} from 'lucide-react'
 import { getActorsImagesApi } from "@/api/media"
 import { MovieData } from "@/types/movie"
 import MovieCard from "./MovieCard"
@@ -29,7 +26,6 @@ const MovieDetails = () => {
     const [actorsImages, setActorsImages] = useState<Array<{ id: string, image_url: string, actor_id: string, name: string }>>([])
     const [recommendedMovies, setRecommendedMovies] = useState<Array<MovieData>>([])
     const [loading, setLoading] = useState<boolean>(false)
-    const [showTrailerScreen, setShowTrailerScreen] = useState<boolean>(false)
 
     // Function for fetching movie details
     const handleFetchMovieDetails = useCallback(async () => {

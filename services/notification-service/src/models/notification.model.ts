@@ -14,7 +14,7 @@ export const NotificationModel = {
             success: data.success,
             type: data.type,
             metadata: data.metadata,
-            isRead: false,
+            is_read: false,
             status: data.status.trim()
         })
 

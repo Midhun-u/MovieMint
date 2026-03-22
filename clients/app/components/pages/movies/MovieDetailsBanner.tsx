@@ -199,7 +199,7 @@ const MovieDetailsBanner = ({ movieId, showRateButton }: MovieDetailsBannerProps
                     />
                 </div>
                 {/* Movie details */}
-                <div className="w-full flex justify-center px-1 h-150 overflow-hidden relative">
+                <div className="w-full -z-1 flex justify-center px-1 h-150 overflow-hidden relative">
                     {
                         movie?.banner.image_url
                             ?

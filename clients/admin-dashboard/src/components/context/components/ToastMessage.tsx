@@ -1,6 +1,6 @@
 import { Activity, type ReactNode, useEffect, useRef, useState } from 'react'
 import {
-  CircleCheck as SuccessIcon,
+  CircleCheckBig as SuccessIcon,
   OctagonAlert as ErrorIcon
 } from 'lucide-react'
 import type { LucideReactIconType } from '../../../types/lucideReactType'

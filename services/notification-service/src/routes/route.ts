@@ -4,6 +4,7 @@ import { getNotificationsController } from "../controllers/getNotifications.cont
 import { authMiddleware } from "../middlewares/auth";
 import { deleteNotificationController } from "../controllers/deleteNotification.controller";
 import { getMovieNotificationController } from "../controllers/getMovieNotification.controller";
+import { updateNotificationController } from "../controllers/updateNotification.controller";
 
 // Notification router
 export const notificationRouter = new Hono()
@@ -21,3 +22,6 @@ notificationRouter.delete("/delete-notification/:id", deleteNotificationControll
 
 // Route for getting specific notification
 notificationRouter.get("/get-movie-notification/:movieId", getMovieNotificationController)
+
+// Route for updating notification
+notificationRouter.patch("/update-notification/:id", updateNotificationController)

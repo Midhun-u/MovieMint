@@ -34,7 +34,7 @@ export const Notification = sequelize.define("notification", {
         type: DataTypes.JSONB,
         allowNull: false,
     },
-    isRead: {
+    is_read: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: false
@@ -54,4 +54,4 @@ export const Notification = sequelize.define("notification", {
             fields: ["metadata"]
         }
     ]
-})
+}) 
