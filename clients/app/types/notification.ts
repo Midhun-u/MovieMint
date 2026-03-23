@@ -6,5 +6,6 @@ export type Notification = {
     success: boolean
     type: "movie" | "payment"
     metadata: Record<string, any>
+    createdAt: string
     is_read: boolean
 }

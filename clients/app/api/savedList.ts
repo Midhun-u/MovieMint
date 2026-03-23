@@ -32,3 +32,11 @@ export const deleteSavedItemApi = handleError(async (id: string, authToken: stri
     return result
 
 })
+
+// Api for get saved list
+export const getSavedListApi = handleError(async (page: number, limit: number, authToken: string) => {
+
+    const result = await fetchInstance(SAVED_LIST_BASE_URL, `/get-saved-list/?page=${page}&limit=${limit}`, "GET", {}, "json", authToken)
+    return result
+
+})

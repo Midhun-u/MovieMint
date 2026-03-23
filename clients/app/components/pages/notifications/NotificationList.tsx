@@ -16,7 +16,8 @@ const NotificationList = () => {
     const { isIntersecting, ref } = useObserver<HTMLDivElement>({ threshold: 0.5 })
     const [isRender, setIsRender] = useState<boolean>(false)
     const dispatch = useAppDispatch()
-     const toastContext = useContext(ToastProvider)
+    const toastContext = useContext(ToastProvider)
+    const [isSocketConnected, setIsSocketConnected] = useState<boolean>(false)
 
     // Function for fetching notifications
     const handleFetchNotifications = useCallback(async () => {
@@ -49,7 +50,7 @@ const NotificationList = () => {
         const result = await deleteNotificationApi(id, authToken)
         if (result.success) {
             const filteredNotifications = notifications.filter((notification) => notification.id !== id)
-            dispatch(notificationSuccess({notifications: filteredNotifications}))
+            dispatch(notificationSuccess({ notifications: filteredNotifications }))
             toastContext?.triggerToastMessage("Notification is deleted", "SUCCESS")
         } else {
             dispatch(notificationFailed({ errorMessage: result.error }))
@@ -74,12 +75,6 @@ const NotificationList = () => {
 
     }, [isIntersecting, hasMore, loading, dispatch]);
 
-    useEffect(() => {
-
-        const ws = new WebSocket("http://localhost:8000/ws/notification")
-
-    }, [])
-
     return (
 
         notifications?.length
@@ -95,6 +90,7 @@ const NotificationList = () => {
                             message={notification.message}
                             isRead={notification.is_read}
                             metadata={notification.metadata}
+                            createdAt={notification.createdAt}
                             onClickOnDelete={handleDeleteNotification}
                         />
                     ))

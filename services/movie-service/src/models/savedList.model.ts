@@ -37,6 +37,25 @@ export const SavedListModel = {
         const deleteItem = await SavedList.findByIdAndDelete(id)
         return deleteItem
 
+    },
+
+    getSavedListByUserId: async (userId: string, page: number, limit: number, projection: object = {}) => {
+
+        const savedList = await SavedList
+            .find({
+                user_id: userId
+            })
+            .skip((page - 1) * limit)
+            .limit(limit)
+            .populate({
+                path: "movie_id",
+                select: projection
+            })
+            .sort({ createdAt: -1 })
+            .lean()
+
+        return savedList
+
     }
 
 }

@@ -7,9 +7,10 @@ const savedListSchema = new Schema({
         index: true
     },
     movie_id: {
-        type: Schema.Types.String,
+        type: Schema.Types.ObjectId,
         required: true,
         index: true,
+        ref: "Movie"
     }
 }, { timestamps: true })
 

@@ -199,7 +199,7 @@ const MovieDetailsBanner = ({ movieId, showRateButton }: MovieDetailsBannerProps
                     />
                 </div>
                 {/* Movie details */}
-                <div className="w-full -z-1 flex justify-center px-1 h-150 overflow-hidden relative">
+                <div className="w-full z-0 flex justify-center px-1 h-150 overflow-hidden relative">
                     {
                         movie?.banner.image_url
                             ?
@@ -236,7 +236,7 @@ const MovieDetailsBanner = ({ movieId, showRateButton }: MovieDetailsBannerProps
                                     null
                             }
                             {/* Movie details */}
-                            <div className="max-[500px]:w-full max-[600px]:w-[80%] w-full max-[600px]:pt-3 px-5 flex flex-col h-full text-white/70 gap-2.5 z-1">
+                            <div className="max-[500px]:w-full max-[600px]:w-[80%] w-full max-[600px]:pt-3 px-5 flex flex-col h-full text-white/70 gap-2.5 z-2">
                                 {/* Movie title */}
                                 <h1 className="text-white text-xl font-bold max-h-15 overflow-hidden wrap-break-word">{movie.title}</h1>
                                 {/* Movie ratings */}

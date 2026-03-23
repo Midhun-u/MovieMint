@@ -30,11 +30,12 @@ export const addNotificationController = sendErrorResponse(async (context: Conte
             const targetTime = new Date(body.availableDate)
             const delayedTime = targetTime.getTime() - Date.now()
 
-            // Scheduling job
+            // Scheduling delayed job
             await notificationQueue.add(
                 `notification-${newNotification.id}`,
                 {
-                    notificationId: newNotification.id
+                    notification: newNotification,
+                    update: true
                 },
                 {
                     delay: delayedTime,
@@ -42,6 +43,18 @@ export const addNotificationController = sendErrorResponse(async (context: Conte
                 }
             )
 
+        }else{
+            // Scheduling job
+            await notificationQueue.add(
+                `notification-${newNotification.id}`,
+                {
+                    notification: newNotification,
+                    update: false
+                },
+                {
+                    jobId: newNotification.id
+                }
+            )
         }
 
         context.status(201)

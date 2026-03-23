@@ -3,6 +3,7 @@ import { addSavedListController } from "../controllers/savedList/addSavedList.co
 import { userAuthMiddleware } from "../middlewares/userAuth";
 import { getSavedItemController } from "../controllers/savedList/getSavedItem.controller";
 import { deleteSavedListController } from "../controllers/savedList/deleteSavedList.controller";
+import { getSavedListController } from "../controllers/savedList/getSavedList.controller";
 
 // Saved list router
 export const savedListRouter = new Hono()
@@ -18,3 +19,6 @@ savedListRouter.get("/get-movie/:movieId", getSavedItemController)
 
 // Route for deleting movie from saved list
 savedListRouter.delete("/delete-movie/:id", deleteSavedListController)
+
+// Route for getting saved list
+savedListRouter.get("/get-saved-list", getSavedListController)

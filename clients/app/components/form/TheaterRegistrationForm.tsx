@@ -379,9 +379,9 @@ const TheaterRegistrationForm = () => {
                                     <div className="px-px">
                                         <CheckBoxList
                                             values={theaterFormats}
-                                            selectedLimit={null}
                                             setValues={setFormats}
                                             checkedValues={formats}
+                                            maxlength={null}
                                         />
                                     </div>
                                 </div>
@@ -400,6 +400,7 @@ const TheaterRegistrationForm = () => {
                                             }}
                                             value="Allow"
                                             defaultChecked={allowCancellation}
+                                            checked={allowCancellation}
                                         />
                                     </div>
                                 </div>

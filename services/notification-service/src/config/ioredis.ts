@@ -6,5 +6,5 @@ import { ConnectionOptions } from 'bullmq'
 export const redisConnection = new IORedis({
     maxRetriesPerRequest: null,
     host: envVariables.REDIS_HOST,
-    port: Number(envVariables.REDIS_PORT)
+    port: Number(envVariables.REDIS_PORT),
 }) as ConnectionOptions

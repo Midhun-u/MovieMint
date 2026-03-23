@@ -4,22 +4,21 @@ import { redisConnection } from "../config/ioredis";
 import { MovieModel } from "../models/movie.model";
 import { connectDatabase } from "../config/db";
 
+connectDatabase()
+
 // Movie worker
 const movieWorker = new Worker(movieQueueName, async (job) => {
 
-    const {movieId} = job.data as {movieId: string}
-    
+    const { movieId } = job.data as { movieId: string }
+
     try {
 
-        if(!movieId){
+        if (!movieId) {
             throw new Error(`Movie id is missing`)
         }
 
-        // Connecting database
-        await connectDatabase()
-        
         // Updating data
-        await MovieModel.updateMovieById(movieId, { 
+        await MovieModel.updateMovieById(movieId, {
             status: "SHOWING"
         })
 
@@ -27,7 +26,7 @@ const movieWorker = new Worker(movieQueueName, async (job) => {
         console.log(`Couldn't update the movie: ${error.message}`)
     }
 
-}, {connection: redisConnection, concurrency: 2})
+}, { connection: redisConnection, concurrency: 2 })
 
 movieWorker.on("completed", (job) => {
     console.log(`Job is completed: ${job.id}`)

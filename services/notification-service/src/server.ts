@@ -5,7 +5,6 @@ import { cors } from 'hono/cors'
 import { logger } from 'hono/logger'
 import { connectDatabase } from './config/sequelize'
 import { notificationRouter } from './routes/route'
-import { wsHandler } from './websocket'
 import { envVariables } from './utils/envVariables'
 
 // App instance
@@ -24,9 +23,6 @@ connectDatabase()
 
 // Routes
 app.route("/api/v1/notification", notificationRouter)
-
-// Websocket connection for notification
-app.get("/ws/notification", wsHandler)
 
 // Routes
 app.onError(errorHandler)

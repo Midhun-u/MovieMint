@@ -1,10 +1,11 @@
-import {updateNotificationApi } from '@/api/notification'
+import { updateNotificationApi } from '@/api/notification'
 import {
     CircleCheckBig as SuccessIcon,
     TriangleAlert as ErrorIcon,
     Trash as DeleteIcon
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { useCallback } from 'react'
 
 interface NotificationCardProps {
     id: string
@@ -13,10 +14,11 @@ interface NotificationCardProps {
     message: string
     isRead: boolean
     metadata: Record<string, any>
+    createdAt: string
     onClickOnDelete: (id: string) => void
 }
 
-const NotificationCard = ({ success, title = "", message = "", isRead = false, id, metadata, onClickOnDelete }: NotificationCardProps) => {
+const NotificationCard = ({ success, title = "", message = "", isRead = false, id, metadata, onClickOnDelete, createdAt }: NotificationCardProps) => {
 
     const router = useRouter()
 
@@ -37,10 +39,44 @@ const NotificationCard = ({ success, title = "", message = "", isRead = false, i
         }
     }
 
+    // Function for formating date
+    const handleFormatDate = useCallback(() => {
+
+        const date = new Date(createdAt)
+        const currentDate = new Date()
+
+        const month = date.getMonth()
+        const day = date.getDate()
+        const year = date.getFullYear()
+
+        const currentDay = currentDate.getDate()
+        const currentMonth = currentDate.getMonth()
+        const currentYear = currentDate.getFullYear()
+
+        if (
+            currentDay === day &&
+            currentMonth=== month &&
+            currentYear === year
+        ) {
+            return "Today"
+        }else if(
+            currentDay - 1 === day && 
+            currentMonth=== month &&
+            currentYear === year
+        ){
+            return "Yesterday"
+        }else {
+            return `${day}/${month + 1}/${year}`
+        }
+
+        return ""
+
+    }, [createdAt])
+
     return (
 
         <div
-            className={`w-full cursor-pointer p-2.5 ${isRead ? "bg-background-color" : "bg-foreground-color"} rounded-[5px] flex flex-col gap-2.5 border border-foreground-theme-color/15`}
+            className={`w-full relative pb-6 cursor-pointer p-2.5 ${isRead ? "bg-background-color" : "bg-foreground-color"} rounded-[5px] flex flex-col gap-2.5 border border-foreground-theme-color/15`}
             onClick={handleNavigate}
         >
             <div className="flex gap-2.5 relative items-center">
@@ -77,6 +113,9 @@ const NotificationCard = ({ success, title = "", message = "", isRead = false, i
             </div>
             <p className='text-xs max-w-full max-h-8 overflow-hidden'>
                 {message}
+            </p>
+            <p className='absolute bottom-1 right-2 text-[0.7rem] font-medium text-disable-color'>
+                {handleFormatDate()}
             </p>
         </div>
 

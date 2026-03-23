@@ -43,6 +43,10 @@ const notificationSlice = createSlice({
             }
         },
 
+        addNotification: (state, action) => {
+            state.notifications.push(action.payload.notification)
+        },
+
         notificationFailed: (state, action) => {
             state.loading = false
             state.errorMessage = action.payload?.errorMessage || ""
@@ -70,4 +74,5 @@ export const {
     notificationSuccess,
     clearNotificationState,
     incrementPage,
+    addNotification
 } = notificationSlice.actions
