@@ -1,20 +1,5 @@
+import { SavedItem } from "@/types/savedItem";
 import { createSlice } from "@reduxjs/toolkit";
-
-type SavedItem = {
-    _id: string
-    user_id: string
-    movie_id: string
-    movie: {
-        title: string
-        poster: {
-            id: string
-            image_url: string
-        },
-        certificate: string
-        language: string
-        categories: string
-    }
-}
 
 type InitialState = {
     loading: boolean
@@ -34,7 +19,7 @@ const initialState: InitialState = {
     savedList: [],
     pagination: {
         page: 1,
-        limit: 1
+        limit: 10
     }
 }
 
@@ -51,7 +36,20 @@ const savedListSlice = createSlice({
 
         savedListSuccess: (state, action) => {
             state.loading = false
-            state.savedItem = action.payload?.savedItem? action.payload.savedItem: null
+            state.savedItem = action.payload?.savedItem ? action.payload.savedItem : null
+            if (action.payload.filter && action.payload.savedList) {
+                state.savedList = action.payload.savedList
+            }
+
+            if (state.savedList.length <= 0 || state.pagination.page === 1) {
+                state.savedList = action.payload.savedList?.length ? action.payload.savedList : []
+            } else if (action.payload.savedList) {
+                state.savedList = [...state.savedList, ...action.payload.savedList]
+            }
+        },
+
+        incrementPage: (state) => {
+            state.pagination.page = state.pagination.page + 1
         },
 
         savedListFailed: (state, action) => {
@@ -64,4 +62,4 @@ const savedListSlice = createSlice({
 })
 
 export const savedListReducer = savedListSlice.reducer
-export const {savedListFailed, savedListRequest, savedListSuccess} = savedListSlice.actions
+export const { savedListFailed, savedListRequest, savedListSuccess, incrementPage } = savedListSlice.actions

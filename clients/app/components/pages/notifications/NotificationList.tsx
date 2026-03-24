@@ -8,6 +8,7 @@ import NotificationCard from "./NotificationCard"
 import NoResult from "@/components/ui/NoResult"
 import useObserver from "@/components/hooks/useObserver"
 import { ToastProvider } from "@/components/context/providers/ToastProvider"
+import NotificationSkeleton from "./NotificationSkeleton"
 
 const NotificationList = () => {
 
@@ -17,7 +18,6 @@ const NotificationList = () => {
     const [isRender, setIsRender] = useState<boolean>(false)
     const dispatch = useAppDispatch()
     const toastContext = useContext(ToastProvider)
-    const [isSocketConnected, setIsSocketConnected] = useState<boolean>(false)
 
     // Function for fetching notifications
     const handleFetchNotifications = useCallback(async () => {
@@ -77,7 +77,7 @@ const NotificationList = () => {
 
     return (
 
-        notifications?.length
+        notifications?.length || loading
             ?
             <div className="max-[600px]:w-full flex flex-col gap-2.5 w-125">
                 {
@@ -95,7 +95,16 @@ const NotificationList = () => {
                         />
                     ))
                 }
-                <Activity mode={hasMore && notifications.length ? "visible" : "hidden"}>
+                <Activity mode={loading ? "visible" : "hidden"}>
+                    {
+                        Array(3).fill("").map((_, index) => (
+                            <NotificationSkeleton
+                                key={index}
+                            />
+                        ))
+                    }
+                </Activity>
+                <Activity mode={hasMore && notifications.length && !loading ? "visible" : "hidden"}>
                     <div ref={ref}></div>
                 </Activity>
             </div>

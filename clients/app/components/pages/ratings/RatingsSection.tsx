@@ -144,6 +144,7 @@ const RatingsSection = () => {
                 <MovieDetailsBanner
                     movieId={movieId as string}
                     showRateButton={false}
+                    showBookButton
                 />
                 <div className="px-3 sm:w-[95%] sm:px-0 md:w-[70%] w-full flex flex-col gap-8">
                     <MovieRatingsDetails

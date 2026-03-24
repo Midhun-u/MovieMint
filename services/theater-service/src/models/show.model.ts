@@ -30,17 +30,17 @@ export const ShowModel = {
 
     getShowsByTheaterId: async (theaterId: string, page: number, limit: number, status: string = "") => {
 
-        const statusConditon = status? {status: status}: {}
+        const statusConditon = status ? { status: status } : {}
 
         const shows = await Show
-        .find({
-            theater_id: theaterId, 
-            ...statusConditon
-        }, "-booked_seats")
-        .skip((page - 1) * limit)
-        .limit(limit)
-        .sort({createdAt: -1})
-        .lean()
+            .find({
+                theater_id: theaterId,
+                ...statusConditon
+            }, "-booked_seats")
+            .skip((page - 1) * limit)
+            .limit(limit)
+            .sort({ createdAt: -1 })
+            .lean()
 
         return shows
 
@@ -69,8 +69,59 @@ export const ShowModel = {
 
     updateShowById: async (id: string, updatedBody: object = {}) => {
 
-        const updatedShow = await Show.findByIdAndUpdate(id, updatedBody, {returnDocument: "after"})
+        const updatedShow = await Show.findByIdAndUpdate(id, updatedBody, { returnDocument: "after" })
         return updatedShow
+
+    },
+
+    getAllTheatersShowsByMovieId: async (movieId: string, page: number, limit: number) => {
+
+        const shows = await Show.aggregate([
+            {
+                $match: {
+                    movie_id: movieId,
+                    status: "SHOWING"
+                }
+            },
+            {
+                $project: {
+                    theater_id: 1,
+                    show_time: 1,
+                    price: 1,
+                    status: 1
+                }
+            },
+            {
+                $sort: {
+                    theater_id: 1,
+                    "show_time.year": 1,
+                    "show_time.month": 1,
+                    "show_time.start_day": 1,
+                    "show_time.hour": 1,
+                    "show_time.minutes": 1
+                }
+            }, 
+            {
+                $group: {
+                    _id: "$theater_id",
+                    shows: {
+                        $push: {
+                            price: "$price",
+                            show_time: "$show_time",
+                            status: "$status"
+                        }
+                    },
+                }
+            },
+            {
+                $skip: (page - 1) * limit
+            },
+            {
+                $limit: limit
+            },
+        ])
+
+        return shows
 
     }
 

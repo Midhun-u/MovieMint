@@ -1,9 +1,10 @@
 import { Hono } from "hono";
-import { addShowController } from "../controllers/addShow.controller";
+import { addShowController } from "../controllers/show/addShow.controller";
 import { authMiddleware } from "../middlewares/auth";
-import { getShowsController } from "../controllers/getShows.controller";
-import { getShowController } from "../controllers/getShow.controller";
-import { updateShowController } from "../controllers/updateShow.controller";
+import { getShowsController } from "../controllers/show/getShows.controller";
+import { getShowController } from "../controllers/show/getShow.controller";
+import { updateShowController } from "../controllers/show/updateShow.controller";
+import { getAllTheatersShowsController } from "../controllers/show/getAllTheatersShows.controller";
 
 // Show router
 export const showRouter = new Hono()
@@ -22,3 +23,6 @@ showRouter.get("/get-show/:showId", getShowController)
 
 // Route for updating show
 showRouter.patch("/update-show/:showId", updateShowController)
+
+// Route for all theater shows
+showRouter.get("/get-all-theaters-shows/:movieId", getAllTheatersShowsController)

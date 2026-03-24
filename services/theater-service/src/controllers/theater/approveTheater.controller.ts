@@ -1,8 +1,8 @@
 import { Context } from "hono";
-import { sendErrorResponse } from "../utils/sendErrorResponse";
-import { TheaterModel } from "../models/theater.model";
-import { getUser } from "../services/getUser";
-import { sendApprovalEmail } from "../utils/sendApprovalEmail";
+import { sendErrorResponse } from "../../utils/sendErrorResponse";
+import { TheaterModel } from "../../models/theater.model";
+import { getUser } from "../../services/getUser";
+import { sendApprovalEmail } from "../../utils/sendApprovalEmail";
 
 // Controller for approving theater
 export const approveTheaterController = sendErrorResponse(async (context: Context) => {

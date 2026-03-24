@@ -42,7 +42,7 @@ const CheckTheaterAvailability = ({ children }: CheckTheaterAvailabilityProps) =
     return (
         <>
             {
-                theater.status === "AVAILABLE"
+                theater && theater.status === "AVAILABLE"
                     ?
                     children
                     :

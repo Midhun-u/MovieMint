@@ -17,16 +17,19 @@ const CurrentShowList = () => {
     const dispatch = useAppDispatch()
     const [hasMore, setHasMore] = useState<boolean>(false)
     const { isIntersecting, ref } = useObserver<HTMLDivElement>({ threshold: 0.5 })
+    const [isRender, setIsRender] = useState<boolean>(false)
 
     // Function for getting shows
     const handleGetShows = useCallback(async () => {
+
+        if(!theater?.id) return
 
         dispatch(showRequest())
         const result = await getShowsApi(theater.id, pagination.page, pagination.limit, status)
 
         if (result.success) {
 
-            dispatch(showSuccess({ shows: result.shows, page: pagination.page }))
+            dispatch(showSuccess({ shows: result.shows }))
 
             if (result?.shows?.length < pagination.limit) {
                 setHasMore(false)
@@ -39,13 +42,16 @@ const CurrentShowList = () => {
         }
 
 
-    }, [pagination.page, pagination.limit, theater.id, dispatch, status])
+    }, [pagination.page, pagination.limit, theater?.id, dispatch, status])
 
     useEffect(() => {
         (() => {
-            handleGetShows()
+            setIsRender(true)
+            if (isRender) {
+                handleGetShows()
+            }
         })()
-    }, [handleGetShows, dispatch, pagination.page])
+    }, [handleGetShows, dispatch, pagination.page, isRender, theater?.id])
 
     useEffect(() => {
         if (!isIntersecting || loading || !hasMore) return;

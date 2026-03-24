@@ -22,7 +22,7 @@ export const getSavedListController = sendErrorResponse(async (context: Context)
             categories: 1,
             language: 1,
             status: 1,
-            formats: 1
+            formats: 1,
         }
     )
 
@@ -35,6 +35,7 @@ export const getSavedListController = sendErrorResponse(async (context: Context)
 
         return {
             _id: savedItem._id,
+            user_id: savedItem.user_id,
             movie: {
                 ...savedItem.movie_id,
                 poster: posterResult.success ? posterResult.data : {},

@@ -1,14 +1,14 @@
 import { Hono } from "hono";
-import { addTheatereRegisterController } from "../controllers/addTheaterRegistration.controller";
+import { addTheatereRegisterController } from "../controllers/theater/addTheaterRegistration.controller";
 import { authMiddleware } from "../middlewares/auth";
-import { deleteTheaterRegistrationController } from "../controllers/deleteTheaterRegistration.controller";
-import { getTheaterRegistrationController } from "../controllers/getTheaterRegistration.controller";
-import { getTheaterRequestsController } from "../controllers/getTheaterRequests.controller";
-import { approveTheaterController } from "../controllers/approveTheater.controller";
-import { getTheaterDetailsController } from "../controllers/getTheaterDetails.controller";
-import { getDashboardLogsController } from "../controllers/getDashboardLogs.controller";
-import { getTheatersController } from "../controllers/getTheaters.controller";
-import { updateTheaterController } from "../controllers/updateTheater.controller";
+import { deleteTheaterRegistrationController } from "../controllers/theater/deleteTheaterRegistration.controller";
+import { getTheaterRegistrationController } from "../controllers/theater/getTheaterRegistration.controller";
+import { getTheaterRequestsController } from "../controllers/theater/getTheaterRequests.controller";
+import { approveTheaterController } from "../controllers/theater/approveTheater.controller";
+import { getTheaterDetailsController } from "../controllers/theater/getTheaterDetails.controller";
+import { getDashboardLogsController } from "../controllers/theater/getDashboardLogs.controller";
+import { getTheatersController } from "../controllers/theater/getTheaters.controller";
+import { updateTheaterController } from "../controllers/theater/updateTheater.controller";
 
 // Theater router
 export const theaterRouter = new Hono()

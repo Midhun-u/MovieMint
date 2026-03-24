@@ -1,9 +1,9 @@
 import { Context } from "hono";
-import { sendErrorResponse } from "../utils/sendErrorResponse";
-import { TheaterModel } from "../models/theater.model";
-import { convertStringToNumber } from "../utils/convertStringToNumber";
-import { getTheaterImage } from "../services/getTheaterImage";
-import { getUser } from "../services/getUser";
+import { sendErrorResponse } from "../../utils/sendErrorResponse";
+import { TheaterModel } from "../../models/theater.model";
+import { convertStringToNumber } from "../../utils/convertStringToNumber";
+import { getTheaterImage } from "../../services/getTheaterImage";
+import { getUser } from "../../services/getUser";
 
 // Controller for getting theaters
 export const getTheatersController = sendErrorResponse(async (context: Context) => {

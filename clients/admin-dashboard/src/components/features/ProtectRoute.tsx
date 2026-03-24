@@ -14,6 +14,9 @@ const ProtectRoute = ({ children }: { children: ReactNode }) => {
   // Function for checking admin authenticated
   const handleCheckAuth = useCallback(async () => {
     const authToken = param.get("authToken");
+    if(authToken){
+      localStorage.setItem("authToken", authToken)
+    }
     const storedAuthToken = localStorage.getItem("authToken");
 
     if (!storedAuthToken && !authToken) {

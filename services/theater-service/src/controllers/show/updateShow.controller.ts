@@ -1,6 +1,6 @@
 import { Context } from "hono";
-import { sendErrorResponse } from "../utils/sendErrorResponse";
-import { ShowModel } from "../models/show.model";
+import { sendErrorResponse } from "../../utils/sendErrorResponse";
+import { ShowModel } from "../../models/show.model";
 
 // Controller for updating show
 export const updateShowController = sendErrorResponse(async (context: Context) => {

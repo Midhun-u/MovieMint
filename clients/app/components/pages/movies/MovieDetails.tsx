@@ -117,6 +117,7 @@ const MovieDetails = () => {
                     <MovieDetailsBanner
                         movieId={movieId as string}
                         showRateButton
+                        showBookButton
                     />
                     <div className="w-full flex justify-center mt-10">
                         <div className="max-[800px]:w-full px-3 w-[80%] flex flex-col gap-10">

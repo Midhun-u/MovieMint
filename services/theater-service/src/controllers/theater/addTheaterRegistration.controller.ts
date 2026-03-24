@@ -1,8 +1,8 @@
 import { Context } from "hono";
-import { sendErrorResponse } from "../utils/sendErrorResponse";
-import { TheaterBody } from "../types/theaterBody";
-import { validateTheaterRegisterBody } from "../validation/theaterRegisterBody";
-import { TheaterModel } from "../models/theater.model";
+import { sendErrorResponse } from "../../utils/sendErrorResponse";
+import { TheaterBody } from "../../types/theaterBody";
+import { validateTheaterRegisterBody } from "../../validation/theaterRegisterBody";
+import { TheaterModel } from "../../models/theater.model";
 
 // Controller for registering theater
 export const addTheatereRegisterController = sendErrorResponse(async (context: Context) => {

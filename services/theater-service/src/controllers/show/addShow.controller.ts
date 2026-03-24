@@ -1,7 +1,7 @@
 import { Context } from "hono";
-import { sendErrorResponse } from "../utils/sendErrorResponse";
-import { validateShowBody } from "../validation/showBody";
-import { ShowModel } from "../models/show.model";
+import { sendErrorResponse } from "../../utils/sendErrorResponse";
+import { validateShowBody } from "../../validation/showBody";
+import { ShowModel } from "../../models/show.model";
 
 // controller for adding show
 export const addShowController = sendErrorResponse(async (context: Context) => {

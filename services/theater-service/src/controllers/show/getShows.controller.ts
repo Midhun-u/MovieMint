@@ -1,8 +1,8 @@
 import { Context } from "hono";
-import { sendErrorResponse } from "../utils/sendErrorResponse";
-import { ShowModel } from "../models/show.model";
-import { convertStringToNumber } from "../utils/convertStringToNumber";
-import { getMovie } from "../services/getMovie";
+import { sendErrorResponse } from "../../utils/sendErrorResponse";
+import { ShowModel } from "../../models/show.model";
+import { convertStringToNumber } from "../../utils/convertStringToNumber";
+import { getMovie } from "../../services/getMovie";
 
 // Controller for getting shows
 export const getShowsController = sendErrorResponse(async (context: Context) => {

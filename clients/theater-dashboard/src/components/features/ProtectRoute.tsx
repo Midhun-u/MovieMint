@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from "react"
+import { useCallback, useEffect, useState, type ReactNode } from "react"
 import { useSearchParams } from "react-router"
 import { envVariables } from "../../utils/envVariables"
 import { getTheaterOwnerApi } from "../../api/auth"
@@ -15,10 +15,13 @@ const ProtectRoute = ({
     const [param] = useSearchParams()
     const dispatch = useDispatch()
 
-    // Function for checking admin authenticated
-    const handleCheckAuth = async () => {
+    // Function for checking theater owner authenticated
+    const handleCheckAuth = useCallback(async () => {
 
         const authToken = param.get("authToken")
+        if(authToken){
+            localStorage.setItem("authToken", authToken)
+        }
         const storedAuthToken = localStorage.getItem("authToken")
 
         if (!storedAuthToken && !authToken) {
@@ -46,11 +49,13 @@ const ProtectRoute = ({
 
         }
 
-    }
+    }, [dispatch, param])
 
     useEffect(() => {
-        handleCheckAuth()
-    }, [])
+        (() => {
+            handleCheckAuth()
+        })()
+    }, [handleCheckAuth])
 
     if (!authenticated) return null
 

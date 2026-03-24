@@ -124,6 +124,9 @@ const AddShow = () => {
 
   // Function for submitting form
   const handleSubmitForm: SubmitHandler<{ price: string }> = async (data) => {
+
+    if(!theater) return
+
     const priceNumber = parseInt(data.price || "0");
 
     if (!movie) {

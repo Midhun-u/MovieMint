@@ -1,6 +1,6 @@
 import { Context } from "hono";
-import { sendErrorResponse } from "../utils/sendErrorResponse";
-import { TheaterModel } from "../models/theater.model";
+import { sendErrorResponse } from "../../utils/sendErrorResponse";
+import { TheaterModel } from "../../models/theater.model";
 
 // Controller for getting dashboard logs
 export const getDashboardLogsController = sendErrorResponse(async (context: Context) => {

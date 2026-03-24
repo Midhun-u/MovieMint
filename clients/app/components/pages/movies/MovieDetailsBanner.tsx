@@ -37,9 +37,10 @@ const buttonTextClassName = "text-xs font-medium"
 interface MovieDetailsBannerProps {
     movieId: string
     showRateButton: boolean
+    showBookButton: boolean
 }
 
-const MovieDetailsBanner = ({ movieId, showRateButton }: MovieDetailsBannerProps) => {
+const MovieDetailsBanner = ({ movieId, showRateButton, showBookButton }: MovieDetailsBannerProps) => {
 
     const router = useRouter()
     const { movie } = useAppSelector(state => state.movie)
@@ -304,11 +305,20 @@ const MovieDetailsBanner = ({ movieId, showRateButton }: MovieDetailsBannerProps
                                     movie.status === "SHOWING"
                                         ?
                                         <div className="flex flex-col gap-2">
-                                            <Button className="mt-2.5">
-                                                <TicketIcon
-                                                />
-                                                <span className={buttonTextClassName}>Book Tickets</span>
-                                            </Button>
+                                            {
+                                                showBookButton
+                                                    ?
+                                                    <Button
+                                                        className="mt-2.5"
+                                                        onClick={() => router.push(`/movies/book/${movieId}`)}
+                                                    >
+                                                        <TicketIcon
+                                                        />
+                                                        <span className={buttonTextClassName}>Book Tickets</span>
+                                                    </Button>
+                                                    :
+                                                    null
+                                            }
                                             <Button
                                                 className={buttonClassName}
                                                 onClick={() => setShowTrailerScreen(true)}

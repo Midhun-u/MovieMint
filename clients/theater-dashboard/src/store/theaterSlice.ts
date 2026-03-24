@@ -1,37 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit"
+import type { Theater } from "../types/theater"
 
-const initialState = {
+type InitialState = {
+    loading: boolean
+    theater: Theater | null
+    errorMessage: string
+}
+
+const initialState: InitialState = {
     loading: false,
-    theater: {
-        id: "",
-        theater_name: "",
-        theater_location: "",
-        formats: [],
-        allow_cancellation: null,
-        layout_number: 0,
-        sets_number: 0,
-        rows_number: 0,
-        seats_number: 0,
-        owner_id: "",
-        status: "",
-        theater_owner: {
-            id: "",
-            firstname: "",
-            lastname: "",
-            email: "",
-            auth_type: "",
-            role: "",
-            profile_image: {
-                image_id: "",
-                image_url: ""
-            }
-        },
-        theater_image: {
-            id: "",
-            image_url: ""
-        },
-        createdAt: ""
-    },
+    theater: null,
     errorMessage: ""
 }
 
@@ -42,12 +20,12 @@ const theaterSlice = createSlice({
 
         theaterRequest: (state) => {
             state.loading = true
-            state.theater = initialState.theater
+            state.theater = null
             state.errorMessage = ""
         },
         theaterSuccess: (state, action) => {
             state.loading = false
-            state.theater = action.payload.theater || initialState.theater
+            state.theater = action.payload.theater || null
             state.errorMessage = ""
         },
         theaterFailed: (state, action) => {

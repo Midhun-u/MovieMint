@@ -62,7 +62,7 @@ const showSlice = createSlice({
         showSuccess: (state, action) => {
             state.loading = false
             state.show = action.payload?.show? action.payload.show: null
-            if (state.shows.length <= 0 || action.payload?.page === 1) {
+            if (state.shows.length <= 0 || state.pagination.page === 1) {
                 state.shows = action.payload?.shows? [...action.payload.shows]: []
             } else if(action.payload?.shows?.length){
                 state.shows = [...state.shows, ...action.payload.shows]
