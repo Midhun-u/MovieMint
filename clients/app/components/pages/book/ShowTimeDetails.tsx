@@ -1,9 +1,13 @@
-import { useEffect, useMemo, useState } from "react"
+import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react"
 
-const ShowTimeDetails = () => {
+interface ShowTimeDetailsProps{
+    selectedDay: number
+    setSelectedDay: Dispatch<SetStateAction<number>>
+}
+
+const ShowTimeDetails = ({selectedDay, setSelectedDay}: ShowTimeDetailsProps) => {
 
     const date = useMemo(() => new Date(), [])
-    const [selectedDay, setSelectedDay] = useState<number>(0)
     const totalDaysInCurrentMonth = new Date(
         date.getFullYear(),
         date.getMonth() + 1,
@@ -12,7 +16,7 @@ const ShowTimeDetails = () => {
 
     useEffect(() => {
         setSelectedDay(date.getDate())
-    }, [date])
+    }, [date, setSelectedDay])
 
     return (
         <div className="flex gap-3.75 w-full overflow-x-scroll">

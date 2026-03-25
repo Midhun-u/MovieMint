@@ -8,6 +8,7 @@ import { bannerReducer } from './bannerSlice'
 import { savedListReducer } from './savedListSlice'
 import { rateReducer } from './rateSlice'
 import { notificationReducer } from './notificationSlice'
+import { showReducer } from './showSlice'
 
 export const store = () => {
 
@@ -21,7 +22,8 @@ export const store = () => {
             banner: bannerReducer,
             savedList: savedListReducer,
             rate: rateReducer,
-            notification: notificationReducer
+            notification: notificationReducer,
+            show: showReducer
         }
     })
 

@@ -33,7 +33,7 @@ const AddShow = () => {
   const { movie, loading: movieLoading } = useAppSelector(
     (state) => state.movie,
   );
-  const {loading: showLoading} = useAppSelector(state => state.show)
+  const { loading: showLoading } = useAppSelector(state => state.show)
   const { theme } = useAppSelector((state) => state.theme);
   const { theater } = useAppSelector((state) => state.theater);
   const date = useMemo(() => new Date(), []);
@@ -42,7 +42,7 @@ const AddShow = () => {
     date.getMonth() + 1,
     0,
   ).getDate();
-  const [selectedDay, setSelectedDay] = useState<number>(date.getDate() + 1);
+  const [selectedDays, setSelectedDays] = useState<Array<number>>([]);
   const [selectedTimes, setSelectedTime] = useState<
     Array<{ hour: number, minutes: number }>
   >([{ hour: 4, minutes: 0 }]);
@@ -125,7 +125,7 @@ const AddShow = () => {
   // Function for submitting form
   const handleSubmitForm: SubmitHandler<{ price: string }> = async (data) => {
 
-    if(!theater) return
+    if (!theater) return
 
     const priceNumber = parseInt(data.price || "0");
 
@@ -140,53 +140,44 @@ const AddShow = () => {
       );
     }
 
-    if (!selectedDay || !selectedTimes.length) {
+    if (!selectedDays.length || !selectedTimes.length) {
       toastContext?.triggerToastMessage("Select proper day and time", "ERROR");
       return;
     }
-   
+
     // Checking if any movie format supports in theater
     const theaterFormats = new Set(theater.formats as Array<string>)
     const isSupportFormat = movie.formats.some((format) => theaterFormats.has(format))
-    
-    if(!isSupportFormat){
+
+    if (!isSupportFormat) {
       toastContext?.triggerToastMessage("Movie is not support in theater", "ERROR")
       return
     }
 
     dispatch(showRequest())
-    const showsResult = await Promise.all(
-      selectedTimes.map(async (selectedTime) => {
 
-        const result = await createShowApi({
+    const showsResults = await Promise.all(selectedDays.map(async (selectedDay) => {
+     
+      const result = await Promise.all(selectedTimes.map(async (selectedTime) => {
+
+        const apiResult = await createShowApi({
           theaterId: theater.id,
-          movieId: movie._id as string,
-          price: priceNumber,
+          movieId: movieId as string,
+          day: selectedDay,
           hour: selectedTime.hour,
           minutes: selectedTime.minutes,
-          startDay: selectedDay,
-        });
+          price: priceNumber
+        })
 
-        if(result.success){
-          return {success: true, show: result.show}
-        }else{
-          return {success: false, show: {}, errorMessage: result.errorMessage}
-        }
-        
-      }) || [],
-    );
+        return {success: apiResult?.success, errorMessage: apiResult?.error || ""}
 
-    // Checking if any result failed
-    if(showsResult.some((result) => !result.success)){
-      dispatch(showFailed({errorMessage: showsResult.find((result) => result.errorMessage)}))
-      toastContext?.triggerToastMessage("Couldn't create shows", "ERROR")
-    }else{
+      }) || [])
 
-      dispatch(showSuccess({shows: showsResult.map((result) => result.show)}))
-      toastContext?.triggerToastMessage("Shows are created", "SUCCESS")
+      return result
 
-      navigate(-1)
-    }
+    }) || [])
+
+    console.log(showsResults)
 
   };
 
@@ -199,18 +190,19 @@ const AddShow = () => {
   useEffect(() => {
     (() => {
       handleGetAvailableTime();
+      setSelectedDays(pre => [...pre, date.getDate() + 1])
     })();
     return () => {
       dispatch(clearState())
     }
-  }, [handleGetAvailableTime, dispatch]);
+  }, [handleGetAvailableTime, dispatch, date]);
 
   return movie ? (
     <div className={style.container}>
       <SelectedMovieDetails />
       <div className={style["date-container"]}>
         <div className={style["section-title"]}>
-          <FormLabel title="Starting Day" />
+          <FormLabel title="Days" />
         </div>
         <div className={style["date-details"]}>
           <div className={style.month}>
@@ -223,11 +215,19 @@ const AddShow = () => {
                 date.getDate() + index + 1 <= totalDaysInCurrentMonth ? (
                   <div
                     className={
-                      selectedDay === date.getDate() + index + 1
+                      selectedDays.includes(date.getDate() + index + 1)
                         ? style["active-day"]
                         : style["day"]
                     }
-                    onClick={() => setSelectedDay(date.getDate() + index + 1)}
+                    onClick={() => setSelectedDays(pre => {
+                      const day = date.getDate() + index + 1
+                      if (pre.includes(day)) {
+                        const filteredDays = pre.filter(selectedDay => selectedDay !== day)
+                        return filteredDays
+                      } else {
+                        return [...pre, date.getDate() + index + 1]
+                      }
+                    })}
                     key={index}
                   >
                     <p>{date.getDate() + index + 1}</p>

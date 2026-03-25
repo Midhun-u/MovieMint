@@ -437,7 +437,7 @@ const AuthForm = ({ formType }: FormProps) => {
                                         ?
                                         <>Sign With Google</>
                                         :
-                                        <>Logn With Google</>
+                                        <>Login With Google</>
                                 }
                             </span>
                         </Button>

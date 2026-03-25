@@ -23,9 +23,12 @@ const CheckTheaterAvailability = ({ children }: CheckTheaterAvailabilityProps) =
     // Function for getting theater
     const handleGetTheater = useCallback(async () => {
 
+        const authToken = localStorage.getItem("authToken")
+        if(!authToken) return
+
         dispatch(theaterRequest())
 
-        const result = await getTheaterApi()
+        const result = await getTheaterApi(authToken)
 
         if (result.success) {
             dispatch(theaterSuccess({ theater: result.theater }))

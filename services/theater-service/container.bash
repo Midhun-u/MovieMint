@@ -6,4 +6,4 @@ echo "Startes to building container"
 sudo docker build -t $server_name ./
 
 echo "Container starts to run"
-sudo docker run --network=host $server_name
+sudo docker run --network=host --name=$server_name $server_name

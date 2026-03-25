@@ -77,7 +77,7 @@ const Header = () => {
           className={style["option-menu-section"]}
           onClick={() => setShowOptionMenu(!showOptionMenu)}
         >
-          {theaterOwner.profile_image?.image_url ? (
+          {theaterOwner?.profile_image?.image_url ? (
             <img
               src={theaterOwner.profile_image.image_url}
               className={style["profile-image"]}

@@ -1,10 +1,8 @@
 import { handleError } from "../utils/handleError";
 import { theaterAxiosInstance } from "./axiosInstance";
 
-const authToken = localStorage.getItem("authToken")
-
 // Api for fetching theater
-export const getTheaterApi = handleError(async () => {
+export const getTheaterApi = handleError(async (authToken: string) => {
 
     const result = await theaterAxiosInstance.get("/get-theater-registration", {
         headers: {
@@ -17,7 +15,7 @@ export const getTheaterApi = handleError(async () => {
 })
 
 // Api for updating theater
-export const updateTheaterApi = handleError(async (theaterId: string, updatedBody: object = {}) => {
+export const updateTheaterApi = handleError(async (theaterId: string, updatedBody: object = {}, authToken: string) => {
 
     const result = await theaterAxiosInstance.patch(`/update-theater/${theaterId}`, updatedBody, {
         headers: {

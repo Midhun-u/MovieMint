@@ -2,6 +2,7 @@ import { Context } from "hono";
 import { sendErrorResponse } from "../../utils/sendErrorResponse";
 import { convertStringToNumber } from "../../utils/convertStringToNumber";
 import { ShowModel } from "../../models/show.model";
+import { getTheaterImage } from "../../services/getTheaterImage";
 
 // Controller for getting all theaters shows
 export const getAllTheatersShowsController = sendErrorResponse(async (context: Context) => {
@@ -11,11 +12,19 @@ export const getAllTheatersShowsController = sendErrorResponse(async (context: C
     const pageNumber = convertStringToNumber(page)
     const limitNumber = convertStringToNumber(limit)
 
-    // Fetching theaters
-    
-
     const shows = await ShowModel.getAllTheatersShowsByMovieId(movieId, pageNumber, limitNumber)
 
-    return context.json({success: true, shows: shows, statusCode: 200})
+    // Fetching theater image
+    const showsDetails = await Promise.all(shows.map(async (show: any) => {
+
+        const imageResult = await getTheaterImage(show._id)
+        return {
+            ...show,
+            theater_image: imageResult?.data || {id: "", image_url: ""}
+        }
+
+    }) || [])
+
+    return context.json({success: true, shows: showsDetails.length? showsDetails: shows, statusCode: 200})
 
 }, "getAllTheatersShowsController")

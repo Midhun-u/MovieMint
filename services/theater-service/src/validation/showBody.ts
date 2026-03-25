@@ -12,7 +12,7 @@ export const validateShowBody = (body: Omit<ShowBody, "status">): { success: boo
             price: zod.number().min(1).nonnegative().nonoptional(),
             hour: zod.number().min(1).nonnegative().nonoptional(),
             minutes: zod.number().nonnegative().nonnegative(),
-            startDay: zod.number().nonnegative().nonoptional()
+            day: zod.number().nonnegative().nonoptional()
         })
 
         const fields = showBodyObject.parse(body)

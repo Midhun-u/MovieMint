@@ -16,13 +16,14 @@ export const addShowController = sendErrorResponse(async (context: Context) => {
     }
 
     // Checking if show already exists
-    const show = await ShowModel.getShowsByMovieIdAndTheaterIdWithTime(
-        validateBody.fields.movieId,
-        validateBody.fields.theaterId, 
-        validateBody.fields.startDay,
-        validateBody.fields.hour,
-        validateBody.fields.minutes
-    )
+    const show = await ShowModel.getShowsByMovieIdAndTheaterIdWithTime({
+        movieId: validateBody.fields.movieId,
+        theaterId: validateBody.fields.theaterId,
+        day: validateBody.fields.day,
+        hour: validateBody.fields.hour,
+        month: new Date().getMonth(),
+        year: new Date().getFullYear()
+    })
     
     if(show){
         context.status(409)

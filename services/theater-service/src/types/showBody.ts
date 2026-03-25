@@ -4,5 +4,5 @@ export type ShowBody = {
     price: number
     hour: number
     minutes: number
-    startDay: number
+    day: number
 }

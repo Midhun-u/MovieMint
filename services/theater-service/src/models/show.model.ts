@@ -9,19 +9,17 @@ export const ShowModel = {
         price: number,
         hour: number,
         minutes: number,
-        startDay: number
+        day: number
     }) => {
 
         const newShow = await Show.create({
             movie_id: data.movieId,
             theater_id: data.theaterId,
             price: data.price,
-            show_time: {
-                hour: data.hour,
-                minutes: data.minutes,
-                start_day: data.startDay
-            },
-            status: "SHOWING"
+            hour: data.hour,
+            day: data.day,
+            status: "SHOWING",
+            minutes: data.minutes
         })
 
         return newShow
@@ -46,14 +44,22 @@ export const ShowModel = {
 
     },
 
-    getShowsByMovieIdAndTheaterIdWithTime: async (movieId: string, theaterId: string, startDay: number, hour: number, minutes: number) => {
+    getShowsByMovieIdAndTheaterIdWithTime: async (data: {
+        movieId: string
+        theaterId: string
+        day: number
+        hour: number
+        year: number
+        month: number
+    }) => {
 
         const show = await Show.findOne({
-            movie_id: movieId,
-            theater_id: theaterId,
-            "show_time.start_day": startDay,
-            "show_time.hour": hour,
-            "show_time.minutes": minutes
+            movie_id: data.movieId,
+            theater_id: data.theaterId,
+            day: data.day,
+            hour: data.hour,
+            year: data.year,
+            month: data.month
         })
 
         return show
@@ -76,50 +82,7 @@ export const ShowModel = {
 
     getAllTheatersShowsByMovieId: async (movieId: string, page: number, limit: number) => {
 
-        const shows = await Show.aggregate([
-            {
-                $match: {
-                    movie_id: movieId,
-                    status: "SHOWING"
-                }
-            },
-            {
-                $project: {
-                    theater_id: 1,
-                    show_time: 1,
-                    price: 1,
-                    status: 1
-                }
-            },
-            {
-                $sort: {
-                    theater_id: 1,
-                    "show_time.year": 1,
-                    "show_time.month": 1,
-                    "show_time.start_day": 1,
-                    "show_time.hour": 1,
-                    "show_time.minutes": 1
-                }
-            }, 
-            {
-                $group: {
-                    _id: "$theater_id",
-                    shows: {
-                        $push: {
-                            price: "$price",
-                            show_time: "$show_time",
-                            status: "$status"
-                        }
-                    },
-                }
-            },
-            {
-                $skip: (page - 1) * limit
-            },
-            {
-                $limit: limit
-            },
-        ])
+        const shows = await Show.find()
 
         return shows
 

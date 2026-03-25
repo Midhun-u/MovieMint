@@ -1,29 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-
-type Movie = {
-  _id: string;
-  title: string;
-  language: string;
-  certificate: string;
-  categories: Array<string>;
-  status: "SHOWING" | "NOT_SHOWING" | "PENDING";
-  poster: {
-    id: string;
-    image_url: string;
-  };
-  formats: Array<string>
-  duration: {
-    hour: number
-    minutes: number
-    seconds: number
-  }
-}
+import type { MovieData } from "../types/movie";
 
 type InitialState = {
   loading: boolean;
-  movie: Movie | null
+  movie: MovieData | null
   errorMessage: string;
-  movies: Movie[]
+  movies: MovieData[]
   pagination: {
     page: number;
     limit: number;

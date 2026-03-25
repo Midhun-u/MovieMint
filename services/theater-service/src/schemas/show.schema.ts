@@ -17,33 +17,30 @@ const showSchema = new Schema({
     },
     booked_seats: {
         type: Schema.Types.Array,
+        default: [],
         required: true,
-        default: []
     },
-    show_time: {
-        year: {
-           type: Schema.Types.Number,
-           required: true,
-           default: new Date().getFullYear()
-        },
-        month: {
-            type: Schema.Types.Number,
-            required: true,
-            default: new Date().getMonth()
-        },
-        start_day: {
-            type: Schema.Types.Number,
-            required: true,
-        },
-        hour: {
-            type: Schema.Types.Number,
-            required: true
-        },
-        minutes: {
-            type: Schema.Types.Number,
-            required: true
-        }
-
+    year: {
+        type: Schema.Types.Number,
+        required: true,
+        default: new Date().getFullYear(),
+    },
+    month: {
+        type: Schema.Types.Number,
+        required: true,
+        default: new Date().getMonth(),
+    },
+    day: {
+        type: Schema.Types.Number,
+        required: true,
+    },
+    hour: {
+        type: Schema.Types.Number,
+        required: true
+    },
+    minutes: {
+        type: Schema.Types.Number,
+        required: true
     },
     status: {
         type: Schema.Types.String,
@@ -51,6 +48,6 @@ const showSchema = new Schema({
         default: "AVAILABLE",
         required: true
     }
-}, {timestamps: true})
+}, { timestamps: true })
 
 export const Show = model("Show", showSchema)

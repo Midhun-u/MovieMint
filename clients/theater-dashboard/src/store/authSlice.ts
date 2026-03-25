@@ -1,21 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
+import type { TheaterOwner } from "../types/theaterOwner";
 
-const initialState = {
+type InitialState = {
+    loading: boolean
+    errorMessage: string
+    theaterOwner: TheaterOwner | null
+
+}
+
+const initialState: InitialState = {
     loading: false,
     errorMessage: "",
-    theaterOwner: {
-        id: "",
-        firstname: "",
-        lastname: "",
-        email: "",
-        role: "",
-        auth_type: "",
-        profile_image: {
-            image_url: "",
-            id: "",
-            user_id: ""
-        }
-    }
+    theaterOwner: null
 }
 
 const authSlice = createSlice({
@@ -24,11 +20,9 @@ const authSlice = createSlice({
     reducers: {
 
         authRequest: (state) => {
-
             state.loading = true
-            state.theaterOwner = initialState.theaterOwner,
-            state.errorMessage = initialState.errorMessage
-
+            state.theaterOwner = null
+            state.errorMessage = ""
         },
 
         authSuccess: (state, action) => {

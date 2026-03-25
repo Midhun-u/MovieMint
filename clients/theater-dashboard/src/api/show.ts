@@ -10,7 +10,7 @@ export const createShowApi = handleError(async (data: {
   price: number,
   hour: number,
   minutes: number,
-  startDay: number
+  day: number
 }) => {
 
   const result = await theaterShowAxiosInstance.post("/add-show", data, {

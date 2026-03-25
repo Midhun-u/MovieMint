@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-server_name="notification_service"
+server_name="bookings_service"
 
 echo "Starts to building container"
 sudo docker build -t $server_name ./
