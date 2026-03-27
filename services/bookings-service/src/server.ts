@@ -4,6 +4,7 @@ import { envVariables } from './utils/envVariables.js'
 import {cors} from 'hono/cors'
 import {logger} from 'hono/logger'
 import { connectDatabase } from './config/db.js'
+import { checkoutRouter } from './routes/checkout.route.js'
 
 // App instance
 const app = new Hono({strict: false})
@@ -15,6 +16,9 @@ app.use(cors({
   credentials: true
 }))
 app.use(logger())
+
+// Routes
+app.route("/api/v1/checkout", checkoutRouter)
 
 
 serve({

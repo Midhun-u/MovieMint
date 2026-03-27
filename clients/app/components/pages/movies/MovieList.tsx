@@ -74,7 +74,7 @@ const MovieList = ({movieStatus, movieType}: MovieListProps) => {
             }
         })()
 
-    }, [handleFetchMovies, pagination.page, isRender])
+    }, [handleFetchMovies, isRender])
 
     useEffect(() => {
 

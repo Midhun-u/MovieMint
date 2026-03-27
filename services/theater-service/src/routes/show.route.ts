@@ -25,4 +25,4 @@ showRouter.get("/get-show/:showId", getShowController)
 showRouter.patch("/update-show/:showId", updateShowController)
 
 // Route for all theater shows
-showRouter.get("/get-all-theaters-shows/:movieId", getAllTheatersShowsController)
+showRouter.get("/get-all-theaters-shows/:movieId/:day", getAllTheatersShowsController)

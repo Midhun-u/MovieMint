@@ -18,7 +18,7 @@ interface ShowCardProps {
         hour: number
         minutes: number
         month: number
-        startDay: number
+        day: number
         year: number
     }
     status: "SHOWING" | "NOT_SHOWING"
@@ -26,7 +26,7 @@ interface ShowCardProps {
 
 const ShowCard = ({ moviePoster, movieId, movieTitle, movieCategories, createdAt, showTime, status, id}: ShowCardProps) => {
 
-    const date = new Date(showTime.year, showTime.month, showTime.startDay)
+    const date = new Date(showTime.year, showTime.month, showTime.day)
     const navigate = useNavigate()
 
     return (

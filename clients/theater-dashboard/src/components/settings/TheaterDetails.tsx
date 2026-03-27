@@ -42,7 +42,8 @@ const TheaterDetails = () => {
     // Function for updating theater
     const handleUpdateTheater: SubmitHandler<Inputs> = async (data) => {
 
-        if (!theater) return
+        const authToken = localStorage.getItem("authToken")
+        if (!theater || !authToken) return
 
         dispatch(theaterRequest())
 
@@ -65,7 +66,7 @@ const TheaterDetails = () => {
             theater_location: data.theaterLocation,
             formats: selectedFormats,
             allow_cancellation: allowCancellation
-        })
+        }, authToken)
 
         if (result.success) {
             dispatch(theaterSuccess({

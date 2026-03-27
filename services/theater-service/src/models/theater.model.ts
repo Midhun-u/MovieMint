@@ -38,9 +38,15 @@ export const TheaterModel = {
 
     },
 
-    getTheaterById: async (theaterId: string) => {
+    getTheaterById: async (theaterId: string, attributes: Array<string> = []) => {
 
-        const theater = await Theater.findByPk(theaterId)
+        const attributesCondition = attributes.length ? {
+            attributes: attributes
+        } : {}
+
+        const theater = await Theater.findByPk(theaterId, {
+            ...attributesCondition
+        })
         return theater?.dataValues
 
     },
@@ -130,11 +136,11 @@ export const TheaterModel = {
             }
         } : {}
 
-        const theaterNameCondition = theaterName? {
+        const theaterNameCondition = theaterName ? {
             theater_name: {
                 [Op.iLike]: `${theaterName}%`
             }
-        }: {}
+        } : {}
 
         const theaters = await Theater.findAll({
             where: {

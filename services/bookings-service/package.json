@@ -10,7 +10,8 @@
     "@hono/node-server": "^1.19.11",
     "dotenv": "^17.3.1",
     "hono": "^4.12.9",
-    "mongoose": "^9.3.2"
+    "mongoose": "^9.3.2",
+    "stripe": "^21.0.1"
   },
   "devDependencies": {
     "@types/node": "^20.11.17",

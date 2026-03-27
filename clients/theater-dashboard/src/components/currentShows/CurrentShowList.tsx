@@ -104,7 +104,13 @@ const CurrentShowList = () => {
                                 movieTitle={show.movie.title}
                                 movieCategories={show.movie.categories}
                                 createdAt={show.createdAt}
-                                showTime={{ ...show.show_time, startDay: show.show_time.start_day }}
+                                showTime={{
+                                    year: show.year,
+                                    month: show.month,
+                                    day: show.day,
+                                    hour: show.hour,
+                                    minutes: show.minutes
+                                }}
                                 status={show.status}
                                 movieId={show.movie_id}
                             />

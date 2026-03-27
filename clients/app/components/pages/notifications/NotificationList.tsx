@@ -15,7 +15,7 @@ const NotificationList = () => {
     const { pagination, notifications, loading } = useAppSelector(state => state.notification)
     const [hasMore, setHasMore] = useState<boolean>(false)
     const { isIntersecting, ref } = useObserver<HTMLDivElement>({ threshold: 0.5 })
-    const [isRender, setIsRender] = useState<boolean>(false)
+    const [isRendered, setIsRendered] = useState<boolean>(false)
     const dispatch = useAppDispatch()
     const toastContext = useContext(ToastProvider)
 
@@ -61,12 +61,12 @@ const NotificationList = () => {
 
     useEffect(() => {
         (() => {
-            setIsRender(true)
-            if (isRender) {
+            setIsRendered(true)
+            if (isRendered) {
                 handleFetchNotifications()
             }
         })()
-    }, [handleFetchNotifications, pagination.page, isRender])
+    }, [handleFetchNotifications, pagination.page, isRendered])
 
     useEffect(() => {
         if (!isIntersecting || loading || !hasMore) return;

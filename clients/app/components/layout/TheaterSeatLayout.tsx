@@ -1,6 +1,7 @@
 import { assets } from "@/public/assets/assets"
+import { SelectedSeat } from "@/types/selectedSeat"
 import Image from "next/image"
-import { useState } from "react"
+import { Dispatch, SetStateAction } from "react"
 
 interface TheaterSeatLayoutProps {
     preview: boolean
@@ -8,18 +9,25 @@ interface TheaterSeatLayoutProps {
     setsNumber: number
     rowNumber: number
     seatNumber: number
+    setSelectedSeats?: Dispatch<SetStateAction<Array<SelectedSeat>>>
+    selectedSeats?: Array<SelectedSeat>
+    limit?: number
+    selectedSeatsLength?: number
 }
 
-const TheaterSeatLayout = ({ preview, layoutNumber = 0, setsNumber = 0, rowNumber = 0, seatNumber = 0 }: TheaterSeatLayoutProps) => {
+const TheaterSeatLayout = ({
+    preview,
+    layoutNumber = 0,
+    setsNumber = 0,
+    rowNumber = 0,
+    seatNumber = 0,
+    setSelectedSeats,
+    selectedSeats,
+    selectedSeatsLength,
+    limit
+}: TheaterSeatLayoutProps) => {
 
-    const [selectedSeat, setSelectedSeat] = useState<Array<{
-        layoutNumber: number,
-        setNumber: number,
-        rowNumber: number,
-        seatNumber: number
-    }>>([])
-
-    // Function for highlighting selected seat
+    // Function for highlighting selected seats
     const isSeatSelected = ({
         layoutIndex,
         seatIndex,
@@ -27,26 +35,63 @@ const TheaterSeatLayout = ({ preview, layoutNumber = 0, setsNumber = 0, rowNumbe
         setIndex
     }: { layoutIndex: number, setIndex: number, rowIndex: number, seatIndex: number }) => {
 
-        const isSelected = selectedSeat.some((selectedSeatDetails) => {
-            if (
-                selectedSeatDetails.layoutNumber === (layoutIndex + 1 )&&
-                selectedSeatDetails.setNumber === (setIndex + 1) &&
-                selectedSeatDetails.rowNumber === (rowIndex + 1 )&&
-                selectedSeatDetails.seatNumber === (seatIndex + 1)
-            )
-                return true
-        })
-        
-        if(isSelected) return true
-        else return false
+        if (selectedSeats) {
+
+            const isSelected = selectedSeats.some((selectedSeatDetails) => {
+                if (
+                    selectedSeatDetails.layoutNumber === (layoutIndex + 1) &&
+                    selectedSeatDetails.setNumber === (setIndex + 1) &&
+                    selectedSeatDetails.rowNumber === (rowIndex + 1) &&
+                    selectedSeatDetails.seatNumber === (seatIndex + 1)
+                )
+                    return true
+            })
+
+            return isSelected
+        }
+
+    }
+
+    // Function for selecting seats
+    const handleSelectSeats = ({
+        layoutIndex,
+        rowIndex,
+        setIndex,
+        seatIndex
+    }: {
+        layoutIndex: number
+        rowIndex: number
+        setIndex: number
+        seatIndex: number
+    }) => {
+
+        if (!setSelectedSeats || !limit || !selectedSeats || selectedSeatsLength === undefined) return
+
+        if (selectedSeats.length <= limit - 1) {
+            setSelectedSeats(pre => [...pre, {
+                layoutNumber: layoutIndex + 1,
+                setNumber: setIndex + 1,
+                rowNumber: rowIndex + 1,
+                seatNumber: seatIndex + 1
+            }])
+        } else if (selectedSeats) {
+            const slicedSeats = selectedSeats.slice(0, -1)
+            setSelectedSeats([...slicedSeats, {
+                layoutNumber: layoutIndex + 1,
+                setNumber: setIndex + 1,
+                rowNumber: rowIndex + 1,
+                seatNumber: seatIndex + 1
+            }])
+        }
+
 
     }
 
     return (
 
-        <div className="w-full">
+        <div className="w-full flex flex-col items-center">
             {/* Theater Screen */}
-            <div className="w-full flex shrink-0 justify-center overflow-auto">
+            <div className="w-full justify-center flex shrink-0 overflow-auto">
                 <Image
                     src={assets.theaterScreen}
                     width={300}
@@ -56,7 +101,7 @@ const TheaterSeatLayout = ({ preview, layoutNumber = 0, setsNumber = 0, rowNumbe
                 />
             </div>
             {/* Seat section */}
-            <div className="w-full mt-7 flex lg:justify-center gap-10 overflow-auto">
+            <div className="min-[900px]:max-w-175 w-full mt-7 flex gap-10 overflow-x-scroll">
                 {
                     // Layouts
                     Array(layoutNumber).fill(null).map((_, layoutIndex) => (
@@ -82,19 +127,18 @@ const TheaterSeatLayout = ({ preview, layoutNumber = 0, setsNumber = 0, rowNumbe
                                                         key={rowIndex}
                                                     >
                                                         {
+                                                            // Seats
                                                             Array(seatNumber).fill(null).map((_, seatIndex) => (
 
                                                                 <div
                                                                     key={seatIndex}
-                                                                    className={`${!preview && isSeatSelected({layoutIndex: layoutIndex, seatIndex: seatIndex, rowIndex: rowIndex, setIndex: setIndex})? "bg-primary-color border-none text-dark-foreground-color": ""} w-8 h-8 bg-foreground-color border-2 border-foreground-theme-color/30 rounded-sm cursor-pointer flex justify-center items-center text-xs font-medium transition-all duration-200`}
-                                                                    onClick={() =>
-                                                                        setSelectedSeat((pre) => [...pre, {
-                                                                            layoutNumber: layoutIndex + 1,
-                                                                            setNumber: setIndex + 1,
-                                                                            rowNumber: rowIndex + 1,
-                                                                            seatNumber: seatIndex + 1
-                                                                        }])
-                                                                    }
+                                                                    className={`${!preview && isSeatSelected({ layoutIndex: layoutIndex, seatIndex: seatIndex, rowIndex: rowIndex, setIndex: setIndex }) ? "bg-primary-color border-none text-dark-foreground-color" : ""} w-8 h-8 bg-foreground-color border-2 border-foreground-theme-color/30 rounded-sm cursor-pointer flex justify-center items-center text-xs font-medium transition-all duration-200`}
+                                                                    onClick={() => handleSelectSeats({
+                                                                        layoutIndex: layoutIndex,
+                                                                        rowIndex: rowIndex,
+                                                                        setIndex: setIndex,
+                                                                        seatIndex: seatIndex
+                                                                    })}
                                                                 >
                                                                     {`S${seatIndex + 1}`}
                                                                 </div>

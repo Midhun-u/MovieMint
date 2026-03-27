@@ -1,31 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-
-type Show = {
-    _id: string
-    theater_id: string
-    movie_id: string
-    price: number
-    show_time: {
-        start_day: number
-        hour: number
-        minutes: number
-        year: number
-        month: number
-    }
-    status: "SHOWING" | "NOT_SHOWING"
-    createdAt: string
-    movie: {
-        title: string
-        language: string
-        certificate: string
-        categories: Array<string>
-        formats: Array<string>
-        poster: {
-            id: string
-            image_url: string
-        }
-    }
-}
+import type { Show } from "../types/show";
 
 type InitialState = {
     loading: boolean

@@ -19,7 +19,7 @@ const initialState: InitialState = {
     errorMessage: "",
     pagination: {
         page: 1,
-        limit: 1
+        limit: 10
     }
 }
 
@@ -31,28 +31,37 @@ const showSlice = createSlice({
         showRequest: (state) => {
             state.loading = true
             state.errorMessage = ""
-
         },
 
         showSuccess: (state, action) => {
             state.loading = false
-            state.show = action.payload?.show? action.payload.show: null
-            if(state.shows.length <= 0 || state.pagination.page === 1){
-                state.shows = action.payload.shows?.length? action.payload.shows: []
-            }else if(action.payload.shows?.length){
+            state.show = action.payload?.show ? action.payload.show : null
+            if (state.shows.length <= 0 || state.pagination.page === 1 && action.payload.shows) {
+                state.shows = action.payload.shows
+            } else if (action.payload.shows?.length) {
                 state.shows = [...state.shows, ...action.payload.shows]
             }
         },
 
-        showFailed: (state, action) => {
+        clearShowState: (state) => {
+            state.loading = false
+            state.show = null
+            state.shows = []
+            state.errorMessage = ""
+            state.pagination = {...state.pagination, page: 1}
+        },
 
+        incrementPage: (state) => {
+            state.pagination.page = state.pagination.page + 1
+        },
+
+        showFailed: (state, action) => {
             state.loading = false
             state.errorMessage = action.payload.errorMessage || ""
-
         }
 
     }
 })
 
-export const {showSuccess, showFailed, showRequest} = showSlice.actions
+export const { showSuccess, showFailed, showRequest, incrementPage, clearShowState } = showSlice.actions
 export const showReducer = showSlice.reducer

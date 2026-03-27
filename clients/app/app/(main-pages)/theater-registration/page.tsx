@@ -1,6 +1,6 @@
 'use client'
 
-import { getTheaterApi } from "@/api/theater"
+import { getTheaterDetailsApi } from "@/api/theater"
 import Authentication from "@/components/features/Authentication"
 import TheaterRegistrationForm from "@/components/form/TheaterRegistrationForm"
 import TheaterRegistrationDetails from "@/components/pages/theaterRegistration/TheaterRegistrationDetails"
@@ -20,7 +20,7 @@ const TheaterRegistrationPage = () => {
         const authToken = localStorage.getItem('authToken') || ""
 
         dispatch(theaterRequest())
-        const result = await getTheaterApi(authToken)
+        const result = await getTheaterDetailsApi(authToken)
         if (result.success) {
             dispatch(theaterSuccess({ theater: result.theater }))
         } else {

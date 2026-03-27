@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react"
+import { Dispatch, SetStateAction, useEffect, useMemo } from "react"
 
 interface ShowTimeDetailsProps{
     selectedDay: number

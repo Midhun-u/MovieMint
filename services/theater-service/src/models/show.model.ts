@@ -60,7 +60,7 @@ export const ShowModel = {
             hour: data.hour,
             year: data.year,
             month: data.month
-        })
+        }).lean()
 
         return show
 
@@ -80,9 +80,62 @@ export const ShowModel = {
 
     },
 
-    getAllTheatersShowsByMovieId: async (movieId: string, page: number, limit: number) => {
+    getAllTheatersShowsByMovieId: async (movieId: string, day: number, month: number, year: number, page: number, limit: number) => {
 
-        const shows = await Show.find()
+        const shows = await Show.aggregate([
+            {
+                $match: {
+                    movie_id: movieId,
+                    day: day,
+                    status: "SHOWING",
+                    month: month,
+                    year: year,
+                    // hour: {
+                    //     $gte: new Date().getHours()
+                    // }
+                }
+            },
+            {
+                $project: {
+                    _id: 1,
+                    day: 1,
+                    month: 1,
+                    movie_id: 1,
+                    hour: 1,
+                    minutes: 1,
+                    price: 1,
+                    theater_id: 1,
+                }
+            },
+            {
+                $group: {
+                    _id: "$theater_id",
+                    shows: {
+                        $push: {
+                            _id: "$_id",
+                            day: "$day",
+                            month: "$month",
+                            hour: "$hour",
+                            minutes: "$minutes",
+                            price: "$price"
+                        }
+                    }
+                }
+            },
+            {
+                $sort: {
+                    day: 1,
+                    hour: 1,
+                    minutes: 1,
+                }
+            },
+            {
+                $skip: (page - 1) * limit
+            },
+            {
+                $limit: limit
+            }
+        ])
 
         return shows
 

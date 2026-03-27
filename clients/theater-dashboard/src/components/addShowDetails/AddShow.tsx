@@ -8,7 +8,7 @@ import {
 } from "react";
 import style from "../../styles/addShowDetails/showDetails.module.scss";
 import { getMovieApi } from "../../api/movie";
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
   movieFailed,
@@ -25,7 +25,7 @@ import Button from "../ui/Button";
 import { ToastProvider } from "../context/providers/ToastProvider";
 import { createShowApi } from "../../api/show";
 import FormLabel from "../form/FormLabel";
-import { clearState, showFailed, showRequest, showSuccess } from "../../store/showSlice";
+import { clearState, showRequest, showSuccess } from "../../store/showSlice";
 
 const AddShow = () => {
   const { movieId } = useParams();
@@ -52,7 +52,6 @@ const AddShow = () => {
   const priceId = useId();
   const { register, handleSubmit } = useForm<{ price: string }>();
   const toastContext = useContext(ToastProvider);
-  const navigate = useNavigate()
 
   // Function for fetching movie details
   const handleGetMovieDetails = useCallback(async () => {
@@ -156,11 +155,11 @@ const AddShow = () => {
 
     dispatch(showRequest())
 
-    const showsResults = await Promise.all(selectedDays.map(async (selectedDay) => {
-     
-      const result = await Promise.all(selectedTimes.map(async (selectedTime) => {
+    await Promise.all(selectedDays.map(async (selectedDay) => {
 
-        const apiResult = await createShowApi({
+      await Promise.all(selectedTimes.map(async (selectedTime) => {
+
+        const result = await createShowApi({
           theaterId: theater.id,
           movieId: movieId as string,
           day: selectedDay,
@@ -169,15 +168,17 @@ const AddShow = () => {
           price: priceNumber
         })
 
-        return {success: apiResult?.success, errorMessage: apiResult?.error || ""}
+        if (result?.success) {
+          toastContext?.triggerToastMessage("Show is created", "SUCCESS")
+        } else {
+          toastContext?.triggerToastMessage("Couldn't create show", "ERROR")
+        }
 
       }) || [])
 
-      return result
-
     }) || [])
 
-    console.log(showsResults)
+    dispatch(showSuccess({}))
 
   };
 
@@ -190,12 +191,26 @@ const AddShow = () => {
   useEffect(() => {
     (() => {
       handleGetAvailableTime();
-      setSelectedDays(pre => [...pre, date.getDate() + 1])
     })();
     return () => {
       dispatch(clearState())
     }
   }, [handleGetAvailableTime, dispatch, date]);
+
+  useEffect(() => {
+    (() => {
+      setSelectedDays(pre => {
+
+        const day = date.getDate() + 1
+        if(!pre.includes(day)){
+          return [...pre, day]
+        }else{
+          return pre
+        }
+
+      })
+    })()
+  }, [date])
 
   return movie ? (
     <div className={style.container}>
