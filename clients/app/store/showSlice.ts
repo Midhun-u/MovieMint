@@ -1,9 +1,9 @@
-import { Show } from "@/types/show";
+import { Show, Shows } from "@/types/show";
 import { createSlice } from "@reduxjs/toolkit";
 
 type InitialState = {
     loading: boolean
-    shows: Array<Show>
+    shows: Shows
     show: Show | null
     errorMessage: string
     pagination: {

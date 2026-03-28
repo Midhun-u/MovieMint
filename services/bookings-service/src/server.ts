@@ -5,20 +5,24 @@ import {cors} from 'hono/cors'
 import {logger} from 'hono/logger'
 import { connectDatabase } from './config/db.js'
 import { checkoutRouter } from './routes/checkout.route.js'
+import { notFound } from './utils/notFound.js'
+import { errorHandler } from './utils/errorHandler.js'
 
 // App instance
 const app = new Hono({strict: false})
 
 // Middlewares
 app.use(cors({
-  origin: [],
+  origin: [envVariables.APP_URL],
   allowMethods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
   credentials: true
 }))
 app.use(logger())
+app.onError(errorHandler)
 
 // Routes
 app.route("/api/v1/checkout", checkoutRouter)
+app.notFound(notFound)
 
 
 serve({

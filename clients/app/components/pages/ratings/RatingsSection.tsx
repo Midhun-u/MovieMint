@@ -158,7 +158,7 @@ const RatingsSection = () => {
                         rate && user && !editRate
                             ?
                             <div className="max-[600px]:w-full w-112.5 flex flex-col gap-2.5">
-                                <div className="max-h-40">
+                                <div>
                                     <RateCard
                                         userImage={user.profile_image.image_url}
                                         userName={user.firstname + " " + user.lastname}

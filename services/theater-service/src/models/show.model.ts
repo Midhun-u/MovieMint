@@ -80,20 +80,11 @@ export const ShowModel = {
 
     },
 
-    getAllTheatersShowsByMovieId: async (movieId: string, day: number, month: number, year: number, page: number, limit: number) => {
+    getAllTheatersShowsByMovieId: async (condition: object = {}, page: number, limit: number) => {
 
         const shows = await Show.aggregate([
             {
-                $match: {
-                    movie_id: movieId,
-                    day: day,
-                    status: "SHOWING",
-                    month: month,
-                    year: year,
-                    // hour: {
-                    //     $gte: new Date().getHours()
-                    // }
-                }
+                $match: condition
             },
             {
                 $project: {
@@ -105,6 +96,13 @@ export const ShowModel = {
                     minutes: 1,
                     price: 1,
                     theater_id: 1,
+                }
+            },
+            {
+                $sort: {
+                    day: 1,
+                    hour: 1,
+                    minutes: 1,
                 }
             },
             {
@@ -120,13 +118,6 @@ export const ShowModel = {
                             price: "$price"
                         }
                     }
-                }
-            },
-            {
-                $sort: {
-                    day: 1,
-                    hour: 1,
-                    minutes: 1,
                 }
             },
             {

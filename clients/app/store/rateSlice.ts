@@ -54,8 +54,11 @@ const rateSlice = createSlice({
             state.errorMessage = ""
             if (action.payload?.rate) {
                 state.rate = action.payload.rate
+            }else{
+                state.rate = null
             }
-            if (state.ratings.length <= 0 || state.pagination.page === 1) {
+
+            if (state.ratings.length <= 0 || state.pagination.page === 1 && action.payload?.ratings) {
                 state.ratings = action.payload.ratings?.length ? action.payload.ratings : []
             } else if (action.payload.ratings?.length) {
                 state.ratings = [...state.ratings, ...action.payload.ratings]

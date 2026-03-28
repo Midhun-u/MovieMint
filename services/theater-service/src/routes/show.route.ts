@@ -5,6 +5,7 @@ import { getShowsController } from "../controllers/show/getShows.controller";
 import { getShowController } from "../controllers/show/getShow.controller";
 import { updateShowController } from "../controllers/show/updateShow.controller";
 import { getAllTheatersShowsController } from "../controllers/show/getAllTheatersShows.controller";
+import { bookSeatController } from "../controllers/show/bookSeat.controller";
 
 // Show router
 export const showRouter = new Hono()
@@ -26,3 +27,6 @@ showRouter.patch("/update-show/:showId", updateShowController)
 
 // Route for all theater shows
 showRouter.get("/get-all-theaters-shows/:movieId/:day", getAllTheatersShowsController)
+
+// Route for booking seats
+showRouter.patch('/book-seat/:showId', bookSeatController)

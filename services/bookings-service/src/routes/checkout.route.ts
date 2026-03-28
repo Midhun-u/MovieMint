@@ -1,8 +1,8 @@
 import { Hono } from "hono";
-import { createCheckoutSessionController } from "../controllers/checkout/createCheckout.controller.js";
+import { createPaymentIntentController } from "../controllers/checkout/createCheckout.controller.js";
 
 // Checkout router
 export const checkoutRouter = new Hono()
 
-// Route for creating checkout session
-checkoutRouter.post("/create-checkout", createCheckoutSessionController)
+// Route for creating payment intent
+checkoutRouter.post("/create-payment-intent", createPaymentIntentController)

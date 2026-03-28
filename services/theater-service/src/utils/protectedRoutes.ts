@@ -5,5 +5,6 @@ export const protectedRoutes = [
     "/get-dashboard-logs",
     "/update-theater",
     "/add-show",
-    "/update-show"
+    "/update-show",
+    "/book-seat"
 ]

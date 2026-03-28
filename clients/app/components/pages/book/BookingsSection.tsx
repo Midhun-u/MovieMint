@@ -2,7 +2,7 @@
 
 import { useParams } from "next/navigation"
 import MovieDetailsBanner from "../movies/MovieDetailsBanner"
-import { Activity, useCallback, useEffect, useState } from "react"
+import { Activity, useCallback, useContext, useEffect, useState } from "react"
 import { movieFailed, movieRequest, movieSuccess } from "@/store/movieSlice"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { getMovieApi } from "@/api/movie"
@@ -22,11 +22,18 @@ import {
 } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { SelectedSeat } from "@/types/selectedSeat"
+import { createCheckoutSession } from "@/api/checkout"
+import { ToastProvider } from "@/components/context/providers/ToastProvider"
+import { loadStripe, Stripe } from '@stripe/stripe-js'
+import { Elements } from '@stripe/react-stripe-js'
+import { envVariables } from "@/utils/envVariables"
+import PaymentForm from "./PaymentForm"
 
 const BookingsSection = () => {
 
     const { movieId } = useParams()
     const { shows, pagination, loading, show } = useAppSelector(state => state.show)
+    const { user } = useAppSelector(state => state.auth)
     const { theme } = useAppSelector(state => state.theme)
     const { movie } = useAppSelector(state => state.movie)
     const dispatch = useAppDispatch()
@@ -38,6 +45,10 @@ const BookingsSection = () => {
     const [theaterId, setTheaterId] = useState<string | null>(null)
     const [theater, setTheater] = useState<TheaterDetails | null>(null)
     const [selectedSeats, setSelectedSeats] = useState<Array<SelectedSeat>>([])
+    const [clientSecret, setClientSecret] = useState<string | null>(null)
+    const [showPaymentScreen, setShowPaymentScreen] = useState<boolean>(false)
+    const [stripePromsie, setStripePromise] = useState<Stripe | null>(null)
+    const toastContext = useContext(ToastProvider)
 
     // Function for fetching movie details
     const handleFetchMovieDetails = useCallback(async () => {
@@ -97,6 +108,42 @@ const BookingsSection = () => {
         }
 
     }, [theaterId])
+
+    // Function for creating payment intent
+    const handleCheckout = async () => {
+
+        if (!movie || !show || !user) return
+
+        if (!selectedSeats.length) {
+            toastContext?.triggerToastMessage("Please select a seat before proceeding", "ERROR")
+            return
+        }
+
+        const paymentIntentResult = await createCheckoutSession({
+            movieId: movie._id,
+            showId: show._id,
+            userId: user.id,
+            amount: show.price * selectedSeats.length
+        })
+
+        if (paymentIntentResult.success) {
+
+            const stripePromise = await loadStripe(envVariables.STRIPE_API_KEY)
+            if (stripePromise) {
+                setStripePromise(stripePromise)
+                setClientSecret(paymentIntentResult.clientSecret)
+                setShowPaymentScreen(true)
+                window.scroll({
+                    top: 0,
+                    behavior: 'smooth'
+                })
+            }
+
+        } else {
+            toastContext?.triggerToastMessage("Something went wrong", "ERROR")
+        }
+
+    }
 
     useEffect(() => {
         if (!movieId) return
@@ -194,11 +241,36 @@ const BookingsSection = () => {
                                     <Button
                                         className="w-50 max-[500px]:w-full max-[500px]:mt-2 text-[0.9rem]"
                                         size={"sm"}
+                                        onClick={() => handleCheckout()}
                                     >
                                         <>Proceed</>
                                     </Button>
                                 </div>
                             </div>
+                            {/* Payment screen */}
+                            {
+                                showPaymentScreen && stripePromsie && clientSecret && user
+                                    ?
+                                    <div className="w-full h-full absolute top-15 left-0 z-5 flex">
+                                        {/* Background */}
+                                        <div className="w-full h-full absolute left-0 top-0 z-1 bg-foreground-color opacity-[0.5]"></div>
+                                        <div className="w-full flex justify-center h-full">
+                                            <Elements
+                                                stripe={stripePromsie}
+                                                options={{
+                                                    clientSecret: clientSecret
+                                                }}
+                                            >
+                                                <PaymentForm
+                                                    amount={show.price * selectedSeats.length}
+                                                    setShowPaymentScreen={setShowPaymentScreen}
+                                                />
+                                            </Elements>
+                                        </div>
+                                    </div>
+                                    :
+                                    null
+                            }
                         </div>
                         :
                         <>

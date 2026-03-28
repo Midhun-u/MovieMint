@@ -15,5 +15,7 @@ export const envVariables = {
     SAVED_LIST_URL: process.env.SAVED_LIST_URL as string,
     RATE_URL: process.env.RATE_URL as string,
     NOTIFICATION_URL: process.env.NOTIFICATION_URL as string,
-    SHOW_URL: process.env.SHOW_URL as string
+    SHOW_URL: process.env.SHOW_URL as string,
+    CHECKOUT_URL: process.env.CHECKOUT_URL as string,
+    STRIPE_API_KEY: process.env.NEXT_PUBLIC_STRIPE_API_KEY as string
 }

@@ -14,14 +14,23 @@ export const getAllTheatersShowsController = sendErrorResponse(async (context: C
     const limitNumber = convertStringToNumber(limit)
     const dayNumber = convertStringToNumber(day)
 
-    const shows = await ShowModel.getAllTheatersShowsByMovieId(
-        movieId,
-        dayNumber,
-        new Date().getMonth(),
-        new Date().getFullYear(),
-        pageNumber,
-        limitNumber
-    )
+    const timeCondition = dayNumber === new Date().getDate() ? {
+        hour: {
+            $gte: new Date().getHours()
+        },
+        minutes: {
+            $gte: new Date().getMinutes()
+        }
+    }: {}
+
+    const shows = await ShowModel.getAllTheatersShowsByMovieId({
+        movie_id: movieId,
+        day: dayNumber,
+        status: "SHOWING",
+        month: new Date().getMonth,
+        year: new Date().getFullYear(),
+        ...timeCondition
+    }, pageNumber, limitNumber)
 
     // Fetching theater image
     const showsDetails = await Promise.all(shows.map(async (show: any) => {
