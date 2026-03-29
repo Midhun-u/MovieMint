@@ -1,6 +1,5 @@
 import { Hono } from "hono";
 import { addTheatereRegisterController } from "../controllers/theater/addTheaterRegistration.controller";
-import { authMiddleware } from "../middlewares/auth";
 import { deleteTheaterRegistrationController } from "../controllers/theater/deleteTheaterRegistration.controller";
 import { getTheaterRegistrationController } from "../controllers/theater/getTheaterRegistration.controller";
 import { getTheaterRequestsController } from "../controllers/theater/getTheaterRequests.controller";
@@ -9,12 +8,13 @@ import { getTheaterDetailsController } from "../controllers/theater/getTheaterDe
 import { getDashboardLogsController } from "../controllers/theater/getDashboardLogs.controller";
 import { getTheatersController } from "../controllers/theater/getTheaters.controller";
 import { updateTheaterController } from "../controllers/theater/updateTheater.controller";
+import { permittedAuthMiddleware } from "../middlewares/permittedAuth";
 
 // Theater router
 export const theaterRouter = new Hono()
 
 // Applying authentication middleware
-theaterRouter.use(authMiddleware)
+theaterRouter.use(permittedAuthMiddleware)
 
 // Route for adding theater registration
 theaterRouter.post("/add-theater-registration", addTheatereRegisterController)

@@ -1,4 +1,4 @@
-export const protectedRoutes = [
+export const permittedProtectedRoutes = [
     "/add-theater-registration",
     "/delete-theater-registration",
     "/get-theater-registration",
@@ -6,5 +6,4 @@ export const protectedRoutes = [
     "/update-theater",
     "/add-show",
     "/update-show",
-    "/book-seat"
 ]

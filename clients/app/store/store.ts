@@ -9,6 +9,7 @@ import { savedListReducer } from './savedListSlice'
 import { rateReducer } from './rateSlice'
 import { notificationReducer } from './notificationSlice'
 import { showReducer } from './showSlice'
+import { bookingsReducer } from './bookingsSlice'
 
 export const store = () => {
 
@@ -23,7 +24,8 @@ export const store = () => {
             savedList: savedListReducer,
             rate: rateReducer,
             notification: notificationReducer,
-            show: showReducer
+            show: showReducer,
+            bookings: bookingsReducer
         }
     })
 

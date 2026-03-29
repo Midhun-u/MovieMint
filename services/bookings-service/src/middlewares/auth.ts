@@ -1,7 +1,8 @@
-import { Context, Next } from "hono"
-import { getAuthProfile } from "../services/getAuthProfile"
+import { type Context, type Next } from "hono"
+import { getAuthProfile } from "../services/getAuthProfile.js"
+import { protectedRoutes } from "../utils/protectedRoutes.js"
 
-export const auth = async (context: Context, next: Next, protectedRoutes: Array<string>, roles: Array<string>, errorMessage: string) => {
+export const authMiddleware = async (context: Context, next: Next) => {
 
     const url = new URL(context.req.url)
     const authToken = context.req.header("Authorization")
@@ -21,9 +22,9 @@ export const auth = async (context: Context, next: Next, protectedRoutes: Array<
     // Fetching current user
     const result = await getAuthProfile(authToken)
 
-    if (!result?.success || !result?.user || !roles.includes(result.user?.role)) {
+    if (!result?.success || !result?.user) {
         context.status(403)
-        return context.json({ success: false, error: errorMessage, statusCode: 403 })
+        return context.json({ success: false, error: "Only authenticated user has the access", statusCode: 403 })
     }
 
     context.set("auth", result.user)

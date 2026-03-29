@@ -1,6 +1,6 @@
 import React from "react"
 import { authTabs } from "@/utils/authTab"
-import { Role } from "@/types/Role"
+import { Role } from "@/types/role"
 
 interface AuthTabProps {
     currentTabValue: Role

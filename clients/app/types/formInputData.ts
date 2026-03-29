@@ -1,4 +1,4 @@
-import { Role } from "./Role"
+import { Role } from "./role"
 
 export type SignFormInputData = {
     firstname: string

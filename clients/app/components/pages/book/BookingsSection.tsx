@@ -1,6 +1,6 @@
 'use client'
 
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import MovieDetailsBanner from "../movies/MovieDetailsBanner"
 import { Activity, useCallback, useContext, useEffect, useState } from "react"
 import { movieFailed, movieRequest, movieSuccess } from "@/store/movieSlice"
@@ -28,14 +28,17 @@ import { loadStripe, Stripe } from '@stripe/stripe-js'
 import { Elements } from '@stripe/react-stripe-js'
 import { envVariables } from "@/utils/envVariables"
 import PaymentForm from "./PaymentForm"
+import { bookSeatApi } from "@/api/bookings"
+import { bookingsFailed, bookingsRequest, bookingsSuccess } from "@/store/bookingsSlice"
 
 const BookingsSection = () => {
 
     const { movieId } = useParams()
-    const { shows, pagination, loading, show } = useAppSelector(state => state.show)
+    const { shows, pagination, loading: showLoading, show } = useAppSelector(state => state.show)
     const { user } = useAppSelector(state => state.auth)
     const { theme } = useAppSelector(state => state.theme)
     const { movie } = useAppSelector(state => state.movie)
+    const {loading: bookingsLoading} = useAppSelector(state => state.bookings)
     const dispatch = useAppDispatch()
     const [selectedDay, setSelectedDay] = useState<number>(0)
     const [hasMore, setHasMore] = useState<boolean>(false)
@@ -49,6 +52,7 @@ const BookingsSection = () => {
     const [showPaymentScreen, setShowPaymentScreen] = useState<boolean>(false)
     const [stripePromsie, setStripePromise] = useState<Stripe | null>(null)
     const toastContext = useContext(ToastProvider)
+    const router = useRouter()
 
     // Function for fetching movie details
     const handleFetchMovieDetails = useCallback(async () => {
@@ -145,6 +149,39 @@ const BookingsSection = () => {
 
     }
 
+    // Function for creating bookings
+    const handleBookSeats = async () => {
+
+        const authToken = localStorage.getItem("authToken")
+        if(!authToken || !movie || !theater || !show) return
+
+        dispatch(bookingsRequest())
+        const result = await bookSeatApi({
+            bookedSeats: selectedSeats,
+            movieId: movie._id,
+            showId: show._id,
+            theaterId: theater.id,
+            authToken: authToken
+        })
+        
+        if(result.success){
+            dispatch(bookingsSuccess({bookings: result.bookings}))
+            toastContext?.triggerToastMessage("Seats are booked", "SUCCESS")
+            router.push("/bookings")
+        }else{
+            dispatch(bookingsFailed({errorMessage: result.error}))
+            toastContext?.triggerToastMessage(result.error, "ERROR")
+        }
+
+    }
+
+    // Function for fetching booked seats
+    const handleFetchBookedSeats = useCallback(() => {
+
+        
+
+    }, [])
+
     useEffect(() => {
         if (!movieId) return
         (() => {
@@ -165,11 +202,11 @@ const BookingsSection = () => {
 
     useEffect(() => {
 
-        if (!isIntersecting || loading || !hasMore) return
+        if (!isIntersecting || showLoading || !hasMore) return
 
         dispatch(incrementPage())
 
-    }, [isIntersecting, hasMore, loading, dispatch])
+    }, [isIntersecting, hasMore, showLoading, dispatch])
 
     useEffect(() => {
         dispatch(clearShowState())
@@ -183,11 +220,12 @@ const BookingsSection = () => {
     useEffect(() => {
         (() => {
             if (showId && theaterId) {
-                handleFetchSelectedShow()
-                handlFetchTheater()
+                handleFetchSelectedShow(),
+                handlFetchTheater(),
+                handleFetchBookedSeats()
             }
         })()
-    }, [handleFetchSelectedShow, showId, theaterId, handlFetchTheater])
+    }, [handleFetchSelectedShow, handlFetchTheater, handleFetchBookedSeats, showId, theaterId])
 
     return (
         movie
@@ -264,6 +302,7 @@ const BookingsSection = () => {
                                                 <PaymentForm
                                                     amount={show.price * selectedSeats.length}
                                                     setShowPaymentScreen={setShowPaymentScreen}
+                                                    onSuccess={() => bookingsLoading? null: handleBookSeats()}
                                                 />
                                             </Elements>
                                         </div>
@@ -283,7 +322,7 @@ const BookingsSection = () => {
                             </div>
                             {/* Shows */}
                             {
-                                shows.length || loading
+                                shows.length || showLoading
                                     ?
                                     <div className="px-3 sm:w-[95%] sm:px-0 md:w-[70%] mt-3 w-full">
                                         <div className="flex flex-col gap-5 w-full">
@@ -314,10 +353,10 @@ const BookingsSection = () => {
                                         <p className="text-md font-medium text-center">There are no shows available at this time.</p>
                                     </div>
                             }
-                            <Activity mode={shows.length && hasMore && !loading ? "visible" : "hidden"}>
+                            <Activity mode={shows.length && hasMore && !showLoading ? "visible" : "hidden"}>
                                 <div ref={ref}></div>
                             </Activity>
-                            <Activity mode={loading && hasMore ? "visible" : "hidden"}>
+                            <Activity mode={showLoading && hasMore ? "visible" : "hidden"}>
                                 <Spinner
                                     color={theme === "dark" ? "white" : "black"}
                                     size={25}

@@ -7,6 +7,7 @@ import { connectDatabase } from './config/db.js'
 import { checkoutRouter } from './routes/checkout.route.js'
 import { notFound } from './utils/notFound.js'
 import { errorHandler } from './utils/errorHandler.js'
+import { bookingsRouter } from './routes/bookings.route.js'
 
 // App instance
 const app = new Hono({strict: false})
@@ -22,6 +23,7 @@ app.onError(errorHandler)
 
 // Routes
 app.route("/api/v1/checkout", checkoutRouter)
+app.route("/api/v1/bookings", bookingsRouter)
 app.notFound(notFound)
 
 

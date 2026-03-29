@@ -15,11 +15,6 @@ const showSchema = new Schema({
         type: Schema.Types.Number,
         required: true
     },
-    booked_seats: {
-        type: Schema.Types.Array,
-        default: [],
-        required: true,
-    },
     year: {
         type: Schema.Types.Number,
         required: true,

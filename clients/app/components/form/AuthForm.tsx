@@ -16,7 +16,7 @@ import { Button } from "../ui/button"
 import Image from "next/image"
 import { assets } from "@/public/assets/assets"
 import Link from "next/link"
-import { Role } from "@/types/Role"
+import { Role } from "@/types/role"
 import PasswordStrengthIndicator from "./PasswordStrengthIndicator"
 import WarningMessage from "./WarningMessage"
 import { useForm, SubmitHandler } from 'react-hook-form'

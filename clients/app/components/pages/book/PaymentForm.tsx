@@ -9,9 +9,10 @@ import { Dispatch, FormEvent, SetStateAction, useContext, useState } from "react
 interface PaymentFormProps {
     amount: number
     setShowPaymentScreen: Dispatch<SetStateAction<boolean>>
+    onSuccess: () => void
 }
 
-const PaymentForm = ({ amount, setShowPaymentScreen }: PaymentFormProps) => {
+const PaymentForm = ({ amount, setShowPaymentScreen, onSuccess }: PaymentFormProps) => {
 
     const stripe = useStripe()
     const elements = useElements()
@@ -35,8 +36,8 @@ const PaymentForm = ({ amount, setShowPaymentScreen }: PaymentFormProps) => {
         if(paymentResult.error){
             toastContext?.triggerToastMessage("Couldn't complete payment", "ERROR")
         }else if(paymentResult.paymentIntent.status === "succeeded"){
-            
-        }
+            onSuccess()
+        } 
         
         setLoading(false)
     }

@@ -14,7 +14,6 @@ export const getAllShowsApi = handleError(async (movieId: string, day: number, p
 
 })
 
-
 // Api for getting specific show
 export const getShowApi = handleError(async (id: string) => {
 

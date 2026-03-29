@@ -5,5 +5,6 @@ export const envVariables = {
     PORT: Number(process.env.PORT),
     DB_URL: process.env.DB_URL as string,
     STRIPE_API_KEY: process.env.STRIPE_API_KEY as string,
-    APP_URL: process.env.APP_URL as string
+    APP_URL: process.env.APP_URL as string,
+    AUTH_SERVICE_URL: process.env.AUTH_SERVICE_URL as string
 }
