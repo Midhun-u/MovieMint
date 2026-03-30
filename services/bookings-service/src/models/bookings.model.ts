@@ -47,7 +47,16 @@ export const BookingsModel = {
             },
             {
                 $project: {
-                    booked_seats: 1
+                    booked_seats: 1,
+                    _id: 0
+                }
+            },
+            {
+                $unwind: "$booked_seats"
+            },
+            {
+                $replaceRoot: {
+                    newRoot: "$booked_seats"
                 }
             }
         ])

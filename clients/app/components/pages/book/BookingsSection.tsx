@@ -28,8 +28,9 @@ import { loadStripe, Stripe } from '@stripe/stripe-js'
 import { Elements } from '@stripe/react-stripe-js'
 import { envVariables } from "@/utils/envVariables"
 import PaymentForm from "./PaymentForm"
-import { bookSeatApi } from "@/api/bookings"
+import { bookSeatApi, getBookedSeatsApi, getReservedSeatsApi, reserveSeatsApi } from "@/api/bookings"
 import { bookingsFailed, bookingsRequest, bookingsSuccess } from "@/store/bookingsSlice"
+import { Seat } from "@/types/seat"
 
 const BookingsSection = () => {
 
@@ -38,7 +39,7 @@ const BookingsSection = () => {
     const { user } = useAppSelector(state => state.auth)
     const { theme } = useAppSelector(state => state.theme)
     const { movie } = useAppSelector(state => state.movie)
-    const {loading: bookingsLoading} = useAppSelector(state => state.bookings)
+    const { loading: bookingsLoading } = useAppSelector(state => state.bookings)
     const dispatch = useAppDispatch()
     const [selectedDay, setSelectedDay] = useState<number>(0)
     const [hasMore, setHasMore] = useState<boolean>(false)
@@ -52,6 +53,8 @@ const BookingsSection = () => {
     const [showPaymentScreen, setShowPaymentScreen] = useState<boolean>(false)
     const [stripePromsie, setStripePromise] = useState<Stripe | null>(null)
     const toastContext = useContext(ToastProvider)
+    const [bookedSeats, setBookedSeats] = useState<Array<Seat>>([])
+    const [reservedSeats, setReservedSeats] = useState<Array<Seat>>([])
     const router = useRouter()
 
     // Function for fetching movie details
@@ -116,19 +119,23 @@ const BookingsSection = () => {
     // Function for creating payment intent
     const handleCheckout = async () => {
 
-        if (!movie || !show || !user) return
+        const authToken = localStorage.getItem('authToken')
+        if (!movie || !showId || !user || !authToken || !show) return
 
         if (!selectedSeats.length) {
             toastContext?.triggerToastMessage("Please select a seat before proceeding", "ERROR")
             return
         }
 
-        const paymentIntentResult = await createCheckoutSession({
-            movieId: movie._id,
-            showId: show._id,
-            userId: user.id,
-            amount: show.price * selectedSeats.length
-        })
+        const [paymentIntentResult] = await Promise.all([
+            createCheckoutSession({
+                movieId: movie._id,
+                showId: showId,
+                userId: user.id,
+                amount: show.price * selectedSeats.length
+            }),
+            reserveSeatsApi(showId as string, selectedSeats, authToken)
+        ])
 
         if (paymentIntentResult.success) {
 
@@ -153,34 +160,54 @@ const BookingsSection = () => {
     const handleBookSeats = async () => {
 
         const authToken = localStorage.getItem("authToken")
-        if(!authToken || !movie || !theater || !show) return
+        if (!authToken || !movie || !theater || !showId) return
 
         dispatch(bookingsRequest())
         const result = await bookSeatApi({
             bookedSeats: selectedSeats,
             movieId: movie._id,
-            showId: show._id,
+            showId: showId,
             theaterId: theater.id,
             authToken: authToken
         })
-        
-        if(result.success){
-            dispatch(bookingsSuccess({bookings: result.bookings}))
+
+        if (result.success) {
+            dispatch(bookingsSuccess({ bookings: result.bookings }))
             toastContext?.triggerToastMessage("Seats are booked", "SUCCESS")
             router.push("/bookings")
-        }else{
-            dispatch(bookingsFailed({errorMessage: result.error}))
+        } else {
+            dispatch(bookingsFailed({ errorMessage: result.error }))
             toastContext?.triggerToastMessage(result.error, "ERROR")
         }
 
     }
 
     // Function for fetching booked seats
-    const handleFetchBookedSeats = useCallback(() => {
+    const handleFetchBookedSeats = useCallback(async () => {
 
-        
+        const result = await getBookedSeatsApi(showId as string)
+        if (result.success) {
+            setBookedSeats(result.bookedSeats)
+        }
 
-    }, [])
+    }, [showId])
+
+    // Function for fetching reserved seats
+    const handleFetchReservedSeats = useCallback(async () => {
+
+        if (!showId || !user) return
+
+        const result = await getReservedSeatsApi(showId as string)
+        if (result.success) {
+            const seats = result.reservedSeats?.map(((reserveSeat: Seat & {userId: string}) => {
+                if(reserveSeat && reserveSeat.userId !== user.id){
+                    return reserveSeat
+                }
+            }))
+            setReservedSeats(seats)
+        }
+
+    }, [showId, user])
 
     useEffect(() => {
         if (!movieId) return
@@ -218,14 +245,19 @@ const BookingsSection = () => {
     }, [selectedDay, dispatch])
 
     useEffect(() => {
-        (() => {
-            if (showId && theaterId) {
+        const fetchData = async () => {
+            await Promise.all([
                 handleFetchSelectedShow(),
                 handlFetchTheater(),
-                handleFetchBookedSeats()
-            }
-        })()
-    }, [handleFetchSelectedShow, handlFetchTheater, handleFetchBookedSeats, showId, theaterId])
+                handleFetchBookedSeats(),
+                handleFetchReservedSeats()
+            ])
+        }
+        if (showId && theaterId) {
+            fetchData()
+        }
+    }, [handleFetchSelectedShow, handlFetchTheater, handleFetchBookedSeats, handleFetchReservedSeats, showId, theaterId])
+    console.log(reservedSeats)
 
     return (
         movie
@@ -251,6 +283,7 @@ const BookingsSection = () => {
                                 selectedSeats={selectedSeats}
                                 limit={10}
                                 selectedSeatsLength={selectedSeats.length}
+                                bookedSeats={bookedSeats}
                             />
                             <div className="flex flex-wrap gap-2.5 mt-12 w-full justify-center px-2.5">
                                 <div className="flex gap-1.25 items-center">
@@ -302,7 +335,7 @@ const BookingsSection = () => {
                                                 <PaymentForm
                                                     amount={show.price * selectedSeats.length}
                                                     setShowPaymentScreen={setShowPaymentScreen}
-                                                    onSuccess={() => bookingsLoading? null: handleBookSeats()}
+                                                    onSuccess={() => bookingsLoading ? null : handleBookSeats()}
                                                 />
                                             </Elements>
                                         </div>

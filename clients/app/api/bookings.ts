@@ -3,6 +3,7 @@
 import { envVariables } from "@/utils/envVariables"
 import { handleError } from "@/utils/handleError"
 import { fetchInstance } from "./fetch"
+import { Seat } from "@/types/seat"
 
 const BOOKINGS_BASE_URL = envVariables.BOOKINGS_URL
 
@@ -31,6 +32,34 @@ export const bookSeatApi = handleError(async ({
         theaterId: theaterId,
         bookedSeats: bookedSeats,
         movieId: movieId
+    }, "json", authToken)
+
+    return result
+
+})
+
+// Api for getting booked seats
+export const getBookedSeatsApi = handleError(async (showId: string) => {
+
+    const result = await fetchInstance(BOOKINGS_BASE_URL, `/get-booked-seats/${showId}`, "GET", {}, "json")
+    return result
+
+})
+
+// Api for getting reserved seats
+export const getReservedSeatsApi = handleError(async (showId: string) => {
+
+    const result = await fetchInstance(BOOKINGS_BASE_URL, `/get-reserved-seats/${showId}`, "GET", {}, "json")
+    return result
+
+})
+
+// Api for reserving seats
+export const reserveSeatsApi = handleError(async (showId: string, seats: Array<Seat>, authToken: string) => {
+
+    const result = await fetchInstance(BOOKINGS_BASE_URL, `/reserve-seats`, "POST", {
+        showId: showId,
+        seats: seats
     }, "json", authToken)
 
     return result

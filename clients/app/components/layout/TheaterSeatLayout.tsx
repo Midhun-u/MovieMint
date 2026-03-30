@@ -1,7 +1,11 @@
 import { assets } from "@/public/assets/assets"
+import { Seat } from "@/types/seat"
 import { SelectedSeat } from "@/types/selectedSeat"
 import Image from "next/image"
-import { Dispatch, SetStateAction } from "react"
+import { Dispatch, SetStateAction, useCallback, useMemo } from "react"
+import {
+    X as OccupiedIcon
+} from 'lucide-react'
 
 interface TheaterSeatLayoutProps {
     preview: boolean
@@ -13,6 +17,7 @@ interface TheaterSeatLayoutProps {
     selectedSeats?: Array<SelectedSeat>
     limit?: number
     selectedSeatsLength?: number
+    bookedSeats?: Array<Seat>
 }
 
 const TheaterSeatLayout = ({
@@ -24,20 +29,24 @@ const TheaterSeatLayout = ({
     setSelectedSeats,
     selectedSeats,
     selectedSeatsLength,
-    limit
+    limit,
+    bookedSeats
 }: TheaterSeatLayoutProps) => {
 
-    // Function for highlighting selected seats
-    const isSeatSelected = ({
+    const memoSelectedSeats = useMemo(() => selectedSeats, [selectedSeats])
+    const memoBookedSeats = useMemo(() => bookedSeats, [bookedSeats])
+
+    // Function for highlighting selected seats and booked seats
+    const isSeatSelected = useCallback(({
         layoutIndex,
         seatIndex,
         rowIndex,
         setIndex
-    }: { layoutIndex: number, setIndex: number, rowIndex: number, seatIndex: number }) => {
+    }: { layoutIndex: number, setIndex: number, rowIndex: number, seatIndex: number }, type: "selected" | "booked") => {
 
-        if (selectedSeats) {
+        if (memoSelectedSeats && type === "selected") {
 
-            const isSelected = selectedSeats.some((selectedSeatDetails) => {
+            const isSelected = memoSelectedSeats.some((selectedSeatDetails) => {
                 if (
                     selectedSeatDetails.layoutNumber === (layoutIndex + 1) &&
                     selectedSeatDetails.setNumber === (setIndex + 1) &&
@@ -48,9 +57,22 @@ const TheaterSeatLayout = ({
             })
 
             return isSelected
+        } else if (memoBookedSeats && type === "booked") {
+
+            const isBooked = memoBookedSeats.some((bookedSeat) => {
+                if (
+                    bookedSeat.layoutNumber === (layoutIndex + 1) &&
+                    bookedSeat.setNumber === (setIndex + 1) &&
+                    bookedSeat.rowNumber === (rowIndex + 1) &&
+                    bookedSeat.seatNumber === (seatIndex + 1)
+                ) return true
+            })
+
+            return isBooked
+
         }
 
-    }
+    }, [memoSelectedSeats, memoBookedSeats])
 
     // Function for selecting seats
     const handleSelectSeats = ({
@@ -130,18 +152,35 @@ const TheaterSeatLayout = ({
                                                             // Seats
                                                             Array(seatNumber).fill(null).map((_, seatIndex) => (
 
-                                                                <div
-                                                                    key={seatIndex}
-                                                                    className={`${!preview && isSeatSelected({ layoutIndex: layoutIndex, seatIndex: seatIndex, rowIndex: rowIndex, setIndex: setIndex }) ? "bg-primary-color border-none text-dark-foreground-color" : ""} w-8 h-8 bg-foreground-color border-2 border-foreground-theme-color/30 rounded-sm cursor-pointer flex justify-center items-center text-xs font-medium transition-all duration-200`}
-                                                                    onClick={() => handleSelectSeats({
-                                                                        layoutIndex: layoutIndex,
-                                                                        rowIndex: rowIndex,
-                                                                        setIndex: setIndex,
-                                                                        seatIndex: seatIndex
-                                                                    })}
-                                                                >
-                                                                    {`S${seatIndex + 1}`}
-                                                                </div>
+                                                                !isSeatSelected({
+                                                                    layoutIndex: layoutIndex,
+                                                                    rowIndex: rowIndex,
+                                                                    setIndex: setIndex,
+                                                                    seatIndex: seatIndex
+                                                                }, "booked")
+                                                                    ?
+                                                                    <div
+                                                                        key={seatIndex}
+                                                                        className={`${!preview && isSeatSelected({ layoutIndex: layoutIndex, seatIndex: seatIndex, rowIndex: rowIndex, setIndex: setIndex }, "selected") ? "bg-primary-color border-none text-dark-foreground-color" : ""} w-8 h-8 bg-foreground-color border-2 border-foreground-theme-color/30 rounded-sm cursor-pointer flex justify-center items-center text-xs font-medium transition-all duration-200`}
+                                                                        onClick={() => handleSelectSeats({
+                                                                            layoutIndex: layoutIndex,
+                                                                            rowIndex: rowIndex,
+                                                                            setIndex: setIndex,
+                                                                            seatIndex: seatIndex
+                                                                        })}
+                                                                    >
+                                                                        {`S${seatIndex + 1}`}
+                                                                    </div>
+                                                                    :
+                                                                    <div
+                                                                        key={seatIndex}
+                                                                        className="w-8 h-8 bg-background-color border-2 border-background-color rounded-sm flex justify-center items-center text-xs font-medium "
+                                                                    >
+                                                                        <OccupiedIcon
+                                                                            size={15}
+                                                                            strokeWidth={1.6}
+                                                                        />
+                                                                    </div>
                                                             ))
                                                         }
                                                     </div>

@@ -1,3 +1,4 @@
 export const protectedRoutes = [
-    "/add-bookings"
+    "/add-bookings",
+    "/reserve-seats"
 ]

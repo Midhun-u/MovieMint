@@ -25,6 +25,7 @@ export const bookingsSchema = new Schema({
     theater_id: {
         type: Schema.Types.String,
         required: true,
+        index: true
     },
     user_id: {
         type: Schema.Types.String,

@@ -8,6 +8,7 @@ import { checkoutRouter } from './routes/checkout.route.js'
 import { notFound } from './utils/notFound.js'
 import { errorHandler } from './utils/errorHandler.js'
 import { bookingsRouter } from './routes/bookings.route.js'
+import { connecteRedis } from './config/redis.js'
 
 // App instance
 const app = new Hono({strict: false})
@@ -34,7 +35,10 @@ serve({
 
   console.log(`Server is running on ${envVariables.PORT} port`)
   
-  // Connecting database
-  await connectDatabase()
+  // Connecting to databases
+  await Promise.all([
+    connectDatabase(),
+    connecteRedis()
+  ])
   
 })
