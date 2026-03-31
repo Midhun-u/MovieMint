@@ -46,8 +46,9 @@ const TheaterSeatLayout = ({
 
         if (memoSelectedSeats && type === "selected") {
 
-            const isSelected = memoSelectedSeats.some((selectedSeatDetails) => {
+            const isSelected = memoSelectedSeats?.some((selectedSeatDetails) => {
                 if (
+                    selectedSeatDetails &&
                     selectedSeatDetails.layoutNumber === (layoutIndex + 1) &&
                     selectedSeatDetails.setNumber === (setIndex + 1) &&
                     selectedSeatDetails.rowNumber === (rowIndex + 1) &&
@@ -59,8 +60,9 @@ const TheaterSeatLayout = ({
             return isSelected
         } else if (memoBookedSeats && type === "booked") {
 
-            const isBooked = memoBookedSeats.some((bookedSeat) => {
+            const isBooked = memoBookedSeats?.some((bookedSeat) => {
                 if (
+                    bookedSeat &&
                     bookedSeat.layoutNumber === (layoutIndex + 1) &&
                     bookedSeat.setNumber === (setIndex + 1) &&
                     bookedSeat.rowNumber === (rowIndex + 1) &&

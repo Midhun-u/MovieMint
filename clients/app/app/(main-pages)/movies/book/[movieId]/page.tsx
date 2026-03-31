@@ -1,3 +1,4 @@
+import Authentication from "@/components/features/Authentication"
 import BookingsSection from "@/components/pages/book/BookingsSection"
 
 const BookMoviePage = () => {
@@ -5,8 +6,10 @@ const BookMoviePage = () => {
     return (
 
         <div>
-            <BookingsSection
-            />
+            <Authentication redirectToAuthPage>
+                <BookingsSection
+                />
+            </Authentication>
         </div>
 
     )

@@ -18,5 +18,6 @@ export const envVariables = {
     SHOW_URL: process.env.SHOW_URL as string,
     CHECKOUT_URL: process.env.CHECKOUT_URL as string,
     BOOKINGS_URL: process.env.BOOKINGS_URL as string,
-    STRIPE_API_KEY: process.env.NEXT_PUBLIC_STRIPE_API_KEY as string
+    STRIPE_API_KEY: process.env.NEXT_PUBLIC_STRIPE_API_KEY as string,
+    BOOKINGS_WEBSOCKET_URL: process.env.NEXT_PUBLIC_BOOKINGS_WEBSOCKET_URL as string
 }

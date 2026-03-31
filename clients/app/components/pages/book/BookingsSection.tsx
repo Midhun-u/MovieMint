@@ -54,8 +54,10 @@ const BookingsSection = () => {
     const [stripePromsie, setStripePromise] = useState<Stripe | null>(null)
     const toastContext = useContext(ToastProvider)
     const [bookedSeats, setBookedSeats] = useState<Array<Seat>>([])
-    const [reservedSeats, setReservedSeats] = useState<Array<Seat>>([])
+    const [userReservedSeats, setUserReservedSeats] = useState<Array<Seat>>([])
     const router = useRouter()
+    const [isSocketConnected, setIsSocketConnected] = useState<boolean>(false)
+    const [ws, setWs] = useState<WebSocket | null>(null)
 
     // Function for fetching movie details
     const handleFetchMovieDetails = useCallback(async () => {
@@ -127,6 +129,9 @@ const BookingsSection = () => {
             return
         }
 
+        const set = new Set(userReservedSeats.map((seat) => `${seat.layoutNumber}-${seat.rowNumber}-${seat.setNumber}-${seat.seatNumber}`))
+        const notReservedSeats = selectedSeats.filter((seat) => !set.has(`${seat.layoutNumber}-${seat.rowNumber}-${seat.setNumber}-${seat.seatNumber}`))
+
         const [paymentIntentResult] = await Promise.all([
             createCheckoutSession({
                 movieId: movie._id,
@@ -134,8 +139,23 @@ const BookingsSection = () => {
                 userId: user.id,
                 amount: show.price * selectedSeats.length
             }),
-            reserveSeatsApi(showId as string, selectedSeats, authToken)
+            await reserveSeatsApi(showId as string, notReservedSeats, authToken)
         ])
+
+
+        if (ws) {
+
+            selectedSeats.map((selectedSeat) => {
+
+                ws.send(JSON.stringify({
+                    userId: user.id,
+                    seat: selectedSeat,
+                    showId: showId
+                }))
+
+            })
+
+        }
 
         if (paymentIntentResult.success) {
 
@@ -153,6 +173,8 @@ const BookingsSection = () => {
         } else {
             toastContext?.triggerToastMessage("Something went wrong", "ERROR")
         }
+
+        setUserReservedSeats(pre => [...pre, ...selectedSeats])
 
     }
 
@@ -199,12 +221,14 @@ const BookingsSection = () => {
 
         const result = await getReservedSeatsApi(showId as string)
         if (result.success) {
-            const seats = result.reservedSeats?.map(((reserveSeat: Seat & {userId: string}) => {
-                if(reserveSeat && reserveSeat.userId !== user.id){
-                    return reserveSeat
+            const seats = result.reservedSeats?.map(((reserveSeat: { userId: string, seat: Seat }) => {
+                if (reserveSeat && reserveSeat.userId !== user.id) {
+                    return reserveSeat.seat
+                } else if (reserveSeat) {
+                    setUserReservedSeats((pre) => [...pre, reserveSeat.seat])
                 }
             }))
-            setReservedSeats(seats)
+            setBookedSeats(seats)
         }
 
     }, [showId, user])
@@ -257,7 +281,33 @@ const BookingsSection = () => {
             fetchData()
         }
     }, [handleFetchSelectedShow, handlFetchTheater, handleFetchBookedSeats, handleFetchReservedSeats, showId, theaterId])
-    console.log(reservedSeats)
+
+    useEffect(() => {
+
+        const socket = new WebSocket(envVariables.BOOKINGS_WEBSOCKET_URL)
+        socket.onopen = () => {
+            setIsSocketConnected(true)
+            setWs(socket)
+        }
+
+        socket.onmessage = (event) => {
+            const { data } = event
+
+            try {
+                const parsedData = JSON.parse(data)
+                if (showId && parsedData.showId === showId && parsedData.userId !== user?.id) {
+                    setBookedSeats(pre => [...pre, parsedData.seat])
+                }
+            } catch { }
+        }
+
+        return () => {
+            if (isSocketConnected) {
+                socket.close()
+            }
+        }
+
+    }, [isSocketConnected, showId, user])
 
     return (
         movie

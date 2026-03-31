@@ -23,6 +23,8 @@ export const reserveSeatsController = async (context: Context) => {
 
     const results = await Promise.all(seats.map(async (seat) => {
 
+        if(!seat) return 
+
         const key = `show-${showId}`
         const isAdded = await redis.zAdd(
             key,
