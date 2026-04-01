@@ -1,9 +1,9 @@
-type TabBarNavs = Array<{
+type MovieTabBar = Array<{
     title: string,
     route: string
 }>
 
-export const tabBarNavs: TabBarNavs = [
+export const movieTabBar: MovieTabBar = [
     {
         title: "For You",
         route: "/movies"

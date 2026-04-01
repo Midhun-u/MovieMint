@@ -4,6 +4,7 @@ import { authMiddleware } from "../middlewares/auth.js";
 import { getBookedSeatsController } from "../controllers/bookings/getBookedSeats.controller.js";
 import { reserveSeatsController } from "../controllers/bookings/reserverSeats.controller.js";
 import { getReservedSeatsController } from "../controllers/bookings/getReservedSeats.controller.js";
+import { getUserBookingsController } from "../controllers/bookings/getUserBookings.controller.js";
 
 // Bookings router
 export const bookingsRouter = new Hono()
@@ -21,3 +22,6 @@ bookingsRouter.post("/reserve-seats", reserveSeatsController)
 
 // Route for getting reserved seats
 bookingsRouter.get("/get-reserved-seats/:showId", getReservedSeatsController)
+
+// Route for getting user bookings
+bookingsRouter.get("/get-user-bookings", getUserBookingsController)

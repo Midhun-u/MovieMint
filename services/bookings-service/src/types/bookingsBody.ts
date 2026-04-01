@@ -5,4 +5,5 @@ export type BookingsBody = {
     theaterId: string
     bookedSeats: Array<SeatType>
     movieId: string
+    price: number
 }

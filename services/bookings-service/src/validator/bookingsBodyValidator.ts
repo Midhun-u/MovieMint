@@ -15,7 +15,8 @@ export const bookingsBodyValidator = (body: BookingsBody) => {
                 seatNumber: zod.number().min(1),
                 setNumber: zod.number().min(1)
             })),
-            movieId: zod.string().trim()
+            movieId: zod.string().trim(),
+            price: zod.number().nonnegative().nonoptional()
         })
 
         const fields = validator.parse(body)

@@ -2,7 +2,7 @@
 export const fetchInstance = async (
     baseUrl: string,
     path: string,
-    method: "POST" | "GET" | "PUT" | "PATCH",
+    method: "POST" | "GET" | "PUT" | "PATCH" | "DELETE",
     body: object | null,
     authToken?: string | null
 ) => {

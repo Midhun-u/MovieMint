@@ -16,7 +16,8 @@ export const BookingsModel = {
            movie_id: data.movieId.trim(),
            show_id: data.showId.trim(),
            status: data.status.trim(),
-           booked_seats: data.bookedSeats 
+           booked_seats: data.bookedSeats,
+           price: data.price 
         })
 
         return newBookings
@@ -62,6 +63,24 @@ export const BookingsModel = {
         ])
 
         return bookedSeats
+
+    },
+
+    getBookingsByUserId: async (userId: string, page: number, limit: number, status: string = "") => {
+
+        const statusCondition = status? {
+            status: status
+        }: {}
+        const bookings = await Bookings.find({
+            user_id: userId,
+            ...statusCondition
+        })
+        .skip((page - 1) * limit)
+        .limit(limit)
+        .sort({createdAt: -1})
+        .lean()
+
+        return bookings
 
     }
 

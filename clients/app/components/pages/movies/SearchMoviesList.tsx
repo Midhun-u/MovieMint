@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { movieFailed, movieRequest, movieSuccess, clearState } from "@/store/movieSlice"
 import { debounce } from "@/utils/debounce"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 import { Activity, ChangeEvent, useCallback, useEffect, useState } from "react"
 
 const SearchMoviesList = () => {
@@ -13,6 +14,7 @@ const SearchMoviesList = () => {
     const [searchQuery, setSearchQuery] = useState<string>("")
     const dispatch = useAppDispatch()
     const { movies } = useAppSelector(state => state.movie)
+    const router = useRouter()
 
     // Function for fetching movies which is based on search query
     const handleFetchMovies = useCallback(async () => {
@@ -53,7 +55,7 @@ const SearchMoviesList = () => {
                 <div className="w-full z-10 absolute border border-foreground-theme-color/15 top-10 flex flex-col gap-2.5 left-0 bg-foreground-color p-5 rounded-md">
                     {
                         movies.map((movie) => (
-                            <div className="flex cursor-pointer gap-2.5" key={movie._id}>
+                            <div onClick={() => router.push(`/movies/details/${movie._id}`)} className="flex cursor-pointer gap-2.5" key={movie._id}>
                                 <Image
                                     src={movie.poster.image_url}
                                     alt={`${movie.title} poster`}

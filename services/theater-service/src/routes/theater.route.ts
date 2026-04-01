@@ -9,6 +9,7 @@ import { getDashboardLogsController } from "../controllers/theater/getDashboardL
 import { getTheatersController } from "../controllers/theater/getTheaters.controller";
 import { updateTheaterController } from "../controllers/theater/updateTheater.controller";
 import { permittedAuthMiddleware } from "../middlewares/permittedAuth";
+import { getBatchTheatersController } from "../controllers/theater/getBatchTheaters.controller";
 
 // Theater router
 export const theaterRouter = new Hono()
@@ -42,3 +43,6 @@ theaterRouter.get("/get-theaters", getTheatersController)
 
 // Route for updating theater details
 theaterRouter.patch("/update-theater/:theaterId", updateTheaterController)
+
+// Route for getting batch theaters
+theaterRouter.post("/get-batch-theaters", getBatchTheatersController)

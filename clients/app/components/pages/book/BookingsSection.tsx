@@ -129,6 +129,15 @@ const BookingsSection = () => {
             return
         }
 
+        // Checking if seats are already booked
+        const bookedSeatSet = new Set(bookedSeats?.map(seat => seat? `${seat.layoutNumber}-${seat.rowNumber}-${seat.setNumber}-${seat.seatNumber}`: ""))
+        const isBookedSeat = selectedSeats.some(seat => bookedSeatSet.has(`${seat.layoutNumber}-${seat.rowNumber}-${seat.setNumber}-${seat.seatNumber}`))
+        if (isBookedSeat) {
+            setShowPaymentScreen(false)
+            toastContext?.triggerToastMessage("The selected seats are already booked, refresh the page", "ERROR")
+            return
+        }
+
         const set = new Set(userReservedSeats.map((seat) => `${seat.layoutNumber}-${seat.rowNumber}-${seat.setNumber}-${seat.seatNumber}`))
         const notReservedSeats = selectedSeats.filter((seat) => !set.has(`${seat.layoutNumber}-${seat.rowNumber}-${seat.setNumber}-${seat.seatNumber}`))
 
@@ -142,9 +151,7 @@ const BookingsSection = () => {
             await reserveSeatsApi(showId as string, notReservedSeats, authToken)
         ])
 
-
         if (ws) {
-
             selectedSeats.map((selectedSeat) => {
 
                 ws.send(JSON.stringify({
@@ -154,7 +161,6 @@ const BookingsSection = () => {
                 }))
 
             })
-
         }
 
         if (paymentIntentResult.success) {
@@ -182,7 +188,7 @@ const BookingsSection = () => {
     const handleBookSeats = async () => {
 
         const authToken = localStorage.getItem("authToken")
-        if (!authToken || !movie || !theater || !showId) return
+        if (!authToken || !movie || !theater || !showId || !show) return
 
         dispatch(bookingsRequest())
         const result = await bookSeatApi({
@@ -190,7 +196,8 @@ const BookingsSection = () => {
             movieId: movie._id,
             showId: showId,
             theaterId: theater.id,
-            authToken: authToken
+            authToken: authToken,
+            price: selectedSeats.length * show?.price
         })
 
         if (result.success) {
@@ -228,7 +235,7 @@ const BookingsSection = () => {
                     setUserReservedSeats((pre) => [...pre, reserveSeat.seat])
                 }
             }))
-            setBookedSeats(seats)
+            setBookedSeats((pre) => [...pre, ...seats])
         }
 
     }, [showId, user])
@@ -249,7 +256,13 @@ const BookingsSection = () => {
                 handleFetchShows()
             }
         })()
-    }, [handleFetchShows, isRendered])
+
+        return () => {
+            if(isRendered){
+                dispatch(clearShowState())
+            }
+        }
+    }, [handleFetchShows, isRendered, dispatch])
 
     useEffect(() => {
 
@@ -258,15 +271,6 @@ const BookingsSection = () => {
         dispatch(incrementPage())
 
     }, [isIntersecting, hasMore, showLoading, dispatch])
-
-    useEffect(() => {
-        dispatch(clearShowState())
-
-        return () => {
-            dispatch(clearShowState())
-        }
-
-    }, [selectedDay, dispatch])
 
     useEffect(() => {
         const fetchData = async () => {
@@ -405,7 +409,7 @@ const BookingsSection = () => {
                             </div>
                             {/* Shows */}
                             {
-                                shows.length || showLoading
+                                shows.length
                                     ?
                                     <div className="px-3 sm:w-[95%] sm:px-0 md:w-[70%] mt-3 w-full">
                                         <div className="flex flex-col gap-5 w-full">
@@ -427,19 +431,26 @@ const BookingsSection = () => {
                                         </div>
                                     </div>
                                     :
-                                    <div className="px-3 sm:w-[95%] sm:px-0 md:w-[70%] mt-5 w-full h-auto flex flex-col items-center justify-center gap-5">
-                                        <Image
-                                            src={assets.voidVector}
-                                            alt="Not found vector image"
-                                            className="aspect-auto w-60 sm:w-70"
-                                        />
-                                        <p className="text-md font-medium text-center">There are no shows available at this time.</p>
-                                    </div>
+                                    (
+                                        !showLoading
+                                            ?
+                                            <div className="px-3 sm:w-[95%] sm:px-0 md:w-[70%] mt-5 w-full h-auto flex flex-col items-center justify-center gap-5">
+                                                <Image
+                                                    src={assets.voidVector}
+                                                    alt="Not found vector image"
+                                                    className="aspect-auto w-60 sm:w-70"
+                                                />
+                                                <p className="text-md font-medium text-center">There are no shows available at this time.</p>
+                                            </div>
+                                            :
+                                            null
+
+                                    )
                             }
                             <Activity mode={shows.length && hasMore && !showLoading ? "visible" : "hidden"}>
                                 <div ref={ref}></div>
                             </Activity>
-                            <Activity mode={showLoading && hasMore ? "visible" : "hidden"}>
+                            <Activity mode={showLoading ? "visible" : "hidden"}>
                                 <Spinner
                                     color={theme === "dark" ? "white" : "black"}
                                     size={25}

@@ -14,6 +14,7 @@ export const bookSeatApi = handleError(async ({
     movieId,
     theaterId,
     authToken,
+    price
 }: {
     bookedSeats: Array<{
         layoutNumber: number,
@@ -24,6 +25,7 @@ export const bookSeatApi = handleError(async ({
     theaterId: string
     movieId: string
     showId: string,
+    price: number
     authToken: string
 }) => {
 
@@ -31,7 +33,8 @@ export const bookSeatApi = handleError(async ({
         showId: showId,
         theaterId: theaterId,
         bookedSeats: bookedSeats,
-        movieId: movieId
+        movieId: movieId,
+        price: price
     }, "json", authToken)
 
     return result

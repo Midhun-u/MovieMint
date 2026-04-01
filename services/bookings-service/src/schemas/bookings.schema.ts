@@ -46,6 +46,10 @@ export const bookingsSchema = new Schema({
         enum: ['COMPLETED', 'CANCELLED']
     },
     booked_seats: [BookedSeatsSchema],
+    price: {
+        type: Schema.Types.Number,
+        required: true
+    }
 }, {timestamps: true})
 
 export const Bookings = model("Booking", bookingsSchema)

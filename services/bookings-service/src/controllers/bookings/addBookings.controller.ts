@@ -28,7 +28,8 @@ export const addBookingsController = async (context: Context) => {
         movieId: fields.movieId,
         showId: fields.showId,
         bookedSeats: fields.bookedSeats,
-        status: "COMPLETED"
+        status: "COMPLETED",
+        price: fields.price
     })
 
     if(newBookings){

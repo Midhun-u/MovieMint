@@ -208,7 +208,7 @@ const MovieDetailsBanner = ({ movieId, showRateButton, showBookButton }: MovieDe
                             <div className="w-full h-full absolute left-0 top-0 -z-1">
                                 <Image
                                     src={movie.banner.image_url}
-                                    alt={`${movie.title} poster image`}
+                                    alt={`${movie.title} banner image`}
                                     width={1000}
                                     height={1000}
                                     className="w-full h-full object-cover aspect-4/2 object-center"
