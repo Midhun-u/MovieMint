@@ -52,7 +52,7 @@ const MovieCard = ({
             {/* Movie details section */}
             <div className="flex flex-col w-full h-full mt-2 gap-0.5">
                 {/* Movie title */}
-                <h2 className="w-full max-h-9.75 overflow-hidden text-[0.85rem] font-bold">{title}</h2>
+                <h1 className="w-full max-h-9.75 overflow-hidden text-[0.85rem] font-bold">{title}</h1>
                 {/* Movie certificate and language */}
                 <p className={`${movieDetailsClass}`}>
                     {certificate} | {language}

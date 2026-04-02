@@ -68,3 +68,11 @@ export const reserveSeatsApi = handleError(async (showId: string, seats: Array<S
     return result
 
 })
+
+// Api for getting user bookings
+export const getUserBookingsApi = handleError(async (page: number, limit:  number, status: string, authToken: string) => {
+
+    const result = await fetchInstance(BOOKINGS_BASE_URL, `/get-user-bookings/?page=${page}&limit=${limit}&status=${status}`, "GET", {}, "json", authToken)
+    return result
+
+})

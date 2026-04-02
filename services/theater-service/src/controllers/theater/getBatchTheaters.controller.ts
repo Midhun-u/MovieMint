@@ -22,11 +22,11 @@ export const getBatchTheatersController = sendErrorResponse(async (context: Cont
             "allow_cancellation"
         ])
 
-        const image = await getTheaterImage(theaterId)
+        const imageResult = await getTheaterImage(theaterId)
 
         return {
             ...theater,
-            ...image?.data
+            theater_image: imageResult?.data
         }
 
     }))

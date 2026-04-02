@@ -11,4 +11,34 @@ export type Bookings = {
         seatNumber: number
     }>
     createdAt: string
+    movie: {
+        _id: string
+        title: string
+        status: "SHOWING" | "NOT_SHOWING"
+        poster: {
+            id: string
+            image_url: string
+        }
+        language: string
+        categories: Array<string>
+        format: Array<string>
+        certificate: string
+    }
+    theater: {
+        id: string
+        theater_image: {
+            id: string
+            image_url: string
+        }
+        theater_name: string
+        theater_location: string
+    }
+    price: number
+    show: {
+        day: number,
+        hour: number,
+        minutes: number,
+        year: number,
+        month: number,
+    }
 }
