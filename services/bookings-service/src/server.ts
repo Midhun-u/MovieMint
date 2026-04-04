@@ -23,7 +23,7 @@ export const {injectWebSocket, upgradeWebSocket} = createNodeWebSocket({
 
 // Middlewares
 app.use(cors({
-  origin: [envVariables.APP_URL],
+  origin: [envVariables.APP_URL, envVariables.THEATER_DASHBOARD_URL, envVariables.ADMIN_DASHBOARD_URL],
   allowMethods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
   credentials: true
 }))

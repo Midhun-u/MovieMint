@@ -11,7 +11,7 @@ const MovieTabBar = () => {
 
     return (
 
-        <nav className="w-full bg-foreground-color z-6 smabsolute:w-auto rounded-2xl px-1 py-1 flex items-center overflow-x-scroll border border-foreground-theme-color/20">
+        <nav className="w-full bg-foreground-color z-6 left-0 sm:w-auto rounded-2xl px-1 py-1 flex items-center overflow-x-scroll border border-foreground-theme-color/20">
             {
                 movieTabBar.map((tabBarNav, index) => (
 

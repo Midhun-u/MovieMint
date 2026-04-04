@@ -45,13 +45,19 @@ const TheaterDetailsCard = ({ theaterDetails }: TheaterDetailsCardProps) => {
 
             {/* Theater image section */}
             <div className="mt-4">
-                <Image
-                    src={theaterDetails.theater_image.image_url}
-                    alt="Theater logo"
-                    width={85}
-                    height={85}
-                    className="rounded-md aspect-square"
-                />
+                {
+                    theaterDetails.theater_image.image_url
+                        ?
+                        <Image
+                            src={theaterDetails.theater_image.image_url}
+                            alt="Theater logo"
+                            width={85}
+                            height={85}
+                            className="rounded-md aspect-square"
+                        />
+                        :
+                        null
+                }
             </div>
             {/* Details section */}
             <div className="flex flex-col gap-2">
@@ -123,14 +129,14 @@ const TheaterDetailsCard = ({ theaterDetails }: TheaterDetailsCardProps) => {
                     <p className={textClass}>
                         {
                             theaterDetails.allow_cancellation
-                            ?
-                            <>
-                                Allow Cancellation
-                            </>
-                            :
-                            <>
-                                Not Allow Cancellation
-                            </>
+                                ?
+                                <>
+                                    Allow Cancellation
+                                </>
+                                :
+                                <>
+                                    Not Allow Cancellation
+                                </>
                         }
                     </p>
                 </div>

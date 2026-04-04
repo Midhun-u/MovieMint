@@ -15,14 +15,9 @@ export const getTheaterApi = handleError(async (authToken: string) => {
 })
 
 // Api for updating theater
-export const updateTheaterApi = handleError(async (theaterId: string, updatedBody: object = {}, authToken: string) => {
+export const updateTheaterApi = handleError(async (theaterId: string, updatedBody: object = {}) => {
 
-    const result = await theaterAxiosInstance.patch(`/update-theater/${theaterId}`, updatedBody, {
-        headers: {
-            Authorization: `Bearer ${authToken}`
-        }
-    })
-
+    const result = await theaterAxiosInstance.patch(`/update-theater/${theaterId}`, updatedBody)
     return result.data
 
 })

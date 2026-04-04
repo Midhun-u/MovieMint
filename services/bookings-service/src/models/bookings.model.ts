@@ -11,13 +11,13 @@ export const BookingsModel = {
     }) => {
 
         const newBookings = await Bookings.create({
-           theater_id: data.theaterId.trim(),
-           user_id: data.userId.trim(),
-           movie_id: data.movieId.trim(),
-           show_id: data.showId.trim(),
-           status: data.status.trim(),
-           booked_seats: data.bookedSeats,
-           price: data.price 
+            theater_id: data.theaterId.trim(),
+            user_id: data.userId.trim(),
+            movie_id: data.movieId.trim(),
+            show_id: data.showId.trim(),
+            status: data.status.trim(),
+            booked_seats: data.bookedSeats,
+            price: data.price
         })
 
         return newBookings
@@ -68,11 +68,92 @@ export const BookingsModel = {
 
     getBookingsByUserId: async (userId: string, page: number, limit: number, status: string = "") => {
 
+        const statusCondition = status ? {
+            status: status
+        } : {}
+        const bookings = await Bookings.find({
+            user_id: userId,
+            ...statusCondition
+        })
+            .skip((page - 1) * limit)
+            .limit(limit)
+            .sort({ createdAt: -1 })
+            .lean()
+
+        return bookings
+
+    },
+
+    getCurrentBookingCountByTheaterId: async (theaterId: string) => {
+
+        const startDate = new Date()
+        startDate.setHours(0, 0, 0, 0)
+
+        const endDate = new Date()
+        endDate.setHours(23, 59, 59, 999)
+
+        const count = await Bookings.countDocuments({
+            theater_id: theaterId,
+            createdAt: {
+                $gte: startDate,
+                $lte: endDate
+            }
+        })
+
+        return count
+
+    },
+
+    getTotalBookingsCountByTheaterId: async (theaterId: string) => {
+
+        const totalBookingsCount = await Bookings.countDocuments({
+            theater_id: theaterId
+        })
+
+        return totalBookingsCount
+
+    },
+
+    getCurrentPriceByTheaterId: async (theaterId: string) => {
+
+        const startDate = new Date()
+        startDate.setHours(0, 0, 0, 0)
+
+        const endDate = new Date()
+        endDate.setHours(23, 59, 59, 999)
+
+        const totalCurrentPrice = await Bookings.aggregate([
+            {
+                $match: {
+                    theater_id: theaterId,
+                    createdAt: {
+                        $gte: startDate,
+                        $lte: endDate
+                    }
+                }
+            },
+            {
+                $group: {
+                    _id: null,
+                    totalPrice: {
+                        $sum: "$price"
+                    }
+                }
+            }
+        ])
+
+        return totalCurrentPrice[0].totalPrice
+
+    },
+
+    getBookingsByTheaterId: async (theaterId: string, page: number, limit: number, status: string) => {
+
         const statusCondition = status? {
             status: status
         }: {}
+
         const bookings = await Bookings.find({
-            user_id: userId,
+            theater_id: theaterId,
             ...statusCondition
         })
         .skip((page - 1) * limit)

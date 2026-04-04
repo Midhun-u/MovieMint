@@ -8,6 +8,7 @@ import AddShowDetails from "./components/pages/AddShowDetails";
 import CurrentShows from "./components/pages/CurrentShows";
 import EditShow from "./components/pages/EditShow";
 import Settings from "./components/pages/Settings";
+import Bookings from "./components/pages/Bookings";
 
 const Router = () => {
   return (
@@ -82,6 +83,18 @@ const Router = () => {
           <ProtectRoute>
             <CheckTheaterAvailability>
               <Settings
+              />
+            </CheckTheaterAvailability>
+          </ProtectRoute>
+        }
+      />
+      {/* Bookinsg router */}
+      <Route
+        path="/theater/bookings"
+        element={
+          <ProtectRoute>
+            <CheckTheaterAvailability>
+              <Bookings
               />
             </CheckTheaterAvailability>
           </ProtectRoute>

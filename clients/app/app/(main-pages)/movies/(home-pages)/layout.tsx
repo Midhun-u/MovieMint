@@ -9,9 +9,9 @@ const MovieLayout = (
 
     return (
 
-        <section className="w-full flex overflow-hidden flex-col items-center mt-13">
+        <section className="w-full relative flex overflow-hidden flex-col items-center mt-13">
             {/* Tab bar section */}
-            <section className="w-full absolute mt-8 z-6 sm:w-auto px-3">
+            <section className="w-full absolute mt-8 z-6 flex justify-center sm:w-auto px-3">
                 <MovieTabBar />
             </section>
             <section className="w-full flex flex-col items-center">

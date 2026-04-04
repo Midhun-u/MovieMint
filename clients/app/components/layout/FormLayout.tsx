@@ -17,9 +17,9 @@ const FormLayout = ({ formType, vectorImage, formTitle, formAbout }: FormLayoutP
 
     return (
 
-        <section className='w-full h-full flex gap-2 justify-center md:p-5 text-foreground-theme-color'>
+        <section className='w-full justify-center h-auto flex gap-2 overflow-scroll md:p-5 text-foreground-theme-color'>
             {/* Image section */}
-            <div className='hidden md:flex justify-center px-10 items-center w-full h-svh'>
+            <div className='hidden md:flex justify-center px-10 items-center w-full'>
                 <Image
                     src={vectorImage}
                     alt={`${formType} vector image`}
@@ -28,10 +28,10 @@ const FormLayout = ({ formType, vectorImage, formTitle, formAbout }: FormLayoutP
                 />
             </div>
             {/* Form section */}
-            <div className='flex justify-center flex-col w-full px-3 sm:px-5 sm:w-[70%] md:w-full items-center py-10'>
+            <div className='flex flex-col w-full px-3 sm:px-5 sm:w-[70%] md:w-full items-center py-10'>
                 {/* Heading section */}
-                <div className='flex justify-center flex-col items-center'>
-                    <h1 className='font-bold text-lg'>
+                <div className='flex flex-col items-center'>
+                    <h1 className='font-bold text-lg text-center'>
                         {formTitle}
                     </h1>
                     {/* Description section */}

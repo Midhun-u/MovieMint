@@ -9,7 +9,7 @@ export const userAuthMiddleware = async (context: Context, next: Next) => {
         context,
         next,
         userProtectedRoutes,
-        ["USER"],
+        "USER",
         "Only authenticated user has the access"
     )
 

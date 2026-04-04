@@ -1,14 +1,45 @@
+import { useCallback, useEffect, useState } from 'react'
 import style from '../../styles/dashboard/dashboardLogs.module.scss'
 import DashboardLogsCard from './DashboardLogsCard'
 import {
     TicketIcon,
-    Calendar as DateIcon,
-    Armchair as SeatIcon,
     BanknoteArrowUp as RevenueIcon,
     Book as BookingsIcon
 } from 'lucide-react'
+import { getLogsApi } from '../../api/bookings'
+import { formatNumber } from '../../utils/formatNumber'
 
 const DashboardLogs = () => {
+
+    const [logs, setLogs] = useState<{
+        currentBookingsCount: number
+        totalBookingsCount: number
+        totalCurrentPrice: number
+    }>({
+        totalBookingsCount: 0,
+        totalCurrentPrice: 0,
+        currentBookingsCount: 0
+    })
+
+    // Function for fetching theater logs
+    const handleFetchTheaterLogs = useCallback(async () => {
+        const result = await getLogsApi()
+        if(result.success){
+            setLogs(pre => {
+                return {...pre, 
+                    currentBookingsCount: result.currentBookingsCount,
+                    totalBookingsCount: result.totalBookingsCount,
+                    totalCurrentPrice: result.totalCurrentPrice
+                }
+            })
+        }
+    }, [])
+
+    useEffect(() => {
+        (() => {
+            handleFetchTheaterLogs()
+        })()
+    }, [handleFetchTheaterLogs])
 
     return (
 
@@ -16,27 +47,17 @@ const DashboardLogs = () => {
             <DashboardLogsCard
                 title="Today's Bookings"
                 Icon={TicketIcon}
-                data={0}
-            />
-            <DashboardLogsCard
-                title="Upcoming shows"
-                Icon={DateIcon}
-                data={0}
-            />
-            <DashboardLogsCard
-                title="Seats Filled"
-                Icon={SeatIcon}
-                data={0}
+                data={formatNumber(logs.currentBookingsCount)}
             />
             <DashboardLogsCard
                 title="Today's Revenue"
                 Icon={RevenueIcon}
-                data={0}
+                data={`₹${formatNumber(logs.totalCurrentPrice)}`}
             />
             <DashboardLogsCard
                 title="Total Bookings"
                 Icon={BookingsIcon}
-                data={0}
+                data={formatNumber(logs.totalBookingsCount)}
             />
         </div>
 

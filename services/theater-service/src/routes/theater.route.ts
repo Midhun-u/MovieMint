@@ -8,14 +8,17 @@ import { getTheaterDetailsController } from "../controllers/theater/getTheaterDe
 import { getDashboardLogsController } from "../controllers/theater/getDashboardLogs.controller";
 import { getTheatersController } from "../controllers/theater/getTheaters.controller";
 import { updateTheaterController } from "../controllers/theater/updateTheater.controller";
-import { permittedAuthMiddleware } from "../middlewares/permittedAuth";
+import { adminAuthMiddleware } from "../middlewares/adminAuth";
 import { getBatchTheatersController } from "../controllers/theater/getBatchTheaters.controller";
+import { getTheaterLogsController } from "../controllers/theater/getTheaterLogs.controller";
+import { theaterOwnerAuthMiddleware } from "../middlewares/theaterOwner";
 
 // Theater router
 export const theaterRouter = new Hono()
 
 // Applying authentication middleware
-theaterRouter.use(permittedAuthMiddleware)
+theaterRouter.use(adminAuthMiddleware)
+theaterRouter.use(theaterOwnerAuthMiddleware)
 
 // Route for adding theater registration
 theaterRouter.post("/add-theater-registration", addTheatereRegisterController)
@@ -46,3 +49,6 @@ theaterRouter.patch("/update-theater/:theaterId", updateTheaterController)
 
 // Route for getting batch theaters
 theaterRouter.post("/get-batch-theaters", getBatchTheatersController)
+
+// Route for getting theater logs
+theaterRouter.get("/get-theater-logs", getTheaterLogsController)

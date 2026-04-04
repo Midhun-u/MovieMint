@@ -1,0 +1,40 @@
+@use '../variables' as variables;
+
+.container {
+    padding: 20px;
+    background-color: var(--foreground-color);
+    border-radius: 10px;
+    @include variables.disableBorderColor(0.3);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    gap: 10px;
+
+    .image-ui {
+        width: 120px;
+        height: 150px;
+        @include variables.disableBackgroundColor(0.3);
+    }
+
+    .details-ui-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+
+        .details-ui {
+            width: 50%;
+            height: 10px;
+            @include variables.disableBackgroundColor(0.3);
+
+            &:nth-child(1) {
+                height: 15px;
+            }
+        }
+
+        hr {
+            width: 100%;
+            border: 1px solid rgb(from var(--foreground-theme-color) r g b / 0.15);
+        }
+    }
+}

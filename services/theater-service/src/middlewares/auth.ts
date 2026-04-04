@@ -1,7 +1,7 @@
 import { Context, Next } from "hono"
 import { getAuthProfile } from "../services/getAuthProfile"
 
-export const auth = async (context: Context, next: Next, protectedRoutes: Array<string>, roles: Array<string>, errorMessage: string) => {
+export const auth = async (context: Context, next: Next, protectedRoutes: Array<string>, role: "ADMIN" | "USER" | "THEATER_OWNER", errorMessage: string) => {
 
     const url = new URL(context.req.url)
     const authToken = context.req.header("Authorization")
@@ -21,9 +21,18 @@ export const auth = async (context: Context, next: Next, protectedRoutes: Array<
     // Fetching current user
     const result = await getAuthProfile(authToken)
 
-    if (!result?.success || !result?.user || !roles.includes(result.user?.role)) {
-        context.status(403)
-        return context.json({ success: false, error: errorMessage, statusCode: 403 })
+    if (role === "USER") {
+
+        if (!result?.success || !result?.user) {
+            context.status(403)
+            return context.json({ success: false, error: errorMessage, statusCode: 403 })
+        }
+
+    } else {
+        if (!result?.success || !result?.user || result.user.role !== role) {
+            context.status(403)
+            return context.json({ success: false, error: errorMessage, statusCode: 403 })
+        }
     }
 
     context.set("auth", result.user)

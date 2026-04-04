@@ -10,5 +10,7 @@ export const envVariables = {
     REDIS_URL: process.env.REDIS_URL as string,
     MOVIE_SERVICE_URL: process.env.MOVIE_SERVICE_URL as string,
     THEATER_SERVICE_URL: process.env.THEATER_SERVICE_URL as string,
-    SHOW_SERVICE_URL: process.env.SHOW_SERVICE_URL as string
+    SHOW_SERVICE_URL: process.env.SHOW_SERVICE_URL as string,
+    THEATER_DASHBOARD_URL: process.env.THEATER_DASHBOARD_URL as string,
+    ADMIN_DASHBOARD_URL: process.env.ADMIN_DASHBOARD_URL as string
 }

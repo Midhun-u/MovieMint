@@ -5,4 +5,5 @@ export const envVariables = {
   MEDIA_URL: import.meta.env.VITE_MEDIA_URL as string,
   THEATER_URL: import.meta.env.VITE_THEATER_URL as string,
   THEATER_SHOW_URL: import.meta.env.VITE_THEATER_SHOW_URL as string,
+  BOOKINGS_URL: import.meta.env.VITE_BOOKINGS_URL as string
 };

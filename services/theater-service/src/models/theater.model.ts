@@ -155,4 +155,6 @@ export const TheaterModel = {
         return theaters
 
     },
+
+    
 }

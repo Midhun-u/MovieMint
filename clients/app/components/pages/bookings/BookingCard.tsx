@@ -19,7 +19,16 @@ interface BookingCardProps {
     totalTickets: number
     bookedSeats: Array<Seat>
     status: "COMPLETED" | "CANCELLED"
+    onClickOnCard: () => void
 }
+
+const detailsContainerClass = "flex gap-[7px] items-center overflow-hidden"
+const iconDetails = {
+    size: 19,
+    strokeWidth: 1.7,
+    className: "stroke-foreground-theme-color/50 shrink-0"
+}
+const detailsClass = "text-[0.8rem] text-foreground-theme-color/50 font-medium max-h-9.75 overflow-hidden break-all"
 
 const BookingCard = ({
     id,
@@ -30,20 +39,13 @@ const BookingCard = ({
     showTime,
     totalTickets,
     bookedSeats,
-    status
+    status,
+    onClickOnCard
 }: BookingCardProps) => {
-
-    const detailsContainerClass = "flex gap-[7px] items-center overflow-hidden"
-    const iconDetails = {
-        size: 19,
-        strokeWidth: 1.7,
-        className: "stroke-foreground-theme-color/50 shrink-0"
-    }
-    const detailsClass = "text-[0.8rem] text-foreground-theme-color/50 font-medium max-h-9.75 overflow-hidden break-all"
 
     return (
 
-        <div className="max-[550px]:flex-col p-5 relative pb-8 bg-foreground-color border border-foreground-theme-color/15 rounded-[10px] flex gap-3 h-full">
+        <div onClick={() => onClickOnCard()} className="max-[550px]:flex-col cursor-pointer p-5 relative pb-8 bg-foreground-color border border-foreground-theme-color/15 rounded-[10px] flex gap-3 h-full">
             {
                 moviePoster
                     ?
@@ -93,7 +95,7 @@ const BookingCard = ({
                             <SeatIcon
                                 {...iconDetails}
                             />
-                            <div className="flex flex-wrap gap-1.25">
+                            <div className="flex flex-wrap gap-1.25 max-h-9.75 break-all">
                                 {
                                     bookedSeats.map((seat, index) => (
                                         <p className={detailsClass} key={index}>
