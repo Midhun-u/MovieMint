@@ -187,6 +187,10 @@ const Banners = () => {
                                             :
                                             <Button
                                                 className="hidden min-[400px]:block w-20 sm:max-w-30 z-10"
+                                                onClick={(event) => {
+                                                    event.stopPropagation()
+                                                    router.push(`/movies/book/${banner.movie._id}`)
+                                                }}
                                             >
                                                 <>Book</>
                                             </Button>

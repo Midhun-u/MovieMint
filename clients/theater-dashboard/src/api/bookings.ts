@@ -4,7 +4,7 @@ import { bookingsAxiosInstance } from "./axiosInstance";
 // Api for getting logs
 export const getLogsApi = handleError(async () => {
 
-    const result = await bookingsAxiosInstance.get('/get-logs')
+    const result = await bookingsAxiosInstance.get('/get-theater-logs')
     return result.data
 
 })

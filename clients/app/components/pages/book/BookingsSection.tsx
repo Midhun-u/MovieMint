@@ -379,7 +379,7 @@ const BookingsSection = () => {
                                     <div className="w-full h-full absolute top-15 left-0 z-5 flex">
                                         {/* Background */}
                                         <div className="w-full h-full absolute left-0 top-0 z-1 bg-foreground-color opacity-[0.5]"></div>
-                                        <div className="w-full flex justify-center h-full">
+                                        <div className="w-full flex justify-center h-full pb-2.5">
                                             <Elements
                                                 stripe={stripePromsie}
                                                 options={{

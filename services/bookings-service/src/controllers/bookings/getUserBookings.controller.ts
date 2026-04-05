@@ -3,7 +3,7 @@ import { convertStringToNumber } from "../../utils/convertStringToNumber.js";
 import { BookingsModel } from "../../models/bookings.model.js";
 import { getMovies } from "../../services/getMovies.js";
 import { getTheaters } from "../../services/getTheaters.js";
-import { getShows } from "../../services/getShow.js";
+import { getShows } from "../../services/getShows.js";
 
 // Controller for getting user bookings
 export const getUserBookingsController = async (context: Context) => {

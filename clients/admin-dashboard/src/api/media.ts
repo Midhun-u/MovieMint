@@ -1,8 +1,6 @@
 import { handleError } from "../utils/handleError";
 import { mediaAxiosInstance } from "./axiosInstance";
 
-const authToken = localStorage.getItem("authToken")
-
 // Api for uploading movie image 
 export const uploadMovieImageApi = handleError(async (file: File, movieId: string, type: "poster" | "banner") => {
 
@@ -13,11 +11,7 @@ export const uploadMovieImageApi = handleError(async (file: File, movieId: strin
     formDate.append("movieId", movieId)
     formDate.append("type", type)
 
-    const result = await mediaAxiosInstance.post("/movie/upload-image", formDate, {
-        headers: {
-            Authorization: `Bearer ${authToken}`
-        }
-    })
+    const result = await mediaAxiosInstance.post("/movie/upload-image", formDate, )
     return result.data
 
 })
@@ -30,11 +24,7 @@ export const uploadActorImageApi = handleError(async (data: {actorImage: File, a
     formData.append("actorId", data.actorId)
     formData.append("movieId", data.movieId)
 
-    const actorResult = await mediaAxiosInstance.post("/actor/upload-image", formData,{
-        headers: {
-            Authorization: `Bearer ${authToken}`
-        }
-    })
+    const actorResult = await mediaAxiosInstance.post("/actor/upload-image", formData,)
     return actorResult.data
 
 })
@@ -42,11 +32,7 @@ export const uploadActorImageApi = handleError(async (data: {actorImage: File, a
 // Api for deleting movie image
 export const deleteMovieImageApi = handleError(async (movieId: string, type: "poster" | "banner") => {
 
-    const result = (await mediaAxiosInstance.delete(`/movie/delete-image/${movieId}/${type}`,{
-        headers: {
-            Authorization: `Bearer ${authToken}`
-        }
-    })).data
+    const result = (await mediaAxiosInstance.delete(`/movie/delete-image/${movieId}/${type}`,)).data
     return result
 
 })
@@ -54,11 +40,7 @@ export const deleteMovieImageApi = handleError(async (movieId: string, type: "po
 // Api for deleting actor image
 export const deleteActorImageApi = handleError(async (movieId: string) => {
 
-    const result = (await mediaAxiosInstance.delete(`/actor/delete-image/${movieId}`, {
-        headers: {
-            Authorization: `Bearer ${authToken}`
-        }
-    })).data
+    const result = (await mediaAxiosInstance.delete(`/actor/delete-image/${movieId}`, )).data
     return result
 
 })
@@ -66,11 +48,7 @@ export const deleteActorImageApi = handleError(async (movieId: string) => {
 // Api for deleting theater image
 export const deleteTheaterImageApi = handleError(async (theaterId: string) => {
 
-    const result = (await mediaAxiosInstance.delete(`/theater/delete-image/${theaterId}`, {
-        headers: {
-            Authorization: `Bearer ${authToken}`
-        }
-    })).data
+    const result = (await mediaAxiosInstance.delete(`/theater/delete-image/${theaterId}`, )).data
     return result
 
 })
@@ -81,11 +59,7 @@ export const updateMovieImageApi = handleError(async (type: "poster" | "banner",
     const formData = new FormData()
     formData.append("file", file)
 
-    const result = await mediaAxiosInstance.patch(`/movie/update-image/${type}/${movieId}`, formData, {
-        headers: {
-            Authorization: `Bearer ${authToken}`
-        }
-    })
+    const result = await mediaAxiosInstance.patch(`/movie/update-image/${type}/${movieId}`, formData, )
     return result.data
 
 })

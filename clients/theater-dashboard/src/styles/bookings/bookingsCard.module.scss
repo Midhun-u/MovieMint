@@ -3,12 +3,18 @@
 .container {
     position: relative;
     padding: 20px;
-    padding-bottom: 30px;
+    padding-top: 35px;
     background-color: var(--foreground-color);
     @include variables.disableBorderColor(0.3);
     border-radius: 10px;
-    gap: 12px;
+    gap: 10px;
     display: flex;
+    flex-direction: column;
+
+    .sub-container {
+        display: flex;
+        gap: 12px;
+    }
 
     .movie-poster {
         aspect-ratio: 2/3;
@@ -16,7 +22,7 @@
         width: auto;
     }
 
-    .icon{
+    .icon {
         stroke: rgb(from var(--foreground-theme-color) r g b / 0.5);
         flex-shrink: 0;
     }
@@ -34,26 +40,26 @@
         gap: 10px;
     }
 
-    .details-container{
+    .details-container {
         display: flex;
         flex-direction: column;
         gap: 5px;
     }
 
-    .movie-title{
+    .movie-title {
         max-height: 39px;
         overflow: hidden;
         font-size: 0.9rem;
         font-weight: 600;
     }
 
-    .details{
+    .details {
         display: flex;
         gap: 7px;
         align-items: center;
         overflow: hidden;
 
-        p{
+        p {
             font-size: 0.8rem;
             color: rgb(from var(--foreground-theme-color) r g b / 0.5);
             font-weight: 500;
@@ -62,21 +68,21 @@
             word-break: break-all;
         }
 
-        .booked-seats{
+        .booked-seats {
             display: flex;
             flex-wrap: wrap;
             gap: 5px;
-        }   
+        }
     }
 
-    hr{
+    hr {
         width: 100%;
-        border: 1px solid  rgb(from var(--foreground-theme-color) r g b / 0.15);
+        border: 1px solid rgb(from var(--foreground-theme-color) r g b / 0.15);
     }
 
-    .status{
+    .status {
         position: absolute;
-        bottom: 8px;
+        top: 8px;
         right: 10px;
         padding-block: 2px;
         font-weight: 500;
@@ -85,26 +91,59 @@
         border-radius: 5px;
     }
 
-    .success-status{
+    .success-status {
         @extend .status;
         background-color: var(--success-background-color);
         color: var(--success-foreground-color);
     }
 
-    .error-status{
+    .error-status {
         @extend .status;
         background-color: var(--error-background-color);
         color: var(--error-foreground-color);
     }
-}
 
-@media(max-width: 500px){
-    .container{
-        flex-direction: column;
+    .user-details-container {
+        display: flex;
+        gap: 5px;
+        align-items: center;
 
-        .movie-poster{
-            width: 150px;
+        .user-image{
+            aspect-ratio: 1 / 1;
+            border-radius: 50%;
+            width: 35px;
             height: auto;
         }
+
+        .user-details{
+            display: flex;
+            flex-direction: column;
+
+            span{
+                font-size: 0.8rem;
+                font-weight: 500;
+                max-height: 17px;
+                overflow: hidden;
+                word-break: break-all;
+
+                &:last-child{
+                    color: var(--disable-color);
+                }
+            }
+        }
+    }
+}
+
+@media(max-width: 500px) {
+    .container {
+        .sub-container {
+            flex-direction: column;
+            
+            .movie-poster {
+                max-width: 150px;
+                height: auto;
+            }
+        }
+
     }
 }

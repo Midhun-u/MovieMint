@@ -4,12 +4,8 @@ import { movieAxiosInstance } from "./axiosInstance";
 import * as zod from 'zod'
 import { youtubeEmbedUrlRegex } from "../utils/youtubeEmbedUrlRegex";
 
-const authToken = localStorage.getItem("authToken")
-
 // Api for adding movie
 export const addMovieApi = handleError(async (data: AddMovieData) => {
-
-    if(!authToken) return {success: false, errorMessage: "Unautherized Admin"}
 
     const validator = zod.object({
         title: zod.string().nonempty().min(3).max(50),
@@ -45,9 +41,7 @@ export const addMovieApi = handleError(async (data: AddMovieData) => {
         duration: fields.duration,
         type: fields.type,
         actors: fields.actors.length? fields.actors: []
-    }, {headers: {
-        Authorization: `Bearer ${authToken}`
-    }})
+    })
 
     return result.data
 
@@ -56,11 +50,7 @@ export const addMovieApi = handleError(async (data: AddMovieData) => {
 // Api for deleting movie
 export const deleteMovieApi = handleError(async (movieId: string) => {
 
-    const result = (await movieAxiosInstance.delete(`/delete-movie/${movieId}`, {
-        headers: {
-            Authorization: `Bearer ${authToken}`
-        }
-    })).data
+    const result = (await movieAxiosInstance.delete(`/delete-movie/${movieId}`, )).data
     return result
 
 })
@@ -101,11 +91,7 @@ export const getMovieApi = handleError(async (movieId: string) => {
 // Api for updating movie
 export const updateMovieApi = handleError(async (movieId: string, data: object) => {
 
-    const result = await movieAxiosInstance.patch(`/update-movie/${movieId}`, data, {
-        headers: {
-            Authorization: `Bearer ${authToken}`
-        }
-    })
+    const result = await movieAxiosInstance.patch(`/update-movie/${movieId}`, data, )
     return result.data
 
 })
@@ -121,11 +107,7 @@ export const getBannerApi = handleError(async (movieId: string) => {
 // Api for adding banner
 export const addBannerApi = handleError(async (data: {movieId: string}) => {
 
-    const result = await movieAxiosInstance.post("/add-banner", data, {
-        headers: {
-            Authorization: `Bearer ${authToken}`
-        }
-    })
+    const result = await movieAxiosInstance.post("/add-banner", data, )
 
     return result.data
 
@@ -134,11 +116,7 @@ export const addBannerApi = handleError(async (data: {movieId: string}) => {
 // Api for removing banner
 export const removeBannerApi = handleError(async (id: string) => {
 
-    const result = await movieAxiosInstance.delete(`/remove-banner/${id}`, {
-        headers: {
-            Authorization: `Bearer ${authToken}`
-        }
-    })
+    const result = await movieAxiosInstance.delete(`/remove-banner/${id}`, )
 
     return result.data
 
@@ -163,11 +141,7 @@ export const getAllBannersApi = handleError(async () => {
 // Api for getting dashboard logs
 export const getMovieDashboardLogsApi = handleError(async () => {
   
-  const result = await movieAxiosInstance.get("/get-dashboard-logs", {
-    headers: {
-      Authorization: `Bearer ${authToken}`
-    }
-  })
+  const result = await movieAxiosInstance.get("/get-dashboard-logs")
   
   return result.data
   

@@ -30,9 +30,9 @@ import { addNotificationApi, deleteNotificationApi, getMovieNotificationApi } fr
 import { clearNotificationState, notificationFailed, notificationRequest, notificationSuccess } from "@/store/notificationSlice"
 
 const detailsContainerClassName = "flex items-center gap-1.5"
-const detailsTextClassName = "font-medium max-h-12"
+const detailsTextClassName = "font-medium max-h-12 overflow-hidden"
 const buttonClassName = "bg-foreground-color border border-disable-color text-foreground-theme-color hover:bg-background-color"
-const buttonTextClassName = "text-xs font-medium"
+const buttonTextClassName = "text-xs font-medium overflow-hidden"
 
 interface MovieDetailsBannerProps {
     movieId: string
@@ -191,8 +191,8 @@ const MovieDetailsBanner = ({ movieId, showRateButton, showBookButton }: MovieDe
     return (
         movie
             ?
-            <>
-                <div className="absolute top-20 left-5 z-1 cursor-pointer hover:bg-white/20 rounded-full">
+            <div className="w-full relative">
+                <div className="absolute top-5 left-5 z-1 cursor-pointer hover:bg-white/20 rounded-full">
                     <BackIcon
                         className="stroke-disable-color"
                         size={25}
@@ -219,7 +219,7 @@ const MovieDetailsBanner = ({ movieId, showRateButton, showBookButton }: MovieDe
                             :
                             null
                     }
-                    <div className="max-[600px]:w-full z-2 w-[80%] h-full  flex items-center">
+                    <div className="max-[600px]:w-full z-2 w-[80%] h-full flex items-center">
                         <div className="max-[700px]:w-[80%] max-[600px]:w-full items-start flex gap-2.5">
                             {/* Movie poster */}
                             {
@@ -460,7 +460,7 @@ const MovieDetailsBanner = ({ movieId, showRateButton, showBookButton }: MovieDe
                         :
                         null
                 }
-            </>
+            </div>
             :
             null
     )

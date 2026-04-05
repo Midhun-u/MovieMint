@@ -47,7 +47,7 @@ const PaymentForm = ({ amount, setShowPaymentScreen, onSuccess }: PaymentFormPro
             ?
             <form
                 onSubmit={handleSubmitPayment}
-                className="z-10 max-[600px]:w-[95%] w-112.5 flex flex-col gap-2.5 top-50 absolute bg-foreground-color border border-foreground-theme-color/15 rounded-[10px] p-5"
+                className="z-10 max-[600px]:w-[95%] w-112.5 max-h-100 overflow-scroll flex flex-col gap-2.5 top-20 absolute bg-foreground-color border border-foreground-theme-color/15 rounded-[10px] p-5"
             >
                 <div className="flex gap-2.5">
                     {
@@ -69,10 +69,14 @@ const PaymentForm = ({ amount, setShowPaymentScreen, onSuccess }: PaymentFormPro
                     </div>
                 </div>
                 <PaymentElement
+                    options={{
+                        layout: "tabs"
+                    }}
                 />
                 <Button
                     size={"sm"}
                     disabled={loading}
+                    className="mt-5"
                 >
                     {
                         loading

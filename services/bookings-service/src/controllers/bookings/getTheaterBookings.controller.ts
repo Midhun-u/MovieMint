@@ -4,7 +4,7 @@ import { BookingsModel } from "../../models/bookings.model.js";
 import { convertStringToNumber } from "../../utils/convertStringToNumber.js";
 import { getUser } from "../../services/getUser.js";
 import { getMovies } from "../../services/getMovies.js";
-import { getShows } from "../../services/getShow.js";
+import { getShows } from "../../services/getShows.js";
 
 // Controller for getting theater bookings
 export const getTheaterBookingsController = async (context: Context) => {

@@ -4,14 +4,13 @@ import DashboardLogCard from './DashboardLogCard'
 import {
     TicketIcon,
     Calendar as DateIcon,
-    Book as BookingsIcon,
     TheaterIcon,
     PlusCircle as TheaterRequestsIcon
 } from 'lucide-react'
 
 const DashboardLogs = () => {
   
-  const {pendingMovies, todayBookings, pendingTheaters, totalBookings, totalTheaters} = useAppSelector(state => state.dashboard)
+  const {pendingMovies, currentBookings, pendingTheaters, totalTheaters} = useAppSelector(state => state.dashboard)
 
     return (
 
@@ -19,17 +18,12 @@ const DashboardLogs = () => {
             <DashboardLogCard
                 title="Today's Bookings"
                 Icon={TicketIcon}
-                data={todayBookings}
+                data={currentBookings}
             />
              <DashboardLogCard
                 title="Upcoming Movies"
                 Icon={DateIcon}
                 data={pendingMovies}
-            />
-             <DashboardLogCard
-                title="Total Bookings"
-                Icon={BookingsIcon}
-                data={totalBookings}
             />
              <DashboardLogCard
                 title="Total Theaters"

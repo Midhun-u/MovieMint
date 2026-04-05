@@ -76,3 +76,11 @@ export const getUserBookingsApi = handleError(async (page: number, limit:  numbe
     return result
 
 })
+
+// Api for cancelling the booking
+export const cancelBookingApi = handleError(async (bookingId: string) => {
+
+    const result = await fetchInstance(BOOKINGS_BASE_URL, `/cancel-booking/${bookingId}`, "PATCH", {}, "json")
+    return result
+
+})

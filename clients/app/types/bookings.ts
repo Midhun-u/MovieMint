@@ -32,6 +32,7 @@ export type Bookings = {
         }
         theater_name: string
         theater_location: string
+        allow_cancellation: boolean
     }
     price: number
     show: {

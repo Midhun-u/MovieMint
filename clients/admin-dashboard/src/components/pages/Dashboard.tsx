@@ -23,6 +23,7 @@ import {
   dashboardRequest,
   dashboardSuccess,
 } from "../../store/dashboardSlice";
+import { getLogsApi } from "../../api/bookings";
 
 const Dashboard = () => {
   const dispatch = useAppDispatch();
@@ -59,19 +60,19 @@ const Dashboard = () => {
   // Function for getting dashboard logs
   const handleGetDashboardLogs = useCallback(async () => {
     dispatch(dashboardRequest());
-    const [movieDashboardResult, theaterDashboardResult] = await Promise.all([
+    const [movieDashboardResult, theaterDashboardResult, logsResult] = await Promise.all([
       getMovieDashboardLogsApi(),
       getTheaterDashboardLogs(),
+      getLogsApi()
     ]);
 
-    if (movieDashboardResult.success || theaterDashboardResult.success) {
-      
+    if (movieDashboardResult.success || theaterDashboardResult.success || logsResult.success) {
+
       dispatch(
         dashboardSuccess({
           pendingMovies: movieDashboardResult?.pendingMoviesCount || 0,
-          todayBookings: 0,
+          currentBookings: logsResult?.currentBookingsCount || 0,
           pendingTheaters: theaterDashboardResult?.pendingTheatersCount || 0,
-          totalBookings: 0,
           totalTheaters: theaterDashboardResult?.availableTheatersCount || 0,
         }),
       );

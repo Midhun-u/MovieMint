@@ -2,13 +2,9 @@ import { handleError } from "../utils/handleError";
 import { authAxiosInstance } from "./axiosInstance";
 
 // Api for getting admin profile
-export const getAdminProfile = handleError(async (authToken: string ) => {
+export const getAdminProfile = handleError(async ( ) => {
 
-    const result = await authAxiosInstance.get("/auth-profile", {
-        headers: {
-            Authorization: authToken? `Bearer ${authToken}`: ""
-        }
-    })
+    const result = await authAxiosInstance.get("/auth-profile")
 
     return result.data
 

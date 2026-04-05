@@ -1,11 +1,11 @@
 'use client'
 
-import { getUserBookingsApi } from "@/api/bookings"
+import { cancelBookingApi, getUserBookingsApi } from "@/api/bookings"
 import useObserver from "@/components/hooks/useObserver"
 import TabBar from "@/components/layout/TabBar"
 import { bookingsRequest, bookingsSuccess, clearBookingsState, incrementPage } from "@/store/bookingsSlice"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
-import { Activity, useCallback, useEffect, useMemo, useState } from "react"
+import { Activity, useCallback, useContext, useEffect, useState } from "react"
 import BookingCard from "./BookingCard"
 import NoResult from "@/components/ui/NoResult"
 import { convertIsoDateToNormalFormat } from "@/utils/convertIsoDateToNoramlFormat"
@@ -25,6 +25,7 @@ import {
     UserIcon
 } from 'lucide-react'
 import { Button } from "@/components/ui/button"
+import { ToastProvider } from "@/components/context/providers/ToastProvider"
 
 const detailsContainerClass = "flex gap-[7px] items-center overflow-hidden"
 const iconDetails = {
@@ -38,7 +39,7 @@ const detailsClass = "text-[0.8rem] text-foreground-theme-color/50 font-medium m
 const BookingsList = () => {
 
     const [tabBarValue, setTabBarValue] = useState<string>("")
-    const { userBookings, loading, pagination } = useAppSelector(state => state.bookings)
+    const { userBookings, loading: bookingLoading, pagination } = useAppSelector(state => state.bookings)
     const { theme } = useAppSelector(state => state.theme)
     const dispatch = useAppDispatch()
     const [hasMore, setHasMore] = useState<boolean>(false)
@@ -46,7 +47,8 @@ const BookingsList = () => {
     const [isRendered, setIsRendered] = useState<boolean>(false)
     const [showTicketScreen, setShowTicketScreen] = useState<boolean>(false)
     const [bookingDetails, setBookingDetails] = useState<Bookings | null>(null)
-    const [currentTime, setCurrentTime] = useState<number>(0)
+    const [cancelLoading, setCancelLoading] = useState<boolean>(false)
+    const toastContext = useContext(ToastProvider)
 
     // Function for getting user bookings
     const handleGetBookings = useCallback(async () => {
@@ -67,6 +69,23 @@ const BookingsList = () => {
 
     }, [dispatch, pagination.page, pagination.limit, tabBarValue])
 
+    // Function for cancelling the booking
+    const handleCancelBooking = async () => {
+
+        if (!bookingDetails) return
+
+        setCancelLoading(true)
+        const result = await cancelBookingApi(bookingDetails._id)
+        if (result.success) {
+            toastContext?.triggerToastMessage("Show is cancelled", "SUCCESS")
+        } else {
+            toastContext?.triggerToastMessage(result.error, "ERROR")
+        }
+
+        setCancelLoading(false)
+
+    }
+
     useEffect(() => {
         (() => {
             setIsRendered(true)
@@ -78,27 +97,17 @@ const BookingsList = () => {
 
     useEffect(() => {
 
-        if (!isIntersecting || loading || !hasMore) return
+        if (!isIntersecting || bookingLoading || !hasMore) return
 
         (() => {
             dispatch(incrementPage())
         })()
 
-    }, [isIntersecting, loading, hasMore, dispatch])
+    }, [isIntersecting, bookingLoading, hasMore, dispatch])
 
     useEffect(() => {
         dispatch(clearBookingsState())
     }, [tabBarValue, dispatch])
-
-    useEffect(() => {
-
-        (() => {
-            if (showTicketScreen && bookingDetails) {
-                setCurrentTime(Date.now())
-            }
-        })()
-
-    }, [bookingDetails, showTicketScreen])
 
     return (
         <div className="flex flex-col gap-5">
@@ -123,7 +132,7 @@ const BookingsList = () => {
                 />
             </div>
             {
-                userBookings.length || loading
+                userBookings.length || bookingLoading
                     ?
                     <div className="grid max-[800px]:grid-cols-[1fr] grid-cols-[repeat(2,1fr)] gap-2.5 h-full">
                         {
@@ -146,7 +155,7 @@ const BookingsList = () => {
                                 />
                             ))
                         }
-                        <Activity mode={loading ? "visible" : "hidden"}>
+                        <Activity mode={bookingLoading ? "visible" : "hidden"}>
                             {
                                 Array(3).fill("").map((_, index) => (
                                     <BookingsSkeleton
@@ -166,10 +175,10 @@ const BookingsList = () => {
                             null
                     )
             }
-            <Activity mode={hasMore && !loading ? "visible" : "hidden"}>
+            <Activity mode={hasMore && !bookingLoading ? "visible" : "hidden"}>
                 <div ref={ref}></div>
             </Activity>
-            <Activity mode={loading && hasMore ? "visible" : "hidden"}>
+            <Activity mode={bookingLoading && hasMore ? "visible" : "hidden"}>
                 <div className="mt-2.5 w-full flex justify-center">
                     <Spinner
                         color={theme === "white" ? "black" : "black"}
@@ -183,7 +192,10 @@ const BookingsList = () => {
                     <div className="w-full z-5 px-2.5 absolute top-15 left-0 h-[calc(100%-60px)] flex justify-center">
                         <div className="w-full absolute h-full bg-foreground-color opacity-[0.5] z-0 overflow-scroll"></div>
                         <div className="h-[80%] p-5 cursor-all-scroll pt-12 bg-foreground-color border border-foreground-theme-color/30 w-112.5 relative top-20 rounded-[10px]">
-                            <div className="p-1 cursor-pointer right-3 top-3 absolute rounded-full hover:bg-background-color">
+                            <div onClick={() => {
+                                setShowTicketScreen(false)
+                                setBookingDetails(null)
+                            }} className="p-1 cursor-pointer right-3 top-3 absolute rounded-full hover:bg-background-color">
                                 <CloseIcon
                                     size={20}
                                 />
@@ -274,10 +286,23 @@ const BookingsList = () => {
                                         <>Download Ticket</>
                                     </Button>
                                     {
-                                        new Date(bookingDetails.createdAt).getTime() <= currentTime +( 23 * 59 * 59 * 1000) // Comparing 24 hours
+                                        (new Date().getTime() + 10 * 60 * 1000 < new Date(bookingDetails.show.year, bookingDetails.show.month, bookingDetails.show.day, bookingDetails.show.hour).getTime()) && bookingDetails.theater.allow_cancellation
                                             ?
-                                            <Button className="border border-foreground-theme-color/15 bg-foreground-color hover:bg-background-color">
-                                                <>Cancel Ticket</>
+                                            <Button
+                                                className="border border-foreground-theme-color/15 bg-foreground-color hover:bg-background-color text-foreground-theme-color"
+                                                disabled={cancelLoading}
+                                                onClick={() => handleCancelBooking()}
+                                            >
+                                                {
+                                                    cancelLoading
+                                                        ?
+                                                        <Spinner
+                                                            color={theme === "dark"? "white": "black"}
+                                                            size={18}
+                                                        />
+                                                        :
+                                                        <>Cancel Ticket</>
+                                                }
                                             </Button>
                                             :
                                             null

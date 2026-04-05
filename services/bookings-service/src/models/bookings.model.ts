@@ -24,6 +24,13 @@ export const BookingsModel = {
 
     },
 
+    getBookingById: async (id: string) => {
+
+        const booking = await Bookings.findById(id).lean()
+        return booking
+
+    },
+
     getBookingsByShowIdAndSeat: async (showId: string, seats: Array<SeatType>) => {
 
         const show = await Bookings.findOne({
@@ -104,6 +111,25 @@ export const BookingsModel = {
 
     },
 
+    getCurrentBookingsCount: async () => {
+
+        const startDate = new Date()
+        startDate.setHours(0, 0, 0, 0)
+
+        const endDate = new Date()
+        endDate.setHours(23, 59, 59, 999)
+
+        const count = await Bookings.countDocuments({
+            createdAt: {
+                $gte: startDate,
+                $lte: endDate
+            }
+        })
+
+        return count
+
+    },
+
     getTotalBookingsCountByTheaterId: async (theaterId: string) => {
 
         const totalBookingsCount = await Bookings.countDocuments({
@@ -148,20 +174,27 @@ export const BookingsModel = {
 
     getBookingsByTheaterId: async (theaterId: string, page: number, limit: number, status: string) => {
 
-        const statusCondition = status? {
+        const statusCondition = status ? {
             status: status
-        }: {}
+        } : {}
 
         const bookings = await Bookings.find({
             theater_id: theaterId,
             ...statusCondition
         })
-        .skip((page - 1) * limit)
-        .limit(limit)
-        .sort({createdAt: -1})
-        .lean()
+            .skip((page - 1) * limit)
+            .limit(limit)
+            .sort({ createdAt: -1 })
+            .lean()
 
         return bookings
+
+    },
+
+    updateBookingById: async (id: string, updatedData: object) => {
+
+        const updatedBooking = await Bookings.findByIdAndUpdate(id, updatedData, { returnDocument: "after" })
+        return updatedBooking
 
     }
 

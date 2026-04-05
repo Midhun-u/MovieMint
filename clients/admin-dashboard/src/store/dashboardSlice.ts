@@ -4,8 +4,7 @@ type InitialState = {
   loading: boolean
   errorMessage: string
   pendingMovies: number;
-  todayBookings: number;
-  totalBookings: number;
+  currentBookings: number;
   totalTheaters: number;
   pendingTheaters: number;
 };
@@ -15,8 +14,7 @@ const initialState: InitialState = {
   errorMessage: "",
   pendingMovies: 0,
   pendingTheaters: 0,
-  todayBookings: 0,
-  totalBookings: 0,
+  currentBookings: 0,
   totalTheaters: 0
 };
 
@@ -30,12 +28,10 @@ const dashboardSlice = createSlice({
     },
     
     dashboardSuccess: (state, action) => {
-      
       state.loading = false
       state.pendingMovies = action.payload.pendingMovies
       state.pendingTheaters = action.payload.pendingTheaters
-      state.todayBookings = action.payload.todayBookings
-      state.totalBookings = action.payload.totalBookings
+      state.currentBookings = action.payload.currentBookings
       state.totalTheaters = action.payload.totalTheaters
       
     },

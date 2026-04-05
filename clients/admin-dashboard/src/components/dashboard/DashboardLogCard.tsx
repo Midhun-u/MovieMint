@@ -1,9 +1,10 @@
 import type { LucideReactIconType } from "../../types/lucideReactType"
 import style from '../../styles/dashboard/dashboardLogCard.module.scss'
+import { formatNumber } from "../../utils/formatNumber"
 
 interface DashboardLogCardProps{
     title: string,
-    data: string | number,
+    data: number,
     Icon: LucideReactIconType
 }
 
@@ -19,7 +20,7 @@ const DashboardLogCard = ({title, Icon, data}: DashboardLogCardProps) => {
                 />
            </div>
            <h3 className={style.title}>{title}</h3>
-           <h1 className={style.data}>{data}</h1>
+           <h1 className={style.data}>{formatNumber(data as number)}</h1>
         </div>
     )
 
