@@ -13,16 +13,12 @@ export const movieTabBar: MovieTabBar = [
         route: "/movies/all-movies"
     },
     {
-        title: "Popular",
-        route: "/movies/popular"
-    },
-    {
         title: "Coming Soon",
         route: "/movies/pending"
     },
     {
         title: "Most Rated",
-        route: "/movies/most-ratings"
+        route: "/movies/most-rated"
     },
     {
         title: "Animated Movies",

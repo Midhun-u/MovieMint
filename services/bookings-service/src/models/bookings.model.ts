@@ -90,6 +90,21 @@ export const BookingsModel = {
         return bookings
 
     },
+    
+    getBookings: async (page: number, limit: number, status: string = "") => {
+
+        const statusCondition = status? {status: status}: {}
+        const bookings = await Bookings.find({
+            ...statusCondition
+        })
+        .skip((page - 1) * limit)
+        .limit(limit)
+        .sort({createdAt: -1})
+        .lean()
+
+        return bookings
+
+    },
 
     getCurrentBookingCountByTheaterId: async (theaterId: string) => {
 

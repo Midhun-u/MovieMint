@@ -8,6 +8,7 @@ import TheaterDetails from "./components/pages/TheaterDetails";
 import Movies from "./components/pages/Movies";
 import EditMovie from "./components/pages/EditMovie";
 import Theaters from "./components/pages/Theaters";
+import Bookings from "./components/pages/Bookings";
 
 const Router = () => {
   return (
@@ -88,6 +89,17 @@ const Router = () => {
         element={
           <ProtectRoute>
             <Theaters />
+          </ProtectRoute>
+        }
+      />
+
+      {/* Bookings route */}
+      <Route
+        path="/admin/bookings"
+        element={
+          <ProtectRoute>
+            <Bookings
+            />
           </ProtectRoute>
         }
       />

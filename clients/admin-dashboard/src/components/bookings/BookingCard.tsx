@@ -19,6 +19,8 @@ interface BookingCardProps {
     userImage: string
     userName: string
     userEmail: string
+    theaterImage: string
+    theaterName: string
 }
 
 const BookingCard = ({
@@ -31,7 +33,9 @@ const BookingCard = ({
     status,
     userImage,
     userName,
-    userEmail
+    userEmail,
+    theaterImage,
+    theaterName
 }: BookingCardProps) => {
 
     const iconDetails = {
@@ -111,21 +115,36 @@ const BookingCard = ({
                     </div>
                 </div>
             </div>
-            <div className={style['user-details-container']}>
+            <div className={style['sub-details-container']}>
                 {
                     userImage
                         ?
                         <img
                             src={userImage}
-                            className={style['user-image']}
+                            className={style['image']}
                         />
                         :
                         <NullProfilePic
                         />
                 }
-                <div className={style['user-details']}>
+                <div className={style['sub-details']}>
                     <span>{userName}</span>
                     <span>{userEmail}</span>
+                </div>
+            </div>
+            <div className={style['sub-details-container']}>
+                {
+                    theaterImage
+                        ?
+                        <img
+                            src={theaterImage}
+                            className={style['image']}
+                        />
+                        :
+                        null
+                }
+                <div className={style['sub-details']}>
+                    <span>{theaterName}</span>
                 </div>
             </div>
         </div>

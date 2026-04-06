@@ -5,6 +5,7 @@ import { movieReducer } from "./movieSlice";
 import { theaterReducer } from "./theaterSlice";
 import { bannerReducer } from "./bannerSlice";
 import { dashboardReducer } from "./dashboardSlice";
+import { bookingsReducer } from "./bookingsSlice";
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     theater: theaterReducer,
     banner: bannerReducer,
     dashboard: dashboardReducer,
+    bookings: bookingsReducer
   },
 });
 

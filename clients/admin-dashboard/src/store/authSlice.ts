@@ -1,21 +1,16 @@
+import type { Admin } from "@/types/admin";
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+type InitialState = {
+    loading: boolean
+    errorMessage: string
+    admin: Admin | null
+}
+
+const initialState: InitialState = {
     loading: false,
     errorMessage: "",
-    admin: {
-        id: "",
-        firstname: "",
-        lastname: "",
-        email: "",
-        role: "",
-        auth_type: "",
-        profile_image: {
-            image_url: "",
-            id: "",
-            user_id: ""
-        }
-    }
+    admin: null
 }
 
 const authSlice = createSlice({
@@ -24,11 +19,9 @@ const authSlice = createSlice({
     reducers: {
 
         authRequest: (state) => {
-
             state.loading = true
-            state.admin = initialState.admin,
-            state.errorMessage = initialState.errorMessage
-
+            state.admin = null
+            state.errorMessage = ''
         },
 
         authSuccess: (state, action) => {
@@ -38,7 +31,7 @@ const authSlice = createSlice({
             state.errorMessage = initialState.errorMessage
 
         },
-        
+
         authFailed: (state, action) => {
 
             state.loading = false
@@ -51,4 +44,4 @@ const authSlice = createSlice({
 })
 
 export const authReducer = authSlice.reducer
-export const {authRequest, authSuccess, authFailed} = authSlice.actions
+export const { authRequest, authSuccess, authFailed } = authSlice.actions

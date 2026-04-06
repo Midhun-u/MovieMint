@@ -1,7 +1,7 @@
 import { Activity, useCallback, useEffect, useState } from "react"
 import { useAppDispatch, useAppSelector } from "../../store/hooks"
-import { getTheaterBookingsApi } from "../../api/bookings"
-import { bookingsFailed, bookingsRequest, bookingsSuccess, incrementPage } from "../../store/bookingsSlice"
+import { getBookingsApi } from "../../api/bookings"
+import { bookingsFailed, bookingsRequest, bookingsSuccess, clearBookingsState, incrementPage } from "../../store/bookingsSlice"
 import TabBar from "../layout/TabBar"
 import style from '../../styles/bookings/bookingsList.module.scss'
 import BookingCard from "./BookingCard"
@@ -14,7 +14,7 @@ const BookingsList = () => {
 
     const [hasMore, setHasMore] = useState<boolean>(false)
     const dispatch = useAppDispatch()
-    const { theaterBookings, loading, pagination } = useAppSelector(state => state.bookings)
+    const { bookings, loading, pagination } = useAppSelector(state => state.bookings)
     const [status, setStatus] = useState<string>("")
     const { isIntersecting, ref } = useObserver<HTMLDivElement>({ threshold: 0.5 })
 
@@ -22,14 +22,14 @@ const BookingsList = () => {
     const handleFetchTheaterBookings = useCallback(async () => {
 
         dispatch(bookingsRequest())
-        const result = await getTheaterBookingsApi(pagination.page, pagination.limit, status)
+        const result = await getBookingsApi(pagination.page, pagination.limit, status)
         if (result.success) {
             if (result.bookings.length < pagination.limit) {
                 setHasMore(false)
             } else {
                 setHasMore(true)
             }
-            dispatch(bookingsSuccess({ theaterBookings: result.bookings }))
+            dispatch(bookingsSuccess({ bookings: result.bookings }))
         } else {
             dispatch(bookingsFailed({ errorMessage: result.error }))
         }
@@ -49,6 +49,12 @@ const BookingsList = () => {
         dispatch(incrementPage())
 
     }, [isIntersecting, hasMore, loading, dispatch])
+    
+    useEffect(() => {
+
+        dispatch(clearBookingsState())
+
+    }, [status, dispatch])
 
     return (
         <div className={style['container']}>
@@ -72,7 +78,7 @@ const BookingsList = () => {
             />
             <div className={style['list']}>
                 {
-                    theaterBookings.map(booking => (
+                    bookings.map(booking => (
                         <BookingCard
                             key={booking?._id}
                             bookedSeats={booking?.booked_seats}
@@ -85,6 +91,8 @@ const BookingsList = () => {
                             userImage={booking?.user?.profile_image?.image_url}
                             userName={booking?.user?.firstname + " " +booking?.user?.lastname}
                             userEmail={booking?.user?.email}
+                            theaterImage={booking?.theater?.theater_image?.image_url}
+                            theaterName={booking?.theater?.theater_name}
                         />
                     ))
                 }
@@ -102,7 +110,7 @@ const BookingsList = () => {
                 <div ref={ref}></div>
             </Activity>
             {
-                !theaterBookings.length
+                !bookings.length
                     ?
                     <NoResult
                     />

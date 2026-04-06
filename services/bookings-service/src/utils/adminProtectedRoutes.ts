@@ -1,3 +1,4 @@
 export const adminProtectedRoutes = [
-    "/get-logs"
+    "/get-logs",
+    "/get-bookings"
 ]

@@ -1,7 +1,7 @@
 import MostRatedMovies from "@/components/pages/movies/MostRateMovies"
 import PageDetails from "@/components/ui/PageDetails"
 
-const MostRatingsPage = () => {
+const PopularMoviesPage = () => {
 
     return (
         <div
@@ -19,4 +19,4 @@ const MostRatingsPage = () => {
 
 }
 
-export default MostRatingsPage
+export default PopularMoviesPage

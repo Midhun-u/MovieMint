@@ -1,3 +1,4 @@
+import Authentication from "@/components/features/Authentication"
 import SavedList from "@/components/pages/saved-list/SavedList"
 import PageDetails from "@/components/ui/PageDetails"
 
@@ -15,8 +16,10 @@ const SavedListPage = () => {
                     about="Your saved list is the place where you keep all the movies you love or plan to watch later."
                     backButton={false}
                 />
-                <SavedList
-                />
+                <Authentication redirectToAuthPage>
+                    <SavedList
+                    />
+                </Authentication>
             </div>
         </div>
     )

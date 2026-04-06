@@ -11,6 +11,7 @@ import { getTheaterBookingsController } from "../controllers/bookings/getTheater
 import { cancelBookingController } from "../controllers/bookings/cancelBooking.controller.js";
 import { getLogsController } from "../controllers/bookings/getLogs.controller.js";
 import { adminAuthMiddleware } from "../middlewares/adminAuth.js";
+import { getBookingsController } from "../controllers/bookings/getBookings.controller.js";
 
 // Bookings router
 export const bookingsRouter = new Hono()
@@ -34,6 +35,9 @@ bookingsRouter.get("/get-reserved-seats/:showId", getReservedSeatsController)
 
 // Route for getting user bookings
 bookingsRouter.get("/get-user-bookings", getUserBookingsController)
+
+// Route for getting bookings
+bookingsRouter.get("/get-bookings", getBookingsController)
 
 // Route for getting theater bookings
 bookingsRouter.get("/get-theater-bookings", getTheaterBookingsController)

@@ -8,3 +8,11 @@ export const getLogsApi =  handleError(async () => {
     return result.data
 
 })
+
+// Api for getting bookings
+export const getBookingsApi = handleError(async (page: number, limit: number, status: string = "") => {
+
+    const result = await bookingsAxiosInstance.get(`/get-bookings/?page=${page}&limit=${limit}&status=${status}`)
+    return result.data
+
+})

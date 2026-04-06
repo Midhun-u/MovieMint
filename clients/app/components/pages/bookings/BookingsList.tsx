@@ -26,6 +26,7 @@ import {
 } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { ToastProvider } from "@/components/context/providers/ToastProvider"
+import Jspdf from 'jspdf'
 
 const detailsContainerClass = "flex gap-[7px] items-center overflow-hidden"
 const iconDetails = {
@@ -83,6 +84,25 @@ const BookingsList = () => {
         }
 
         setCancelLoading(false)
+
+    }
+
+    // Function for downloading ticket
+    const handleDownloadTicket = async () => {
+
+        if(!bookingDetails) return
+
+        const pdf  = new Jspdf("landscape")
+
+        pdf.setFontSize(16)
+        pdf.text(`Movie Name: ${bookingDetails.movie.title}`, 10, 20)
+        pdf.text(`Theater Name: ${bookingDetails.theater.theater_name}`, 10, 30 )
+        pdf.text(`Theater Location: ${bookingDetails.theater.theater_location}`, 10, 40)
+        pdf.text(`Show Time: ${convertIsoDateToNormalFormat(new Date(bookingDetails.show.year, bookingDetails.show.month, bookingDetails.show.day, bookingDetails.show.hour, bookingDetails.show.minutes).toISOString())}`, 10, 50)
+        pdf.text(`Booked Seats: ${bookingDetails.booked_seats.map(bookedSeat => `L${bookedSeat.layoutNumber}S${bookedSeat.setNumber}R${bookedSeat.rowNumber}S${bookedSeat.seatNumber}`)}`, 10, 60)
+        pdf.text(`Status: ${bookingDetails.status === "COMPLETED"? "Completed": "Cancelled"}`, 10, 70)
+
+        pdf.save('booking-ticket.pdf')
 
     }
 
@@ -282,11 +302,17 @@ const BookingsList = () => {
                                                 </>
                                         }
                                     </p>
-                                    <Button size={"sm"} className="mt-2 border border-primary-color">
+                                    <Button
+                                        size={"sm"}
+                                        className="mt-2 border border-primary-color"
+                                        onClick={() => handleDownloadTicket()}
+                                    >
                                         <>Download Ticket</>
                                     </Button>
                                     {
-                                        (new Date().getTime() + 10 * 60 * 1000 < new Date(bookingDetails.show.year, bookingDetails.show.month, bookingDetails.show.day, bookingDetails.show.hour).getTime()) && bookingDetails.theater.allow_cancellation
+                                        (new Date().getTime() + 10 * 60 * 1000 < new Date(bookingDetails.show.year, bookingDetails.show.month, bookingDetails.show.day, bookingDetails.show.hour).getTime()) &&
+                                            bookingDetails.theater.allow_cancellation &&
+                                            bookingDetails.status === "COMPLETED"
                                             ?
                                             <Button
                                                 className="border border-foreground-theme-color/15 bg-foreground-color hover:bg-background-color text-foreground-theme-color"
@@ -297,7 +323,7 @@ const BookingsList = () => {
                                                     cancelLoading
                                                         ?
                                                         <Spinner
-                                                            color={theme === "dark"? "white": "black"}
+                                                            color={theme === "dark" ? "white" : "black"}
                                                             size={18}
                                                         />
                                                         :
