@@ -1,11 +1,11 @@
 import type { Request, Response } from "express";
-import { handleError } from "../utils/handleError.js";
-import { sendResponse } from "../utils/sendResponse.js";
-import { deleteFileFromDisk, readFileFromDisk } from "../utils/fileOperations.js";
-import { TheaterImageModel } from "../models/theaterImage.model.js";
+import { handleError } from "../../utils/handleError.js";
+import { sendResponse } from "../../utils/sendResponse.js";
+import { deleteFileFromDisk, readFileFromDisk } from "../../utils/fileOperations.js";
+import { TheaterImageModel } from "../../models/theaterImage.model.js";
 import path from 'path'
-import type { ContentType } from "../types/imageType.js";
-import { updateImage } from "../supabase/updateImage.js";
+import type { ContentType } from "../../types/imageType.js";
+import { updateImage } from "../../supabase/updateImage.js";
 
 // Controller for updating theater image
 export const updateTheaterImage = handleError(async (request: Request, response: Response) => {

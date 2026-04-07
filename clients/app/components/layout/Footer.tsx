@@ -39,7 +39,7 @@ const Footer = () => {
                             <Link
                                 href={footerNav.route}
                                 key={index}
-                                className="text-xs hover:text-primary-color"
+                                className="text-xs hover:text-primary-color font-semibold"
                             >
                                 {footerNav.title}
                             </Link>

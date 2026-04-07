@@ -1,11 +1,11 @@
 import express from 'express'
 import { upload } from '../config/multer.js'
-import { uploadMovieImageController } from '../controllers/uploadMovieImage.controller.js'
-import { deleteMovieImageController } from '../controllers/deleteMovieImage.controller.js'
+import { uploadMovieImageController } from '../controllers/movie/uploadMovieImage.controller.js'
+import { deleteMovieImageController } from '../controllers/movie/deleteMovieImage.controller.js'
 import { adminAuthMiddleware } from '../middlewares/adminAuth.js'
-import { getMovieImageController } from '../controllers/getMovieImage.controller.js'
-import { updateMovieImageController } from '../controllers/updateMovieImage.controller.js'
-import { getActorsImagesController } from '../controllers/getActorsImages.controller.js'
+import { getMovieImageController } from '../controllers/movie/getMovieImage.controller.js'
+import { updateMovieImageController } from '../controllers/movie/updateMovieImage.controller.js'
+import { getActorsImagesController } from '../controllers/actor/getActorsImages.controller.js'
 
 // Movie image router
 export const movieRouter = express()

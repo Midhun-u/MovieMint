@@ -1,12 +1,12 @@
 import type { Request, Response } from "express";
-import { handleError } from "../utils/handleError.js";
-import { sendResponse } from "../utils/sendResponse.js";
-import { deleteFileFromDisk, readFileFromDisk } from "../utils/fileOperations.js";
-import { ActorImageModel } from "../models/actorImage.model.js";
-import { uploadImage } from "../supabase/uploadImage.js";
+import { handleError } from "../../utils/handleError.js";
+import { sendResponse } from "../../utils/sendResponse.js";
+import { deleteFileFromDisk, readFileFromDisk } from "../../utils/fileOperations.js";
+import { ActorImageModel } from "../../models/actorImage.model.js";
+import { uploadImage } from "../../supabase/uploadImage.js";
 import path from 'path'
-import type { ContentType } from "../types/imageType.js";
-import { getImage } from "../supabase/getImage.js";
+import type { ContentType } from "../../types/imageType.js";
+import { getImage } from "../../supabase/getImage.js";
 
 // Controller for uploading actor image
 export const uploadActorImageController = handleError(async (request: Request, response: Response) => {

@@ -1,9 +1,9 @@
 import type { Request, Response } from "express";
-import { handleError } from "../utils/handleError.js";
-import { sendResponse } from "../utils/sendResponse.js";
-import { MoviePosterModel } from "../models/moviePoster.model.js";
-import { MovieBannerModel } from "../models/movieBanner.model.js";
-import { deleteImage } from "../supabase/deleteImage.js";
+import { handleError } from "../../utils/handleError.js";
+import { sendResponse } from "../../utils/sendResponse.js";
+import { MoviePosterModel } from "../../models/moviePoster.model.js";
+import { MovieBannerModel } from "../../models/movieBanner.model.js";
+import { deleteImage } from "../../supabase/deleteImage.js";
 
 // Controller deleting movie image
 export const deleteMovieImageController = handleError(async (request: Request, response: Response) => {

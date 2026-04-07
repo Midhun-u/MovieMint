@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
-import { handleError } from "../utils/handleError.js";
-import { sendResponse } from "../utils/sendResponse.js";
-import { UserImageModel } from "../models/userImage.model.js";
+import { handleError } from "../../utils/handleError.js";
+import { sendResponse } from "../../utils/sendResponse.js";
+import { UserImageModel } from "../../models/userImage.model.js";
 
 // Controller for getting user image
 export const getUserImageController = handleError(async (request: Request, response: Response) => {

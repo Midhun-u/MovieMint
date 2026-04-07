@@ -1,10 +1,10 @@
 import express from 'express'
 import { upload } from '../config/multer.js'
-import { uploadTheaterImageController } from '../controllers/uploadTheaterImage.controller.js'
+import { uploadTheaterImageController } from '../controllers/theater/uploadTheaterImage.controller.js'
 import { theaterOwnerAuthMiddleware } from '../middlewares/theatereOwnerAuth.js'
-import { getTheaterImageController } from '../controllers/getTheaterImage.controller.js'
-import { deleteTheaterImageController } from '../controllers/deleteTheaterImage.controller.js'
-import { updateTheaterImage } from '../controllers/updateTheaterImage.controller.js'
+import { getTheaterImageController } from '../controllers/theater/getTheaterImage.controller.js'
+import { deleteTheaterImageController } from '../controllers/theater/deleteTheaterImage.controller.js'
+import { updateTheaterImage } from '../controllers/theater/updateTheaterImage.controller.js'
 
 // Theater image router
 export const theaterImageRouter = express()

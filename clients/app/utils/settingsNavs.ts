@@ -8,23 +8,23 @@ import {
 type SettingsNavs = Array<{
     title: string
     Icon: LucidReactIconType,
-    route: string
+    value: string
 }>
 
 export const settingsNavs: SettingsNavs = [
     {
         title: "Profile",
         Icon: UserIcon,
-        route: "/settings/profile"
+        value: "profile"
     },
     {
         title: "Security",
         Icon: SecurityIcon,
-        route: "/settings/security"
+        value: "security"
     },
     {
         title: "Help & Support",
         Icon: HelpIcon,
-        route: "/settings/help-support"
+        value: "help-support"
     }
 ]

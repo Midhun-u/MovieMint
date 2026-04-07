@@ -24,7 +24,6 @@ const authSlice = createSlice({
 
             state.loading = true
             state.errorMessage = ""
-            state.user = initialState.user
 
         },
         authSuccess: (state, action) => {

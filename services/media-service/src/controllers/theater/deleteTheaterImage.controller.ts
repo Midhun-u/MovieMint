@@ -1,8 +1,8 @@
 import type { Request, Response } from "express";
-import { handleError } from "../utils/handleError.js";
-import { TheaterImageModel } from "../models/theaterImage.model.js";
-import { sendResponse } from "../utils/sendResponse.js";
-import { deleteImage } from "../supabase/deleteImage.js";
+import { handleError } from "../../utils/handleError.js";
+import { TheaterImageModel } from "../../models/theaterImage.model.js";
+import { sendResponse } from "../../utils/sendResponse.js";
+import { deleteImage } from "../../supabase/deleteImage.js";
 
 // Controller for deleting theater image
 export const deleteTheaterImageController = handleError(async (request: Request, response: Response) => {

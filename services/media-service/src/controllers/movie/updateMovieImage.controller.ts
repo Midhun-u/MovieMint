@@ -1,12 +1,12 @@
 import type { Request, Response } from "express";
-import { handleError } from "../utils/handleError.js";
-import { deleteFileFromDisk, readFileFromDisk } from "../utils/fileOperations.js";
-import { sendResponse } from "../utils/sendResponse.js";
-import { MoviePosterModel } from "../models/moviePoster.model.js";
-import { MovieBannerModel } from "../models/movieBanner.model.js";
-import { updateImage } from "../supabase/updateImage.js";
+import { handleError } from "../../utils/handleError.js";
+import { deleteFileFromDisk, readFileFromDisk } from "../../utils/fileOperations.js";
+import { sendResponse } from "../../utils/sendResponse.js";
+import { MoviePosterModel } from "../../models/moviePoster.model.js";
+import { MovieBannerModel } from "../../models/movieBanner.model.js";
+import { updateImage } from "../../supabase/updateImage.js";
 import path from 'path'
-import type { ContentType } from "../types/imageType.js";
+import type { ContentType } from "../../types/imageType.js";
 
 // Controller for updating movie image
 export const updateMovieImageController = handleError(async (request: Request, response: Response) => {

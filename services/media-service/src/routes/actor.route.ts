@@ -1,7 +1,7 @@
 import express from 'express'
-import { uploadActorImageController } from '../controllers/uploadActorImage.controller.js'
+import { uploadActorImageController } from '../controllers/actor/uploadActorImage.controller.js'
 import { upload } from '../config/multer.js'
-import { deleteActorImageController } from '../controllers/deleteActorImage.controller.js'
+import { deleteActorImageController } from '../controllers/actor/deleteActorImage.controller.js'
 import { adminAuthMiddleware } from '../middlewares/adminAuth.js'
 
 // Actor image router

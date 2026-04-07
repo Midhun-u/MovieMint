@@ -1,4 +1,4 @@
-import BackIconUI from "./BackIcon";
+import BackIconUI from "./BackIconUi";
 
 interface PageDetailsProps {
   title: string;

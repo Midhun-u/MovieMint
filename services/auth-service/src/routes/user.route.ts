@@ -9,6 +9,7 @@ import { resetPasswordController } from "../controllers/user/resetPassword.contr
 import { getAuthProfileController } from "../controllers/user/getAuthProfile.controller.js";
 import { authenticationHook } from "../hooks/auth.hook.js";
 import { getUserController } from "../controllers/user/getUser.controller.js";
+import { updateUserController } from "../controllers/user/updateUser.controller.js";
 
 // Auth routes
 export const authRoutes = (fastify: FastifyInstance) => {
@@ -39,5 +40,8 @@ export const authRoutes = (fastify: FastifyInstance) => {
 
     // Route for getting a specific user
     fastify.get("/get-user/:userId", getUserController)
+
+    // Route for updating user
+    fastify.patch("/update-user", {onRequest: authenticationHook}, updateUserController)
 
 }

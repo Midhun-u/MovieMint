@@ -1,8 +1,8 @@
 import type { Request, Response } from "express";
-import { handleError } from "../utils/handleError.js";
-import { sendResponse } from "../utils/sendResponse.js";
-import { MoviePosterModel } from "../models/moviePoster.model.js";
-import { MovieBannerModel } from "../models/movieBanner.model.js";
+import { handleError } from "../../utils/handleError.js";
+import { sendResponse } from "../../utils/sendResponse.js";
+import { MoviePosterModel } from "../../models/moviePoster.model.js";
+import { MovieBannerModel } from "../../models/movieBanner.model.js";
 
 // Controller for getting movie image
 export const getMovieImageController = handleError(async (request: Request, response: Response) => {

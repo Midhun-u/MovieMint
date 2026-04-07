@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
-import { handleError } from "../utils/handleError.js";
-import { sendResponse } from "../utils/sendResponse.js";
-import { ActorImageModel } from "../models/actorImage.model.js";
+import { handleError } from "../../utils/handleError.js";
+import { sendResponse } from "../../utils/sendResponse.js";
+import { ActorImageModel } from "../../models/actorImage.model.js";
 
 // Contorller for getting actors images
 export const getActorsImagesController = handleError(async (request: Request, response: Response) => {
