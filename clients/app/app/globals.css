@@ -57,6 +57,11 @@
 * {
   font-family: var(--font-space-grotesk);
   box-sizing: border-box;
+
+  ::selection{
+    color: var(--primary-color);
+    background-color: var(--dark-foreground-color);
+  }
 }
 
 html {

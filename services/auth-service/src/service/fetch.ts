@@ -1,14 +1,15 @@
 type Method = "GET" | "POST" | "PUT" | "DELETE" | "PATCH"
 
 // Fetch instance
-export const fetchInstance = async (baseUrl: string, method: Method, path: string, data?: object) => {
+export const fetchInstance = async (baseUrl: string, method: Method, path: string, data?: object, authToken?: string) => {
 
     try {
         
         const response = await fetch(baseUrl + path, {
             method: method,
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${authToken}`
             },
             body: method !== "GET"? JSON.stringify(data): null
         })

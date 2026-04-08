@@ -5,19 +5,21 @@ import Image from "next/image"
 import {
     Camera as ProfilePictureIcon
 } from 'lucide-react'
-import { useId, useRef } from "react"
+import { ChangeEvent, useContext, useId, useRef, useState } from "react"
 import { Input } from "@/components/ui/input"
 import { SubmitHandler, useForm } from "react-hook-form"
 import FormInput from "@/components/form/FormInput"
 import {
     UserIcon,
-    Mail as EmailIcon
+    Mail as EmailIcon,
 } from 'lucide-react'
 import Label from "@/components/form/Label"
 import { Button } from "@/components/ui/button"
 import { authFailed, authRequest, authSuccess } from "@/store/authSlice"
 import { updateUserDetailsApi } from "@/api/auth"
 import Spinner from "../ui/Spinner"
+import { ToastProvider } from "../context/providers/ToastProvider"
+import { updateUserImageApi } from "@/api/media"
 
 type Inputs = {
     firstname: string
@@ -35,6 +37,9 @@ const ProfileForm = () => {
     const firstnameId = useId()
     const lastnameId = useId()
     const emailId = useId()
+    const [file, setFile] = useState<File | null>(null)
+    const [preview, setPreview] = useState<string | null>(null)
+    const toastContext = useContext(ToastProvider)
 
     // Function for updating user details
     const handleUpdateUserDetails: SubmitHandler<Inputs> = async (data) => {
@@ -44,6 +49,11 @@ const ProfileForm = () => {
 
         dispatch(authRequest())
 
+        if(file){
+            const result = await updateUserImageApi(file, authToken)
+            console.log(result)
+        }
+
         const result = await updateUserDetailsApi({
             firstname: data.firstname,
             lastname: data.lastname
@@ -51,8 +61,40 @@ const ProfileForm = () => {
 
         if (result.success) {
             dispatch(authSuccess({ user: { ...user, firstname: data.firstname, lastname: data.lastname } }))
+            toastContext?.triggerToastMessage("Details are updated", "SUCCESS")
         } else {
             dispatch(authFailed({ errorMessage: result.error }))
+            toastContext?.triggerToastMessage("Details are couldn't update", "ERROR")
+        }
+
+    }
+
+    // Function for storing files
+    const handleStoreFile = (event: ChangeEvent<HTMLInputElement>) => {
+
+        try {
+
+            const file = event.target.files ? event.target.files[0] : null
+            if (!file) return
+
+            const maxSize = 1024 * 1024 * 10
+
+            if (!file.type.includes("image")) {
+                toastContext?.triggerToastMessage("Invalid file", "ERROR")
+                return
+            }
+
+            if (file.size > maxSize) {
+                toastContext?.triggerToastMessage("File size is exceeded", "ERROR")
+                return
+            }
+
+            const objectUrl = URL.createObjectURL(file)
+            setPreview(objectUrl)
+            setFile(file)
+
+        } catch {
+            setFile(null)
         }
 
     }
@@ -63,22 +105,52 @@ const ProfileForm = () => {
             <div className="mt-2.5 flex flex-col gap-5">
                 <div className="flex gap-2.5 items-center">
                     <div onClick={() => imageRef.current?.click()} className="relative flex justify-center items-center cursor-pointer">
-                        <Image
-                            src={user.profile_image.image_url}
-                            alt="Profile image"
-                            width={100}
-                            height={100}
-                            className="w-20 h-auto rounded-[10px] aspect-square"
-                        />
+                        {
+                            preview
+                                ?
+                                <Image
+                                    src={preview}
+                                    alt="Profile image"
+                                    width={100}
+                                    height={100}
+                                    className="w-20 h-auto rounded-[10px] aspect-square"
+                                />
+                                :
+                                (
+                                    user.profile_image.image_url
+                                        ?
+                                        <Image
+                                            src={user.profile_image.image_url}
+                                            alt="Profile image"
+                                            width={100}
+                                            height={100}
+                                            className="w-20 h-auto rounded-[10px] aspect-square"
+                                        />
+                                        :
+                                        <div className="w-20 h-auto rounded-[10px] aspect-square flex justify-center items-center border border-foreground-theme-color/15">
+                                            <UserIcon
+                                                size={25}
+                                                strokeWidth={1.7}
+                                            />
+                                        </div>
+                                )
+                        }
                         <div className="absolute top-0 left-0 w-full h-full bg-foreground-color opacity-[0.4]"></div>
-                        <ProfilePictureIcon
-                            className="absolute"
-                            strokeWidth={1.7}
-                        />
+                        {
+                            preview || user.profile_image.image_url
+                                ?
+                                <ProfilePictureIcon
+                                    className="absolute"
+                                    strokeWidth={1.7}
+                                />
+                                :
+                                null
+                        }
                         <Input
                             type="file"
                             ref={imageRef}
                             hidden
+                            onChange={handleStoreFile}
                         />
                     </div>
                     <div>

@@ -29,10 +29,26 @@ export const UserImageModel = {
                     [Op.eq]: userId
                 }
             },
+            raw: true,
             ...attributesCondition
         })
+        
+        return userImage
 
-        return userImage?.dataValues
+    },
+
+    updateImageById: async (id: string, updateBody: Omit<AddUserImageType, "userId">) => {
+
+        const [updatedCount, updatedRow] = await UserImage.update(updateBody, {
+            where: {
+                id: {
+                    [Op.eq]: id
+                }
+            },
+            returning: true
+        })
+
+        return updatedRow
 
     }
 

@@ -35,3 +35,14 @@ export const getActorsImagesApi = handleError(async (movieId: string) => {
     return result
 
 })
+
+// Api for updating user image
+export const updateUserImageApi = handleError(async (file: File, authToken: string) => {
+
+    const formData = new FormData()
+    formData.append("file", file)
+
+    const result = await fetchInstance(MEDIA_BASE_URL, "/user/update-image", "PATCH", formData, "formData", authToken)
+    return result
+
+})
