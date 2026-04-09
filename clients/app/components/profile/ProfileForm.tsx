@@ -51,7 +51,11 @@ const ProfileForm = () => {
 
         if(file){
             const result = await updateUserImageApi(file, authToken)
-            console.log(result)
+            if(result.success){
+                toastContext?.triggerToastMessage("Profile picture is updated", "SUCCESS")
+            }else{
+                toastContext?.triggerToastMessage("Profile picture is couldn't updated", "ERROR")
+            }
         }
 
         const result = await updateUserDetailsApi({
@@ -98,7 +102,7 @@ const ProfileForm = () => {
         }
 
     }
-
+    
     return (
         user
             ?
@@ -213,14 +217,7 @@ const ProfileForm = () => {
                         />
                     </div>
                     <hr className="border border-foreground-theme-color/5 mt-2" />
-                    <div className="mt-2.5 w-full flex flex-wrap max-[700px]:justify-start justify-end gap-2.5">
-                        <Button
-                            type="button"
-                            className="max-[500px]:w-full bg-foreground-color text-foreground-theme-color hover:bg-background-color border border-foreground-theme-color/15"
-                            disabled={loading}
-                        >
-                            <>Cancel Changes</>
-                        </Button>
+                    <div className="mt-2.5 w-full flex max-[700px]:justify-start justify-end gap-2.5">
                         <Button
                             type="submit"
                             disabled={loading}

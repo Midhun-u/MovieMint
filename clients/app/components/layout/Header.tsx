@@ -167,9 +167,9 @@ const Header = () => {
                                             <Image
                                                 src={user.profile_image.image_url}
                                                 alt="User profile image"
-                                                width={30}
-                                                height={30}
-                                                className="rounded-full cursor-pointer"
+                                                width={100}
+                                                height={100}
+                                                className="rounded-full cursor-pointer w-7.5 h-7.5"
                                             />
                                             :
                                             <NullProfilePic

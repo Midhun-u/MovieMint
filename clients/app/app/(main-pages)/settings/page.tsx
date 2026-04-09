@@ -3,21 +3,33 @@
 import Authentication from "@/components/features/Authentication"
 import SettingsNavBar from "@/components/pages/settings/SettingsNavBar"
 import ProfilePage from "@/components/profile/ProfilePage"
+import PasswordPage from "@/components/password/PasswordPage"
 import PageDetails from "@/components/ui/PageDetails"
 import { useEffect, useState } from "react"
+import HelpAndSupportPage from "@/components/help-support/HelpAndSupportPage"
 
 const SettingsPage = () => {
 
-    const [selectedPageName, setSelectedPageName] = useState<string>("")
+    const [selectedPagedName, setSelectedPagedName] = useState<string>("")
 
     // Function for getting corresponding page
     const handleGetPage = () => {
 
-        switch (selectedPageName) {
+        switch (selectedPagedName) {
 
             case "profile":
                 return <ProfilePage
-                    setSelectePageName={setSelectedPageName}
+                    setSelectedPageName={setSelectedPagedName}
+                />
+
+            case "password":
+                return <PasswordPage
+                    setSelectedPagedName={setSelectedPagedName}
+                />
+
+            case "help-support":
+                return <HelpAndSupportPage
+                    setSelectedPagedName={setSelectedPagedName}
                 />
 
         }
@@ -30,9 +42,9 @@ const SettingsPage = () => {
 
             const width = window.innerWidth
             if (width >= 700) {
-                setSelectedPageName("profile")
+                setSelectedPagedName("profile")
             } else {
-                setSelectedPageName("")
+                setSelectedPagedName("")
             } 
 
         }
@@ -54,10 +66,10 @@ const SettingsPage = () => {
                     />
                     <div className={`max-[700px]:grid-cols-1 w-full grid grid-cols-[auto_1fr] h-full`}>
                         <SettingsNavBar
-                            selectedValue={selectedPageName}
-                            setSelectedValue={setSelectedPageName}
+                            selectedValue={selectedPagedName}
+                            setSelectedValue={setSelectedPagedName}
                         />
-                        <div className={`max-[700px]:${selectedPageName ? "flex" : "hidden"} w-full max-[700px]:pl-0 pl-2.5`}>
+                        <div className={`max-[700px]:${selectedPagedName ? "flex" : "hidden"} w-full max-[700px]:pl-0 pl-2.5`}>
                             {handleGetPage()}
                         </div>
                     </div>

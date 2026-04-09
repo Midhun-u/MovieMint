@@ -187,3 +187,15 @@ export const updateUserDetailsApi = handleError(async (updateData: object, authT
     return result
 
 })
+
+// Api for changing password
+export const changePasswordApi = handleError(async (currenPassword: string, newPassword: string, authToken: string) => {
+
+    const result = await fetchInstance(AUTH_BASE_URL, "/change-password", "PATCH", {
+        newPassword: newPassword,
+        currentPassword: currenPassword
+    }, "json", authToken)
+
+    return result
+
+})

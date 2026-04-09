@@ -1,7 +1,7 @@
 import { LucidReactIconType } from "@/types/lucidReact"
 import {
     UserIcon,
-    Shield as SecurityIcon,
+    Lock as PasswordIcon,
     HelpCircle as HelpIcon
 } from 'lucide-react'
 
@@ -18,9 +18,9 @@ export const settingsNavs: SettingsNavs = [
         value: "profile"
     },
     {
-        title: "Security",
-        Icon: SecurityIcon,
-        value: "security"
+        title: "Password",
+        Icon: PasswordIcon,
+        value: "password"
     },
     {
         title: "Help & Support",
