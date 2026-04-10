@@ -14,20 +14,15 @@ Overall, this project demonstrates the integration of frontend and backend techn
 
 ### User Features
 
-- **Browser Movies**
-    <br>
-    Users can explore a list of currently running and upcoming movies with detailed information such as genre, duration, cast, and release date.
+- **Browser Movies:** Users can explore a list of currently running and upcoming movies with detailed information such as genre, duration, cast, and release date.
 
-- **View Show Timings**
-    <br>
-Displays available showtimes across different theaters, allowing users to choose a convenient schedule.
+- **View Show Timings:**
+    Displays available showtimes across different theaters, allowing users to choose a convenient schedule.
 
- - **Interactive Seat Selection**
-<br>
-Provides a dynamic seat layout where users can visually select available seats. Real-time updates ensure accurate seat availability.
+ - **Interactive Seat Selection:**
+ Provides a dynamic seat layout where users can visually select available seats. Real-time updates ensure accurate seat availability.
 
- - **Digital Ticket Generation**
-<br>
+ - **Digital Ticket Generation:**
 Generates downloadable tickets (PDF or digital format) that can be used for entry or sharing.
 
  - **Booking History Management**
