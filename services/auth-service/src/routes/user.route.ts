@@ -10,6 +10,7 @@ import { getAuthProfileController } from "../controllers/user/getAuthProfile.con
 import { authenticationHook } from "../hooks/auth.hook.js";
 import { getUserController } from "../controllers/user/getUser.controller.js";
 import { updateUserController } from "../controllers/user/updateUser.controller.js";
+import { changeUserPasswordController } from "../controllers/user/changeUserPassword.controller.js";
 
 // Auth routes
 export const authRoutes = (fastify: FastifyInstance) => {
@@ -43,5 +44,8 @@ export const authRoutes = (fastify: FastifyInstance) => {
 
     // Route for updating user
     fastify.patch("/update-user", {onRequest: authenticationHook}, updateUserController)
+
+    // Route for changing user password
+    fastify.patch("/change-password", {onRequest: authenticationHook}, changeUserPasswordController)
 
 }

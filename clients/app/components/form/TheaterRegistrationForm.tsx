@@ -22,7 +22,6 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { Input } from "../ui/input"
 import { ToastProvider } from "../context/providers/ToastProvider"
 import Image from "next/image"
-import { convertStringToNumber } from "@/utils/convertStringToNumber"
 import { deleteTheaterRegistrationApi, registerTheaterApi } from "@/api/theater"
 import { uploadTheaterImageApi } from "@/api/media"
 import Spinner from "../ui/Spinner"
@@ -100,22 +99,22 @@ const TheaterRegistrationForm = () => {
             return
         }
 
-        if (formats.length < 2) {
-            return toastContext?.triggerToastMessage("Add atleast two supported formats", "ERROR")
-        }
-
         if (!theaterLogo.file) {
             return toastContext?.triggerToastMessage("Upload theater logo", "ERROR")
+        }
+
+        if(data.totalLayout > 3 || data.totalSets > 4 || data.totalRows > 5 || data.totalSeats > 7){
+            return toastContext?.triggerToastMessage("Invalid fields", "ERROR")
         }
 
         setTheaterDetails({
             file: theaterLogo.file,
             theaterName: data.theaterName,
             theaterLocation: data.theaterLocation,
-            totalLayout: convertStringToNumber(data.totalLayout),
-            totalSets: convertStringToNumber(data.totalSets),
-            totalRows: convertStringToNumber(data.totalRows),
-            totalSeats: convertStringToNumber(data.totalSeats),
+            totalLayout: data.totalLayout,
+            totalSets: data.totalSets,
+            totalRows: data.totalRows,
+            totalSeats: data.totalSeats,
             allowCancellation: allowCancellation,
             formats: formats
         })
@@ -309,6 +308,7 @@ const TheaterRegistrationForm = () => {
                                         {...register("totalLayout", {
                                             minLength: 1,
                                             maxLength: 3,
+                                            valueAsNumber: true,
                                             required: true
                                         })}
                                         aria-invalid={formErrors.totalLayout ? "true" : "false"}
@@ -328,7 +328,8 @@ const TheaterRegistrationForm = () => {
                                         {...register("totalSets", {
                                             required: true,
                                             minLength: 1,
-                                            maxLength: 4
+                                            maxLength: 4,
+                                            valueAsNumber: true
                                         })}
                                         aria-invalid={formErrors.totalSets ? "true" : "false"}
                                     />
@@ -347,7 +348,8 @@ const TheaterRegistrationForm = () => {
                                         {...register("totalRows", {
                                             required: true,
                                             minLength: 1,
-                                            maxLength: 5
+                                            maxLength: 5,
+                                            valueAsNumber: true
                                         })}
                                         aria-invalid={formErrors.totalRows ? "true" : "false"}
                                     />
@@ -366,7 +368,8 @@ const TheaterRegistrationForm = () => {
                                         {...register("totalSeats", {
                                             required: true,
                                             minLength: 1,
-                                            maxLength: 7
+                                            maxLength: 7,
+                                            valueAsNumber: true,
                                         })}
                                         aria-invalid={formErrors.totalSeats ? "true" : "false"}
                                     />

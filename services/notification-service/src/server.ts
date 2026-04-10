@@ -12,7 +12,7 @@ export const app = new Hono({ strict: false })
 
 // Middlewares
 app.use(cors({
-    origin: [envVariables.APP_URL],
+    origin: [envVariables.APP_URL, envVariables.ADMIN_DASHBOARD_URL],
     allowMethods: ["GET", "POST", "DELETE", "PATCH", "PUT"],
     credentials: true
 }))

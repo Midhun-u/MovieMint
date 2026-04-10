@@ -2,7 +2,7 @@ import type { NextFunction, Request, Response } from "express"
 import { getAuthProfile } from "../services/getAuthProfile.js"
 import { sendResponse } from "../utils/sendResponse.js"
 
-export const auth = async (request: Request, response: Response, next: NextFunction, role: "ADMIN" | "USER" | "THEATER_OWNER") => {
+export const auth = async (request: Request, response: Response, next: NextFunction, roles: Array<"ADMIN" | "USER" | "THEATER_OWNER">) => {
 
     try {
 
@@ -15,16 +15,16 @@ export const auth = async (request: Request, response: Response, next: NextFunct
 
         const result = await getAuthProfile(authToken)
 
-        if (role !== "USER") {
-            if (!result.success || !result?.user || result?.user.role !== role) {
-                return sendResponse(response, false, 403, "Only permitted role has the access for processing")
-            }
-        } else {
+        if (roles.includes("USER")) {
             if (!result.success || !result?.user) {
                 return sendResponse(response, false, 403, "Only authenticated user has the access for processing")
             }
+        } else {
+            if (!result.success || !result?.user || !roles.includes(result?.user.role)) {
+                return sendResponse(response, false, 403, "Only permitted role has the access for processing")
+            }
         }
-    
+
         request.user = result.user
         return next()
 

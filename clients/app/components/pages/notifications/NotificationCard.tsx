@@ -1,4 +1,5 @@
 import { updateNotificationApi } from '@/api/notification'
+import { envVariables } from '@/utils/envVariables'
 import {
     CircleCheckBig as SuccessIcon,
     TriangleAlert as ErrorIcon,
@@ -26,10 +27,12 @@ const NotificationCard = ({ success, title = "", message = "", isRead = false, i
     const handleNavigate = async () => {
 
         const authToken = localStorage.getItem('authToken')
-        if (!authToken) return
+        if (!authToken || !metadata) return
 
         if (metadata?.action === "check_movie" && metadata?.movie_id) {
             router.push(`/movies/details/${metadata.movie_id}`)
+        }else if(metadata?.action === "check_dashboard"){
+            window.location.href = envVariables.THEATER_DASHBAORD_URL
         }
 
         if (!isRead) {

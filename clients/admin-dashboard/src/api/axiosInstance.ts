@@ -7,6 +7,7 @@ const MOVIE_BASE_URL = envVariables.MOVIE_URL
 const MEDIA_BASE_URL = envVariables.MEDIA_URL
 const THEATER_BASE_URL = envVariables.THEATER_URL
 const BOOKING_BASE_URL = envVariables.BOOKINGS_BASE_URL
+const NOTIFICATION_BASE_URL = envVariables.NOTIFICATION_URL
 
 // Auth instance
 export const authAxiosInstance = axios.create({
@@ -44,10 +45,20 @@ export const theaterAxiosInstance = axios.create({
     }
 })
 
+// Bookings instance
 export const bookingsAxiosInstance = axios.create({
     baseURL: BOOKING_BASE_URL,
     withCredentials: true,
     headers: {
         Authorization: `Bearer ${localStorage.getItem("authToken")}`
+    }
+})
+
+// Notification instance
+export const notificationInstance = axios.create({
+    baseURL: NOTIFICATION_BASE_URL,
+    withCredentials: true,
+    headers: {
+        Authorization: `Bearer ${localStorage.getItem('authToken')}`
     }
 })

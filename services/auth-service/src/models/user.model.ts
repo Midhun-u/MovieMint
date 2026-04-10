@@ -53,6 +53,18 @@ export const UserModel = {
 
     },
 
+    getUserByIdWithAuthType: async (id: string, authType: "EMAIL" | "GOOGLE") => {
+
+        const user = await User.findOne({
+            where: {
+                [Op.and]: [{id: id}, {auth_type: authType}]
+            },
+        })
+
+        return user?.dataValues
+
+    },
+
     getUserByEmailWithAuthTypeAndRole: async (email: string, authType: AuthType, role: Role) => {
 
         const user = await User.findOne({
@@ -91,7 +103,7 @@ export const UserModel = {
                 id: {
                     [Op.eq]: userId
                 }
-            }
+            },
         })
 
         return affectedCount

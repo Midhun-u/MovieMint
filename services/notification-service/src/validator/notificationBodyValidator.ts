@@ -9,9 +9,9 @@ export const validateNotificationBody = (data: NotificationBody): {success: bool
         const validator = zod.object({
             userId: zod.string().nonempty(),
             success: zod.boolean().nonoptional(),
-            type: zod.enum(["movie", "payment"]).nonoptional(),
+            type: zod.enum(["movie", "payment", "theater"]).nonoptional(),
             title: zod.string().min(3).max(255),
-            message: zod.string().min(5).max(255),
+            message: zod.string().min(5).max(500),
         })
 
         const fields = validator.parse(data)

@@ -19,7 +19,7 @@ export const Notification = sequelize.define("notification", {
         defaultValue: true
     },
     type: {
-        type: DataTypes.ENUM("movie", "payment"),
+        type: DataTypes.ENUM("movie", "payment", "theater"),
         allowNull: false
     },
     title: {
@@ -27,7 +27,7 @@ export const Notification = sequelize.define("notification", {
         allowNull: false
     },
     message: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.STRING(500),
         allowNull: false
     },
     metadata: {

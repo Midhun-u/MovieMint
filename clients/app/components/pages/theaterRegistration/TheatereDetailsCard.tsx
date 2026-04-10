@@ -46,7 +46,7 @@ const TheaterDetailsCard = ({ theaterDetails }: TheaterDetailsCardProps) => {
             {/* Theater image section */}
             <div className="mt-4">
                 {
-                    theaterDetails.theater_image.image_url
+                    theaterDetails?.theater_image?.image_url
                         ?
                         <Image
                             src={theaterDetails.theater_image.image_url}

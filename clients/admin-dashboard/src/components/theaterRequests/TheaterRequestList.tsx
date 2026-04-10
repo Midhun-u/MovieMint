@@ -34,6 +34,7 @@ import {
 import TheaterSkeleton from "./TheaterSkeleton";
 import { deleteTheaterImageApi } from "../../api/media";
 import NoResult from "../ui/NoResult";
+import { addNotificationApi } from "../../api/notification";
 
 const TheaterRequestList = () => {
   const [hasMore, setHasMore] = useState<boolean>(false);
@@ -76,13 +77,13 @@ const TheaterRequestList = () => {
       pagination.limit,
     );
     if (result.success) {
-        dispatch(
-          theaterSuccess({
-            theaters: result.theaters,
-            page: pagination.page,
-            filter: false,
-          }),
-        );
+      dispatch(
+        theaterSuccess({
+          theaters: result.theaters,
+          page: pagination.page,
+          filter: false,
+        }),
+      );
 
       if (result.theaters?.length < pagination.limit) {
         setHasMore(false);
@@ -98,6 +99,7 @@ const TheaterRequestList = () => {
   const handleApproveTheaterRequest = async (
     event: React.MouseEvent<HTMLElement, MouseEvent>,
     theaterId: string,
+    ownerId: string
   ) => {
     // For stopping parent click event
     event.stopPropagation();
@@ -106,7 +108,20 @@ const TheaterRequestList = () => {
       loading: true,
       theaterId: theaterId,
     });
-    const result = await approveTheaterApi(theaterId);
+    const [result] = await Promise.all([
+      approveTheaterApi(theaterId),
+      addNotificationApi({
+        userId: ownerId,
+        success: true,
+        title: 'Theater request is approved',
+        message: "Your request has been approved. You now have full access to your administrative dashboard. You can begin adding screens, scheduling shows, and managing ticket inventory immediately.",
+        type: "theater",
+        metadata: {
+          id: theaterId,
+          action: "check_dashboard"
+        }
+      })
+    ])
 
     if (result.success) {
       startTransition(() => {
@@ -133,6 +148,7 @@ const TheaterRequestList = () => {
   const handleDeleteTheaterRequest = async (
     event: React.MouseEvent<HTMLElement, MouseEvent>,
     theaterId: string,
+    ownerId: string
   ) => {
     // For stopping parent click event
     event.stopPropagation();
@@ -141,7 +157,20 @@ const TheaterRequestList = () => {
       loading: true,
       theaterId: theaterId,
     });
-    const theaterResult = await deleteTheaterApi(theaterId);
+    const [theaterResult] = await Promise.all([
+      deleteTheaterApi(theaterId),
+      addNotificationApi({
+        userId: ownerId,
+        success: false,
+        type: "theater",
+        title: "Theater request is refused",
+        message: "Your request has been refused. Please check the terms and condition for approving the theater request",
+        metadata: {
+          id: theaterId,
+          action: "check_dashboard"
+        }
+      })
+    ]);
 
     if (theaterResult.success) {
       const imageResult = await deleteTheaterImageApi(theaterId);
@@ -250,11 +279,11 @@ const TheaterRequestList = () => {
                 <Button
                   className={style["button"]}
                   onClick={(event) =>
-                    handleDeleteTheaterRequest(event, theaterRequest.id)
+                    handleDeleteTheaterRequest(event, theaterRequest.id, theaterRequest.owner_id)
                   }
                   disabled={
                     approveLoadingDetails.loading ||
-                    deleteLoadingDetails.loading
+                      deleteLoadingDetails.loading
                       ? true
                       : false
                   }
@@ -270,12 +299,12 @@ const TheaterRequestList = () => {
                   className={style["button"]}
                   disabled={
                     approveLoadingDetails.loading ||
-                    deleteLoadingDetails.loading
+                      deleteLoadingDetails.loading
                       ? true
                       : false
                   }
                   onClick={(event) =>
-                    handleApproveTheaterRequest(event, theaterRequest.id)
+                    handleApproveTheaterRequest(event, theaterRequest.id, theaterRequest.owner_id)
                   }
                   loading={
                     approveLoadingDetails.loading &&
