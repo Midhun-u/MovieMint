@@ -112,3 +112,108 @@ Both frontend applications and backend services can be scaled independently base
 
  - **Version Control & Collaboration:**
     Git, Github
+
+ - **Package Manager:**
+    PNPM, NPM, Bun
+
+## Get Started
+
+### Cloning Project
+
+```bash
+git clone https://github.com/Midhun-u/MovieMint.git
+cd MovieMint
+
+# Must create .env file for all client server then add api keys and other variables according to .env.sample file
+```
+
+### Installing Dependencies
+
+#### Frontend Installation
+
+```bash
+# Installing admin dashboard dependencies
+cd ./clients/admin-dashboard
+pnpm install
+
+pnpm run dev
+```
+
+```bash
+# Installing app dependencies
+cd ./clients/app
+npm install
+npm run dev
+```
+
+```bash
+# Installing theater dashboard dependencies
+cd ./clients/theater-dashboard
+bun install
+bun run dev
+```
+
+#### Backend Installation
+
+```bash
+# Installing auth service dependecies
+cd ./services/auth-service
+npm install 
+npm run dev
+```
+
+```bash
+# Installing bookings service dependecies
+cd ./services/bookings-service
+pnpm install
+pnpm run dev
+```
+
+```bash
+# Installing media service dependecies
+cd ./services/media-service
+npm install
+npm run dev
+```
+
+```bash
+# Installing movie service dependecies
+cd ./services/movie-service
+bun install
+bun run dev
+```
+
+* For running movie worker
+```bash
+# Running movie worker
+cd ./services/movie-service
+bun run movie-worker
+```
+
+```bash
+# Installing notification service dependecies
+cd ./services/notification-service
+bun install
+bun run dev
+```
+
+* For running notification worker
+```bash
+# Running notification worker
+cd ./services/notification-service
+bun run notification-worker
+```
+
+```bash
+# Installing notification service dependecies
+cd ./services/notification-service
+bun install
+bun run dev
+```
+
+```bash
+# Installing theater service dependecies
+cd ./services/theater-service
+bun install
+bun run dev
+```
