@@ -131,21 +131,21 @@ cd MovieMint
 
 #### Frontend Installation
 
+* Admin Dashboard
 ```bash
 # Installing admin dashboard dependencies
 cd ./clients/admin-dashboard
 pnpm install
-
 pnpm run dev
 ```
-
+* App
 ```bash
 # Installing app dependencies
 cd ./clients/app
 npm install
 npm run dev
 ```
-
+* Theater Dashboard
 ```bash
 # Installing theater dashboard dependencies
 cd ./clients/theater-dashboard
@@ -155,27 +155,28 @@ bun run dev
 
 #### Backend Installation
 
+* Authentication Service
 ```bash
 # Installing auth service dependecies
 cd ./services/auth-service
 npm install 
 npm run dev
 ```
-
+* Bookings Service
 ```bash
 # Installing bookings service dependecies
 cd ./services/bookings-service
 pnpm install
 pnpm run dev
 ```
-
+* Media Service
 ```bash
 # Installing media service dependecies
 cd ./services/media-service
 npm install
 npm run dev
 ```
-
+* Movie Service
 ```bash
 # Installing movie service dependecies
 cd ./services/movie-service
@@ -189,7 +190,7 @@ bun run dev
 cd ./services/movie-service
 bun run movie-worker
 ```
-
+* Notification Service
 ```bash
 # Installing notification service dependecies
 cd ./services/notification-service
@@ -203,17 +204,21 @@ bun run dev
 cd ./services/notification-service
 bun run notification-worker
 ```
-
-```bash
-# Installing notification service dependecies
-cd ./services/notification-service
-bun install
-bun run dev
-```
-
+* Theater Service
 ```bash
 # Installing theater service dependecies
 cd ./services/theater-service
 bun install
 bun run dev
+```
+
+### Running Containers
+
+#### Frontend
+
+* Admin Dashboard
+```bash
+## Running admin dashboard container
+sudo docker build -t admin_dashboard ./
+sudo docker run --network=host -p 8000:80 admin_dashboard
 ```
