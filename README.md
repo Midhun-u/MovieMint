@@ -10,13 +10,13 @@ On the administrative side, the application supports role-based access for admin
 
 Overall, this project demonstrates the integration of frontend and backend technologies to build a scalable, user-friendly, and efficient ticket booking solution.
 
-### App Features
+## App Features
 
-#### User Features</h4>
+### User Features
 
-* <strong>Browser Movies</strong>
-<br>
- Users can explore a list of currently running and upcoming movies with detailed information such as genre, duration, cast, and release date.
+- **Browser Movies**
+
+    Users can explore a list of currently running and upcoming movies with detailed information such as genre, duration, cast, and release date.
 
 * <strong>View Show Timings</strong>
 <br>
