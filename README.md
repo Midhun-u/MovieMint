@@ -45,6 +45,17 @@ Enables setting different ticket prices for each movie and showtime
  - **Booking & Revenue Tracking:**
 Provides access to booking details and earnings, helping theater owners monitor performance and occupancy.
 
+### Admin Features
+
+ - **Movie Management:**
+ Admin can add new movies and update existing movie details.
+
+ - **Manage Theater Requests:**
+ Admin can approve or reject theater registration requests.
+
+ - **Manage Theaters:**
+ Admin can view and control all registered theaters on the platform.
+
 ## System & Architecture Features
 
  - **Microservice Architecture:**
@@ -81,32 +92,23 @@ Both frontend applications and backend services can be scaled independently base
 
 ## Technologies
 
-`Frontend` - <b>
+ - **Frontend:**
     React, Next js, Redux, Vite, Typescript, Tailwind CSS, CSS, Sass, Axios, React Router (For React navigation), Zod (For validation), Lucid React (For icons), Shadcn (For components), React Hook Form (For form validation)
-</b> 
 
-
-`Backend` - <b>
+ - **Backend:**
     Fastify, Express js, Hono js, Node js, Bun js, Typescript, Sequelize, Mongoose, Bullmq (For background tasks), Zod (For validation), Multer (For multiformdata data), Nodemailer (For mail service)
-</b>
 
-
-`Database` - <b>
+ - **Database:**
     Mongodb, Postgresql, Redis
-</b>
 
-`Media & Storage` - <b>
+ - **Media & Storage:**
     Supabase (Cloud storage for media)
-</b>
 
-`DevOps & Deployment` - <b>
+ - **DevOps & Deployment:**
     Docker (Multi-container microservices setup)
-</b>
 
-`Development & Automation` - <b>
+ - **Development & Automation:**
     Bash script
-</b>
 
-`Version Control & Collaboration` - <b>
+ - **Version Control & Collaboration:**
     Git, Github
-</b>
