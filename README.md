@@ -1,6 +1,6 @@
 # MovieMint
 
-<h2>Overview</h2>
+## Overview
 
 This application is a full-featured web-based platform developed using modern web technologies to simplify the process of booking movie tickets online.
 
@@ -10,9 +10,9 @@ On the administrative side, the application supports role-based access for admin
 
 Overall, this project demonstrates the integration of frontend and backend technologies to build a scalable, user-friendly, and efficient ticket booking solution.
 
-<h2> App Features</h2>
+### App Features
 
-<h4>User Features</h4>
+#### User Features</h4>
 
 * <strong>Browser Movies</strong>
 <br>
