@@ -40,14 +40,14 @@ const MoviesPage = () => {
         </div>
       </div>
       {/* Last section */}
-      <div className="mt-10 w-full flex flex-col items-center gap-10">
+      <div className="mt-10 w-full flex flex-col items-center gap-10 px-3">
         <Image
           src={assets.homeVector}
           alt="Home vector"
           className="aspect-square w-90 "
         />
         <Link
-          className="justify-center rounded-sm px-2 py-1 text-sm min-[400px]:w-60 w-full bg-foreground-color hover:bg-foreground-color/20 border border-foreground-theme-color/15 flex items-center"
+          className="justify-center rounded-sm px-2 py-1 text-sm min-[400px]:w-60 w-full bg-foreground-color hover:bg-foreground-color/20 border border-foreground-theme-color/15 flex items-center font-medium"
           href={"/movies/all-movies"}
         >
           <>View All</>

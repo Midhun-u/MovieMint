@@ -203,6 +203,17 @@ const Header = () => {
                         {/* Sidebar */}
                         <aside className={`fixed text-foreground-theme-color pt-17 px-3 sm:px-5 ${showSidebar ? "left-0" : "-left-500"} transition-all duration-200 flex flex-col sm:hidden w-full h-full  overflow-auto top-0 z-40 bg-foreground-color`}>
                             {
+                                navbarLinks.map((nav, index) => (
+                                    <Link
+                                        href={nav.route}
+                                        key={index}
+                                        className={linkClass + ` ${pathname.includes(nav.route)? "text-primary-accent-color": ""}`}
+                                    >
+                                        {nav.title}
+                                    </Link>
+                                ))
+                            }
+                            {
                                 user
                                     ?
                                     null
@@ -219,7 +230,7 @@ const Header = () => {
                                     ?
                                     <Link
                                         href={adminDashboardNavLink}
-                                        className="font-medium mt-3 border-b-2 pb-2 border-foreground-theme-color/20 w-full flex justify-end"
+                                        className={linkClass}
                                     >
                                         Admin Dashboard
                                     </Link>
@@ -260,30 +271,6 @@ const Header = () => {
                             }
                         </aside>
 
-                    </nav>
-                    {/* Bottom navbar for mobiles */}
-                    <nav
-                        className={`${showSidebar ? "hidden" : ""} sm:hidden fixed left-0 justify-center bottom-4 z-30 w-full h-13 flex`}
-                    >
-                        <div className="flex px-5 rounded-lg items-center h-full justify-center gap-8 bg-foreground-color border border-foreground-theme-color/20">
-                            {
-                                navbarLinks.map((navbarLink, index) => (
-
-                                    <Link
-                                        href={navbarLink.route}
-                                        key={index}
-                                        className={`relative ${pathname.includes(navbarLink.route) ? "before:absolute before:w-full before:h-0.5 before:bg-primary-color before:-bottom-2" : ""}`}
-                                    >
-                                        <navbarLink.Icon
-                                            size={23}
-                                            strokeWidth={1.8}
-                                            className={`${pathname.includes(navbarLink.route) ? "stroke-primary-color" : ""} stroke-foreground-theme-color`}
-                                        />
-                                    </Link>
-
-                                ))
-                            }
-                        </div>
                     </nav>
                 </header>
             </Authentication>

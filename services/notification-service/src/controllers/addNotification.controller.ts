@@ -10,7 +10,6 @@ export const addNotificationController = sendErrorResponse(async (context: Conte
 
     const body = await context.req.json() as NotificationBody
 
-    console.log(body)
     // Validating request body
     const validator = validateNotificationBody(body)
     if (!validator.success || !validator.fields || !body.metadata) {
