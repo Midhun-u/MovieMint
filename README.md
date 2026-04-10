@@ -25,72 +25,58 @@ Overall, this project demonstrates the integration of frontend and backend techn
  - **Digital Ticket Generation:**
 Generates downloadable tickets (PDF or digital format) that can be used for entry or sharing.
 
- - **Booking History Management**
-<br>
-Users can view past and upcoming bookings, making it easy to track their movie plans.
+ - **Booking History Management:**
+ Users can view past and upcoming bookings, making it easy to track their movie plans.
 
 ### Theater Owner Features
 
- - **Movie Selection**
-<br>
+ - **Movie Selection:**
 Theater owners can select movies from the movie list which is created by admins instead of creating new ones, ensuring consistency across the platform.
 
- - **Show & Schedule Management**
-<br>
+ - **Show & Schedule Management:**
 Allows theater owners to create multiple showtimes for each movie across different and dates, providing flexibility in scheduling.
 
- - **Custom Pricing per movie**
-<br>
+ - **Custom Pricing per movie:**
 Enables setting different ticket prices for each movie and showtime
 
- - **Screen & Seat Layout Configuration**
-<br>
-Theater owners can design and manage seat layouts. Enabling dynamic seat selection.
+ - **Screen & Seat Layout Configuration:**
+ Theater owners can design and manage seat layouts. Enabling dynamic seat selection.
 
- - **Booking & Revenue Tracking**
-<br>
+ - **Booking & Revenue Tracking:**
 Provides access to booking details and earnings, helping theater owners monitor performance and occupancy.
 
 ## System & Architecture Features
 
- - **Microservice Architecture**
-<br>
-The application is designed using a microservices-based architecture, where core functionalities (such as authentication, booking, notifications, and media handling) are separated into independent services. This improves scalability, maintainability, and allows independent deployment of each service.
+ - **Microservice Architecture:**
+ The application is designed using a microservices-based architecture, where core functionalities (such as authentication, booking, notifications, and media handling) are separated into independent services. This improves scalability, maintainability, and allows independent deployment of each service.
 
- - **Multi-Container Deployment with Docker**
-<br>
-The system uses Docker for containerization, with each service running in its own container. This ensures consistency across development and production environments, simplifies deployment, and enables easy scaling of individual services.
+ - **Multi-Container Deployment with Docker:**
+ The system uses Docker for containerization, with each service running in its own container. This ensures consistency across development and production environments, simplifies deployment, and enables easy scaling of individual services.
 
- - **Background Task Processing**
-<br>
-Supports asynchronous background jobs for handling non-blocking operations such as sending notifications and processing system events efficiently.
+ - **Background Task Processing:**
+ Supports asynchronous background jobs for handling non-blocking operations such as sending notifications and processing system events efficiently.
 
- - **Real-Time Communication (WebSockets)**
-<br>
+ - **Real-Time Communication (WebSockets):**
 Implements WebSocket-based communication to enable real-time updates for seat availability, ensuring users see instant changes when seats are selected or booked by others.
 
- - **Movie Release Notification System**
-<br>
+ - **Movie Release Notification System:**
 Implements scheduled background tasks to notify users when a movie is released or becomes available for booking, enhancing user engagement.
 
- - **Pagination & Efficient Data Handling**
-<br>
-Uses pagination to efficiently manage and serve large datasets like movies, bookings for improving performance and reducing load times.
+ - **Pagination & Efficient Data Handling:**
+ Uses pagination to efficiently manage and serve large datasets like movies, bookings for improving performance and reducing load times.
 
- - **Multiple Frontend Applications**
-<br>
-The platform includes separate frontend applications for:
+ - **Multiple Frontend Applications:**
+ The platform includes separate frontend applications for:
 
-    - App – for browsing and booking tickets 
+    * App – for browsing and booking tickets 
     
-    - Admin Dashboard – for managing movie details and theaters 
+    * Admin Dashboard – for managing movie details and theaters 
 
-    - Theater Dashboard – for managing shows and pricing 
+    * Theater Dashboard – for managing shows and pricing 
     
     This separation ensures better user experience and role-based access control.
 
- - **Independently Scalable Frontend & Services**
-<br>
+ - **Independently Scalable Frontend & Services:**
 Both frontend applications and backend services can be scaled independently based on traffic and usage, making the system highly flexible and efficient.
 
 ## Technologies
