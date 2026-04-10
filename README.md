@@ -15,10 +15,10 @@ Overall, this project demonstrates the integration of frontend and backend techn
 ### User Features
 
 - **Browser Movies**
-
+    <br>
     Users can explore a list of currently running and upcoming movies with detailed information such as genre, duration, cast, and release date.
 
-* <strong>View Show Timings</strong>
+- **View Show Timings**
 <br>
 Displays available showtimes across different theaters, allowing users to choose a convenient schedule.
 
