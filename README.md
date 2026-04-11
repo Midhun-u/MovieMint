@@ -87,6 +87,9 @@ Implements scheduled background tasks to notify users when a movie is released o
     
     This separation ensures better user experience and role-based access control.
 
+ - **MVC Architecture:**
+ The project follows the Model-View-Controller pattern, which separates business logic, UI, and data handling. This makes the application more scalable, maintainable, and easy to manage.
+
  - **Independently Scalable Frontend & Services:**
 Both frontend applications and backend services can be scaled independently based on traffic and usage, making the system highly flexible and efficient.
 
