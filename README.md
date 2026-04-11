@@ -218,7 +218,139 @@ bun run dev
 
 * Admin Dashboard
 ```bash
-## Running admin dashboard container
+# Running admin dashboard container
+cd ./clients/admin-dashboard
 sudo docker build -t admin_dashboard ./
 sudo docker run --network=host -p 8000:80 admin_dashboard
+```
+
+* For running Bash Script in admin dasbhboard
+```bash
+cd ./clients/admin-dashboard
+chmod u+x ./container.bash # Or chmod 744 ./continer.bash
+./container.bash
+```
+
+* App
+```bash
+# Running app container
+cd ./clients/app
+sudo docker build -t app ./
+sudo docker run --network=host -p 8000:80 app
+```
+* For running Bash Script in app
+```bash
+cd ./clients/app
+chmod u+x ./container.bash # Or chmod 744 ./continer.bash
+./container.bash
+```
+
+* Theater Dashboard
+```bash
+# Running theater dashboard container
+cd ./clients/theater-dashboard
+sudo docker build -t theater_dashboard ./
+sudo docker run --network=host -p 8080:80 theater_dashboard
+```
+
+* For running Bash Script in theater dashboard
+```bash
+cd ./clients/theater-dashboard
+chmod u+x ./container.bash # Or chmod 744 ./continer.bash
+./container.bash
+```
+
+### Backend 
+* Authentication Service
+```bash
+cd ./services/auth-service
+sudo docker build -t auth_service ./
+sudo docker run --network=host auth_service
+```
+
+* For running Bash Script in authentication service
+```bash
+cd ./services/auth-service
+chmod u+x ./container.bash # Or chmod 744 ./continer.bash
+./container.bash
+```
+
+* Bookings Service
+```bash
+cd ./services/bookings-service
+sudo docker build -t bookings_service ./
+sudo docker run --network=host bookings_service
+```
+* For running Bash Script in bookings service
+```bash
+cd ./services/bookings-service
+chmod u+x ./container.bash # Or chmod 744 ./continer.bash
+./container.bash
+```
+* Media Service
+```bash
+cd ./services/media-service
+sudo docker build -t media_service ./
+sudo docker run --network=host media_service
+```
+* For running Bash Script in media service
+```bash
+cd ./services/media-service
+chmod u+x ./container.bash # Or chmod 744 ./continer.bash
+./container.bash
+```
+
+* Movie Service
+```bash
+cd ./services/movie-service
+sudo docker build -t movie_service ./
+sudo docker run --network=host movie_service
+```
+* For running Bash Script in movie service
+```bash
+cd ./services/movie-service
+chmod u+x ./container.bash # Or chmod 744 ./continer.bash
+./container.bash
+```
+
+* For running movie worker
+```bash
+cd ./services/movie-service
+sudo docker build -t movie_worker ./
+sudo docker run --network=host movie_worker bun run movie-worker
+```
+
+* Notification Service
+```bash
+cd ./services/notification-service
+sudo docker build -t notification_service ./
+sudo docker run --network=host notification_service
+```
+
+* For running Bash Script in notification service
+```bash
+cd ./services/notification-service
+chmod u+x ./container.bash # Or chmod 744 ./continer.bash
+./container.bash
+```
+
+* For running notification worker
+```bash
+cd ./services/movie-service
+sudo docker build -t movie_worker ./
+sudo docker run --network=host movie_worker bun run notification-worker
+```
+
+* Theater Service
+```bash
+cd ./services/theater-service
+sudo docker build -t theater_service ./
+sudo docker run --network=host theater_service
+```
+
+* For running Bash script in theater service
+```bash
+cd ./services/theater-service
+chmod u+x ./container.bash # Or chmod 744 ./continer.bash
+./container.bash
 ```
