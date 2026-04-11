@@ -354,3 +354,22 @@ cd ./services/theater-service
 chmod u+x ./container.bash # Or chmod 744 ./continer.bash
 ./container.bash
 ```
+
+## Preview
+![Login page](./login-page.png)
+![Sign page](./sign-page.png)
+![Verify email page](./verify-email-page.png)
+![Home page](./home-page.png)
+![Movie Categories](./movie-categories-page.png)
+![Dark theme](./dark-theme.png)
+![Movie Details page](./movie-details-page.png)
+![Movie Crew page](./movie-crew-page.png)
+![Movie Trailer](./movie-trailer.png)
+![All movies page](./all-movies-page.png)
+![Movie ratings page](./movie-ratings-page.png)
+![Movie show page](./movies-show-page.png)
+![Theater seat Layout](./theater-seat-layout-page.png)
+![Bookings page](./bookings-page.png)
+![Notification page](./notification-page.png)
+![Saved list page](./saved-list-page.png)
+![Settings page](./settings-page.png)
