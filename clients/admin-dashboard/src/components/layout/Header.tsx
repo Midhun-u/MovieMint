@@ -22,6 +22,7 @@ const Header = () => {
 
     const [showOptionMenu, setShowOptionMenu] = useState<boolean>(false)
     const { theme } = useAppSelector(state => state.theme)
+    const {admin} = useAppSelector(state => state.auth)
     const dispatch = useAppDispatch()
     const [showSidebar, setShowSidebar] = useState<boolean>(false)
     const pathname = useLocation().pathname
@@ -91,8 +92,18 @@ const Header = () => {
                     className={style['option-menu-section']}
                     onClick={() => setShowOptionMenu(!showOptionMenu)}
                 >
-                    <NullProfilePic
-                    />
+                    {
+                        admin && admin.profile_image?.image_url
+                        ?
+                        <img
+                            src={admin.profile_image.image_url}
+                            className={style['admin-profile-pic']}
+                            alt='Admin profile picture'
+                        />
+                        :
+                        <NullProfilePic
+                        />
+                    }
                     <DownArrowIcon
                         strokeWidth={1.5}
                         size={23}

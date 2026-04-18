@@ -25,9 +25,7 @@ const ProtectRoute = ({ children }: { children: ReactNode }) => {
     }
 
     dispatch(authRequest());
-    const result = await getAdminProfile(
-      storedAuthToken ? storedAuthToken : (authToken as string),
-    );
+    const result = await getAdminProfile();
 
     if (result.success && result?.user?.role === "ADMIN") {
       dispatch(authSuccess({ admin: result.user }));

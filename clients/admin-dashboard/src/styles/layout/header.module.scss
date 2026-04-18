@@ -118,6 +118,12 @@ $disable-color: #7F7F7F;
     }
 }
 
+.admin-profile-pic{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
 .active-sidebar{
     @extend .sidebar;
     left: 0px;
