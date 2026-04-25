@@ -217,7 +217,7 @@ bun run dev
 
 ### Running Containers
 
-### Docker Compose
+#### Docker Compose
 ```bash
 sudo docker compose up 
 ```
