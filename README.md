@@ -217,6 +217,11 @@ bun run dev
 
 ### Running Containers
 
+### Compose
+```bash
+sudo docker compose up 
+```
+
 #### Frontend
 
 * Admin Dashboard
