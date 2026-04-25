@@ -1,0 +1,84 @@
+name: MovieMint
+services:
+
+  admin_dashboard:
+    build: ./clients/admin-dashboard
+    ports:
+      - 5173:80
+    depends_on:
+      - auth_service
+      - movie_service
+      - bookings_service
+      - theater_service
+      - media_service
+      - notification_service
+
+  app:
+    build: ./clients/app
+    ports:
+      - 3000:3000
+    depends_on:
+      - auth_service
+      - movie_service
+      - bookings_service
+      - theater_service
+      - media_service
+      - notification_service
+
+  theater_dashboard:
+    build: ./clients/theater-dashboard
+    ports:
+      - 5174:80
+    depends_on:
+      - auth_service
+      - movie_service
+      - bookings_service
+      - theater_service
+      - media_service
+      - notification_service
+  
+  auth_service:
+    build: ./services/auth-service
+    ports:
+      - 5000:5000
+    network_mode: host
+  
+  bookings_service:
+    build: ./services/bookings-service
+    ports:
+      - 8080:8080
+    network_mode: host
+    depends_on:
+      - auth_service
+
+  media_service:
+    build: ./services/media-service
+    ports:
+      - 5050:5050
+    network_mode: host
+    depends_on:
+      - auth_service
+  
+  movie_service:
+    build: ./services/movie-service
+    ports:
+      - 5080:5080
+    network_mode: host
+    depends_on: 
+      - auth_service
+
+  notification_service:
+    build: ./services/notification-service
+    ports:
+      - 8000:8000
+    depends_on:
+      - auth_service
+    network_mode: host
+    
+  theater_service:
+    build: ./services/theater-service
+    ports: 
+      - 5090:5090
+    depends_on:
+      - auth_service
+    network_mode: host

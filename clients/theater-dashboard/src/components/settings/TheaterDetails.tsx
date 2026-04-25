@@ -66,7 +66,7 @@ const TheaterDetails = () => {
             theater_location: data.theaterLocation,
             formats: selectedFormats,
             allow_cancellation: allowCancellation
-        }, authToken)
+        })
 
         if (result.success) {
             dispatch(theaterSuccess({

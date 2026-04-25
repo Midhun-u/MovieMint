@@ -58,6 +58,9 @@ const Dashboard = () => {
                   showTime={convertIsoDateToNormalFormat(new Date(booking.show.year, booking.show.month, booking.show.day, booking.show.hour, booking.show.minutes).toISOString())}
                   status={booking.status}
                   totalTickets={booking.booked_seats.length}
+                  userEmail={booking.user?.email}
+                  userImage={booking?.user?.profile_image?.image_url}
+                  userName={booking?.user?.firstname + " " +booking?.user?.lastname}
                 />
 
               ))
