@@ -26,7 +26,8 @@ export const fetchInstance = async (
                 ...contentType,
                 "Authorization": token ? `Bearer ${token}` : ""
             },
-            credentials: "include"
+            credentials: "include",
+            cache: "no-store"
         })
 
         const data = await response.json() || null
