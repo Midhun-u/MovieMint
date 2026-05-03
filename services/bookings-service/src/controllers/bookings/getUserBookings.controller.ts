@@ -31,7 +31,7 @@ export const getUserBookingsController = async (context: Context) => {
             minutes: number
             year: number
             month: number
-        }) => show._id === booking.show_id)
+        }) => show?._id === booking.show_id)
 
         return {
             _id: booking._id,
